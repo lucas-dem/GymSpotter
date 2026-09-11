@@ -5,12 +5,15 @@ GymSpotter reúne membresías, rutinas y seguimiento entre socios, entrenadores 
 ## MVP actual
 
 - Panel responsive para socio, entrenador y administrador.
-- Estado y renovación de membresía.
-- Rutina semanal, entrenamiento guiado y explicación técnica de ejercicios.
-- Seguimiento de progreso, constancia y cargas.
-- Gestión de alumnos y asignación de rutinas.
+- Estado y renovación persistente de membresía.
+- Rutina semanal, entrenamiento serie por serie y explicación visual de ejercicios.
+- Registro de peso, entrenamientos, cargas, repeticiones y RIR.
+- Creador de rutinas con biblioteca de ejercicios.
+- Gestión de alumnos y asignación persistente de rutinas.
 - Panel del gimnasio con socios, vencimientos, ocupación e ingresos.
 - Acciones demostrables con notificaciones y soporte WebMCP.
+
+Los datos principales se almacenan en Cloudflare D1 y cada escritura se vincula al usuario autenticado por la plataforma.
 
 ## Desarrollo local
 
@@ -32,7 +35,7 @@ npm start
 
 ## Tecnología
 
-React 19, TypeScript, Tailwind CSS, Vinext/Vite y componentes accesibles basados en Radix UI.
+React 19, TypeScript, Tailwind CSS, Vinext/Vite, Cloudflare D1, Drizzle y componentes accesibles basados en Radix UI.
 
 ## Licencia
 
