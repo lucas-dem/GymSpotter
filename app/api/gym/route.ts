@@ -8,12 +8,12 @@ type ActionBody = {
 };
 
 const seedExercises = [
-  ["press-banca", "Press banca", "Pecho", "Barra", "Escápulas juntas, pies firmes y bajá la barra al centro del pecho.", "/exercises/bench-press.png"],
-  ["press-inclinado", "Press inclinado", "Pecho superior", "Mancuernas", "Banco a 30°, muñecas neutras y recorrido controlado.", "/exercises/incline-press.png"],
-  ["aperturas-polea", "Aperturas en polea", "Pectoral", "Polea", "Codos apenas flexionados; juntá las manos sin encoger hombros.", "/exercises/cable-fly.png"],
-  ["extension-triceps", "Extensión de tríceps", "Tríceps", "Polea", "Pegá los codos al cuerpo y extendé sin mover los hombros.", null],
-  ["sentadilla", "Sentadilla con barra", "Cuádriceps", "Barra", "Mantené el torso firme, rodillas alineadas y controlá la profundidad.", null],
-  ["remo-polea", "Remo en polea", "Espalda", "Polea", "Iniciá retrayendo las escápulas y llevá los codos hacia atrás.", null],
+  ["press-banca", "Press banca", "Pecho", "Barra", "Escápulas juntas, pies firmes y bajá la barra al centro del pecho.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0025-EIeI8Vf.gif"],
+  ["press-inclinado", "Press inclinado", "Pecho superior", "Barra", "Banco a 30°, muñecas neutras y recorrido controlado.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0047-3TZduzM.gif"],
+  ["aperturas-polea", "Aperturas en polea", "Pectoral", "Polea", "Codos apenas flexionados; juntá las manos sin encoger hombros.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0227-Pr9Rhf4.gif"],
+  ["extension-triceps", "Extensión de tríceps", "Tríceps", "Polea", "Pegá los codos al cuerpo y extendé sin mover los hombros.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0201-3ZflifB.gif"],
+  ["sentadilla", "Sentadilla con barra", "Cuádriceps", "Barra", "Mantené el torso firme, rodillas alineadas y controlá la profundidad.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0043-qXTaZnJ.gif"],
+  ["remo-polea", "Remo en polea", "Espalda", "Polea", "Iniciá retrayendo las escápulas y llevá los codos hacia atrás.", "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0861-fUBheHs.gif"],
 ] as const;
 
 function json(data: unknown, status = 200) { return Response.json(data, { status }); }
@@ -28,7 +28,7 @@ async function seedForUser(db: D1Database, user: { userId: string; email: string
   const now = new Date().toISOString();
   const expires = new Date(Date.now() + 12 * 86400000).toISOString();
   const statements = seedExercises.map((item) => db.prepare(
-    "INSERT OR IGNORE INTO exercises (slug, name, muscle, equipment, instructions, media_path) VALUES (?, ?, ?, ?, ?, ?)"
+    "INSERT INTO exercises (slug, name, muscle, equipment, instructions, media_path) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET name = excluded.name, muscle = excluded.muscle, equipment = excluded.equipment, instructions = excluded.instructions, media_path = excluded.media_path"
   ).bind(...item));
   statements.push(
     db.prepare("INSERT OR IGNORE INTO profiles (user_id, email, display_name, role, created_at) VALUES (?, ?, ?, 'member', ?)").bind(user.userId, user.email, user.displayName, now),
@@ -64,7 +64,7 @@ export async function GET() {
   if (!db) return json({ error: "La base de datos no está disponible." }, 503);
   try {
     await seedForUser(db, user);
-    const [profile, membership, exerciseRows, routineRows, routineExerciseRows, assignmentRows, sessions, weights] = await Promise.all([
+    const [profile, membership, exerciseRows, routineRows, routineExerciseRows, assignmentRows, sessions, weights, muscleLoads] = await Promise.all([
       db.prepare("SELECT user_id AS userId, email, display_name AS displayName, role FROM profiles WHERE user_id = ?").bind(user.userId).first(),
       db.prepare("SELECT id, plan, expires_at AS expiresAt, status FROM memberships WHERE user_id = ?").bind(user.userId).first(),
       db.prepare("SELECT id, slug, name, muscle, equipment, instructions, media_path AS mediaPath FROM exercises ORDER BY name").all(),
@@ -73,8 +73,9 @@ export async function GET() {
       db.prepare("SELECT a.id, a.routine_id AS routineId, a.member_name AS memberName, a.assigned_at AS assignedAt, r.name AS routineName FROM assignments a JOIN routines r ON r.id = a.routine_id WHERE a.trainer_user_id = ? AND a.active = 1 ORDER BY a.id DESC").bind(user.userId).all(),
       db.prepare("SELECT id, routine_name AS routineName, started_at AS startedAt, completed_at AS completedAt, duration_seconds AS durationSeconds FROM workout_sessions WHERE user_id = ? ORDER BY started_at DESC LIMIT 12").bind(user.userId).all(),
       db.prepare("SELECT id, weight, recorded_at AS recordedAt FROM body_weights WHERE user_id = ? ORDER BY recorded_at DESC LIMIT 24").bind(user.userId).all(),
+      db.prepare("SELECT e.muscle, COALESCE(ws.completed_at, MAX(wset.completed_at)) AS completedAt, COUNT(wset.id) AS sets FROM workout_sets wset JOIN workout_sessions ws ON ws.id = wset.session_id JOIN exercises e ON e.id = wset.exercise_id WHERE ws.user_id = ? AND datetime(wset.completed_at) >= datetime('now', '-7 days') GROUP BY ws.id, e.muscle ORDER BY completedAt DESC").bind(user.userId).all(),
     ]);
-    return json({ profile, membership, exercises: exerciseRows.results, routines: routineRows.results, routineExercises: routineExerciseRows.results, assignments: assignmentRows.results, sessions: sessions.results, weights: weights.results });
+    return json({ profile, membership, exercises: exerciseRows.results, routines: routineRows.results, routineExercises: routineExerciseRows.results, assignments: assignmentRows.results, sessions: sessions.results, weights: weights.results, muscleLoads: muscleLoads.results });
   } catch (error) {
     console.error("GymSpotter data load failed", error);
     return json({ error: "No pudimos cargar los datos. Intentá nuevamente." }, 500);

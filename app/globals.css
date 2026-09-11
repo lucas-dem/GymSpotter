@@ -9,3 +9,13 @@ html,body { background:var(--background); }
 body { margin:0; color:var(--foreground); font-family:Arial,Helvetica,sans-serif; }
 button { cursor:pointer; }
 ::selection { background:#c7ff3d; color:#090b0a; }
+
+.body-fatigue-map { display:flex; justify-content:center; align-items:flex-start; gap:.25rem; min-height:250px; }
+.body-fatigue-view { width:min(48%,250px); height:auto; max-height:390px; }
+.body-fatigue-view path { stroke:#121512; stroke-width:2.5; stroke-linejoin:round; }
+.body-fatigue-silhouette { fill:#4b4e4b; }
+.body-fatigue-muscle { fill:#323532; transition:fill .2s ease; }
+.body-fatigue-muscle.fatigue-1 { fill:#647130; }
+.body-fatigue-muscle.fatigue-2 { fill:#e8cf21; }
+.body-fatigue-muscle.fatigue-3 { fill:#ff9f0a; }
+.body-fatigue-muscle.fatigue-4 { fill:#ff453a; }
