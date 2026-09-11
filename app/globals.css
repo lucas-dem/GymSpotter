@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "../vendor/shadcn-tailwind-4.13.0.css";
+
+:root { --background:#090b0a; --foreground:#f3f4ee; --card:#121512; --card-foreground:#f3f4ee; --popover:#171a17; --popover-foreground:#f3f4ee; --primary:#c7ff3d; --primary-foreground:#090b0a; --secondary:#20251f; --secondary-foreground:#f3f4ee; --muted:#20251f; --muted-foreground:#9da39a; --accent:#252b24; --accent-foreground:#fff; --destructive:#ff5d5d; --border:#ffffff1a; --input:#ffffff20; --ring:#c7ff3d; --radius:.8rem; }
+@theme inline { --color-background:var(--background); --color-foreground:var(--foreground); --color-card:var(--card); --color-card-foreground:var(--card-foreground); --color-popover:var(--popover); --color-popover-foreground:var(--popover-foreground); --color-primary:var(--primary); --color-primary-foreground:var(--primary-foreground); --color-secondary:var(--secondary); --color-secondary-foreground:var(--secondary-foreground); --color-muted:var(--muted); --color-muted-foreground:var(--muted-foreground); --color-accent:var(--accent); --color-accent-foreground:var(--accent-foreground); --color-destructive:var(--destructive); --color-border:var(--border); --color-input:var(--input); --color-ring:var(--ring); --radius-sm:calc(var(--radius) - 4px); --radius-md:calc(var(--radius) - 2px); --radius-lg:var(--radius); --radius-xl:calc(var(--radius) + 4px); --font-sans:Arial,Helvetica,sans-serif; }
+* { box-sizing:border-box; }
+html,body { background:var(--background); }
+body { margin:0; color:var(--foreground); font-family:Arial,Helvetica,sans-serif; }
+button { cursor:pointer; }
+::selection { background:#c7ff3d; color:#090b0a; }
