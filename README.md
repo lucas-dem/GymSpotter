@@ -9,6 +9,9 @@ GymSpotter reúne membresías, rutinas y seguimiento entre socios, entrenadores 
 - Rutina semanal, entrenamiento serie por serie y demostraciones animadas del catálogo que utiliza openGym.
 - Registro de peso, entrenamientos, cargas, repeticiones y RIR.
 - Creador de rutinas con biblioteca de ejercicios.
+- Socios pueden crear y editar sus propias rutinas; entrenadores y administradores pueden asignarlas.
+- Acceso con login y registro controlado: el primer administrador habilita el alta posterior de cuentas.
+- Timer de descanso de 1, 3, 5 o 10 minutos con vibración al finalizar cuando el dispositivo lo permite.
 - Gestión de alumnos y asignación persistente de rutinas.
 - Panel del gimnasio con socios, vencimientos, ocupación e ingresos.
 - Mapa anatómico frontal y posterior con fatiga calculada desde las series registradas en los últimos 7 días.

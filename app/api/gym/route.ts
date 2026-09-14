@@ -1,8 +1,10 @@
 import { env } from "cloudflare:workers";
 import { getChatGPTUser } from "@/app/chatgpt-auth";
+import { appUserFromRequest } from "@/lib/auth";
 
 type ActionBody = {
   action?: string; name?: string; level?: string; daysPerWeek?: number; exerciseIds?: number[];
+  routineItems?: { exerciseId?: number; dayName?: string; dayTitle?: string; sets?: number; repsMin?: number; repsMax?: number; targetWeight?: number; targetRir?: number; restSeconds?: number }[];
   routineId?: number; routineName?: string; memberName?: string; sessionId?: number;
   exerciseId?: number; setNumber?: number; weight?: number; reps?: number; rir?: number; value?: number;
 };
@@ -18,27 +20,37 @@ const seedExercises = [
 
 function json(data: unknown, status = 200) { return Response.json(data, { status }); }
 function validString(value: unknown, max = 80) { return typeof value === "string" && value.trim().length > 0 && value.trim().length <= max; }
-
-async function currentUser() {
-  const user = await getChatGPTUser();
-  return user ?? (process.env.NODE_ENV === "development" ? { userId: "local-demo", email: "demo@gymspotter.local", displayName: "Lucas", fullName: "Lucas" } : null);
+function routineItems(body: ActionBody) {
+  return (body.routineItems ?? []).slice(0, 60).map((item, position) => ({
+    exerciseId: Math.max(1, Math.trunc(Number(item.exerciseId) || 0)), dayName: validString(item.dayName, 20) ? item.dayName!.trim() : "Lunes", dayTitle: typeof item.dayTitle === "string" ? item.dayTitle.trim().slice(0, 60) : "", position,
+    sets: Math.min(12, Math.max(1, Math.trunc(Number(item.sets) || 3))), repsMin: Math.min(100, Math.max(1, Math.trunc(Number(item.repsMin) || 8))),
+    repsMax: Math.min(100, Math.max(1, Math.trunc(Number(item.repsMax) || 12))), targetWeight: Math.min(1000, Math.max(0, Number(item.targetWeight) || 0)),
+    targetRir: Math.min(10, Math.max(0, Number(item.targetRir) || 0)), restSeconds: Math.min(900, Math.max(0, Math.trunc(Number(item.restSeconds) || 0))),
+  })).filter((item) => item.exerciseId > 0);
 }
 
-async function seedForUser(db: D1Database, user: { userId: string; email: string; displayName: string }) {
+async function currentUser(request: Request) {
+  const appUser = env.DB ? await appUserFromRequest(request, env.DB) : null;
+  if (appUser) return appUser;
+  const user = await getChatGPTUser();
+  return user ? { ...user, role: "member" as const } : (process.env.NODE_ENV === "development" ? { userId: "local-demo", email: "demo@gymspotter.local", displayName: "Lucas", fullName: "Lucas", role: "member" as const } : null);
+}
+
+async function seedForUser(db: D1Database, user: { userId: string; email: string; displayName: string; role?: string }) {
   const now = new Date().toISOString();
   const expires = new Date(Date.now() + 12 * 86400000).toISOString();
   const statements = seedExercises.map((item) => db.prepare(
     "INSERT INTO exercises (slug, name, muscle, equipment, instructions, media_path) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(slug) DO UPDATE SET name = excluded.name, muscle = excluded.muscle, equipment = excluded.equipment, instructions = excluded.instructions, media_path = excluded.media_path"
   ).bind(...item));
   statements.push(
-    db.prepare("INSERT OR IGNORE INTO profiles (user_id, email, display_name, role, created_at) VALUES (?, ?, ?, 'member', ?)").bind(user.userId, user.email, user.displayName, now),
+    db.prepare("INSERT OR IGNORE INTO profiles (user_id, email, display_name, role, created_at) VALUES (?, ?, ?, ?, ?)").bind(user.userId, user.email, user.displayName, user.role === "admin" || user.role === "trainer" ? user.role : "member", now),
     db.prepare("INSERT OR IGNORE INTO memberships (user_id, plan, expires_at, status) VALUES (?, 'Plan mensual', ?, 'active')").bind(user.userId, expires),
   );
   await db.batch(statements);
 
   const routineCount = await db.prepare("SELECT COUNT(*) AS count FROM routines WHERE owner_user_id = ?").bind(user.userId).first<{ count: number }>();
   if (!routineCount?.count) {
-    const inserted = await db.prepare("INSERT INTO routines (owner_user_id, name, level, days_per_week, created_at) VALUES (?, 'Pecho + tríceps', 'Intermedio', 4, ?) RETURNING id").bind(user.userId, now).first<{ id: number }>();
+    const inserted = await db.prepare("INSERT INTO routines (owner_user_id, name, level, days_per_week, created_at) VALUES (?, 'Rutina semanal', 'General', 4, ?) RETURNING id").bind(user.userId, now).first<{ id: number }>();
     if (inserted) {
       const ids = await db.prepare("SELECT id, slug FROM exercises WHERE slug IN ('press-banca','press-inclinado','aperturas-polea','extension-triceps') ORDER BY id").all<{ id: number; slug: string }>();
       const order = ["press-banca", "press-inclinado", "aperturas-polea", "extension-triceps"];
@@ -48,7 +60,7 @@ async function seedForUser(db: D1Database, user: { userId: string; email: string
         const repsMin = position === 3 ? 12 : position === 2 ? 12 : position === 1 ? 10 : 8;
         const repsMax = position === 3 ? 15 : position === 0 ? 10 : repsMin;
         const weight = [62.5, 22, 17.5, 25][position];
-        return db.prepare("INSERT INTO routine_exercises (routine_id, exercise_id, day_name, position, sets, reps_min, reps_max, target_weight, rest_seconds) VALUES (?, ?, 'Viernes', ?, ?, ?, ?, ?, ?)").bind(inserted.id, exercise.id, position, sets, repsMin, repsMax, weight, position === 0 ? 120 : position === 1 ? 90 : 60);
+        return db.prepare("INSERT INTO routine_exercises (routine_id, exercise_id, day_name, day_title, position, sets, reps_min, reps_max, target_weight, rest_seconds) VALUES (?, ?, 'Viernes', 'Pecho y tríceps', ?, ?, ?, ?, ?, ?)").bind(inserted.id, exercise.id, position, sets, repsMin, repsMax, weight, position === 0 ? 120 : position === 1 ? 90 : 60);
       }));
     }
   }
@@ -57,25 +69,26 @@ async function seedForUser(db: D1Database, user: { userId: string; email: string
   if (!weightCount?.count) await db.prepare("INSERT INTO body_weights (user_id, weight, recorded_at) VALUES (?, 78.4, ?)").bind(user.userId, now).run();
 }
 
-export async function GET() {
-  const user = await currentUser();
+export async function GET(request: Request) {
+  const user = await currentUser(request);
   if (!user) return json({ error: "Iniciá sesión para cargar tus datos." }, 401);
   const db = env.DB;
   if (!db) return json({ error: "La base de datos no está disponible." }, 503);
   try {
     await seedForUser(db, user);
-    const [profile, membership, exerciseRows, routineRows, routineExerciseRows, assignmentRows, sessions, weights, muscleLoads] = await Promise.all([
+    const [profile, membership, exerciseRows, routineRows, routineExerciseRows, assignmentRows, sessions, weights, muscleLoads, lastPerformance] = await Promise.all([
       db.prepare("SELECT user_id AS userId, email, display_name AS displayName, role FROM profiles WHERE user_id = ?").bind(user.userId).first(),
       db.prepare("SELECT id, plan, expires_at AS expiresAt, status FROM memberships WHERE user_id = ?").bind(user.userId).first(),
       db.prepare("SELECT id, slug, name, muscle, equipment, instructions, media_path AS mediaPath FROM exercises ORDER BY name").all(),
       db.prepare("SELECT id, name, level, days_per_week AS daysPerWeek, created_at AS createdAt FROM routines WHERE owner_user_id = ? ORDER BY id DESC").bind(user.userId).all(),
-      db.prepare("SELECT re.id, re.routine_id AS routineId, re.exercise_id AS exerciseId, re.day_name AS dayName, re.position, re.sets, re.reps_min AS repsMin, re.reps_max AS repsMax, re.target_weight AS targetWeight, re.rest_seconds AS restSeconds, e.slug, e.name, e.muscle, e.equipment, e.instructions, e.media_path AS mediaPath FROM routine_exercises re JOIN routines r ON r.id = re.routine_id JOIN exercises e ON e.id = re.exercise_id WHERE r.owner_user_id = ? ORDER BY re.routine_id DESC, re.position").bind(user.userId).all(),
+      db.prepare("SELECT re.id, re.routine_id AS routineId, re.exercise_id AS exerciseId, re.day_name AS dayName, re.day_title AS dayTitle, re.position, re.sets, re.reps_min AS repsMin, re.reps_max AS repsMax, re.target_weight AS targetWeight, re.target_rir AS targetRir, re.rest_seconds AS restSeconds, e.slug, e.name, e.muscle, e.equipment, e.instructions, e.media_path AS mediaPath FROM routine_exercises re JOIN routines r ON r.id = re.routine_id JOIN exercises e ON e.id = re.exercise_id WHERE r.owner_user_id = ? ORDER BY re.routine_id DESC, re.position").bind(user.userId).all(),
       db.prepare("SELECT a.id, a.routine_id AS routineId, a.member_name AS memberName, a.assigned_at AS assignedAt, r.name AS routineName FROM assignments a JOIN routines r ON r.id = a.routine_id WHERE a.trainer_user_id = ? AND a.active = 1 ORDER BY a.id DESC").bind(user.userId).all(),
       db.prepare("SELECT id, routine_name AS routineName, started_at AS startedAt, completed_at AS completedAt, duration_seconds AS durationSeconds FROM workout_sessions WHERE user_id = ? ORDER BY started_at DESC LIMIT 12").bind(user.userId).all(),
       db.prepare("SELECT id, weight, recorded_at AS recordedAt FROM body_weights WHERE user_id = ? ORDER BY recorded_at DESC LIMIT 24").bind(user.userId).all(),
       db.prepare("SELECT e.muscle, COALESCE(ws.completed_at, MAX(wset.completed_at)) AS completedAt, COUNT(wset.id) AS sets FROM workout_sets wset JOIN workout_sessions ws ON ws.id = wset.session_id JOIN exercises e ON e.id = wset.exercise_id WHERE ws.user_id = ? AND datetime(wset.completed_at) >= datetime('now', '-7 days') GROUP BY ws.id, e.muscle ORDER BY completedAt DESC").bind(user.userId).all(),
+      db.prepare("SELECT wset.exercise_id AS exerciseId, wset.weight, wset.reps, wset.rir, wset.completed_at AS completedAt FROM workout_sets wset JOIN workout_sessions ws ON ws.id = wset.session_id WHERE ws.user_id = ? AND wset.id = (SELECT latest.id FROM workout_sets latest JOIN workout_sessions latest_session ON latest_session.id = latest.session_id WHERE latest_session.user_id = ws.user_id AND latest.exercise_id = wset.exercise_id ORDER BY latest.completed_at DESC, latest.id DESC LIMIT 1)").bind(user.userId).all(),
     ]);
-    return json({ profile, membership, exercises: exerciseRows.results, routines: routineRows.results, routineExercises: routineExerciseRows.results, assignments: assignmentRows.results, sessions: sessions.results, weights: weights.results, muscleLoads: muscleLoads.results });
+    return json({ profile, membership, exercises: exerciseRows.results, routines: routineRows.results, routineExercises: routineExerciseRows.results, assignments: assignmentRows.results, sessions: sessions.results, weights: weights.results, muscleLoads: muscleLoads.results, lastPerformance: lastPerformance.results });
   } catch (error) {
     console.error("GymSpotter data load failed", error);
     return json({ error: "No pudimos cargar los datos. Intentá nuevamente." }, 500);
@@ -83,7 +96,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const user = await currentUser();
+  const user = await currentUser(request);
   if (!user) return json({ error: "Iniciá sesión para guardar cambios." }, 401);
   if (!env.DB) return json({ error: "La base de datos no está disponible." }, 503);
   let body: ActionBody;
@@ -92,15 +105,25 @@ export async function POST(request: Request) {
   const now = new Date().toISOString();
   try {
     if (body.action === "create_routine") {
-      if (!validString(body.name) || !Array.isArray(body.exerciseIds) || body.exerciseIds.length < 1 || body.exerciseIds.length > 20) return json({ error: "Agregá un nombre y al menos un ejercicio." }, 400);
-      const ids = [...new Set(body.exerciseIds.filter((id) => Number.isInteger(id) && id > 0))];
-      if (!ids.length) return json({ error: "Los ejercicios no son válidos." }, 400);
-      const routine = await db.prepare("INSERT INTO routines (owner_user_id, name, level, days_per_week, created_at) VALUES (?, ?, ?, ?, ?) RETURNING id").bind(user.userId, body.name!.trim(), validString(body.level, 30) ? body.level!.trim() : "Intermedio", Math.min(7, Math.max(1, Number(body.daysPerWeek) || 3)), now).first<{ id: number }>();
+      const items = routineItems(body);
+      if (!validString(body.name) || !items.length) return json({ error: "Agregá un nombre y al menos un ejercicio." }, 400);
+      const routine = await db.prepare("INSERT INTO routines (owner_user_id, name, level, days_per_week, created_at) VALUES (?, ?, ?, ?, ?) RETURNING id").bind(user.userId, body.name!.trim(), "General", Math.min(7, Math.max(1, Number(body.daysPerWeek) || 3)), now).first<{ id: number }>();
       if (!routine) throw new Error("Routine insert failed");
-      await db.batch(ids.map((exerciseId, position) => db.prepare("INSERT INTO routine_exercises (routine_id, exercise_id, day_name, position, sets, reps_min, reps_max, target_weight, rest_seconds) VALUES (?, ?, 'Día 1', ?, 3, 8, 12, 0, 90)").bind(routine.id, exerciseId, position)));
+      await db.batch(items.map((item) => db.prepare("INSERT INTO routine_exercises (routine_id, exercise_id, day_name, day_title, position, sets, reps_min, reps_max, target_weight, target_rir, rest_seconds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(routine.id, item.exerciseId, item.dayName, item.dayTitle, item.position, item.sets, item.repsMin, Math.max(item.repsMin, item.repsMax), item.targetWeight, item.targetRir, item.restSeconds)));
       return json({ ok: true, id: routine.id }, 201);
     }
+    if (body.action === "update_routine") {
+      const items = routineItems(body);
+      if (!Number.isInteger(body.routineId) || !validString(body.name) || !items.length) return json({ error: "Completá la rutina y elegí al menos un ejercicio." }, 400);
+      const owned = await db.prepare("SELECT id FROM routines WHERE id = ? AND owner_user_id = ?").bind(body.routineId, user.userId).first();
+      if (!owned) return json({ error: "Rutina no encontrada." }, 404);
+      await db.prepare("UPDATE routines SET name = ?, level = 'General', days_per_week = ? WHERE id = ?").bind(body.name!.trim(), Math.min(7, Math.max(1, Number(body.daysPerWeek) || 3)), body.routineId).run();
+      await db.prepare("DELETE FROM routine_exercises WHERE routine_id = ?").bind(body.routineId).run();
+      await db.batch(items.map((item) => db.prepare("INSERT INTO routine_exercises (routine_id, exercise_id, day_name, day_title, position, sets, reps_min, reps_max, target_weight, target_rir, rest_seconds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)").bind(body.routineId, item.exerciseId, item.dayName, item.dayTitle, item.position, item.sets, item.repsMin, Math.max(item.repsMin, item.repsMax), item.targetWeight, item.targetRir, item.restSeconds)));
+      return json({ ok: true });
+    }
     if (body.action === "assign_routine") {
+      if (user.role !== "trainer" && user.role !== "admin") return json({ error: "Solo un entrenador o administrador puede asignar rutinas." }, 403);
       if (!Number.isInteger(body.routineId) || !validString(body.memberName)) return json({ error: "Elegí alumno y rutina." }, 400);
       const owned = await db.prepare("SELECT id FROM routines WHERE id = ? AND owner_user_id = ?").bind(body.routineId, user.userId).first();
       if (!owned) return json({ error: "Rutina no encontrada." }, 404);

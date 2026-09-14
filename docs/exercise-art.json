@@ -1,0 +1,81 @@
+{
+  "mode": "built-in image_gen",
+  "width": 2172,
+  "height": 724,
+  "frameWidth": 724,
+  "frameCount": 3,
+  "assets": [
+    {
+      "slug": "press-banca",
+      "path": "public/exercises/press-banca-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0025-EIeI8Vf.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: flat barbell bench press. Oblique side view of adult lying on horizontal bench, both feet planted. Rack and weighted barbell, NO dumbbells. Highlight pectorals red. Frame 1 bar just above mid chest, elbows flexed; frame 2 bar halfway up, elbows half extended; frame 3 bar above chest with arms straight. Bench, torso, feet, head and rack remain in exactly same location.",
+      "playbackFrameOrder": [
+        2,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "slug": "press-inclinado",
+      "path": "public/exercises/press-inclinado-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0047-3TZduzM.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: incline BARBELL bench press, not dumbbells. Bench backrest inclined 30 degrees. Oblique side view, torso supported against incline pad, feet planted and no moving torso. Weighted barbell held in both hands, rack behind bench. Highlight upper pectorals red. Frame 1 bar near upper chest, elbows bent; frame 2 bar halfway pressed upwards with partly extended elbows; frame 3 bar high over upper chest, elbows straight. Fixed bench/rack/body framing.",
+      "playbackFrameOrder": [
+        2,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "slug": "aperturas-polea",
+      "path": "public/exercises/aperturas-polea-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0227-Pr9Rhf4.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: standing HIGH pulley cable chest fly. Front view as reference, male centered between two slim tall cable towers, both upper pulleys visible; straight cables run from high pulleys to D handles. Highlight pectorals red. Stable slight forward torso lean, feet planted slightly staggered. Frame 1 arms open wide and raised diagonally at shoulder level, elbows slightly bent; frame 2 hands arc forward/down halfway together at lower-chest height; frame 3 hands meet in front of upper abdomen, arms forward/down, elbows retain small bend. Exactly two arms/two cables, no crossing cables or extra handles. Maintain fixed entire cable station and body coordinates.",
+      "playbackFrameOrder": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "slug": "extension-triceps",
+      "path": "public/exercises/extension-triceps-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0201-3ZflifB.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: standing cable TRICEPS PUSHDOWN with short straight bar attached to overhead cable pulley. Three-quarter side view same as reference, complete single cable machine on right and standing man on left. Red triceps on rear upper arms. Male torso and upper arms stationary, elbows pinned by ribs throughout; feet planted. Frame 1 elbows bent 100 degrees, handle at lower chest; frame 2 forearms angled down at 45 degrees, elbows partially extended and handle at waist; frame 3 elbows fully straight, bar at upper thighs. The pulley remains above the hands and cable taut. No overhead extension, no moving shoulders.",
+      "playbackFrameOrder": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "slug": "sentadilla",
+      "path": "public/exercises/sentadilla-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0043-qXTaZnJ.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: barbell BACK SQUAT, weighted bar rests across upper back behind neck, hands grip wide. Three-quarter side view showing leg flexion clearly. Highlight quadriceps and glutes red. No rack necessary. Both feet fixed shoulder-width on identical ground coordinates in all frames, heels remain grounded. Frame 1 standing tall, knees and hips extended; frame 2 descend into half squat, hips backward and knees bent 45 degrees; frame 3 bottom squat, thighs parallel to ground, hips lower, knees bent 90 degrees, back neutral. Bar and shoulders descend with body; no bar in front of chest. Preserve constant adult proportions, bar size and camera distance.",
+      "playbackFrameOrder": [
+        0,
+        1,
+        2,
+        1
+      ]
+    },
+    {
+      "slug": "remo-polea",
+      "path": "public/exercises/remo-polea-steps.png",
+      "reference": "https://cdn.jsdelivr.net/gh/hasaneyldrm/exercises-dataset@7455efae41b330c265e7cd4b78dfa848e7ce5ebd/videos/0861-fUBheHs.gif",
+      "prompt": "Use case: scientific-educational. Generate a production exercise animation sprite sheet, exactly 3:1 aspect ratio, exactly THREE equal square frames horizontally left-to-right, seamless white background with NO lines, gutters, borders, arrows, numbers, labels or text. Each cell has the same fixed camera, same grayscale muscular athletic adult male in black shorts, detailed anatomical instructional illustration with relevant working muscles highlighted red; same equipment precisely stationary. Full body and all equipment contained in each square with ample 10% margins. Position the subject/equipment at identical relative coordinates in all cells for CSS frame playback; only moving limbs and weights change. Three clearly distinct plausible consecutive poses, initial then halfway then endpoint. Input image is reference for anatomy illustration style and exercise equipment only; recreate original high quality art. Exercise: seated LOW CABLE ROW, close neutral V handle. Three-quarter rear/side view showing man's back muscles red, face pointing toward machine at left. Entire low cable machine tower, bench and footplate visible. Male seated securely on same bench with knees slightly bent, feet fixed on footplates and neutral upright spine. Frame 1 arms fully extended forward toward low pulley; frame 2 hands halfway drawn toward waist, elbows partially flexed; frame 3 handle touches abdomen, elbows fully drawn beside and slightly behind torso, shoulder blades retracted. Cable runs in one straight taut line from LOW pulley to handle in all frames. Torso stays nearly upright, no large rocking. Keep equipment and seat/feet position unchanged.",
+      "playbackFrameOrder": [
+        0,
+        1,
+        2,
+        1
+      ]
+    }
+  ]
+}

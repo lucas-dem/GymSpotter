@@ -52,7 +52,7 @@ export function BodyFatigueMap({ loads }: { loads: MuscleLoad[] }) {
     <div className="mt-4 flex flex-wrap justify-center gap-4 text-xs font-semibold text-white/45">
       <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-red-500" /> Fatigado</span>
       <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-amber-400" /> Recuperando</span>
-      <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-[#c7ff3d]" /> Listo</span>
+      <span className="flex items-center gap-1.5"><i className="size-2.5 rounded-sm bg-[#d8dbe0]" /> Listo</span>
     </div>
     <p className="mt-4 text-center text-sm text-white/35">{hasHistory ? "Calculado con tus series de los últimos 7 días." : "Todavía no hay series recientes: todo figura listo para entrenar."}</p>
   </div>;

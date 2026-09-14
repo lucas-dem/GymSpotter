@@ -17,9 +17,9 @@ export const routines = sqliteTable("routines", {
 
 export const routineExercises = sqliteTable("routine_exercises", {
   id: integer("id").primaryKey({ autoIncrement: true }), routineId: integer("routine_id").notNull().references(() => routines.id, { onDelete: "cascade" }),
-  exerciseId: integer("exercise_id").notNull().references(() => exercises.id), dayName: text("day_name").notNull().default("Día 1"),
+  exerciseId: integer("exercise_id").notNull().references(() => exercises.id), dayName: text("day_name").notNull().default("Lunes"), dayTitle: text("day_title").notNull().default(""),
   position: integer("position").notNull(), sets: integer("sets").notNull().default(3), repsMin: integer("reps_min").notNull().default(8),
-  repsMax: integer("reps_max").notNull().default(12), targetWeight: real("target_weight").notNull().default(0), restSeconds: integer("rest_seconds").notNull().default(90),
+  repsMax: integer("reps_max").notNull().default(12), targetWeight: real("target_weight").notNull().default(0), targetRir: real("target_rir").notNull().default(3), restSeconds: integer("rest_seconds").notNull().default(90),
 }, (table) => [index("idx_routine_exercises_routine_position").on(table.routineId, table.position)]);
 
 export const assignments = sqliteTable("assignments", {
@@ -46,3 +46,12 @@ export const workoutSets = sqliteTable("workout_sets", {
 export const bodyWeights = sqliteTable("body_weights", {
   id: integer("id").primaryKey({ autoIncrement: true }), userId: text("user_id").notNull(), weight: real("weight").notNull(), recordedAt: text("recorded_at").notNull(),
 }, (table) => [index("idx_body_weights_user_recorded").on(table.userId, table.recordedAt)]);
+
+export const appUsers = sqliteTable("app_users", {
+  id: integer("id").primaryKey({ autoIncrement: true }), email: text("email").notNull(), passwordHash: text("password_hash").notNull(),
+  displayName: text("display_name").notNull(), role: text("role").notNull().default("member"), createdAt: text("created_at").notNull(),
+}, (table) => [uniqueIndex("idx_app_users_email").on(table.email)]);
+
+export const appSessions = sqliteTable("app_sessions", {
+  token: text("token").primaryKey(), userId: integer("user_id").notNull().references(() => appUsers.id, { onDelete: "cascade" }), expiresAt: text("expires_at").notNull(),
+}, (table) => [index("idx_app_sessions_user").on(table.userId)]);
