@@ -1,46 +1,59 @@
 # GymSpotter
 
-GymSpotter reúne membresías, rutinas y seguimiento entre socios, entrenadores y administradores de gimnasio.
+GymSpotter es una aplicación móvil local para registrar entrenamientos, rutinas,
+progreso y recuperación sin cuentas, publicidad, analítica ni dependencia de un
+servidor.
 
-## MVP actual
+## Funciones principales
 
-- Panel responsive para socio, entrenador y administrador.
-- Estado y renovación persistente de membresía.
-- Rutina semanal, entrenamiento serie por serie y demostraciones animadas del catálogo que utiliza openGym.
-- Registro de peso, entrenamientos, cargas, repeticiones y RIR.
-- Creador de rutinas con biblioteca de ejercicios.
-- Socios pueden crear y editar sus propias rutinas; entrenadores y administradores pueden asignarlas.
-- Acceso con login y registro controlado: el primer administrador habilita el alta posterior de cuentas.
-- Timer de descanso de 1, 3, 5 o 10 minutos con vibración al finalizar cuando el dispositivo lo permite.
-- Gestión de alumnos y asignación persistente de rutinas.
-- Panel del gimnasio con socios, vencimientos, ocupación e ingresos.
-- Mapa anatómico frontal y posterior con fatiga calculada desde las series registradas en los últimos 7 días.
-- Acciones demostrables con notificaciones y soporte WebMCP.
-
-Los datos principales se almacenan en Cloudflare D1 y cada escritura se vincula al usuario autenticado por la plataforma.
+- Registro de ejercicios, series, repeticiones, peso, RPE y RIR.
+- Rutinas, sesiones activas y seguimiento del progreso.
+- Catálogo de ejercicios y mapa corporal.
+- Perfil, medidas, notas, logros y estadísticas.
+- Temporizadores, recordatorios y widgets de inicio.
+- Importación, exportación y copias de seguridad locales.
+- Interfaz en español y soporte para varios idiomas.
+- Aplicación Android e iOS construida con Flutter.
 
 ## Desarrollo local
 
-Requiere Node.js 22.13 o superior.
+Requiere Flutter 3.41 o posterior y Dart 3.11 o posterior.
 
 ```bash
-npm install
-npm run dev
+flutter pub get
+flutter analyze
+flutter test
+flutter run
 ```
 
-La aplicación estará disponible en `http://localhost:5173`.
-
-## Producción
+Para generar un APK de Android:
 
 ```bash
-npm run build
-npm start
+flutter build apk
 ```
 
-## Tecnología
+El APK resultante se genera dentro de `build/app/outputs/flutter-apk/` y no se
+versiona en el repositorio.
 
-React 19, TypeScript, Tailwind CSS, Vinext/Vite, Cloudflare D1, Drizzle y componentes accesibles basados en Radix UI.
+## Estructura
 
-## Recursos y atribuciones
+```text
+lib/       aplicación Flutter
+assets/    iconos, ilustraciones, audio, fuentes y shaders
+android/   proyecto nativo de Android
+ios/       proyecto nativo de iOS
+test/      pruebas automatizadas
+docs/      documentación y recursos de distribución
+```
 
-El mapa muscular utiliza la geometría SVG de MuscleMap (MIT) convertida por openGym. Las demostraciones se cargan, como en la versión demo de openGym, desde `hasaneyldrm/exercises-dataset`; no se almacenan copias dentro de este repositorio. Consultá [NOTICE.md](NOTICE.md) antes de redistribuir estos recursos.
+## Privacidad
+
+GymSpotter guarda los datos de entrenamiento en el dispositivo. Consultá
+[`PRIVACY.md`](PRIVACY.md) para conocer el alcance completo.
+
+## Licencia y procedencia
+
+GymSpotter es una modificación de GymMane y se distribuye bajo GNU GPL v3.
+La atribución, las modificaciones materiales y las licencias de recursos se
+detallan en [`NOTICE.md`](NOTICE.md), [`MODIFICATIONS.md`](MODIFICATIONS.md),
+[`CREDITS.md`](CREDITS.md) y [`LICENSE`](LICENSE).

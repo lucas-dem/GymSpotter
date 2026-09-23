@@ -1,21 +1,25 @@
-# Avisos de terceros
+# GymSpotter — legal notices
 
-## Mapa anatómico
+GymSpotter is a modified version of GymMane.
 
-La geometría de `app/data/body-paths.ts` proviene del archivo `frontend/src/lib/body-paths.js` de [openGym](https://github.com/DuarteSantos8/openGym). openGym documenta que esos contornos fueron derivados de [MuscleMap](https://github.com/melihcolpan/MuscleMap) por Melih Colpan, convirtiendo su geometría Swift a datos SVG.
+- Original project: GymMane, copyright © 2026 InlitX.
+- GymSpotter modifications began on 22 September 2026.
+- The application source code is distributed under the GNU General Public
+  License, version 3. A complete copy is in `LICENSE`.
+- Recipients of a binary must receive access, at no additional charge, to the
+  complete corresponding source used to build that exact binary.
 
-MIT License
+The exercise illustrations in `assets/art/` are adapted from Workout Guide by
+Bryl Lim and pose artwork from Everkinetic. They remain licensed under
+Creative Commons Attribution-ShareAlike 4.0. See `CREDITS.md` for attribution
+and modification details.
 
-Copyright (c) 2026 Melih Colpan
+The Nunito fonts are copyright the Nunito Project Authors and are distributed
+under the SIL Open Font License 1.1. The license is included at
+`assets/fonts/Nunito-OFL.txt`.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Flutter and third-party packages retain their respective licenses. Their
+notices are available inside the application under “Información legal y
+licencias” → “Licencias de dependencias”.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-## Demostraciones de ejercicios
-
-GymSpotter no incluye estos archivos en el repositorio. La aplicación carga tres animaciones en tiempo de ejecución desde la revisión `7455efae41b330c265e7cd4b78dfa848e7ce5ebd` de [hasaneyldrm/exercises-dataset](https://github.com/hasaneyldrm/exercises-dataset), el mismo origen utilizado por las builds demo/móvil de openGym.
-
-Según el aviso de openGym, la titularidad de esas imágenes y animaciones está sin resolver: el dataset las atribuye a Gym visual, mientras ExerciseDB/AscendAPI afirma ser su creador y propietario. La licencia MIT del dataset no cubre los archivos multimedia. Antes de redistribuirlos, descargarlos o utilizarlos comercialmente, se debe aclarar el permiso con el titular correspondiente.
+GymSpotter is provided without warranty, to the extent permitted by law.
