@@ -50,6 +50,9 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   generate: true
+  # CocoaPods until qr_code_scanner_plus and app_settings declare iOS 13 in their Swift packages.
+  config:
+    enable-swift-package-manager: false
 
   assets:
     - LICENSE
