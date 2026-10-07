@@ -30,7 +30,7 @@ dependencies:
   url_launcher: ^6.3.2
   video_player: ^2.9.2
   archive: ^4.0.9
-  app_settings: ^8.0.3
+  app_settings: ^7.0.0 # 8.x is Swift Package Manager only; see flutter.config
 
 dev_dependencies:
   flutter_test:
@@ -50,7 +50,8 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   generate: true
-  # CocoaPods until qr_code_scanner_plus and app_settings declare iOS 13 in their Swift packages.
+  # iOS builds use CocoaPods: qr_code_scanner_plus 2.1.2 declares iOS 12 in its Swift package
+  # and 2.2+ needs Flutter 3.44. app_settings stays on 7.x, its last release with a podspec.
   config:
     enable-swift-package-manager: false
 
