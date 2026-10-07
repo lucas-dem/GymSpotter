@@ -1,4 +1,4 @@
-/// Release metadata used to comply with the licenses of GymSpotter and its
+/// Release metadata used to comply with the licenses of Infyter and its
 /// bundled assets. Store builds must provide all three values with
 /// `--dart-define`; see `docs/store/RELEASE_CHECKLIST.md`.
 abstract final class Compliance {
@@ -6,8 +6,8 @@ abstract final class Compliance {
   static const sourceRevision = String.fromEnvironment('SOURCE_REVISION');
   static const buildDate = String.fromEnvironment('BUILD_DATE');
 
-  static const appName = 'GymSpotter';
-  static const version = '1.3.0+5';
+  static const appName = 'Infyter';
+  static const version = '1.3.0+1';
   static const license = 'GNU General Public License v3.0';
   static const modifiedSince = '22 de septiembre de 2026';
 

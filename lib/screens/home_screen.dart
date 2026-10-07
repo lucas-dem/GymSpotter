@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                 Expanded(
                   child: HomeFolder(
                     title: _tc(t.routines),
-                    detail: t.routineCount(fit.routines.length),
+                    detail: t.routineCount(fit.personalRoutines.length),
                     peek: const RoutinesPeek(),
                     onTap: fit.goRoutines,
                   ),

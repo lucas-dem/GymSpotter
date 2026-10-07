@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/state/fit_state.dart';
 
 void main() {
   test('full workout loop populates real stats', () {

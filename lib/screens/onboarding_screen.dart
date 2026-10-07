@@ -285,7 +285,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
-                    'GymSpotter',
+                    'Infyter',
                     style: AppTheme.f(44, weight: FontWeight.w800, color: gc.text, height: 1),
                   ),
                 ),

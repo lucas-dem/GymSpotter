@@ -71,7 +71,7 @@ class HeatmapWidgetView extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    'GymSpotter',
+                    'Infyter',
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     softWrap: false,

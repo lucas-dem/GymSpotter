@@ -34,6 +34,7 @@ android/.kotlin/
 .pub-cache/
 .pub/
 /build/
+/android/build/
 /coverage/
 
 # Symbolication related
@@ -67,6 +68,8 @@ test/preview/
 test/preview_*.dart
 test/marketing_shots.dart
 site/
+/.codex-apk-share/
+/handoff/
 
 # OS junk
 Thumbs.db

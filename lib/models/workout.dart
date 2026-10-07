@@ -157,13 +157,28 @@ class PlannedSet {
       );
 }
 
+class Athlete {
+  Athlete(this.id, this.name);
+
+  final String id;
+  String name;
+
+  Map<String, dynamic> toJson() => {'id': id, 'n': name};
+
+  factory Athlete.fromJson(Map<String, dynamic> json) => Athlete(
+        json['id'] as String,
+        (json['n'] as String? ?? '').trim(),
+      );
+}
+
 class Routine {
   Routine(this.id, this.name, this.exerciseIds,
       {Map<String, int>? sets,
       Set<String>? chained,
       Map<String, List<PlannedSet>>? plan,
       this.group = '',
-      this.color = -1})
+      this.color = -1,
+      this.ownerId = 'me'})
       : sets = sets ?? {},
         chained = chained ?? {},
         plan = plan ?? {};
@@ -171,6 +186,7 @@ class Routine {
   String name;
   String group;
   int color;
+  String ownerId;
   final List<String> exerciseIds;
   final Map<String, int> sets;
   final Set<String> chained;
@@ -184,6 +200,7 @@ class Routine {
         if (chained.isNotEmpty) 'c': chained.toList(),
         if (group.isNotEmpty) 'g': group,
         if (color >= 0) 'k': color,
+        if (ownerId != 'me') 'o': ownerId,
         if (plan.isNotEmpty)
           'p': plan.map((k, v) => MapEntry(k, v.map((s) => s.toJson()).toList())),
       };
@@ -200,5 +217,6 @@ class Routine {
             )),
         group: (j['g'] as String?) ?? '',
         color: (j['k'] as num?)?.toInt() ?? -1,
+        ownerId: (j['o'] as String?) ?? 'me',
       );
 }

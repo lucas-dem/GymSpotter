@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/catalog/exercise_catalog.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/progress_reminder.dart';
-import 'package:gymspotter/services/train_reminder.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/catalog/exercise_catalog.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/progress_reminder.dart';
+import 'package:infyter/services/train_reminder.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,7 +45,7 @@ void main() {
   testWidgets('the numbers come first, then the grid, then the body', (tester) async {
     logSessions();
     fit.route = 'progress';
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     final volume = await yOf(tester, t.tileVolume30.toUpperCase());
@@ -59,7 +59,7 @@ void main() {
   testWidgets('a card with nothing in it is not drawn at all', (tester) async {
     logSessions();
     fit.route = 'progress';
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     expect(find.text(t.measures), findsNothing, reason: 'sin medidas, no hay tarjeta de medidas');
@@ -72,7 +72,7 @@ void main() {
     fit.addMeasure('chest', 100);
     fit.persistNow();
     fit.route = 'progress';
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     expect(find.text(t.measures), findsWidgets);
@@ -82,7 +82,7 @@ void main() {
 
   testWidgets('a fresh install leads with what to fill in, not with empty cards', (tester) async {
     fit.route = 'progress';
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     final setup = await yOf(tester, t.setupTitle);

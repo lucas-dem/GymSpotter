@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Monochrome Infyter mark for Android status bars and notification actions. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M18,27 L45,27 L36,39 L18,39 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M48,27 L91,27 L80,40 L37,40 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M27,43 L39,43 L39,79 L27,91 Z" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M42,43 L78,43 L68,55 L54,55 L54,68 L42,81 Z" />
+</vector>

@@ -6,15 +6,15 @@ import '../state/fit_state.dart';
 import '../theme/app_theme.dart';
 import 'app_shell.dart';
 
-class GymSpotterApp extends StatelessWidget {
-  const GymSpotterApp({super.key});
+class InfyterApp extends StatelessWidget {
+  const InfyterApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: fit,
       builder: (context, _) => MaterialApp(
-        title: 'GymSpotter',
+        title: 'Infyter',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,

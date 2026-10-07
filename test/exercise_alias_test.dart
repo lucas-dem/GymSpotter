@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/catalog/exercise_aliases.dart';
-import 'package:gymspotter/catalog/exercise_catalog.dart';
-import 'package:gymspotter/models/exercise.dart';
-import 'package:gymspotter/services/exercise_match.dart';
+import 'package:infyter/catalog/exercise_aliases.dart';
+import 'package:infyter/catalog/exercise_catalog.dart';
+import 'package:infyter/models/exercise.dart';
+import 'package:infyter/services/exercise_match.dart';
 
 const _hevyNames = {
   'Bench Press (Barbell)': 'Barbell Bench Press',

@@ -1,4 +1,4 @@
-GymSpotter is a strength log built for the gym floor, not for a dashboard. Tap the muscles you want to train on an interactive body map, log reps and weight set by set, rest with an alarm that actually gets your attention, and read progress that comes from your own sets. Dark, fast, and completely offline.
+Infyter is a strength log built for the gym floor, not for a dashboard. Tap the muscles you want to train on an interactive body map, log reps and weight set by set, rest with an alarm that actually gets your attention, and read progress that comes from your own sets. Dark, fast, and completely offline.
 
 Yours, completely. No account, no ads, no subscription — and no Android INTERNET permission at all, so the app physically cannot send your training anywhere.
 
@@ -36,6 +36,6 @@ Yours, completely. No account, no ads, no subscription — and no Android INTERN
 • Dark and light themes, kg or lb, and 16 languages
 
 🔒 PRIVACY
-GymSpotter has no analytics, no advertising SDK and no network code. It never asks for the INTERNET permission, so there is no way for your data to leave the phone. The only outbound actions are links you tap yourself.
+Infyter has no analytics, no advertising SDK and no network code. It never asks for the INTERNET permission, so there is no way for your data to leave the phone. The only outbound actions are links you tap yourself.
 
-The permissions it does ask for, and why: notifications and exact alarms for the rest timer, vibration so the alarm buzzes and wake lock so it fires with the screen off.
+The permissions it may ask for, and why: camera for local QR scanning and media you choose to add; notifications and optional exact-alarm access for the rest timer; vibration and wake lock so the timer can alert you with the screen off. File and photo access only opens after an action you choose. If exact-alarm access is unavailable, Infyter falls back to an inexact system notification.

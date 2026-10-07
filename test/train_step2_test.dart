@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 void main() {
@@ -12,7 +12,7 @@ void main() {
     fit.trainContinue();
     fit.route = 'train';
 
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     final iconFinder = find.byIcon(PhosphorIconsRegular.arrowCounterClockwise);

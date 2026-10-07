@@ -264,11 +264,11 @@ class _AiPlanScreenState extends State<AiPlanScreen> {
   Future<void> _export() async {
     try {
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/gymspotter-exercises.txt');
+      final file = File('${dir.path}/infyter-exercises.txt');
       await file.writeAsString(fit.planRequestText());
       if (!mounted) return;
       await SharePlus.instance.share(
-        ShareParams(files: [XFile(file.path)], subject: 'Ejercicios de GymSpotter'),
+        ShareParams(files: [XFile(file.path)], subject: 'Ejercicios de Infyter'),
       );
     } catch (_) {}
   }

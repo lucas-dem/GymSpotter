@@ -62,10 +62,10 @@ class _ShareSheetState extends State<_ShareSheet> {
       if (data == null) return;
 
       final dir = await getTemporaryDirectory();
-      final file = File('${dir.path}/gymspotter-${_kind.name}.png');
+      final file = File('${dir.path}/infyter-${_kind.name}.png');
       await file.writeAsBytes(data.buffer.asUint8List(), flush: true);
       if (!mounted) return;
-      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)], subject: 'GymSpotter'));
+      await SharePlus.instance.share(ShareParams(files: [XFile(file.path)], subject: 'Infyter'));
     } catch (_) {
       if (mounted) {
         showNotchToast(

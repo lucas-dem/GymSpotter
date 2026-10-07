@@ -2276,6 +2276,36 @@ abstract class AppLocalizations {
   /// **'Add it from your launcher\'s widget menu'**
   String get pinUnsupported;
 
+  /// No description provided for @widgetAddRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Add in the system window'**
+  String get widgetAddRequested;
+
+  /// No description provided for @widgetAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Widget added to your home screen'**
+  String get widgetAdded;
+
+  /// No description provided for @widgetRemoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove this widget?'**
+  String get widgetRemoveTitle;
+
+  /// No description provided for @widgetRemoveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Android requires removing widgets from the home screen. We\'ll take you there: press and hold the widget, then choose Remove.'**
+  String get widgetRemoveBody;
+
+  /// No description provided for @widgetOpenHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Open home screen'**
+  String get widgetOpenHome;
+
   /// No description provided for @background.
   ///
   /// In en, this message translates to:
@@ -2327,7 +2357,7 @@ abstract class AppLocalizations {
   /// No description provided for @importHint.
   ///
   /// In en, this message translates to:
-  /// **'Choose a .zip (or older .json) backup exported from GymSpotter. This replaces your current data, media included.'**
+  /// **'Choose a .zip (or older .json) backup exported from Infyter. This replaces your current data, media included.'**
   String get importHint;
 
   /// No description provided for @import.
@@ -2396,11 +2426,11 @@ abstract class AppLocalizations {
   /// **'{n, plural, =1{Imported {n} session} other{Imported {n} sessions}}'**
   String importDone(int n);
 
-  /// No description provided for @aboutGymmane.
+  /// No description provided for @aboutInfyter.
   ///
   /// In en, this message translates to:
-  /// **'About GymSpotter'**
-  String get aboutGymmane;
+  /// **'About Infyter'**
+  String get aboutInfyter;
 
   /// No description provided for @yourProfile.
   ///
@@ -3815,7 +3845,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiIntro.
   ///
   /// In en, this message translates to:
-  /// **'GymSpotter never talks to an AI. You take your exercise list out, you paste it into whatever assistant you already use, and you bring its answer back in. Nothing leaves the phone on its own.'**
+  /// **'Infyter never talks to an AI. You take your exercise list out, you paste it into whatever assistant you already use, and you bring its answer back in. Nothing leaves the phone on its own.'**
   String get aiIntro;
 
   /// No description provided for @aiStep1.
@@ -3875,7 +3905,7 @@ abstract class AppLocalizations {
   /// No description provided for @awardFirstStepLine.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to GymSpotter. This one is on the house.'**
+  /// **'Welcome to Infyter. This one is on the house.'**
   String get awardFirstStepLine;
 
   /// No description provided for @awardFirstWorkoutName.
@@ -4955,7 +4985,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareMessage.
   ///
   /// In en, this message translates to:
-  /// **'{name} — open the file with GymSpotter to add it.'**
+  /// **'{name} — open the file with Infyter to add it.'**
   String shareMessage(String name);
 
   /// No description provided for @importRoutines.
@@ -4967,7 +4997,7 @@ abstract class AppLocalizations {
   /// No description provided for @importPasteHint.
   ///
   /// In en, this message translates to:
-  /// **'Paste a routine here: one shared from GymSpotter, an AI answer, JSON or CSV.'**
+  /// **'Paste a routine here: one shared from Infyter, an AI answer, JSON or CSV.'**
   String get importPasteHint;
 
   /// No description provided for @pasteAction.
@@ -5009,13 +5039,13 @@ abstract class AppLocalizations {
   /// No description provided for @nothingToImport.
   ///
   /// In en, this message translates to:
-  /// **'Nothing here GymSpotter can import'**
+  /// **'Nothing here Infyter can import'**
   String get nothingToImport;
 
   /// No description provided for @aiStepCopy.
   ///
   /// In en, this message translates to:
-  /// **'Copy the request. It carries your exercise list and the format GymSpotter reads.'**
+  /// **'Copy the request. It carries your exercise list and the format Infyter reads.'**
   String get aiStepCopy;
 
   /// No description provided for @aiStepAsk.
@@ -5273,7 +5303,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareIntroBody.
   ///
   /// In en, this message translates to:
-  /// **'Send it to your partner, a friend or your family. They get a small file that opens in GymSpotter and adds it in one tap, with its sets and weights.'**
+  /// **'Send it to your partner, a friend or your family. They get a small file that opens in Infyter and adds it in one tap, with its sets and weights.'**
   String get shareIntroBody;
 
   /// No description provided for @removedFromRoutine.
@@ -5365,6 +5395,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Medals and levels'**
   String get gamificationSetting;
+
+  /// No description provided for @trainerMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainer mode'**
+  String get trainerMode;
+
+  /// No description provided for @trainer.
+  ///
+  /// In en, this message translates to:
+  /// **'Trainer'**
+  String get trainer;
+
+  /// No description provided for @importByQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Import by QR'**
+  String get importByQr;
+
+  /// No description provided for @scanPlanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan plan QR'**
+  String get scanPlanQr;
+
+  /// No description provided for @addAthlete.
+  ///
+  /// In en, this message translates to:
+  /// **'Add athlete'**
+  String get addAthlete;
+
+  /// No description provided for @peopleCaps.
+  ///
+  /// In en, this message translates to:
+  /// **'PEOPLE'**
+  String get peopleCaps;
+
+  /// No description provided for @athletesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open an athlete to edit their plan, or tap QR to share it.'**
+  String get athletesHint;
+
+  /// No description provided for @myTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'My training'**
+  String get myTraining;
+
+  /// No description provided for @newAthlete.
+  ///
+  /// In en, this message translates to:
+  /// **'New athlete'**
+  String get newAthlete;
+
+  /// No description provided for @editAthlete.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit athlete'**
+  String get editAthlete;
+
+  /// No description provided for @openRoutines.
+  ///
+  /// In en, this message translates to:
+  /// **'Open routines'**
+  String get openRoutines;
+
+  /// No description provided for @sharePlanQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Share plan by QR'**
+  String get sharePlanQr;
+
+  /// No description provided for @duplicatePlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate plan'**
+  String get duplicatePlan;
+
+  /// No description provided for @planDuplicated.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan duplicated'**
+  String get planDuplicated;
+
+  /// No description provided for @deleteAthlete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete athlete'**
+  String get deleteAthlete;
+
+  /// No description provided for @deleteAthleteBody.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} and all their routines will be removed from this device.'**
+  String deleteAthleteBody(String name);
+
+  /// No description provided for @sharePlanQrHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes every routine and the weekly schedule'**
+  String get sharePlanQrHint;
+
+  /// No description provided for @qrPlanInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan this code from Infyter to import the complete plan.'**
+  String get qrPlanInstructions;
+
+  /// No description provided for @qrTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'This plan is too large for a single QR code.'**
+  String get qrTooLarge;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @invalidInfyterQr.
+  ///
+  /// In en, this message translates to:
+  /// **'This QR code does not contain an Infyter routine'**
+  String get invalidInfyterQr;
+
+  /// No description provided for @alignQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Align the code inside the frame'**
+  String get alignQr;
+
+  /// No description provided for @showQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Show QR'**
+  String get showQr;
+
+  /// No description provided for @shareAthleteQr.
+  ///
+  /// In en, this message translates to:
+  /// **'Share {name}\'s plan by QR'**
+  String shareAthleteQr(String name);
+
+  /// No description provided for @qrLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'QR'**
+  String get qrLabel;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

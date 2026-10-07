@@ -1271,6 +1271,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get pinUnsupported => 'Adicione-o pelo menu de widgets da tela inicial';
 
   @override
+  String get widgetAddRequested => 'Confirme Adicionar na janela do sistema';
+
+  @override
+  String get widgetAdded => 'Widget adicionado à tela inicial';
+
+  @override
+  String get widgetRemoveTitle => 'Remover este widget?';
+
+  @override
+  String get widgetRemoveBody =>
+      'O Android exige que os widgets sejam removidos pela tela inicial. Vamos abri-la: mantenha o widget pressionado e escolha Remover.';
+
+  @override
+  String get widgetOpenHome => 'Abrir tela inicial';
+
+  @override
   String get background => 'Fundo';
 
   @override
@@ -1296,7 +1312,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get importHint =>
-      'Escolha um backup .json exportado do GymSpotter. Isso substituirá seus dados atuais.';
+      'Escolha um backup .json exportado do Infyter. Isso substituirá seus dados atuais.';
 
   @override
   String get import => 'Importar';
@@ -1348,7 +1364,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => 'Sobre GymSpotter';
+  String get aboutInfyter => 'Sobre Infyter';
 
   @override
   String get yourProfile => 'SEU PERFIL';
@@ -2121,7 +2137,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get aiIntro =>
-      'O GymSpotter não fala com nenhuma IA. Tu tiras a tua lista de exercícios, colas no assistente que já usas e trazes a resposta de volta. Do telemóvel não sai nada sozinho.';
+      'O Infyter não fala com nenhuma IA. Tu tiras a tua lista de exercícios, colas no assistente que já usas e trazes a resposta de volta. Do telemóvel não sai nada sozinho.';
 
   @override
   String get aiStep1 =>
@@ -2160,7 +2176,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get awardFirstStepName => 'Primeiro passo';
 
   @override
-  String get awardFirstStepLine => 'Bem-vindo ao GymSpotter. Esta é por conta da casa.';
+  String get awardFirstStepLine => 'Bem-vindo ao Infyter. Esta é por conta da casa.';
 
   @override
   String get awardFirstWorkoutName => 'Primeiro treino';
@@ -2758,7 +2774,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name — abra o arquivo com o GymSpotter para adicionar.';
+    return '$name — abra o arquivo com o Infyter para adicionar.';
   }
 
   @override
@@ -2766,7 +2782,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get importPasteHint =>
-      'Cole aqui uma rotina: uma compartilhada do GymSpotter, a resposta de uma IA, JSON ou CSV.';
+      'Cole aqui uma rotina: uma compartilhada do Infyter, a resposta de uma IA, JSON ou CSV.';
 
   @override
   String get pasteAction => 'Colar';
@@ -2798,11 +2814,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get nothingToImport => 'Não há nada aqui que o GymSpotter possa importar';
+  String get nothingToImport => 'Não há nada aqui que o Infyter possa importar';
 
   @override
-  String get aiStepCopy =>
-      'Copie o pedido. Ele leva sua lista de exercícios e o formato que o GymSpotter lê.';
+  String get aiStepCopy => 'Copie o pedido. Ele leva sua lista de exercícios e o formato que o Infyter lê.';
 
   @override
   String get aiStepAsk =>
@@ -2944,7 +2959,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get shareIntroBody =>
-      'Envie para seu par, um amigo ou sua família. Eles recebem um arquivo pequeno que abre no GymSpotter e adiciona a rotina com um toque, com séries e pesos.';
+      'Envie para seu par, um amigo ou sua família. Eles recebem um arquivo pequeno que abre no Infyter e adiciona a rotina com um toque, com séries e pesos.';
 
   @override
   String get removedFromRoutine => 'Removido da rotina';
@@ -2993,4 +3008,83 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get gamificationSetting => 'Medalhas e níveis';
+
+  @override
+  String get trainerMode => 'Modo treinador';
+
+  @override
+  String get trainer => 'Treinador';
+
+  @override
+  String get importByQr => 'Importar por QR';
+
+  @override
+  String get scanPlanQr => 'Ler QR do plano';
+
+  @override
+  String get addAthlete => 'Adicionar atleta';
+
+  @override
+  String get peopleCaps => 'PESSOAS';
+
+  @override
+  String get athletesHint => 'Abra um atleta para editar o plano ou toque em QR para compartilhá-lo.';
+
+  @override
+  String get myTraining => 'Meu treino';
+
+  @override
+  String get newAthlete => 'Novo atleta';
+
+  @override
+  String get editAthlete => 'Editar atleta';
+
+  @override
+  String get openRoutines => 'Abrir rotinas';
+
+  @override
+  String get sharePlanQr => 'Compartilhar plano por QR';
+
+  @override
+  String get duplicatePlan => 'Duplicar plano';
+
+  @override
+  String get planDuplicated => 'Plano duplicado';
+
+  @override
+  String get deleteAthlete => 'Excluir atleta';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name e todas as rotinas serão removidos deste dispositivo.';
+  }
+
+  @override
+  String get sharePlanQrHint => 'Inclui todas as rotinas e o cronograma semanal';
+
+  @override
+  String get qrPlanInstructions => 'Leia este código no Infyter para importar o plano completo.';
+
+  @override
+  String get qrTooLarge => 'O plano é grande demais para um único código QR.';
+
+  @override
+  String get close => 'Fechar';
+
+  @override
+  String get invalidInfyterQr => 'Este QR não contém uma rotina do Infyter';
+
+  @override
+  String get alignQr => 'Alinhe o código dentro da moldura';
+
+  @override
+  String get showQr => 'Mostrar QR';
+
+  @override
+  String shareAthleteQr(String name) {
+    return 'Compartilhar o plano de $name por QR';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }

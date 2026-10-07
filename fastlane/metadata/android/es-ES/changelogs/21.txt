@@ -1,4 +1,4 @@
-🦁 GymSpotter 1.1.0
+🦁 Infyter 1.1.0
 📝 Diario en calendario — un punto en cada día que escribiste, con fotos y vídeo
 📍 Sitios — di qué material tienes y la biblioteca solo te ofrece lo que puedes hacer ahí
 🏋️ 15 ejercicios de kettlebell y filtro de "sin material"

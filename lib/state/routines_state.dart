@@ -6,13 +6,77 @@ mixin RoutinesState on FitCore, LibraryState {
   String? activeRoutineId;
   int _routineSeq = 0;
 
-  void goRoutines() => pushRoute('routines');
+  void goRoutines() {
+    activeAthleteId = trainerMode ? null : 'me';
+    pushRoute('routines');
+  }
 
   void goAiPlan() => pushRoute('ai-plan');
 
   void backFromAiPlan() => popRoute(fallback: 'routines');
 
-  void backFromRoutines() => popRoute();
+  void backFromRoutines() {
+    if (trainerMode && activeAthleteId != null) {
+      activeAthleteId = null;
+      notifyListeners();
+      return;
+    }
+    popRoute();
+  }
+
+  String get activeRoutineOwnerId => activeAthleteId ?? 'me';
+
+  List<Routine> get visibleRoutines => routines.where((r) => r.ownerId == activeRoutineOwnerId).toList();
+
+  List<Routine> get personalRoutines => routines.where((r) => r.ownerId == 'me').toList();
+
+  Map<int, String> get visibleWeeklyPlan => activeRoutineOwnerId == 'me'
+      ? weeklyPlan
+      : athleteWeeklyPlans.putIfAbsent(activeRoutineOwnerId, () => <int, String>{});
+
+  Athlete? get activeAthlete => activeAthleteId == null || activeAthleteId == 'me'
+      ? null
+      : athletes.where((a) => a.id == activeAthleteId).firstOrNull;
+
+  String get activeAthleteName =>
+      activeAthleteId == 'me' ? 'Mi entrenamiento' : (activeAthlete?.name ?? 'Atleta');
+
+  void openAthlete(String id) {
+    if (id != 'me' && athletes.every((a) => a.id != id)) return;
+    activeAthleteId = id;
+    notifyListeners();
+  }
+
+  String addAthlete(String name) {
+    final clean = name.trim();
+    if (clean.isEmpty) return '';
+    final id = 'a${DateTime.now().microsecondsSinceEpoch}';
+    athletes.add(Athlete(id, clean));
+    athleteWeeklyPlans[id] = <int, String>{};
+    _persist();
+    notifyListeners();
+    return id;
+  }
+
+  void renameAthlete(String id, String name) {
+    final clean = name.trim();
+    final athlete = athletes.where((a) => a.id == id).firstOrNull;
+    if (athlete == null || clean.isEmpty) return;
+    athlete.name = clean;
+    _persist();
+    notifyListeners();
+  }
+
+  void deleteAthlete(String id) {
+    athletes.removeWhere((a) => a.id == id);
+    final ids = routines.where((r) => r.ownerId == id).map((r) => r.id).toSet();
+    routines.removeWhere((r) => r.ownerId == id);
+    athleteWeeklyPlans.remove(id);
+    if (ids.contains(activeRoutineId)) activeRoutineId = null;
+    if (activeAthleteId == id) activeAthleteId = null;
+    _persist();
+    notifyListeners();
+  }
 
   Routine? _routine(String id) {
     for (final r in routines) {
@@ -41,7 +105,7 @@ mixin RoutinesState on FitCore, LibraryState {
 
   String createRoutine([String name = '']) {
     final id = 'r${DateTime.now().microsecondsSinceEpoch}-${_routineSeq++}';
-    routines.add(Routine(id, name.trim(), []));
+    routines.add(Routine(id, name.trim(), [], ownerId: activeRoutineOwnerId));
     refreshAwards();
     _persist();
     notifyListeners();
@@ -58,14 +122,13 @@ mixin RoutinesState on FitCore, LibraryState {
 
   List<String> get routineGroups {
     final out = <String>[];
-    for (final r in routines) {
+    for (final r in visibleRoutines) {
       if (r.group.isNotEmpty && !out.contains(r.group)) out.add(r.group);
     }
     return out;
   }
 
-  List<Routine> routinesInGroup(String group) =>
-      routines.where((r) => r.group == group).toList();
+  List<Routine> routinesInGroup(String group) => visibleRoutines.where((r) => r.group == group).toList();
 
   void setRoutineGroup(String id, String group) {
     final r = _routine(id);
@@ -86,14 +149,56 @@ mixin RoutinesState on FitCore, LibraryState {
   String duplicateRoutine(String id) {
     final source = _routine(id);
     if (source == null) return '';
-    final copy = createRoutine(t.copySuffix(routineTitle(source)));
+    return _copyRoutine(source, ownerId: source.ownerId, name: t.copySuffix(routineTitle(source)));
+  }
+
+  String copyRoutineToActive(String id) {
+    final source = _routine(id);
+    if (source == null) return '';
+    return _copyRoutine(source, ownerId: activeRoutineOwnerId, name: routineTitle(source));
+  }
+
+  String duplicatePlanAsAthlete(String sourceOwnerId, String athleteName) {
+    final clean = athleteName.trim();
+    final validSource = sourceOwnerId == 'me' || athletes.any((athlete) => athlete.id == sourceOwnerId);
+    if (!trainerMode || !validSource || clean.isEmpty) return '';
+
+    final sourceRoutines = routines.where((routine) => routine.ownerId == sourceOwnerId).toList();
+    final newAthleteId = addAthlete(clean);
+    if (newAthleteId.isEmpty) return '';
+
+    final routineCopies = <String, String>{};
+    for (final source in sourceRoutines) {
+      routineCopies[source.id] = _copyRoutine(source, ownerId: newAthleteId, name: routineTitle(source));
+    }
+
+    final sourceSchedule = sourceOwnerId == 'me' ? weeklyPlan : athleteWeeklyPlans[sourceOwnerId] ?? const {};
+    final copiedSchedule = <int, String>{};
+    for (final entry in sourceSchedule.entries) {
+      final copiedId = routineCopies[entry.value];
+      if (copiedId != null) copiedSchedule[entry.key] = copiedId;
+    }
+    athleteWeeklyPlans[newAthleteId] = copiedSchedule;
+    _persist();
+    notifyListeners();
+    return newAthleteId;
+  }
+
+  String _copyRoutine(Routine source, {required String ownerId, required String name}) {
+    final previousOwner = activeAthleteId;
+    activeAthleteId = ownerId;
+    final copy = createRoutine(name);
+    activeAthleteId = previousOwner;
     final made = _routine(copy)!;
     made.exerciseIds.addAll(source.exerciseIds);
     made.sets.addAll(source.sets);
     made.chained.addAll(source.chained);
-    made.plan.addAll({for (final e in source.plan.entries) e.key: [...e.value]});
+    made.plan.addAll({
+      for (final e in source.plan.entries) e.key: [...e.value],
+    });
     made.group = source.group;
     made.color = source.color;
+    made.ownerId = ownerId;
     _persist();
     notifyListeners();
     return copy;
@@ -102,6 +207,9 @@ mixin RoutinesState on FitCore, LibraryState {
   void deleteRoutine(String id) {
     routines.removeWhere((r) => r.id == id);
     weeklyPlan.removeWhere((_, v) => v == id);
+    for (final plan in athleteWeeklyPlans.values) {
+      plan.removeWhere((_, value) => value == id);
+    }
     if (activeRoutineId == id) activeRoutineId = null;
     _persist();
     notifyListeners();
@@ -197,9 +305,11 @@ mixin RoutinesState on FitCore, LibraryState {
       final next = [...planned];
       if (delta > 0) {
         for (var i = 0; i < delta && next.length < 20; i++) {
-          next.add(next
-              .lastWhere((s) => s.kind != SetKind.warmup, orElse: () => const PlannedSet())
-              .copyWith(kind: SetKind.normal));
+          next.add(
+            next
+                .lastWhere((s) => s.kind != SetKind.warmup, orElse: () => const PlannedSet())
+                .copyWith(kind: SetKind.normal),
+          );
         }
       } else {
         for (var i = 0; i < -delta; i++) {
@@ -228,10 +338,11 @@ mixin RoutinesState on FitCore, LibraryState {
   }
 
   void assignRoutineToDay(int weekday, String? routineId) {
+    final plan = visibleWeeklyPlan;
     if (routineId == null) {
-      weeklyPlan.remove(weekday);
+      plan.remove(weekday);
     } else {
-      weeklyPlan[weekday] = routineId;
+      plan[weekday] = routineId;
     }
     _persist();
     syncTrainReminder();

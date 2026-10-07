@@ -2,12 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/catalog/exercise_catalog.dart';
-import 'package:gymspotter/l10n/catalog_es.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/exercise.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/catalog/exercise_catalog.dart';
+import 'package:infyter/l10n/catalog_es.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/exercise.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -287,7 +287,7 @@ void main() {
 
     bool looksLikeUi(String t) => RegExp(r'^[A-Z]').hasMatch(t) || t.contains(' ');
 
-    const allowed = {'GymSpotter', 'GYMSPOTTER', 'M', 'F', 'kg', 'lb', 'cm', 'EN', 'ES'};
+    const allowed = {'Infyter', 'INFYTER', 'M', 'F', 'kg', 'lb', 'cm', 'EN', 'ES'};
 
     final offenders = <String>[];
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/services/plan_share.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/services/plan_share.dart';
+import 'package:infyter/state/fit_state.dart';
 
 void main() {
   group('lectura del JSON', () {
@@ -64,7 +64,7 @@ void main() {
 
   test('la lista para la IA lleva cabecera y ejercicios', () {
     final text = fit.planRequestText();
-    expect(text.contains('GymSpotter'), isTrue);
+    expect(text.contains('Infyter'), isTrue);
     expect(text.contains('Barbell Bench Press'), isTrue);
     expect(text.split('\n').length, greaterThan(50));
   });

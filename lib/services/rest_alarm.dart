@@ -15,51 +15,50 @@ class RestAlarm {
   static final RestAlarm instance = RestAlarm._();
 
   static const _id = 1001;
-  static const _haptics = MethodChannel('gymmane/haptics');
+  static const _haptics = MethodChannel('infyter/haptics');
   static final _pattern = Int64List.fromList([0, 350, 180, 350, 180, 600]);
 
   String style = 'loud';
 
   AndroidNotificationDetails get _android => switch (style) {
-        'quiet' => AndroidNotificationDetails(
-            'rest_timer_quiet',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.reminder,
-            playSound: true,
-            enableVibration: true,
-            vibrationPattern: _pattern,
-            audioAttributesUsage: AudioAttributesUsage.notification,
-            visibility: NotificationVisibility.public,
-          ),
-        'vibrate' => AndroidNotificationDetails(
-            'rest_timer_vibrate',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.reminder,
-            playSound: false,
-            enableVibration: true,
-            vibrationPattern: _pattern,
-            visibility: NotificationVisibility.public,
-          ),
-        _ => AndroidNotificationDetails(
-            'rest_timer',
-            t.notifRestChannel,
-            channelDescription: t.notifRestChannelWhy,
-            importance: Importance.max,
-            priority: Priority.high,
-            category: AndroidNotificationCategory.alarm,
-            playSound: true,
-            enableVibration: true,
-            audioAttributesUsage: AudioAttributesUsage.alarm,
-            fullScreenIntent: true,
-            visibility: NotificationVisibility.public,
-          ),
-      };
+    'quiet' => AndroidNotificationDetails(
+      'rest_timer_quiet',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      playSound: true,
+      enableVibration: true,
+      vibrationPattern: _pattern,
+      audioAttributesUsage: AudioAttributesUsage.notification,
+      visibility: NotificationVisibility.public,
+    ),
+    'vibrate' => AndroidNotificationDetails(
+      'rest_timer_vibrate',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      playSound: false,
+      enableVibration: true,
+      vibrationPattern: _pattern,
+      visibility: NotificationVisibility.public,
+    ),
+    _ => AndroidNotificationDetails(
+      'rest_timer',
+      t.notifRestChannel,
+      channelDescription: t.notifRestChannelWhy,
+      importance: Importance.max,
+      priority: Priority.high,
+      category: AndroidNotificationCategory.reminder,
+      playSound: true,
+      enableVibration: true,
+      audioAttributesUsage: AudioAttributesUsage.notification,
+      visibility: NotificationVisibility.public,
+    ),
+  };
 
   AndroidNotificationDetails get _androidAlert => AndroidNotificationDetails(
     'rest_timer_alert',
@@ -99,6 +98,7 @@ class RestAlarm {
     if (p != null && p.isNotEmpty) return DeviceFileSource(p);
     return AssetSource('audio/rest_over.wav');
   }
+
   bool _ready = false;
   bool _permissionAsked = false;
   int _generation = 0;
@@ -110,7 +110,7 @@ class RestAlarm {
       tzdata.initializeTimeZones();
       await _plugin.initialize(
         settings: const InitializationSettings(
-          android: AndroidInitializationSettings('@drawable/ic_stat_gymmane'),
+          android: AndroidInitializationSettings('@drawable/ic_stat_infyter_mark'),
           iOS: DarwinInitializationSettings(
             requestAlertPermission: false,
             requestSoundPermission: false,
@@ -303,10 +303,24 @@ class RestAlarm {
         body: t.restOverBody,
         scheduledDate: tz.TZDateTime.now(tz.local).add(after),
         notificationDetails: NotificationDetails(android: _android, iOS: _darwin),
-        androidScheduleMode: AndroidScheduleMode.alarmClock,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       );
     } catch (e) {
-      debugPrint('No se pudo programar el aviso: $e');
+      // Exact alarms are a user-controlled special access on Android 12+.
+      // If it is unavailable, keep the timer useful without requesting the
+      // Play-restricted USE_EXACT_ALARM permission.
+      try {
+        await _plugin.zonedSchedule(
+          id: _id,
+          title: t.restOverTitle,
+          body: t.restOverBody,
+          scheduledDate: tz.TZDateTime.now(tz.local).add(after),
+          notificationDetails: NotificationDetails(android: _android, iOS: _darwin),
+          androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        );
+      } catch (fallbackError) {
+        debugPrint('No se pudo programar el aviso: $e; fallback: $fallbackError');
+      }
     }
   }
 

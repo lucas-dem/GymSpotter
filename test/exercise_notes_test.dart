@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/note.dart';
-import 'package:gymspotter/screens/exercise_detail_screen.dart';
-import 'package:gymspotter/screens/notes_screen.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/theme/app_theme.dart';
-import 'package:gymspotter/widgets/note_kit.dart';
-import 'package:gymspotter/widgets/ui_kit.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/note.dart';
+import 'package:infyter/screens/exercise_detail_screen.dart';
+import 'package:infyter/screens/notes_screen.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/theme/app_theme.dart';
+import 'package:infyter/widgets/note_kit.dart';
+import 'package:infyter/widgets/ui_kit.dart';
 
 Widget _host(Widget Function() screen) => MaterialApp(
       theme: AppTheme.dark,

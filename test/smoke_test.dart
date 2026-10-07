@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/theme/app_colors.dart';
-import 'package:gymspotter/theme/app_theme.dart';
-import 'package:gymspotter/widgets/share_cards.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/theme/app_colors.dart';
+import 'package:infyter/theme/app_theme.dart';
+import 'package:infyter/widgets/share_cards.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ void main() {
 
   Future<void> visit(WidgetTester tester, String route) async {
     fit.route = route;
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pump(const Duration(milliseconds: 400));
     expect(tester.takeException(), isNull, reason: 'la pantalla $route reventó');
   }

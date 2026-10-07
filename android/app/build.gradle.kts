@@ -25,7 +25,7 @@ if (releaseRequested && !keystorePropertiesFile.exists() && !localPhoneBuild) {
 }
 
 android {
-    namespace = "com.gymmane.app"
+    namespace = "com.infyter.app"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -40,7 +40,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.gymspotter.app"
+        applicationId = "com.infyter.app"
         minSdk = 24
         targetSdk = 36
         versionCode = flutter.versionCode

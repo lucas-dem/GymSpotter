@@ -116,7 +116,7 @@ Future<ui.Image> _backImage(String? handle, String title, String? date) {
     if (handle != null) (paint('@$handle', px * 0.055, FontWeight.w600, 0.5), px * 0.055),
     (paint(title.toUpperCase(), px * 0.072, FontWeight.w700, 1.6), px * 0.05),
     if (date != null) (paint(date, px * 0.062, FontWeight.w600, 0.2), px * 0.075),
-    (paint('GYMSPOTTER', px * 0.046, FontWeight.w700, 3.2), 0),
+    (paint('INFYTER', px * 0.046, FontWeight.w700, 3.2), 0),
   ];
 
   var total = 0.0;

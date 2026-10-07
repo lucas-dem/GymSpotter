@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 class IncomingShare {
   IncomingShare._();
 
-  static const _channel = MethodChannel('gymmane/incoming');
+  static const _channel = MethodChannel('infyter/incoming');
 
   static void listen(void Function(String text) onText) {
     _channel.setMethodCallHandler((call) async {

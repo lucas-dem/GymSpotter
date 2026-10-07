@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/state/fit_state.dart';
 
 void main() {
   LoggedSession session(int daysAgo, String exId, String primary, int sets) => LoggedSession(

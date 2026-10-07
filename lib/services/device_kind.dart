@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 class DeviceKind {
   DeviceKind._();
 
-  static const _channel = MethodChannel('gymmane/device');
+  static const _channel = MethodChannel('infyter/device');
 
   static Future<bool> isWatch() async {
     if (kIsWeb || !Platform.isAndroid) return false;

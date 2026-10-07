@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/services/alarm_store.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/rest_alarm.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/services/alarm_store.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/rest_alarm.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -14,7 +14,7 @@ void main() {
   late Directory docs;
 
   setUp(() async {
-    docs = await Directory.systemTemp.createTemp('gymmane_alarm');
+    docs = await Directory.systemTemp.createTemp('infyter_alarm');
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
       const MethodChannel('plugins.flutter.io/path_provider'),
       (call) async => docs.path,

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/catalog/exercise_catalog.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/catalog/exercise_catalog.dart';
+import 'package:infyter/state/fit_state.dart';
 
 void main() {
   test('every tool in the menu has a screen behind it', () {

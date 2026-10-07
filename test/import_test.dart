@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/services/workout_import.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/services/workout_import.dart';
+import 'package:infyter/state/fit_state.dart';
 
 const _hevy = '''
 "title","start_time","end_time","description","exercise_title","superset_id","exercise_notes","set_index","set_type","weight_kg","reps","distance_km","duration_seconds","rpe"

@@ -1,0 +1,1 @@
+Meet Infyter: a private, offline-first workout log with routines, progress, rest timers, widgets and QR plan sharing.

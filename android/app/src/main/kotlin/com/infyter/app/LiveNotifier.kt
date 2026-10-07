@@ -1,4 +1,4 @@
-package com.gymmane.app
+package com.infyter.app
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream
 object LiveNotifier {
     private const val ID = 1003
     private const val CHANNEL = "live_workout_v2"
-    private const val ACTION = "com.gymmane.app.LIVE_ACTION"
+    private const val ACTION = "com.infyter.app.LIVE_ACTION"
     private const val FLASH_MS = 1600L
 
     var dart: MethodChannel? = null
@@ -58,7 +58,7 @@ object LiveNotifier {
         val nm = ctx.getSystemService(NotificationManager::class.java) ?: return
         val now = System.currentTimeMillis()
 
-        val name = a["title"] as? String ?: "GymSpotter"
+        val name = a["title"] as? String ?: "Infyter"
         val detail = a["detail"] as? String ?: ""
         val restLabel = a["restLabel"] as? String ?: ""
         val next = a["next"] as? String
@@ -92,7 +92,7 @@ object LiveNotifier {
             @Suppress("DEPRECATION")
             Notification.Builder(ctx).setPriority(Notification.PRIORITY_LOW)
         }
-        b.setSmallIcon(R.drawable.ic_stat_gymmane)
+        b.setSmallIcon(R.drawable.ic_stat_infyter_mark)
             .setSubText(if (total > 0) "${index + 1}/$total" else null)
             .setColor(accent)
             .setOngoing(true)
@@ -110,7 +110,7 @@ object LiveNotifier {
                 Intent(ctx, LiveActionReceiver::class.java).setAction("$ACTION.$id").putExtra("id", id),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
-            b.addAction(Notification.Action.Builder(Icon.createWithResource(ctx, R.drawable.ic_stat_gymmane), label, pi).build())
+            b.addAction(Notification.Action.Builder(Icon.createWithResource(ctx, R.drawable.ic_stat_infyter_mark), label, pi).build())
         }
 
         if (Build.VERSION.SDK_INT >= 36) {

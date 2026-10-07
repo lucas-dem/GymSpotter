@@ -1,9 +1,9 @@
-# GymSpotter — legal notices
+# Infyter — legal notices
 
-GymSpotter is a modified version of GymMane.
+Infyter is a modified version of GymMane.
 
 - Original project: GymMane, copyright © 2026 InlitX.
-- GymSpotter modifications began on 22 September 2026.
+- Infyter modifications began on 22 September 2026.
 - The application source code is distributed under the GNU General Public
   License, version 3. A complete copy is in `LICENSE`.
 - Recipients of a binary must receive access, at no additional charge, to the
@@ -22,4 +22,4 @@ Flutter and third-party packages retain their respective licenses. Their
 notices are available inside the application under “Información legal y
 licencias” → “Licencias de dependencias”.
 
-GymSpotter is provided without warranty, to the extent permitted by law.
+Infyter is provided without warranty, to the extent permitted by law.

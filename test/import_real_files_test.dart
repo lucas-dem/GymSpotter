@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/services/workout_import.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/services/workout_import.dart';
+import 'package:infyter/state/fit_state.dart';
 
 String read(String name) => File('test/fixtures/import/$name').readAsStringSync();
 

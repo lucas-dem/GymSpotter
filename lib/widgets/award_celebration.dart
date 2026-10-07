@@ -82,7 +82,7 @@ class _AwardCelebrationState extends State<AwardCelebration> with TickerProvider
           final stamp = DateTime.now().millisecondsSinceEpoch;
           final ok = await saveImageToGallery(
             data.buffer.asUint8List(),
-            'gymspotter-${widget.id.name}-$stamp.png',
+            'infyter-${widget.id.name}-$stamp.png',
           );
           if (ok) message = t.awardSaved;
         }
@@ -279,7 +279,7 @@ class _SaveCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    'GymSpotter',
+                    'Infyter',
                     style: AppTheme.f(17, weight: FontWeight.w800, color: gc.text),
                   ),
                   const Spacer(),

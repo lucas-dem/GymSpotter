@@ -1215,6 +1215,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pinUnsupported => '请从手机桌面启动器的微件菜单中手动添加';
 
   @override
+  String get widgetAddRequested => '请在系统窗口中确认添加';
+
+  @override
+  String get widgetAdded => '微件已添加到主屏幕';
+
+  @override
+  String get widgetRemoveTitle => '移除此微件？';
+
+  @override
+  String get widgetRemoveBody => 'Android 要求从主屏幕移除微件。我们将打开主屏幕：长按微件，然后选择移除。';
+
+  @override
+  String get widgetOpenHome => '打开主屏幕';
+
+  @override
   String get background => '背景纹理';
 
   @override
@@ -1239,7 +1254,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get importBackup => '导入备份';
 
   @override
-  String get importHint => '选择从 GymSpotter 导出的 .json 备份文件。这将会覆盖你当前的数据。';
+  String get importHint => '选择从 Infyter 导出的 .json 备份文件。这将会覆盖你当前的数据。';
 
   @override
   String get import => '导入';
@@ -1281,7 +1296,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => '关于 GymSpotter';
+  String get aboutInfyter => '关于 Infyter';
 
   @override
   String get yourProfile => '个人资料';
@@ -2029,7 +2044,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aiRoutine => '用 AI 生成计划';
 
   @override
-  String get aiIntro => 'GymSpotter 不会和任何 AI 通信。你把动作清单导出，粘贴给你惯用的助手，再把它的回答导回来。手机不会自己往外发任何东西。';
+  String get aiIntro => 'Infyter 不会和任何 AI 通信。你把动作清单导出，粘贴给你惯用的助手，再把它的回答导回来。手机不会自己往外发任何东西。';
 
   @override
   String get aiStep1 => '导出你的动作清单。如果选了场地，只会包含你在那里能做的动作。';
@@ -2061,7 +2076,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get awardFirstStepName => '第一步';
 
   @override
-  String get awardFirstStepLine => '欢迎来到 GymSpotter，这枚是送你的。';
+  String get awardFirstStepLine => '欢迎来到 Infyter，这枚是送你的。';
 
   @override
   String get awardFirstWorkoutName => '第一次训练';
@@ -2641,14 +2656,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name —— 用 GymSpotter 打开这个文件即可添加。';
+    return '$name —— 用 Infyter 打开这个文件即可添加。';
   }
 
   @override
   String get importRoutines => '导入训练计划';
 
   @override
-  String get importPasteHint => '在这里粘贴训练计划：GymSpotter 分享的内容、AI 的回答、JSON 或 CSV 都可以。';
+  String get importPasteHint => '在这里粘贴训练计划：Infyter 分享的内容、AI 的回答、JSON 或 CSV 都可以。';
 
   @override
   String get pasteAction => '粘贴';
@@ -2673,10 +2688,10 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get nothingToImport => '这里没有 GymSpotter 能导入的内容';
+  String get nothingToImport => '这里没有 Infyter 能导入的内容';
 
   @override
-  String get aiStepCopy => '复制请求。它包含你的动作列表和 GymSpotter 能读取的格式。';
+  String get aiStepCopy => '复制请求。它包含你的动作列表和 Infyter 能读取的格式。';
 
   @override
   String get aiStepAsk => '把它粘贴到任意 AI 里，说出你的需求：每周几天、目标、几周。';
@@ -2815,7 +2830,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareIntroTitle => '分享这个计划';
 
   @override
-  String get shareIntroBody => '发给你的伴侣、朋友或家人。他们会收到一个小文件，用 GymSpotter 打开，一点就能加入，组数和重量都在。';
+  String get shareIntroBody => '发给你的伴侣、朋友或家人。他们会收到一个小文件，用 Infyter 打开，一点就能加入，组数和重量都在。';
 
   @override
   String get removedFromRoutine => '已从计划中移除';
@@ -2863,6 +2878,85 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gamificationSetting => '勋章和等级';
+
+  @override
+  String get trainerMode => '教练模式';
+
+  @override
+  String get trainer => '教练';
+
+  @override
+  String get importByQr => '通过二维码导入';
+
+  @override
+  String get scanPlanQr => '扫描计划二维码';
+
+  @override
+  String get addAthlete => '添加运动员';
+
+  @override
+  String get peopleCaps => '人员';
+
+  @override
+  String get athletesHint => '打开运动员以编辑计划，或点击二维码进行分享。';
+
+  @override
+  String get myTraining => '我的训练';
+
+  @override
+  String get newAthlete => '新运动员';
+
+  @override
+  String get editAthlete => '编辑运动员';
+
+  @override
+  String get openRoutines => '打开训练计划';
+
+  @override
+  String get sharePlanQr => '通过二维码分享计划';
+
+  @override
+  String get duplicatePlan => '复制计划';
+
+  @override
+  String get planDuplicated => '计划已复制';
+
+  @override
+  String get deleteAthlete => '删除运动员';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name及其所有训练计划将从此设备中删除。';
+  }
+
+  @override
+  String get sharePlanQrHint => '包含所有训练计划和每周安排';
+
+  @override
+  String get qrPlanInstructions => '在Infyter中扫描此代码以导入完整计划。';
+
+  @override
+  String get qrTooLarge => '此计划太大，无法放入一个二维码。';
+
+  @override
+  String get close => '关闭';
+
+  @override
+  String get invalidInfyterQr => '此二维码不包含Infyter训练计划';
+
+  @override
+  String get alignQr => '将二维码对准框内';
+
+  @override
+  String get showQr => '显示二维码';
+
+  @override
+  String shareAthleteQr(String name) {
+    return '通过二维码分享$name的计划';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -4076,6 +4170,21 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get pinUnsupported => '請從啟動器的小工具選單加入';
 
   @override
+  String get widgetAddRequested => '請在系統視窗中確認加入';
+
+  @override
+  String get widgetAdded => '小工具已加入主畫面';
+
+  @override
+  String get widgetRemoveTitle => '移除此小工具？';
+
+  @override
+  String get widgetRemoveBody => 'Android 要求從主畫面移除小工具。我們將開啟主畫面：長按小工具，然後選擇移除。';
+
+  @override
+  String get widgetOpenHome => '開啟主畫面';
+
+  @override
   String get background => '背景';
 
   @override
@@ -4100,7 +4209,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get importBackup => '匯入備份';
 
   @override
-  String get importHint => '選擇從 GymSpotter 匯出的 .zip 備份（或舊版 .json）。目前資料（包括媒體）將被取代。';
+  String get importHint => '選擇從 Infyter 匯出的 .zip 備份（或舊版 .json）。目前資料（包括媒體）將被取代。';
 
   @override
   String get import => '匯入';
@@ -4142,7 +4251,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get aboutGymmane => '關於 GymSpotter';
+  String get aboutInfyter => '關於 Infyter';
 
   @override
   String get yourProfile => '你的個人檔案';
@@ -4757,7 +4866,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get planNothing => '此檔案中的動作都與你的資料庫不符';
 
   @override
-  String get planFailed => '這個檔案不是 GymSpotter 能讀取的課表';
+  String get planFailed => '這個檔案不是 Infyter 能讀取的課表';
 
   @override
   String get routineGroup => '群組';
@@ -4899,7 +5008,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get aiRoutine => 'AI 課表';
 
   @override
-  String get aiIntro => 'GymSpotter 絕不直接與 AI 通訊。你先匯出動作清單，貼到你已在使用的 AI 助手，再把回覆匯入。任何資料都不會自行離開手機。';
+  String get aiIntro => 'Infyter 絕不直接與 AI 通訊。你先匯出動作清單，貼到你已在使用的 AI 助手，再把回覆匯入。任何資料都不會自行離開手機。';
 
   @override
   String get aiStep1 => '匯出動作清單。如果已選擇地點，清單只會包含你在那裡能做的動作。';
@@ -4937,7 +5046,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get awardFirstStepName => '第一步';
 
   @override
-  String get awardFirstStepLine => '歡迎來到 GymSpotter。這個送給你。';
+  String get awardFirstStepLine => '歡迎來到 Infyter。這個送給你。';
 
   @override
   String get awardFirstWorkoutName => '第一次訓練';
@@ -5523,14 +5632,14 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String shareMessage(String name) {
-    return '$name — 用 GymSpotter 開啟檔案即可加入。';
+    return '$name — 用 Infyter 開啟檔案即可加入。';
   }
 
   @override
   String get importRoutines => '匯入課表';
 
   @override
-  String get importPasteHint => '在這裡貼上課表：從 GymSpotter 分享的、AI 的回答、JSON 或 CSV。';
+  String get importPasteHint => '在這裡貼上課表：從 Infyter 分享的、AI 的回答、JSON 或 CSV。';
 
   @override
   String get pasteAction => '貼上';
@@ -5557,10 +5666,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   }
 
   @override
-  String get nothingToImport => '這裡沒有 GymSpotter 能匯入的內容';
+  String get nothingToImport => '這裡沒有 Infyter 能匯入的內容';
 
   @override
-  String get aiStepCopy => '複製這段請求。裡面有你的動作清單和 GymSpotter 讀得懂的格式。';
+  String get aiStepCopy => '複製這段請求。裡面有你的動作清單和 Infyter 讀得懂的格式。';
 
   @override
   String get aiStepAsk => '貼到任何 AI，說出你的需求：每週幾天、目標、幾週。';
@@ -5699,7 +5808,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get shareIntroTitle => '分享這個課表';
 
   @override
-  String get shareIntroBody => '傳給你的伴侶、朋友或家人。他們會收到一個小檔案，用 GymSpotter 開啟，一點就能加入，組數和重量都在。';
+  String get shareIntroBody => '傳給你的伴侶、朋友或家人。他們會收到一個小檔案，用 Infyter 開啟，一點就能加入，組數和重量都在。';
 
   @override
   String get removedFromRoutine => '已從課表移除';
@@ -5747,4 +5856,83 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get gamificationSetting => '獎牌和等級';
+
+  @override
+  String get trainerMode => '教練模式';
+
+  @override
+  String get trainer => '教練';
+
+  @override
+  String get importByQr => '透過 QR 匯入';
+
+  @override
+  String get scanPlanQr => '掃描計畫 QR';
+
+  @override
+  String get addAthlete => '新增運動員';
+
+  @override
+  String get peopleCaps => '人員';
+
+  @override
+  String get athletesHint => '開啟運動員以編輯計畫，或點按 QR 來分享。';
+
+  @override
+  String get myTraining => '我的訓練';
+
+  @override
+  String get newAthlete => '新運動員';
+
+  @override
+  String get editAthlete => '編輯運動員';
+
+  @override
+  String get openRoutines => '開啟訓練計畫';
+
+  @override
+  String get sharePlanQr => '透過 QR 分享計畫';
+
+  @override
+  String get duplicatePlan => '複製計畫';
+
+  @override
+  String get planDuplicated => '計畫已複製';
+
+  @override
+  String get deleteAthlete => '刪除運動員';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name及其所有訓練計畫將從此裝置移除。';
+  }
+
+  @override
+  String get sharePlanQrHint => '包含所有訓練計畫和每週安排';
+
+  @override
+  String get qrPlanInstructions => '在 Infyter 中掃描此代碼以匯入完整計畫。';
+
+  @override
+  String get qrTooLarge => '此計畫太大，無法放入單一 QR 碼。';
+
+  @override
+  String get close => '關閉';
+
+  @override
+  String get invalidInfyterQr => '此 QR 不包含 Infyter 訓練計畫';
+
+  @override
+  String get alignQr => '將代碼對準框內';
+
+  @override
+  String get showQr => '顯示 QR';
+
+  @override
+  String shareAthleteQr(String name) {
+    return '透過 QR 分享$name的計畫';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }

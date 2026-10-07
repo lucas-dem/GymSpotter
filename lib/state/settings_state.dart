@@ -43,6 +43,13 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   Locale get locale => localeOf(language);
 
+  void toggleTrainerMode() {
+    trainerMode = !trainerMode;
+    activeAthleteId = trainerMode ? null : 'me';
+    _persist();
+    notifyListeners();
+  }
+
   void _applyLanguage(String code) {
     setAppLanguage(code);
     language = appLanguage;

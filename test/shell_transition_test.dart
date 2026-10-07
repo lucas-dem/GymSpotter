@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/screens/home_screen.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/progress_reminder.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/widgets/award_celebration.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/screens/home_screen.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/progress_reminder.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/widgets/award_celebration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -35,7 +35,7 @@ void main() {
   }
 
   testWidgets('the screen being left is gone before the new one shows up', (tester) async {
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pump();
 
     fit.goProgress();
@@ -50,7 +50,7 @@ void main() {
   });
 
   testWidgets('a medal waits before taking over the screen', (tester) async {
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pump();
 
     fit.refreshAwards();
@@ -72,7 +72,7 @@ void main() {
   });
 
   testWidgets('medals queue up one after another with a pause in between', (tester) async {
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pump();
 
     fit.sessions.add(LoggedSession(DateTime.now(), 1200, [
@@ -100,7 +100,7 @@ void main() {
   });
 
   testWidgets('holding a tab lets the pill slide to another one', (tester) async {
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pump();
 
     final home = tester.getCenter(find.text(t.home));

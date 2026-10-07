@@ -1,13 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/progress_reminder.dart';
-import 'package:gymspotter/services/train_reminder.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/widgets/medal_shelf.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/progress_reminder.dart';
+import 'package:infyter/services/train_reminder.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/widgets/medal_shelf.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -86,7 +86,7 @@ void main() {
     fit.resetRoute('settings');
 
     Future<void> show() async {
-      await tester.pumpWidget(const GymSpotterApp());
+      await tester.pumpWidget(const InfyterApp());
       for (var i = 0; i < 20; i++) {
         await tester.pump(const Duration(milliseconds: 100));
       }

@@ -1,4 +1,4 @@
-package com.gymmane.app
+package com.infyter.app
 
 import android.appwidget.AppWidgetManager
 import android.content.Context

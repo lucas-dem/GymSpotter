@@ -51,7 +51,7 @@ class ShareCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'GymSpotter',
+                    'Infyter',
                     style: AppTheme.f(13, weight: FontWeight.w800, color: gc.text, letterSpacing: 0.4),
                   ),
                   const Spacer(),

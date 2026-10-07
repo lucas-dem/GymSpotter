@@ -1,7 +1,7 @@
-name: gymspotter
-description: "GymSpotter — registro de entrenamiento local para Android."
+name: infyter
+description: "Infyter — registro de entrenamiento local para Android."
 publish_to: 'none'
-version: 1.3.0+5
+version: 1.3.0+1
 
 environment:
   sdk: ^3.11.5
@@ -22,6 +22,8 @@ dependencies:
   path_drawing: ^1.0.1
   path_provider: ^2.1.6
   phosphoricons_flutter: ^1.0.0
+  qr_flutter: ^4.1.0
+  qr_code_scanner_plus: 2.1.2
   share_plus: ^12.0.2
   shared_preferences: ^2.3.2
   timezone: ^0.11.1
@@ -54,6 +56,8 @@ flutter:
     - NOTICE.md
     - CREDITS.md
     - PRIVACY.md
+    - MODIFICATIONS.md
+    - assets/fonts/Nunito-OFL.txt
     - assets/img/
     - assets/art/
     - assets/audio/

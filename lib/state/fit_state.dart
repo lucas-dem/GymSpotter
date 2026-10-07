@@ -105,6 +105,7 @@ class FitState extends FitCore
         ..addAll(
           ((data['weeklyPlan'] as Map?) ?? {}).map((k, v) => MapEntry(int.parse(k as String), v as String)),
         );
+      _loadAthletes(data);
       customExercises
         ..clear()
         ..addAll(
@@ -199,6 +200,7 @@ class FitState extends FitCore
     effortScale = data['effort'] == 'rir' ? 'rir' : 'rpe';
     trainReminderMin = (data['trainAt'] as num?)?.toInt();
     smartReminder = data['trainSmart'] as bool? ?? false;
+    trainerMode = data['trainerMode'] as bool? ?? false;
     progressStep
       ..clear()
       ..addAll(
@@ -207,6 +209,23 @@ class FitState extends FitCore
     autoWarmup
       ..clear()
       ..addAll(((data['warmup'] as List?) ?? const []).cast<String>());
+  }
+
+  void _loadAthletes(Map<String, dynamic> data) {
+    athletes
+      ..clear()
+      ..addAll(
+        ((data['athletes'] as List?) ?? const [])
+            .map((e) => Athlete.fromJson((e as Map).cast<String, dynamic>()))
+            .where((a) => a.name.isNotEmpty),
+      );
+    athleteWeeklyPlans.clear();
+    ((data['athleteWeeklyPlans'] as Map?) ?? const {}).forEach((key, value) {
+      if (key is! String || value is! Map) return;
+      athleteWeeklyPlans[key] = value.map(
+        (day, routine) => MapEntry(int.parse(day as String), routine as String),
+      );
+    });
   }
 
   void _restoreLiveSession(Map<String, dynamic> data) {
@@ -362,6 +381,7 @@ class FitState extends FitCore
     'exMode': modeOverride,
     'trainAt': trainReminderMin,
     'trainSmart': smartReminder,
+    'trainerMode': trainerMode,
     'alarmAskedAt': alarmAskedAt,
     'onboarded': onboarded,
     'favorites': favorites,
@@ -371,6 +391,10 @@ class FitState extends FitCore
     'checkins': checkins.toList(),
     'routines': routines.map((r) => r.toJson()).toList(),
     'weeklyPlan': weeklyPlan.map((k, v) => MapEntry(k.toString(), v)),
+    'athletes': athletes.map((a) => a.toJson()).toList(),
+    'athleteWeeklyPlans': athleteWeeklyPlans.map(
+      (id, plan) => MapEntry(id, plan.map((day, routine) => MapEntry(day.toString(), routine))),
+    ),
     'custom': customExercises.map((e) => e.toJson()).toList(),
     'media': exerciseMedia,
     'exRest': exerciseRest,
@@ -421,6 +445,10 @@ class FitState extends FitCore
     checkins.clear();
     routines.clear();
     weeklyPlan.clear();
+    athletes.clear();
+    athleteWeeklyPlans.clear();
+    trainerMode = false;
+    activeAthleteId = 'me';
     customExercises.clear();
     exerciseMedia.clear();
     repsOnly.clear();
@@ -505,6 +533,7 @@ class FitState extends FitCore
       ..addAll(
         ((map['weeklyPlan'] as Map?) ?? {}).map((k, v) => MapEntry(int.parse(k as String), v as String)),
       );
+    _loadAthletes(map);
     customExercises
       ..clear()
       ..addAll(
@@ -605,7 +634,8 @@ class FitState extends FitCore
   Exercise? matchExerciseByName(String name) => matchExercise(name, allExercises);
 
   int applyTemplate(ProgramTemplate template) {
-    final planWasEmpty = weeklyPlan.isEmpty;
+    final targetPlan = visibleWeeklyPlan;
+    final planWasEmpty = targetPlan.isEmpty;
     var made = 0;
     final sameDay = <String, String>{};
     for (final day in template.days) {
@@ -619,7 +649,7 @@ class FitState extends FitCore
       final key = '${day.name}|${ids.entries.map((e) => '${e.key}:${e.value}').join(',')}';
       final twin = sameDay[key];
       if (twin != null) {
-        if (planWasEmpty && day.weekday != null) weeklyPlan[day.weekday!] = twin;
+        if (planWasEmpty && day.weekday != null) targetPlan[day.weekday!] = twin;
         continue;
       }
       final id = createRoutine(day.name);
@@ -629,7 +659,7 @@ class FitState extends FitCore
         toggleRoutineExercise(id, entry.key);
         bumpRoutineSets(id, entry.key, entry.value - kDefaultRoutineSets);
       }
-      if (planWasEmpty && day.weekday != null) weeklyPlan[day.weekday!] = id;
+      if (planWasEmpty && day.weekday != null) targetPlan[day.weekday!] = id;
       made++;
     }
     if (made == 0) return 0;
@@ -666,7 +696,7 @@ class FitState extends FitCore
   String planRequestText() {
     final here = allExercises.where(fitsHere).toList();
     final lines = <String>[
-      'GymSpotter · ${activePlace?.name ?? t.placeAll}',
+      'Infyter · ${activePlace?.name ?? t.placeAll}',
       t.planIntro,
       t.planFormat,
       planTemplate,
@@ -756,7 +786,9 @@ class FitState extends FitCore
       if (picked.isEmpty) continue;
       final name = plan.name.isEmpty ? t.newRoutineName : plan.name;
       final ids = [for (final p in picked) p.$1.id];
-      final existing = routines.where((r) => _sameRoutine(r, name, ids) && r.group == plan.group).firstOrNull;
+      final existing = visibleRoutines
+          .where((r) => _sameRoutine(r, name, ids) && r.group == plan.group)
+          .firstOrNull;
       final id = existing?.id ?? createRoutine(name);
       if (existing == null) {
         setRoutineGroup(id, plan.group);
@@ -777,7 +809,7 @@ class FitState extends FitCore
       }
       if (schedule) {
         for (final d in plan.days) {
-          weeklyPlan[d] = id;
+          visibleWeeklyPlan[d] = id;
         }
       }
     }
@@ -813,9 +845,10 @@ class FitState extends FitCore
 
   static const _kindNames = ['normal', 'warmup', 'drop', 'failure', 'restpause'];
 
-  String exportPlanJson(List<Routine> list, {bool withSchedule = true}) {
+  String exportPlanJson(List<Routine> list, {bool withSchedule = true, Map<int, String>? schedule}) {
+    final exportedSchedule = schedule ?? visibleWeeklyPlan;
     return encodePlan({
-      'gymmane': 'plan',
+      'infyter': 'plan',
       'v': 1,
       'unit': 'kg',
       'routines': [
@@ -826,7 +859,7 @@ class FitState extends FitCore
             if (withSchedule)
               'days': [
                 for (var d = 1; d <= 7; d++)
-                  if (weeklyPlan[d] == r.id) d,
+                  if (exportedSchedule[d] == r.id) d,
               ],
             'exercises': [
               for (final id in r.exerciseIds)
@@ -868,7 +901,7 @@ class FitState extends FitCore
     for (final r in list) {
       final days = [
         for (var d = 1; d <= 7; d++)
-          if (weeklyPlan[d] == r.id) t.weekdayShort(d),
+          if (visibleWeeklyPlan[d] == r.id) t.weekdayShort(d),
       ];
       out.add(days.isEmpty ? routineTitle(r) : '${routineTitle(r)} · ${days.join(', ')}');
       for (final id in r.exerciseIds) {

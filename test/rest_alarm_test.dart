@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/services/rest_alarm.dart';
+import 'package:infyter/services/rest_alarm.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -14,8 +14,9 @@ void main() {
     calls = [];
     platformSaysEnabled = true;
     AndroidFlutterLocalNotificationsPlugin.registerWith();
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(channel, (call) async {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+      call,
+    ) async {
       calls.add(call);
       switch (call.method) {
         case 'areNotificationsEnabled':
@@ -31,8 +32,7 @@ void main() {
   });
 
   tearDown(() {
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(channel, null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(channel, null);
   });
 
   List<String> methods() => calls.map((c) => c.method).toList();
@@ -53,16 +53,14 @@ void main() {
   test('scheduling actually reaches the platform', () async {
     await ready();
     await RestAlarm.instance.schedule(const Duration(seconds: 90));
-    expect(methods(), contains('zonedSchedule'),
-        reason: 'si esto falta, para Android el aviso no existe');
+    expect(methods(), contains('zonedSchedule'), reason: 'si esto falta, para Android el aviso no existe');
   });
 
   test('it schedules even when the platform claims notifications are off', () async {
     await ready();
     platformSaysEnabled = false;
     await RestAlarm.instance.schedule(const Duration(seconds: 90));
-    expect(methods(), contains('zonedSchedule'),
-        reason: 'no nos negamos la alarma a nosotros mismos');
+    expect(methods(), contains('zonedSchedule'), reason: 'no nos negamos la alarma a nosotros mismos');
   });
 
   test('the permission is asked once, not on every set', () async {
@@ -73,11 +71,11 @@ void main() {
     expect(methods().where((m) => m == 'requestNotificationsPermission').length, lessThanOrEqualTo(1));
   });
 
-  test('it uses alarmClock — the mode Doze and MIUI cannot defer', () async {
+  test('it requests an exact timer without declaring the restricted alarm permission', () async {
     await ready();
     await RestAlarm.instance.schedule(const Duration(seconds: 90));
     final specifics = (scheduleArgs()['platformSpecifics'] as Map).cast<String, dynamic>();
-    expect(specifics['scheduleMode'], 'alarmClock');
+    expect(specifics['scheduleMode'], 'exactAllowWhileIdle');
   });
 
   test('the alarm lands in the future, in real time', () async {
@@ -90,13 +88,13 @@ void main() {
     expect(delta, closeTo(90, 5), reason: 'un instante mal calculado = no suena');
   });
 
-  test('the notification is an alarm, so it is loud', () async {
+  test('the notification is prominent without hijacking the full screen', () async {
     await ready();
     await RestAlarm.instance.schedule(const Duration(seconds: 90));
     final specifics = (scheduleArgs()['platformSpecifics'] as Map).cast<String, dynamic>();
     expect(specifics['importance'], Importance.max.value);
     expect(specifics['playSound'], true);
-    expect(specifics['fullScreenIntent'], true);
+    expect(specifics['fullScreenIntent'], isNot(true));
     expect(specifics['channelId'], 'rest_timer');
   });
 

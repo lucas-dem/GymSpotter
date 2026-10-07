@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:home_widget/home_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
@@ -36,8 +36,41 @@ import 'profile_screen.dart';
 import 'legal_screen.dart';
 import '../widgets/ui_kit.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObserver {
+  final Map<String, bool> _pinnedWidgets = {};
+
+  static const _widgetProviders = [
+    'HeatmapWidgetProvider',
+    'StatsWidgetProvider',
+    'BodyWidgetProvider',
+    'TodayWidgetProvider',
+    'WeekWidgetProvider',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    unawaited(_refreshWidgetStatus());
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) unawaited(_refreshWidgetStatus());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +96,26 @@ class SettingsScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: fit.toggleTrainerMode,
+                      child: _prefRow(
+                        gc,
+                        PhosphorIconsRegular.usersThree,
+                        t.trainerMode,
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              fit.trainerMode ? t.trainer : t.athlete,
+                              style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
+                            ),
+                            const SizedBox(width: 9),
+                            TinySwitch(on: fit.trainerMode),
+                          ],
+                        ),
+                      ),
+                    ),
                     _choiceRow(
                       context,
                       gc,
@@ -304,32 +357,12 @@ class SettingsScreen extends StatelessWidget {
               if (Platform.isAndroid) ...[
                 _sectionLabel(gc, t.homeWidgets),
                 const SizedBox(height: 8),
-                _linkGroup(gc, [
-                  (
-                    PhosphorIconsRegular.squaresFour,
-                    t.addActivityWidget,
-                    () => _addWidget(context, 'HeatmapWidgetProvider'),
-                  ),
-                  (
-                    PhosphorIconsRegular.chartBar,
-                    t.addStatsWidget,
-                    () => _addWidget(context, 'StatsWidgetProvider'),
-                  ),
-                  (
-                    PhosphorIconsRegular.person,
-                    t.addBodyWidget,
-                    () => _addWidget(context, 'BodyWidgetProvider'),
-                  ),
-                  (
-                    PhosphorIconsRegular.checkCircle,
-                    t.addTodayWidget,
-                    () => _addWidget(context, 'TodayWidgetProvider'),
-                  ),
-                  (
-                    PhosphorIconsRegular.calendarCheck,
-                    t.addWeekWidget,
-                    () => _addWidget(context, 'WeekWidgetProvider'),
-                  ),
+                _widgetGroup(gc, [
+                  (PhosphorIconsRegular.squaresFour, t.addActivityWidget, 'HeatmapWidgetProvider'),
+                  (PhosphorIconsRegular.chartBar, t.addStatsWidget, 'StatsWidgetProvider'),
+                  (PhosphorIconsRegular.person, t.addBodyWidget, 'BodyWidgetProvider'),
+                  (PhosphorIconsRegular.checkCircle, t.addTodayWidget, 'TodayWidgetProvider'),
+                  (PhosphorIconsRegular.calendarCheck, t.addWeekWidget, 'WeekWidgetProvider'),
                 ]),
                 const SizedBox(height: 18),
               ],
@@ -528,6 +561,43 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Widget _widgetGroup(GymColors gc, List<(IconData, String, String)> items) {
+    return Container(
+      decoration: BoxDecoration(color: gc.bgRaised, borderRadius: BorderRadius.circular(20)),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          for (int i = 0; i < items.length; i++)
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _toggleWidget(context, items[i].$3),
+              child: Container(
+                height: 52,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  border: i < items.length - 1
+                      ? Border(bottom: BorderSide(color: gc.border.withValues(alpha: 0.6)))
+                      : null,
+                ),
+                child: Row(
+                  children: [
+                    _rowIcon(gc, items[i].$1),
+                    Expanded(
+                      child: Text(
+                        items[i].$2,
+                        style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text),
+                      ),
+                    ),
+                    TinySwitch(on: _pinnedWidgets[items[i].$3] ?? false),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
   Future<void> _exportCsv(BuildContext context) async {
     if (!fit.hasData) {
       _snack(context, t.nothingToExport);
@@ -535,11 +605,11 @@ class SettingsScreen extends StatelessWidget {
     }
     final dir = await getTemporaryDirectory();
     final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/gymspotter-workouts-$stamp.csv');
+    final file = File('${dir.path}/infyter-workouts-$stamp.csv');
     await file.writeAsString(fit.exportCsv());
     if (!context.mounted) return;
     await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'Entrenamientos de GymSpotter'),
+      ShareParams(files: [XFile(file.path)], subject: 'Entrenamientos de Infyter'),
     );
   }
 
@@ -561,11 +631,11 @@ class SettingsScreen extends StatelessWidget {
   Future<void> _exportBackup(BuildContext context) async {
     final dir = await getTemporaryDirectory();
     final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/gymspotter-backup-$stamp.zip');
+    final file = File('${dir.path}/infyter-backup-$stamp.zip');
     await file.writeAsBytes(await buildBackupZip(), flush: true);
     if (!context.mounted) return;
     await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'Copia de seguridad de GymSpotter'),
+      ShareParams(files: [XFile(file.path)], subject: 'Copia de seguridad de Infyter'),
     );
   }
 
@@ -840,16 +910,69 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Future<void> _addWidget(BuildContext context, String provider) async {
-    await HomeWidgetBridge.update();
-    try {
-      final supported = await HomeWidget.isRequestPinWidgetSupported() ?? false;
-      if (!supported) {
-        if (context.mounted) _snack(context, t.pinUnsupported);
+    final requested = await HomeWidgetBridge.requestPin(provider);
+    if (!requested) {
+      if (context.mounted) _snack(context, t.pinUnsupported);
+      return;
+    }
+    if (context.mounted) _snack(context, t.widgetAddRequested);
+    // The launcher prompt must appear immediately. Rendering all widget
+    // previews first made the button look unresponsive on slower devices.
+    unawaited(HomeWidgetBridge.update());
+    unawaited(_watchWidgetAdded(provider));
+  }
+
+  Future<void> _toggleWidget(BuildContext context, String provider) async {
+    final pinned = await HomeWidgetBridge.isPinned(provider);
+    if (!context.mounted) return;
+    if (!pinned) {
+      await _addWidget(context, provider);
+      return;
+    }
+    final openHome = await showAppDialog<bool>(
+      context: context,
+      builder: (dctx) => appDialog(
+        context.gc,
+        title: Text(
+          t.widgetRemoveTitle,
+          style: AppTheme.f(18, weight: FontWeight.w700, color: context.gc.text),
+        ),
+        content: Text(
+          t.widgetRemoveBody,
+          style: AppTheme.f(13, weight: FontWeight.w500, color: context.gc.textSecondary),
+        ),
+        actions: [
+          dialogAction(t.cancel, context.gc.textSecondary, () => Navigator.of(dctx).pop(false)),
+          dialogAction(t.widgetOpenHome, context.gc.accent, () => Navigator.of(dctx).pop(true)),
+        ],
+      ),
+    );
+    if (openHome == true) await HomeWidgetBridge.openHome();
+  }
+
+  Future<void> _refreshWidgetStatus() async {
+    final values = await Future.wait(_widgetProviders.map(HomeWidgetBridge.isPinned));
+    if (!mounted) return;
+    setState(() {
+      for (var i = 0; i < _widgetProviders.length; i++) {
+        _pinnedWidgets[_widgetProviders[i]] = values[i];
+      }
+    });
+  }
+
+  Future<void> _watchWidgetAdded(String provider) async {
+    for (var attempt = 0; attempt < 20; attempt++) {
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+      final pinned = await HomeWidgetBridge.isPinned(provider);
+      if (!mounted) return;
+      if (pinned) {
+        if (_pinnedWidgets[provider] != true) {
+          setState(() => _pinnedWidgets[provider] = true);
+          _snack(context, t.widgetAdded);
+        }
         return;
       }
-      await HomeWidget.requestPinWidget(qualifiedAndroidName: 'com.gymmane.app.$provider');
-    } catch (_) {
-      if (context.mounted) _snack(context, t.pinUnsupported);
     }
   }
 

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class ScreenAwake {
   ScreenAwake._();
 
-  static const _channel = MethodChannel('gymmane/screen');
+  static const _channel = MethodChannel('infyter/screen');
   static bool? _last;
   static bool? _dimmed;
 

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/services/local_store.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/services/local_store.dart';
 
 LoggedSession _session(DateTime date, String name, List<LoggedSet> sets) =>
     LoggedSession(date, 1800, [LoggedExercise('x1', name, 'chest', sets)]);

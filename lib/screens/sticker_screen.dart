@@ -118,13 +118,13 @@ class _StickerEditorState extends State<StickerEditor> {
 
   Future<void> _share() => _run((png) async {
     final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/gymspotter-sticker.png');
+    final file = File('${dir.path}/infyter-sticker.png');
     await file.writeAsBytes(png, flush: true);
-    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)], subject: 'GymSpotter'));
+    await SharePlus.instance.share(ShareParams(files: [XFile(file.path)], subject: 'Infyter'));
   });
 
   Future<void> _save() => _run((png) async {
-    final ok = await saveImageToGallery(png, 'gymspotter-${DateTime.now().millisecondsSinceEpoch}.png');
+    final ok = await saveImageToGallery(png, 'infyter-${DateTime.now().millisecondsSinceEpoch}.png');
     if (!ok) throw StateError('save');
     HapticFeedback.lightImpact();
     if (mounted) {
@@ -450,7 +450,7 @@ class _Sticker extends StatelessWidget {
         colorBlendMode: BlendMode.srcIn,
       ),
       const SizedBox(width: 5),
-      Text('GymSpotter', style: _s(size, FontWeight.w900, alpha: 0.9, spacing: 0.2)),
+      Text('Infyter', style: _s(size, FontWeight.w900, alpha: 0.9, spacing: 0.2)),
     ],
   );
 

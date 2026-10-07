@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/widgets/ui_kit.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/screens/timeline_screen.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/progress_reminder.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/theme/app_theme.dart';
+import 'package:infyter/widgets/ui_kit.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/screens/timeline_screen.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/progress_reminder.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _host(Widget Function() screen) => MaterialApp(

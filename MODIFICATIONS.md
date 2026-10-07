@@ -1,12 +1,12 @@
 # Modifications
 
 This repository contains a modified version of GymMane. Development of the
-GymSpotter variant began on 22 September 2026.
+Infyter variant began on 22 September 2026.
 
 Material changes include:
 
-- product name changed to GymSpotter;
-- Android application identifier changed to `com.gymspotter.app`;
+- product name changed to Infyter;
+- Android application identifier changed to `com.infyter.app`;
 - default language changed to Spanish and Spanish catalogue coverage expanded;
 - visual palette changed to black, graphite, silver and red;
 - launcher icon and application branding replaced;

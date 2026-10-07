@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/models/exercise.dart';
-import 'package:gymspotter/models/live_session.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/services/plan_share.dart';
-import 'package:gymspotter/services/rest_alarm.dart';
-import 'package:gymspotter/services/workout_import.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/models/exercise.dart';
+import 'package:infyter/models/live_session.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/services/plan_share.dart';
+import 'package:infyter/services/rest_alarm.dart';
+import 'package:infyter/services/workout_import.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -330,7 +330,7 @@ void main() {
       fit.setPlannedSets(r.id, bench, const [PlannedSet(reps: 8, weightKg: 50)]);
       fit.assignRoutineToDay(3, r.id);
       final json = fit.exportPlanJson([r]);
-      expect(jsonDecode(json)['gymmane'], 'plan');
+      expect(jsonDecode(json)['infyter'], 'plan');
       expect(fit.planSummaryText([r]), contains('Mixed'));
 
       fit.resetAllData();

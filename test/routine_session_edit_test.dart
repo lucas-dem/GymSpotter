@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/models/profile.dart';
-import 'package:gymspotter/models/note.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/models/profile.dart';
+import 'package:infyter/models/note.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {

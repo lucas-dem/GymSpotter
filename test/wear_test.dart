@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/catalog/program_templates.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/wear/wear_app.dart';
-import 'package:gymspotter/wear/wear_shell.dart';
-import 'package:gymspotter/widgets/ui_kit.dart' show sentenceCase;
+import 'package:infyter/catalog/program_templates.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/wear/wear_app.dart';
+import 'package:infyter/wear/wear_shell.dart';
+import 'package:infyter/widgets/ui_kit.dart' show sentenceCase;
 
 void _reset() {
   fit.saveAndExit();

@@ -1,0 +1,6 @@
+# Copy this file to android/key.properties on the release builder only.
+# Never commit key.properties or the .jks/.keystore file.
+storeFile=REPLACE_WITH_ABSOLUTE_PATH_TO_INFYTER_UPLOAD_KEY.jks
+storePassword=REPLACE_WITH_STORE_PASSWORD
+keyAlias=infyter-upload
+keyPassword=REPLACE_WITH_KEY_PASSWORD

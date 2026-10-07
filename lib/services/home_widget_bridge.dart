@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:home_widget/home_widget.dart';
 
@@ -11,8 +12,9 @@ import '../widgets/home_widget_views.dart';
 class HomeWidgetBridge {
   HomeWidgetBridge._();
 
-  static const _pkg = 'com.gymmane.app';
-  static const appGroup = 'group.com.gymmane.app';
+  static const _pkg = 'com.infyter.app';
+  static const _channel = MethodChannel('infyter/widgets');
+  static const appGroup = 'group.com.infyter.app';
   static const heatmapKey = 'heatmap_img';
   static const statsKey = 'stats_img';
   static const bodyKey = 'body_img';
@@ -29,6 +31,31 @@ class HomeWidgetBridge {
   // disabled until that signed extension is added to the iOS target.
   static bool get _supported => !kIsWeb && Platform.isAndroid;
   static bool _groupReady = false;
+
+  static Future<bool> requestPin(String provider) async {
+    if (!_supported) return false;
+    try {
+      return await _channel.invokeMethod<bool>('pin', {'provider': provider}) ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<bool> isPinned(String provider) async {
+    if (!_supported) return false;
+    try {
+      return await _channel.invokeMethod<bool>('isPinned', {'provider': provider}) ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  static Future<void> openHome() async {
+    if (!_supported) return;
+    try {
+      await _channel.invokeMethod<bool>('openHome');
+    } catch (_) {}
+  }
 
   static Future<void> update() async {
     if (!_supported) return;

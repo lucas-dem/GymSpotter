@@ -1,7 +1,7 @@
 # Credits and third-party notices
 
-GymSpotter is a modified version of GymMane, originally created by InlitX and
-distributed under GNU GPL v3. GymSpotter preserves that license and records its
+Infyter is a modified version of GymMane, originally created by InlitX and
+distributed under GNU GPL v3. Infyter preserves that license and records its
 material changes in `MODIFICATIONS.md`.
 
 ## Exercise illustrations
@@ -12,7 +12,7 @@ The exercise art in `assets/art/` comes from
 [Everkinetic](https://github.com/everkinetic/data).
 
 Both are licensed under
-[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), and GymSpotter's
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), and Infyter's
 copy stays under that same license — the rest of the app is GPLv3.
 
 **Changes made.** Each Workout Guide frame is a 512 × 512 SVG holding a single

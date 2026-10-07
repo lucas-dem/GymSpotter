@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/theme/app_theme.dart';
-import 'package:gymspotter/widgets/profile_avatar.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/theme/app_theme.dart';
+import 'package:infyter/widgets/profile_avatar.dart';
 
 final _png = base64Decode(
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',

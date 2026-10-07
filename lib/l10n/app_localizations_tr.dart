@@ -1270,6 +1270,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get pinUnsupported => 'Başlatıcının widget menüsünden ekle';
 
   @override
+  String get widgetAddRequested => 'Sistem penceresinde Ekle’yi onayla';
+
+  @override
+  String get widgetAdded => 'Widget ana ekrana eklendi';
+
+  @override
+  String get widgetRemoveTitle => 'Bu widget kaldırılsın mı?';
+
+  @override
+  String get widgetRemoveBody =>
+      'Android, widget’ların ana ekrandan kaldırılmasını gerektirir. Seni oraya götüreceğiz: widget’a basılı tut ve Kaldır’ı seç.';
+
+  @override
+  String get widgetOpenHome => 'Ana ekranı aç';
+
+  @override
   String get background => 'Arka plan';
 
   @override
@@ -1295,7 +1311,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get importHint =>
-      'GymSpotter\'den dışa aktarılmış bir .zip (veya eski .json) yedeği seç. Mevcut verilerin, medya dahil, değiştirilecek.';
+      'Infyter\'den dışa aktarılmış bir .zip (veya eski .json) yedeği seç. Mevcut verilerin, medya dahil, değiştirilecek.';
 
   @override
   String get import => 'İçe aktar';
@@ -1347,7 +1363,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => 'GymSpotter hakkında';
+  String get aboutInfyter => 'Infyter hakkında';
 
   @override
   String get yourProfile => 'PROFİLİN';
@@ -1972,7 +1988,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get planNothing => 'Bu dosyadaki hiçbir egzersiz kütüphanenle eşleşmiyor';
 
   @override
-  String get planFailed => 'Bu dosya GymSpotter\'in okuyabileceği bir program değil';
+  String get planFailed => 'Bu dosya Infyter\'in okuyabileceği bir program değil';
 
   @override
   String get routineGroup => 'Grup';
@@ -2124,7 +2140,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get aiIntro =>
-      'GymSpotter hiçbir zaman doğrudan bir yapay zekâyla iletişim kurmaz. Egzersiz listesini dışa aktarır, kullandığın asistana yapıştırır ve yanıtını yeniden içe aktarırsın. Hiçbir şey kendiliğinden telefondan çıkmaz.';
+      'Infyter hiçbir zaman doğrudan bir yapay zekâyla iletişim kurmaz. Egzersiz listesini dışa aktarır, kullandığın asistana yapıştırır ve yanıtını yeniden içe aktarırsın. Hiçbir şey kendiliğinden telefondan çıkmaz.';
 
   @override
   String get aiStep1 =>
@@ -2163,7 +2179,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get awardFirstStepName => 'İlk adım';
 
   @override
-  String get awardFirstStepLine => 'GymSpotter\'e hoş geldin. Bu bizden.';
+  String get awardFirstStepLine => 'Infyter\'e hoş geldin. Bu bizden.';
 
   @override
   String get awardFirstWorkoutName => 'İlk antrenman';
@@ -2759,7 +2775,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name — eklemek için dosyayı GymSpotter ile aç.';
+    return '$name — eklemek için dosyayı Infyter ile aç.';
   }
 
   @override
@@ -2767,7 +2783,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get importPasteHint =>
-      'Buraya bir rutin yapıştır: GymSpotter\'den paylaşılan, bir yapay zekâ yanıtı, JSON veya CSV.';
+      'Buraya bir rutin yapıştır: Infyter\'den paylaşılan, bir yapay zekâ yanıtı, JSON veya CSV.';
 
   @override
   String get pasteAction => 'Yapıştır';
@@ -2799,10 +2815,10 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get nothingToImport => 'Burada GymSpotter\'in içe aktarabileceği bir şey yok';
+  String get nothingToImport => 'Burada Infyter\'in içe aktarabileceği bir şey yok';
 
   @override
-  String get aiStepCopy => 'İsteği kopyala. Egzersiz listeni ve GymSpotter\'in okuduğu biçimi içerir.';
+  String get aiStepCopy => 'İsteği kopyala. Egzersiz listeni ve Infyter\'in okuduğu biçimi içerir.';
 
   @override
   String get aiStepAsk =>
@@ -2945,7 +2961,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get shareIntroBody =>
-      'Partnerine, bir arkadaşına ya da ailene gönder. GymSpotter ile açılan küçük bir dosya alırlar; setleri ve ağırlıklarıyla tek dokunuşta eklenir.';
+      'Partnerine, bir arkadaşına ya da ailene gönder. Infyter ile açılan küçük bir dosya alırlar; setleri ve ağırlıklarıyla tek dokunuşta eklenir.';
 
   @override
   String get removedFromRoutine => 'Rutinden çıkarıldı';
@@ -2994,4 +3010,83 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get gamificationSetting => 'Madalyalar ve seviyeler';
+
+  @override
+  String get trainerMode => 'Antrenör modu';
+
+  @override
+  String get trainer => 'Antrenör';
+
+  @override
+  String get importByQr => 'QR ile içe aktar';
+
+  @override
+  String get scanPlanQr => 'Plan QR kodunu tara';
+
+  @override
+  String get addAthlete => 'Sporcu ekle';
+
+  @override
+  String get peopleCaps => 'KİŞİLER';
+
+  @override
+  String get athletesHint => 'Planını düzenlemek için sporcuyu açın veya paylaşmak için QR\'ye dokunun.';
+
+  @override
+  String get myTraining => 'Antrenmanım';
+
+  @override
+  String get newAthlete => 'Yeni sporcu';
+
+  @override
+  String get editAthlete => 'Sporcuyu düzenle';
+
+  @override
+  String get openRoutines => 'Rutinleri aç';
+
+  @override
+  String get sharePlanQr => 'Planı QR ile paylaş';
+
+  @override
+  String get duplicatePlan => 'Planı çoğalt';
+
+  @override
+  String get planDuplicated => 'Plan çoğaltıldı';
+
+  @override
+  String get deleteAthlete => 'Sporcuyu sil';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name ve tüm rutinleri bu cihazdan kaldırılacak.';
+  }
+
+  @override
+  String get sharePlanQrHint => 'Tüm rutinleri ve haftalık programı içerir';
+
+  @override
+  String get qrPlanInstructions => 'Tam planı içe aktarmak için bu kodu Infyter\'dan tarayın.';
+
+  @override
+  String get qrTooLarge => 'Plan tek bir QR kodu için çok büyük.';
+
+  @override
+  String get close => 'Kapat';
+
+  @override
+  String get invalidInfyterQr => 'Bu QR bir Infyter rutini içermiyor';
+
+  @override
+  String get alignQr => 'Kodu çerçevenin içine hizalayın';
+
+  @override
+  String get showQr => 'QR göster';
+
+  @override
+  String shareAthleteQr(String name) {
+    return '$name planını QR ile paylaş';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }

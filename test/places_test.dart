@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/app/gymspotter_app.dart';
-import 'package:gymspotter/l10n/l10n.dart';
-import 'package:gymspotter/screens/places_screen.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/state/fit_state.dart';
-import 'package:gymspotter/theme/app_theme.dart';
+import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/l10n/l10n.dart';
+import 'package:infyter/screens/places_screen.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/state/fit_state.dart';
+import 'package:infyter/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _host(Widget Function() screen) => MaterialApp(
@@ -171,7 +171,7 @@ void main() {
   testWidgets('the library screen carries the place chips', (tester) async {
     fit.addPlace('Casa', equipment: {'Dumbbell'});
     fit.route = 'exercises';
-    await tester.pumpWidget(const GymSpotterApp());
+    await tester.pumpWidget(const InfyterApp());
     await tester.pumpAndSettle();
 
     await tester.tap(find.text(t.filters));

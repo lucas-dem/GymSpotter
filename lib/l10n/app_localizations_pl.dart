@@ -1270,6 +1270,22 @@ class AppLocalizationsPl extends AppLocalizations {
   String get pinUnsupported => 'Dodaj go z menu widżetów programu uruchamiającego';
 
   @override
+  String get widgetAddRequested => 'Potwierdź Dodaj w oknie systemowym';
+
+  @override
+  String get widgetAdded => 'Widżet dodano do ekranu głównego';
+
+  @override
+  String get widgetRemoveTitle => 'Usunąć ten widżet?';
+
+  @override
+  String get widgetRemoveBody =>
+      'Android wymaga usuwania widżetów z ekranu głównego. Otworzymy go: przytrzymaj widżet i wybierz Usuń.';
+
+  @override
+  String get widgetOpenHome => 'Otwórz ekran główny';
+
+  @override
   String get background => 'Tło';
 
   @override
@@ -1295,7 +1311,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get importHint =>
-      'Wybierz kopię .zip (lub starszy .json) wyeksportowaną z GymSpotter. Zastąpi ona bieżące dane, w tym multimedia.';
+      'Wybierz kopię .zip (lub starszy .json) wyeksportowaną z Infyter. Zastąpi ona bieżące dane, w tym multimedia.';
 
   @override
   String get import => 'Importuj';
@@ -1347,7 +1363,7 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => 'O GymSpotter';
+  String get aboutInfyter => 'O Infyter';
 
   @override
   String get yourProfile => 'TWÓJ PROFIL';
@@ -1971,7 +1987,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get planNothing => 'Żadne ćwiczenie z tego pliku nie pasuje do twojej biblioteki';
 
   @override
-  String get planFailed => 'Ten plik nie jest planem, który GymSpotter potrafi odczytać';
+  String get planFailed => 'Ten plik nie jest planem, który Infyter potrafi odczytać';
 
   @override
   String get routineGroup => 'Grupa';
@@ -2123,7 +2139,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get aiIntro =>
-      'GymSpotter nigdy nie łączy się bezpośrednio z AI. Eksportujesz listę ćwiczeń, wklejasz ją do używanego asystenta, a potem importujesz jego odpowiedź. Nic samo nie opuszcza telefonu.';
+      'Infyter nigdy nie łączy się bezpośrednio z AI. Eksportujesz listę ćwiczeń, wklejasz ją do używanego asystenta, a potem importujesz jego odpowiedź. Nic samo nie opuszcza telefonu.';
 
   @override
   String get aiStep1 =>
@@ -2162,7 +2178,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get awardFirstStepName => 'Pierwszy krok';
 
   @override
-  String get awardFirstStepLine => 'Witaj w GymSpotter. Ten dostajesz w prezencie.';
+  String get awardFirstStepLine => 'Witaj w Infyter. Ten dostajesz w prezencie.';
 
   @override
   String get awardFirstWorkoutName => 'Pierwszy trening';
@@ -2759,14 +2775,14 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name — otwórz plik w GymSpotter, aby go dodać.';
+    return '$name — otwórz plik w Infyter, aby go dodać.';
   }
 
   @override
   String get importRoutines => 'Importuj rutyny';
 
   @override
-  String get importPasteHint => 'Wklej tu rutynę: udostępnioną z GymSpotter, odpowiedź AI, JSON lub CSV.';
+  String get importPasteHint => 'Wklej tu rutynę: udostępnioną z Infyter, odpowiedź AI, JSON lub CSV.';
 
   @override
   String get pasteAction => 'Wklej';
@@ -2808,7 +2824,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get nothingToImport => 'Nic tu nie da się zaimportować';
 
   @override
-  String get aiStepCopy => 'Skopiuj prośbę. Zawiera listę twoich ćwiczeń i format, który czyta GymSpotter.';
+  String get aiStepCopy => 'Skopiuj prośbę. Zawiera listę twoich ćwiczeń i format, który czyta Infyter.';
 
   @override
   String get aiStepAsk =>
@@ -2950,7 +2966,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get shareIntroBody =>
-      'Wyślij ją partnerowi, znajomemu lub rodzinie. Dostaną mały plik, który otwiera się w GymSpotter i dodaje rutynę jednym dotknięciem, z seriami i ciężarami.';
+      'Wyślij ją partnerowi, znajomemu lub rodzinie. Dostaną mały plik, który otwiera się w Infyter i dodaje rutynę jednym dotknięciem, z seriami i ciężarami.';
 
   @override
   String get removedFromRoutine => 'Usunięto z rutyny';
@@ -2999,4 +3015,83 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get gamificationSetting => 'Medale i poziomy';
+
+  @override
+  String get trainerMode => 'Tryb trenera';
+
+  @override
+  String get trainer => 'Trener';
+
+  @override
+  String get importByQr => 'Importuj przez QR';
+
+  @override
+  String get scanPlanQr => 'Skanuj QR planu';
+
+  @override
+  String get addAthlete => 'Dodaj sportowca';
+
+  @override
+  String get peopleCaps => 'OSOBY';
+
+  @override
+  String get athletesHint => 'Otwórz sportowca, aby edytować plan, lub dotknij QR, aby go udostępnić.';
+
+  @override
+  String get myTraining => 'Mój trening';
+
+  @override
+  String get newAthlete => 'Nowy sportowiec';
+
+  @override
+  String get editAthlete => 'Edytuj sportowca';
+
+  @override
+  String get openRoutines => 'Otwórz rutyny';
+
+  @override
+  String get sharePlanQr => 'Udostępnij plan przez QR';
+
+  @override
+  String get duplicatePlan => 'Duplikuj plan';
+
+  @override
+  String get planDuplicated => 'Plan zduplikowany';
+
+  @override
+  String get deleteAthlete => 'Usuń sportowca';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name i wszystkie rutyny zostaną usunięte z tego urządzenia.';
+  }
+
+  @override
+  String get sharePlanQrHint => 'Zawiera wszystkie rutyny i plan tygodniowy';
+
+  @override
+  String get qrPlanInstructions => 'Zeskanuj ten kod w Infyter, aby zaimportować cały plan.';
+
+  @override
+  String get qrTooLarge => 'Plan jest zbyt duży na jeden kod QR.';
+
+  @override
+  String get close => 'Zamknij';
+
+  @override
+  String get invalidInfyterQr => 'Ten QR nie zawiera rutyny Infyter';
+
+  @override
+  String get alignQr => 'Wyrównaj kod wewnątrz ramki';
+
+  @override
+  String get showQr => 'Pokaż QR';
+
+  @override
+  String shareAthleteQr(String name) {
+    return 'Udostępnij plan $name przez QR';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }

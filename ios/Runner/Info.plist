@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>GymSpotter</string>
+	<string>Infyter</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>GymSpotter</string>
+	<string>Infyter</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -29,13 +29,13 @@
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>GymSpotter usa la cámara únicamente cuando elegís agregar una foto o un video a tu registro.</string>
+	<string>Infyter uses the camera only when you choose to scan a routine QR code or add a photo or video to your log.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>GymSpotter usa el micrófono únicamente al grabar un video que decidís adjuntar.</string>
+	<string>Infyter uses the microphone only when you record a video you choose to attach.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>GymSpotter accede a tus fotos únicamente cuando elegís una imagen o un video para tu perfil o registro.</string>
+	<string>Infyter accesses your photos only when you choose an image or video for your profile or log.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>GymSpotter guarda contenido en Fotos únicamente cuando vos lo solicitás.</string>
+	<string>Infyter saves content to Photos only when you request it.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

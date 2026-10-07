@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'app/gymspotter_app.dart';
+import 'app/infyter_app.dart';
 import 'services/alarm_store.dart';
 import 'services/device_kind.dart';
 import 'services/home_widget_bridge.dart';
@@ -45,7 +45,7 @@ Future<void> main() async {
   }
 
   fit.onWidgetsShouldUpdate = HomeWidgetBridge.update;
-  runApp(const GymSpotterApp());
+  runApp(const InfyterApp());
 
   WidgetsBinding.instance.addPostFrameCallback((_) => HomeWidgetBridge.update());
 }

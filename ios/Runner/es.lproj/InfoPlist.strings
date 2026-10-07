@@ -1,0 +1,4 @@
+"NSCameraUsageDescription" = "Infyter usa la cámara únicamente cuando elegís importar una rutina por QR o agregar una foto o un video a tu registro.";
+"NSMicrophoneUsageDescription" = "Infyter usa el micrófono únicamente al grabar un video que decidís adjuntar.";
+"NSPhotoLibraryUsageDescription" = "Infyter accede a tus fotos únicamente cuando elegís una imagen o un video para tu perfil o registro.";
+"NSPhotoLibraryAddUsageDescription" = "Infyter guarda contenido en Fotos únicamente cuando vos lo solicitás.";

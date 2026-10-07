@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gymspotter/catalog/program_templates.dart';
-import 'package:gymspotter/models/live_session.dart';
-import 'package:gymspotter/models/workout.dart';
-import 'package:gymspotter/services/local_store.dart';
-import 'package:gymspotter/state/fit_state.dart';
+import 'package:infyter/catalog/program_templates.dart';
+import 'package:infyter/models/live_session.dart';
+import 'package:infyter/models/workout.dart';
+import 'package:infyter/services/local_store.dart';
+import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -289,8 +289,7 @@ void main() {
       for (final template in kProgramTemplates) {
         for (final day in template.days) {
           for (final (name, _) in day.exercises) {
-            expect(fit.matchExerciseByName(name), isNotNull,
-                reason: '${template.name} · $name');
+            expect(fit.matchExerciseByName(name), isNotNull, reason: '${template.name} · $name');
           }
         }
       }
@@ -329,6 +328,54 @@ void main() {
       expect(made.name.contains(r.name), isTrue);
     });
 
+    test('el entrenador duplica el plan completo de un atleta y renombra la copia', () {
+      fit.toggleTrainerMode();
+      final ana = fit.addAthlete('Ana');
+      fit.openAthlete(ana);
+      final sourceId = fit.createRoutine('Torso A');
+      fit.toggleRoutineExercise(sourceId, bench());
+      fit.setRoutineGroup(sourceId, 'Torso/Pierna');
+      fit.setRoutineColor(sourceId, 3);
+      fit.setPlannedSets(sourceId, bench(), const [
+        PlannedSet(reps: 8, weightKg: 50),
+        PlannedSet(reps: 8, weightKg: 50),
+      ]);
+      fit.assignRoutineToDay(DateTime.monday, sourceId);
+
+      final lucas = fit.duplicatePlanAsAthlete(ana, 'Lucas');
+      final source = fit.routines.firstWhere((r) => r.id == sourceId);
+      final copy = fit.routines.singleWhere((r) => r.ownerId == lucas);
+
+      expect(fit.athletes.firstWhere((athlete) => athlete.id == lucas).name, 'Lucas');
+      expect(copy.ownerId, lucas);
+      expect(copy.name, source.name);
+      expect(copy.group, source.group);
+      expect(copy.color, source.color);
+      expect(copy.exerciseIds, source.exerciseIds);
+      expect(copy.sets, source.sets);
+      expect(
+        copy.plan[bench()]?.map((set) => set.toJson()),
+        source.plan[bench()]?.map((set) => set.toJson()),
+      );
+      expect(identical(copy.plan[bench()], source.plan[bench()]), isFalse);
+      expect(fit.athleteWeeklyPlans[lucas]?[DateTime.monday], copy.id);
+      fit.renameRoutine(copy.id, 'Torso B');
+      expect(source.name, 'Torso A');
+    });
+
+    test('el entrenador puede duplicar Mi entrenamiento como un atleta nuevo', () {
+      final sourceId = fit.createRoutine('Full body');
+      fit.toggleRoutineExercise(sourceId, bench());
+      fit.assignRoutineToDay(DateTime.wednesday, sourceId);
+      fit.toggleTrainerMode();
+
+      final athleteId = fit.duplicatePlanAsAthlete('me', 'Cliente nuevo');
+      final copy = fit.routines.singleWhere((routine) => routine.ownerId == athleteId);
+
+      expect(copy.name, 'Full body');
+      expect(fit.athleteWeeklyPlans[athleteId]?[DateTime.wednesday], copy.id);
+    });
+
     test('guardar la sesión como rutina se queda con las series buenas', () {
       fit.toggleAutoWarmup(bench());
       final r = routineWith([bench()]);
@@ -344,8 +391,11 @@ void main() {
 
   group('hábitos (recordatorio inteligente)', () {
     void logAt(DateTime when, int minutes) {
-      fit.sessions.add(LoggedSession(when, minutes * 60,
-          [LoggedExercise(bench(), 'Bench', 'chest', [LoggedSet(5, 60)])]));
+      fit.sessions.add(
+        LoggedSession(when, minutes * 60, [
+          LoggedExercise(bench(), 'Bench', 'chest', [LoggedSet(5, 60)]),
+        ]),
+      );
     }
 
     test('sin historial no hay hábito', () {
@@ -368,8 +418,11 @@ void main() {
     test('el foco de hoy sigue siendo uno de los tres días', () {
       final today = DateTime.now();
       for (var week = 1; week <= 3; week++) {
-        fit.sessions.add(LoggedSession(today.subtract(Duration(days: 7 * week)), 3600,
-            [LoggedExercise(bench(), 'Bench', 'chest', [LoggedSet(5, 60)])]));
+        fit.sessions.add(
+          LoggedSession(today.subtract(Duration(days: 7 * week)), 3600, [
+            LoggedExercise(bench(), 'Bench', 'chest', [LoggedSet(5, 60)]),
+          ]),
+        );
       }
       expect(fit.familyOnWeekday(today.weekday), 'push');
       expect(fit.suggestedFocus.muscles, contains('chest'));

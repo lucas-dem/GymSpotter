@@ -1220,6 +1220,21 @@ class AppLocalizationsJa extends AppLocalizations {
   String get pinUnsupported => 'ランチャーのウィジェットメニューから追加してください';
 
   @override
+  String get widgetAddRequested => 'システム画面で「追加」を確定してください';
+
+  @override
+  String get widgetAdded => 'ホーム画面にウィジェットを追加しました';
+
+  @override
+  String get widgetRemoveTitle => 'このウィジェットを削除しますか？';
+
+  @override
+  String get widgetRemoveBody => 'Androidではホーム画面からウィジェットを削除する必要があります。ホーム画面を開くので、ウィジェットを長押しして「削除」を選んでください。';
+
+  @override
+  String get widgetOpenHome => 'ホーム画面を開く';
+
+  @override
   String get background => '背景';
 
   @override
@@ -1244,7 +1259,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get importBackup => 'バックアップを読み込む';
 
   @override
-  String get importHint => 'GymSpotterから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデータが置き換わります。';
+  String get importHint => 'Infyterから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデータが置き換わります。';
 
   @override
   String get import => '読み込む';
@@ -1296,7 +1311,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => 'GymSpotterについて';
+  String get aboutInfyter => 'Infyterについて';
 
   @override
   String get yourProfile => 'プロフィール';
@@ -1906,7 +1921,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get planNothing => 'このファイルの種目はライブラリに一致しません';
 
   @override
-  String get planFailed => 'このファイルはGymSpotterが読み込めるルーティンではありません';
+  String get planFailed => 'このファイルはInfyterが読み込めるルーティンではありません';
 
   @override
   String get routineGroup => 'グループ';
@@ -2049,7 +2064,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aiIntro =>
-      'GymSpotterがAIと直接通信することはありません。種目リストを書き出し、普段使っているAIアシスタントに貼り付け、その回答を読み込みます。端末から自動で送信されるものはありません。';
+      'InfyterがAIと直接通信することはありません。種目リストを書き出し、普段使っているAIアシスタントに貼り付け、その回答を読み込みます。端末から自動で送信されるものはありません。';
 
   @override
   String get aiStep1 => '種目リストを書き出します。場所を選択している場合、その場所でできる種目だけが含まれます。';
@@ -2087,7 +2102,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get awardFirstStepName => '最初の一歩';
 
   @override
-  String get awardFirstStepLine => 'GymSpotterへようこそ。これはプレゼントです。';
+  String get awardFirstStepLine => 'Infyterへようこそ。これはプレゼントです。';
 
   @override
   String get awardFirstWorkoutName => '最初のワークアウト';
@@ -2678,14 +2693,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name — GymSpotter でファイルを開いて追加してください。';
+    return '$name — Infyter でファイルを開いて追加してください。';
   }
 
   @override
   String get importRoutines => 'ルーティンを読み込む';
 
   @override
-  String get importPasteHint => 'ここにルーティンを貼り付け：GymSpotter から共有されたもの、AIの回答、JSON、CSV。';
+  String get importPasteHint => 'ここにルーティンを貼り付け：Infyter から共有されたもの、AIの回答、JSON、CSV。';
 
   @override
   String get pasteAction => '貼り付け';
@@ -2712,10 +2727,10 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get nothingToImport => 'GymSpotter が読み込めるものがありません';
+  String get nothingToImport => 'Infyter が読み込めるものがありません';
 
   @override
-  String get aiStepCopy => '依頼文をコピーします。あなたの種目リストと GymSpotter が読む形式が入っています。';
+  String get aiStepCopy => '依頼文をコピーします。あなたの種目リストと Infyter が読む形式が入っています。';
 
   @override
   String get aiStepAsk => '好きなAIに貼り付けて、希望を伝えましょう：週の日数、目標、何週間か。';
@@ -2854,7 +2869,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get shareIntroTitle => 'このルーティンを共有';
 
   @override
-  String get shareIntroBody => 'パートナーや友だち、家族に送りましょう。GymSpotter で開ける小さなファイルが届き、セットや重量ごとワンタップで追加できます。';
+  String get shareIntroBody => 'パートナーや友だち、家族に送りましょう。Infyter で開ける小さなファイルが届き、セットや重量ごとワンタップで追加できます。';
 
   @override
   String get removedFromRoutine => 'ルーティンから外しました';
@@ -2902,4 +2917,83 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get gamificationSetting => 'メダルとレベル';
+
+  @override
+  String get trainerMode => 'トレーナーモード';
+
+  @override
+  String get trainer => 'トレーナー';
+
+  @override
+  String get importByQr => 'QRでインポート';
+
+  @override
+  String get scanPlanQr => 'プランのQRをスキャン';
+
+  @override
+  String get addAthlete => '選手を追加';
+
+  @override
+  String get peopleCaps => 'メンバー';
+
+  @override
+  String get athletesHint => '選手を開いてプランを編集するか、QRをタップして共有します。';
+
+  @override
+  String get myTraining => '自分のトレーニング';
+
+  @override
+  String get newAthlete => '新しい選手';
+
+  @override
+  String get editAthlete => '選手を編集';
+
+  @override
+  String get openRoutines => 'ルーティンを開く';
+
+  @override
+  String get sharePlanQr => 'QRでプランを共有';
+
+  @override
+  String get duplicatePlan => 'プランを複製';
+
+  @override
+  String get planDuplicated => 'プランを複製しました';
+
+  @override
+  String get deleteAthlete => '選手を削除';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$nameとすべてのルーティンをこのデバイスから削除します。';
+  }
+
+  @override
+  String get sharePlanQrHint => 'すべてのルーティンと週間スケジュールを含みます';
+
+  @override
+  String get qrPlanInstructions => 'Infyterでこのコードをスキャンして、完全なプランをインポートします。';
+
+  @override
+  String get qrTooLarge => 'このプランは1つのQRコードには大きすぎます。';
+
+  @override
+  String get close => '閉じる';
+
+  @override
+  String get invalidInfyterQr => 'このQRにはInfyterのルーティンが含まれていません';
+
+  @override
+  String get alignQr => 'コードを枠内に合わせてください';
+
+  @override
+  String get showQr => 'QRを表示';
+
+  @override
+  String shareAthleteQr(String name) {
+    return '$nameのプランをQRで共有';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }

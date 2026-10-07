@@ -19,7 +19,7 @@ import '../widgets/ui_kit.dart' show sentenceCase;
 class WearRotary {
   WearRotary._();
 
-  static const _channel = MethodChannel('gymmane/rotary');
+  static const _channel = MethodChannel('infyter/rotary');
   static final List<ScrollController> _stack = [];
   static VoidCallback? onTurn;
 

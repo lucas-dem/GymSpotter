@@ -23,9 +23,9 @@ void main() {
     final ios = File('ios/Runner.xcodeproj/project.pbxproj').readAsStringSync();
     final privacy = File('ios/Runner/PrivacyInfo.xcprivacy').readAsStringSync();
 
-    expect(android, contains('applicationId = "com.gymspotter.app"'));
+    expect(android, contains('applicationId = "com.infyter.app"'));
     expect(android, contains('debug signing is not allowed'));
-    expect(ios, contains('PRODUCT_BUNDLE_IDENTIFIER = com.gymspotter.app;'));
+    expect(ios, contains('PRODUCT_BUNDLE_IDENTIFIER = com.infyter.app;'));
     expect(ios, contains('PrivacyInfo.xcprivacy in Resources'));
     expect(privacy, contains('<key>NSPrivacyTracking</key>'));
     expect(privacy, contains('<false/>'));

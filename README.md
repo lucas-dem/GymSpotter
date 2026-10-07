@@ -1,6 +1,6 @@
-# GymSpotter
+# Infyter
 
-GymSpotter es una aplicación móvil local para registrar entrenamientos, rutinas,
+Infyter es una aplicación móvil local para registrar entrenamientos, rutinas,
 progreso y recuperación sin cuentas, publicidad, analítica ni dependencia de un
 servidor.
 
@@ -48,12 +48,12 @@ docs/      documentación y recursos de distribución
 
 ## Privacidad
 
-GymSpotter guarda los datos de entrenamiento en el dispositivo. Consultá
+Infyter guarda los datos de entrenamiento en el dispositivo. Consultá
 [`PRIVACY.md`](PRIVACY.md) para conocer el alcance completo.
 
 ## Licencia y procedencia
 
-GymSpotter es una modificación de GymMane y se distribuye bajo GNU GPL v3.
+Infyter es una modificación de GymMane y se distribuye bajo GNU GPL v3.
 La atribución, las modificaciones materiales y las licencias de recursos se
 detallan en [`NOTICE.md`](NOTICE.md), [`MODIFICATIONS.md`](MODIFICATIONS.md),
 [`CREDITS.md`](CREDITS.md) y [`LICENSE`](LICENSE).

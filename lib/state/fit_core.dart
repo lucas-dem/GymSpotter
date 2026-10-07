@@ -33,6 +33,8 @@ abstract class FitCore extends ChangeNotifier {
   Map<String, dynamic> toJson();
 
   String route = 'home';
+  bool trainerMode = false;
+  String? activeAthleteId = 'me';
   final List<String> _routeStack = [];
   final Map<String, bool> favorites = {};
 
@@ -46,6 +48,8 @@ abstract class FitCore extends ChangeNotifier {
   final Set<String> checkins = {};
   final List<Routine> routines = [];
   final Map<int, String> weeklyPlan = {};
+  final List<Athlete> athletes = [];
+  final Map<String, Map<int, String>> athleteWeeklyPlans = {};
   final List<Exercise> customExercises = [];
   final List<GymPlace> places = [];
 

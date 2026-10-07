@@ -1269,6 +1269,22 @@ class AppLocalizationsUk extends AppLocalizations {
   String get pinUnsupported => 'Додай через меню віджетів лаунчера';
 
   @override
+  String get widgetAddRequested => 'Підтвердь додавання в системному вікні';
+
+  @override
+  String get widgetAdded => 'Віджет додано на головний екран';
+
+  @override
+  String get widgetRemoveTitle => 'Видалити цей віджет?';
+
+  @override
+  String get widgetRemoveBody =>
+      'Android вимагає видаляти віджети з головного екрана. Ми відкриємо його: натисни й утримуй віджет, потім вибери Видалити.';
+
+  @override
+  String get widgetOpenHome => 'Відкрити головний екран';
+
+  @override
   String get background => 'Фон';
 
   @override
@@ -1294,7 +1310,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get importHint =>
-      'Обери резервну копію .zip (або старий .json), експортовану з GymSpotter. Поточні дані, включно з медіа, буде замінено.';
+      'Обери резервну копію .zip (або старий .json), експортовану з Infyter. Поточні дані, включно з медіа, буде замінено.';
 
   @override
   String get import => 'Імпортувати';
@@ -1346,7 +1362,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get aboutGymmane => 'Про GymSpotter';
+  String get aboutInfyter => 'Про Infyter';
 
   @override
   String get yourProfile => 'ТВІЙ ПРОФІЛЬ';
@@ -1971,7 +1987,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get planNothing => 'Жодна вправа з файлу не відповідає бібліотеці';
 
   @override
-  String get planFailed => 'Цей файл не є програмою, яку GymSpotter може прочитати';
+  String get planFailed => 'Цей файл не є програмою, яку Infyter може прочитати';
 
   @override
   String get routineGroup => 'Група';
@@ -2121,7 +2137,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get aiIntro =>
-      'GymSpotter ніколи напряму не зв’язується зі ШІ. Ти експортуєш список вправ, вставляєш його в асистент, яким уже користуєшся, а потім імпортуєш відповідь. Нічого саме не залишає телефон.';
+      'Infyter ніколи напряму не зв’язується зі ШІ. Ти експортуєш список вправ, вставляєш його в асистент, яким уже користуєшся, а потім імпортуєш відповідь. Нічого саме не залишає телефон.';
 
   @override
   String get aiStep1 =>
@@ -2160,7 +2176,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get awardFirstStepName => 'Перший крок';
 
   @override
-  String get awardFirstStepLine => 'Ласкаво просимо до GymSpotter. Ця нагорода — подарунок.';
+  String get awardFirstStepLine => 'Ласкаво просимо до Infyter. Ця нагорода — подарунок.';
 
   @override
   String get awardFirstWorkoutName => 'Перше тренування';
@@ -2757,14 +2773,14 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String shareMessage(String name) {
-    return '$name — відкрийте файл у GymSpotter, щоб додати.';
+    return '$name — відкрийте файл у Infyter, щоб додати.';
   }
 
   @override
   String get importRoutines => 'Імпортувати програми';
 
   @override
-  String get importPasteHint => 'Вставте програму сюди: поширену з GymSpotter, відповідь ШІ, JSON або CSV.';
+  String get importPasteHint => 'Вставте програму сюди: поширену з Infyter, відповідь ШІ, JSON або CSV.';
 
   @override
   String get pasteAction => 'Вставити';
@@ -2803,10 +2819,10 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get nothingToImport => 'Тут немає нічого, що GymSpotter може імпортувати';
+  String get nothingToImport => 'Тут немає нічого, що Infyter може імпортувати';
 
   @override
-  String get aiStepCopy => 'Скопіюйте запит. У ньому ваш список вправ і формат, який читає GymSpotter.';
+  String get aiStepCopy => 'Скопіюйте запит. У ньому ваш список вправ і формат, який читає Infyter.';
 
   @override
   String get aiStepAsk =>
@@ -2948,7 +2964,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get shareIntroBody =>
-      'Надішліть її партнеру, другу чи родині. Вони отримають невеликий файл, який відкривається в GymSpotter і додає програму одним дотиком, разом із підходами та вагами.';
+      'Надішліть її партнеру, другу чи родині. Вони отримають невеликий файл, який відкривається в Infyter і додає програму одним дотиком, разом із підходами та вагами.';
 
   @override
   String get removedFromRoutine => 'Прибрано з програми';
@@ -2997,4 +3013,83 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get gamificationSetting => 'Медалі та рівні';
+
+  @override
+  String get trainerMode => 'Режим тренера';
+
+  @override
+  String get trainer => 'Тренер';
+
+  @override
+  String get importByQr => 'Імпорт через QR';
+
+  @override
+  String get scanPlanQr => 'Сканувати QR плану';
+
+  @override
+  String get addAthlete => 'Додати спортсмена';
+
+  @override
+  String get peopleCaps => 'ЛЮДИ';
+
+  @override
+  String get athletesHint => 'Відкрийте спортсмена, щоб змінити план, або натисніть QR, щоб поділитися ним.';
+
+  @override
+  String get myTraining => 'Моє тренування';
+
+  @override
+  String get newAthlete => 'Новий спортсмен';
+
+  @override
+  String get editAthlete => 'Змінити спортсмена';
+
+  @override
+  String get openRoutines => 'Відкрити програми';
+
+  @override
+  String get sharePlanQr => 'Поділитися планом через QR';
+
+  @override
+  String get duplicatePlan => 'Дублювати план';
+
+  @override
+  String get planDuplicated => 'План продубльовано';
+
+  @override
+  String get deleteAthlete => 'Видалити спортсмена';
+
+  @override
+  String deleteAthleteBody(String name) {
+    return '$name і всі програми буде видалено з цього пристрою.';
+  }
+
+  @override
+  String get sharePlanQrHint => 'Містить усі програми та тижневий розклад';
+
+  @override
+  String get qrPlanInstructions => 'Відскануйте цей код в Infyter, щоб імпортувати весь план.';
+
+  @override
+  String get qrTooLarge => 'План завеликий для одного QR-коду.';
+
+  @override
+  String get close => 'Закрити';
+
+  @override
+  String get invalidInfyterQr => 'Цей QR не містить програму Infyter';
+
+  @override
+  String get alignQr => 'Розташуйте код усередині рамки';
+
+  @override
+  String get showQr => 'Показати QR';
+
+  @override
+  String shareAthleteQr(String name) {
+    return 'Поділитися планом $name через QR';
+  }
+
+  @override
+  String get qrLabel => 'QR';
 }
