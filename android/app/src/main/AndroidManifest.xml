@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove"/>
 
-    <uses-feature android:name="android.hardware.type.watch" android:required="false"/>
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
     <application
@@ -19,7 +18,6 @@
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round">
-        <meta-data android:name="com.google.android.wearable.standalone" android:value="true"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
