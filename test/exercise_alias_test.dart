@@ -79,10 +79,11 @@ void main() {
     }
     expect(kExerciseAliases['Bench Supported Abs Crunch'], contains('Abs Crunches'));
     expect(kExerciseAliases['Leg Extension'], contains('Sillón de cuádriceps (descenso)'));
-    expect(byName['Bench Supported Abs Crunch']?.art, 'abs-crunch-bench');
-    expect(byName['Pendulum Hack Squat']?.art, 'pendulum-hack');
-    expect(byName['Flat Converging Chest Press']?.art, 'converging-flat');
-    expect(byName['Incline Converging Chest Press']?.art, 'converging-incline');
+    expect(byName['Bench Supported Abs Crunch']?.art, 'crunch');
+    expect(byName['Pendulum Hack Squat']?.art, 'hack-squat');
+    expect(byName['Flat Converging Chest Press']?.art, 'machine-chest-press');
+    expect(byName['Incline Converging Chest Press']?.art, 'incline-chest-press');
+    expect(byName['Static Lunge']?.art, 'split-squat');
   });
 
   test('no two exercises claim the same alias', () {

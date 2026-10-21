@@ -866,7 +866,7 @@ const List<Exercise> kExercises = [
     secondary: [],
     equipment: 'Bodyweight',
     difficulty: 'Beginner',
-    art: 'abs-crunch-bench',
+    art: 'crunch',
     steps: [
       'Lie on your back and rest both lower legs on a flat bench with your hips and knees bent about 90 degrees.',
       'Place your fingertips lightly behind your head without pulling on your neck.',
@@ -2702,7 +2702,7 @@ const List<Exercise> kExercises = [
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Beginner',
-    art: 'converging-flat',
+    art: 'machine-chest-press',
     steps: [
       'Adjust the seat so the handles are level with the middle of your chest.',
       'Sit with your back against the pad, your chest up, and your feet planted firmly.',
@@ -2718,7 +2718,7 @@ const List<Exercise> kExercises = [
     secondary: ['triceps', 'shoulders'],
     equipment: 'Machine',
     difficulty: 'Beginner',
-    art: 'converging-incline',
+    art: 'incline-chest-press',
     steps: [
       'Adjust the seat so the handles start level with your upper chest.',
       'Sit with your back against the inclined pad, your chest up, and your feet planted firmly.',
@@ -2750,7 +2750,7 @@ const List<Exercise> kExercises = [
     secondary: ['glutes', 'hamstrings'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: 'pendulum-hack',
+    art: 'hack-squat',
     steps: [
       'Set the pendulum hack machine to a comfortable depth and place your shoulders under the pads.',
       'Plant your feet on the platform about shoulder-width apart and release the safety handles.',
@@ -2798,7 +2798,7 @@ const List<Exercise> kExercises = [
     secondary: ['glutes', 'hamstrings'],
     equipment: 'Bodyweight',
     difficulty: 'Beginner',
-    art: 'forward-lunge',
+    art: 'split-squat',
     steps: [
       'Take a split stance with one foot forward and keep both feet fixed in place.',
       'Keep your torso upright and lower your back knee toward the floor.',

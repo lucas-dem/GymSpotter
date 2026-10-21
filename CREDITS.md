@@ -27,6 +27,15 @@ exercise they come from, so any frame can be traced back to its original.
 Several exercises share one illustration when they are the same movement done
 with different equipment.
 
+**One exception.** `incline-chest-press.txt` has no Workout Guide counterpart,
+so it comes straight from Everkinetic's *Incline Chest Press* poses
+(`src/images-ai/0084-F.ai.png` and `0084-S.ai.png` in
+[everkinetic/data](https://github.com/everkinetic/data)). The two poses were
+aligned on a shared canvas and their lines thickened slightly to match the
+other frames. They were then rasterized and vector-traced with Workout Guide's
+own pipeline (sharp, potrace and svgo, same settings). Frame 1 is the pressed
+pose; frames 2 and 3 are the starting pose.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
