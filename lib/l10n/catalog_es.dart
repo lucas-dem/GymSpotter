@@ -2788,11 +2788,11 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Cuando la barra llegue a su punto más alto, métete rápido debajo cayendo en sentadilla profunda.',
   ],
   '9E25EOx': [
-    'Ponte de pie con los pies a la anchura de los hombros.',
-    'Da un paso adelante con un pie y déjalo a unos sesenta centímetros del otro.',
-    'Baja flexionando rodillas y cadera, con la espalda recta.',
-    'Sigue bajando hasta que el muslo de delante quede paralelo al suelo y la rodilla de atrás justo encima de él.',
-    'Aguanta un momento y empuja con el talón adelantado para volver a la posición inicial.',
+    'Ponte de espaldas a un banco plano, a un paso largo de distancia.',
+    'Apoya el empeine del pie de atrás sobre el banco y deja el pie de delante bien plantado en el suelo.',
+    'Baja flexionando la rodilla y la cadera de delante, con el torso erguido.',
+    'Sigue bajando hasta que el muslo de delante quede paralelo al suelo y la rodilla de atrás cerca del suelo.',
+    'Empuja con el talón de delante para subir, completa la serie y cambia de pierna.',
   ],
   'IMRsOCn': [
     'Empieza con la barra apoyada en los hombros y los pies a la anchura de los hombros.',

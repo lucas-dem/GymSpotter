@@ -20,6 +20,44 @@ const Map<String, Map<String, List<String>>> _catalogSteps = {
   'zh': kExerciseStepsZh,
 };
 
+/// Exercises the gym calls by its own names. Those names live in catalog_es.dart
+/// and are shown in every language, not just Spanish.
+const Set<String> kGymNamedExercises = {
+  'EIeI8Vf', // Press plano
+  'ns0SIbU', // Press inclinado con mancuernas
+  'pec-deck', // Fly deck para pecho
+  'myfUsKf', // Fly deck posterior
+  '25GPyDY', // Bíceps con barra
+  'incline-dumbbell-curl', // Bíceps en banco inclinado
+  'RVwzP10', // Jalón al pecho
+  'fUBheHs', // Remo dorsalera baja
+  'aaXr7ld', // Remo T
+  'rope-tricep-pushdown', // Tríceps con soga
+  'cable-pullover', // Pull-over en polea
+  '9WTm7dq', // Fondos
+  'abs-crunches-bench', // Abs crunches
+  'pendulum-hack-squat', // Prensa hack
+  'machine-leg-press', // Prensa 45°
+  'leg-extension', // Sillón de cuádriceps
+  'machine-lying-leg-curl', // Camilla de isquios
+  'static-lunge', // Estocadas estáticas
+  'hip-thrust', // Hip thrust
+  'ila4NZS', // Peso muerto
+  '9E25EOx', // Búlgara
+  'seated-leg-curl', // Femoral sentado
+  'dead-bug', // Bicho muerto
+  'box-step-up', // Subidas al cajón
+  'DsgkuIt', // Vuelos laterales
+  '3eGE2JC', // Vuelos frontales
+  'plank-hold', // Planchas frontales
+  'TFqbd8t', // Crunches
+  'flat-converging-chest-press', // Convergente plano
+  'incline-converging-chest-press', // Convergente inclinado
+  'alternating-dumbbell-curl', // Bíceps alternados
+  'reverse-grip-lat-pulldown', // Jalón invertido
+  'ykUOVze', // Gemelos
+};
+
 String appLanguage = 'en';
 AppLocalizations t = lookupAppLocalizations(const Locale('en'));
 
@@ -236,7 +274,10 @@ extension GymL10n on AppLocalizations {
 
   String shortDateYear(DateTime d) => _dates(DateFormat.yMMMd).format(d);
 
-  String catalogName(String id, String fallback) => _catalogNames[appLanguage]?[id] ?? fallback;
+  String catalogName(String id, String fallback) =>
+      (kGymNamedExercises.contains(id) ? kExerciseNameEs[id] : null) ??
+      _catalogNames[appLanguage]?[id] ??
+      fallback;
 
   List<String> catalogSteps(String id, List<String> fallback) => _catalogSteps[appLanguage]?[id] ?? fallback;
 }

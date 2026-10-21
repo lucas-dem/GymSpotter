@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:infyter/catalog/exercise_aliases.dart';
 import 'package:infyter/catalog/exercise_catalog.dart';
 import 'package:infyter/l10n/catalog_es.dart';
+import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/exercise.dart';
 import 'package:infyter/services/exercise_match.dart';
 
@@ -63,6 +64,42 @@ const _requestedSpanishNames = {
   'ykUOVze': 'Gemelos',
 };
 
+// The drawing each requested exercise was checked against: it has to show that exercise, not a cousin.
+const _requestedArt = {
+  'EIeI8Vf': 'flat-bench-press',
+  'ns0SIbU': 'incline-dumbbell-press',
+  'pec-deck': 'pec-deck',
+  '25GPyDY': 'barbell-curl',
+  'incline-dumbbell-curl': 'incline-dumbbell-curl',
+  'RVwzP10': 'wide-grip-lat-pulldown',
+  'fUBheHs': 'seated-row',
+  'aaXr7ld': 't-bar-row',
+  'rope-tricep-pushdown': 'rope-tricep-pushdown',
+  'cable-pullover': 'straight-arm-pulldown',
+  '9WTm7dq': 'chest-dip',
+  'TFqbd8t': 'crunch',
+  'abs-crunches-bench': 'crunch',
+  'pendulum-hack-squat': 'hack-squat',
+  'machine-leg-press': 'leg-press',
+  'leg-extension': 'leg-extension',
+  'machine-lying-leg-curl': 'lying-leg-curl',
+  'static-lunge': 'split-squat',
+  'hip-thrust': 'hip-thrust',
+  'ila4NZS': 'deadlift',
+  '9E25EOx': 'bulgarian-split-squat',
+  'seated-leg-curl': 'seated-leg-curl',
+  'dead-bug': 'dead-bug',
+  'box-step-up': 'step-up',
+  'DsgkuIt': 'lateral-raise',
+  '3eGE2JC': 'front-raise',
+  'plank-hold': 'plank-hold',
+  'flat-converging-chest-press': 'machine-chest-press',
+  'incline-converging-chest-press': 'incline-chest-press',
+  'alternating-dumbbell-curl': 'alternating-bicep-curl',
+  'reverse-grip-lat-pulldown': 'lat-pulldown',
+  'ykUOVze': 'standing-calf-raise',
+};
+
 List<Exercise> _search(String query) => kExercises.where(exerciseSearch(query)).toList();
 
 void main() {
@@ -77,13 +114,17 @@ void main() {
     for (final entry in _requestedSpanishNames.entries) {
       expect(kExerciseNameEs[entry.key], entry.value);
     }
+    expect(kGymNamedExercises, containsAll(_requestedSpanishNames.keys));
     expect(kExerciseAliases['Bench Supported Abs Crunch'], contains('Abs Crunches'));
     expect(kExerciseAliases['Leg Extension'], contains('Sillón de cuádriceps (descenso)'));
-    expect(byName['Bench Supported Abs Crunch']?.art, 'crunch');
-    expect(byName['Pendulum Hack Squat']?.art, 'hack-squat');
-    expect(byName['Flat Converging Chest Press']?.art, 'machine-chest-press');
-    expect(byName['Incline Converging Chest Press']?.art, 'incline-chest-press');
-    expect(byName['Static Lunge']?.art, 'split-squat');
+  });
+
+  test('each requested exercise shows the drawing that was checked for it', () {
+    expect(_requestedArt.keys.toSet(), _requestedSpanishNames.keys.toSet());
+    final byId = {for (final e in kExercises) e.id: e};
+    for (final entry in _requestedArt.entries) {
+      expect(byId[entry.key]?.art, entry.value, reason: entry.key);
+    }
   });
 
   test('no two exercises claim the same alias', () {

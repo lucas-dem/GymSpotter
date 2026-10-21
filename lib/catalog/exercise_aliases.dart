@@ -171,7 +171,7 @@ const Map<String, List<String>> kExerciseAliases = {
   'Smith Hack Squat': ['Hack Squat (Smith Machine)'],
   'Smith Machine Bicep Curl': ['Bicep Curl (Smith Machine)'],
   'Smith Machine Bulgarian Split Squat': ['Bulgarian Split Squat (Smith Machine)'],
-  'Split Squats': ['Búlgara'],
+  'Bulgarian Split Squat': ['Split Squats', 'Búlgara'],
   'Chest Dip': ['Fondos'],
   'Dead Bug': ['Bicho muerto'],
   'Smith Seated Shoulder Press': ['Shoulder Press (Smith Machine)'],

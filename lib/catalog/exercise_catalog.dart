@@ -8,7 +8,7 @@ const List<Exercise> kExercises = [
     secondary: ['triceps'],
     equipment: 'Barbell',
     difficulty: 'Intermediate',
-    art: 'bench-press',
+    art: 'flat-bench-press',
     steps: [
       'Lie flat on a bench with your feet flat on the ground and your back pressed against the bench.',
       'Grasp the barbell with an overhand grip slightly wider than shoulder-width apart.',
@@ -403,7 +403,7 @@ const List<Exercise> kExercises = [
     secondary: ['biceps', 'forearm'],
     equipment: 'Cable',
     difficulty: 'Beginner',
-    art: 'lat-pulldown',
+    art: 'wide-grip-lat-pulldown',
     steps: [
       'Adjust the cable pulldown machine so that the seat is at a comfortable height and the knee pad is secured.',
       'Sit on the seat with your back straight and your feet flat on the ground.',
@@ -674,7 +674,7 @@ const List<Exercise> kExercises = [
     secondary: ['forearm'],
     equipment: 'Barbell',
     difficulty: 'Beginner',
-    art: 'ez-bar-curl',
+    art: 'barbell-curl',
     steps: [
       'Stand up straight with your feet shoulder-width apart and hold a barbell with an underhand grip, palms facing forward.',
       'Keep your elbows close to your torso and exhale as you curl the weights while contracting your biceps.',
@@ -2830,7 +2830,7 @@ const List<Exercise> kExercises = [
     secondary: ['forearm'],
     equipment: 'Dumbbell',
     difficulty: 'Beginner',
-    art: 'bicep-curl',
+    art: 'alternating-bicep-curl',
     steps: [
       'Stand tall with a dumbbell in each hand and your arms resting by your sides.',
       'Curl one dumbbell toward your shoulder while keeping the opposite arm still.',
@@ -4721,18 +4721,18 @@ const List<Exercise> kExercises = [
   ),
   Exercise(
     id: '9E25EOx',
-    name: 'Split Squats',
+    name: 'Bulgarian Split Squat',
     primary: 'quads',
     secondary: ['glutes', 'hamstrings', 'calves'],
     equipment: 'Bodyweight',
     difficulty: 'Intermediate',
-    art: 'split-squat',
+    art: 'bulgarian-split-squat',
     steps: [
-      'Stand with your feet shoulder-width apart.',
-      'Take a step forward with one foot and place it about two feet in front of the other foot.',
-      'Lower your body by bending your knees and hips, keeping your back straight.',
-      'Continue lowering until your front thigh is parallel to the ground, and your back knee is hovering just above the ground.',
-      'Pause for a moment, then push through your front heel to return to the starting position.',
+      'Stand a long stride in front of a flat bench, facing away from it.',
+      'Rest the top of your back foot on the bench and keep your front foot flat on the floor.',
+      'Lower your body by bending your front knee and hip, keeping your torso upright.',
+      'Continue lowering until your front thigh is parallel to the ground and your back knee is close to the floor.',
+      'Push through your front heel to stand back up, finish the set, then switch legs.',
     ],
   ),
   Exercise(
@@ -8842,7 +8842,7 @@ const List<Exercise> kExercises = [
     secondary: ['shoulders', 'glutes'],
     equipment: 'Bodyweight',
     difficulty: 'Beginner',
-    art: 'plank',
+    art: 'plank-hold',
     steps: [
       'Set your forearms on the floor, elbows under your shoulders.',
       'Step your feet back until your body is one straight line from head to heels.',

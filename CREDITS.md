@@ -27,14 +27,24 @@ exercise they come from, so any frame can be traced back to its original.
 Several exercises share one illustration when they are the same movement done
 with different equipment.
 
-**One exception.** `incline-chest-press.txt` has no Workout Guide counterpart,
-so it comes straight from Everkinetic's *Incline Chest Press* poses
-(`src/images-ai/0084-F.ai.png` and `0084-S.ai.png` in
-[everkinetic/data](https://github.com/everkinetic/data)). The two poses were
-aligned on a shared canvas and their lines thickened slightly to match the
-other frames. They were then rasterized and vector-traced with Workout Guide's
-own pipeline (sharp, potrace and svgo, same settings). Frame 1 is the pressed
-pose; frames 2 and 3 are the starting pose.
+**Exceptions.** A few illustrations have no Workout Guide counterpart, so they
+come straight from [everkinetic/data](https://github.com/everkinetic/data) and
+went through Workout Guide's own pipeline (sharp, potrace and svgo, same
+settings), exactly as its Everkinetic-based frames did:
+
+- `flat-bench-press.txt` — *Wide-Grip Bench Press* (`dist/svg/0082-*.svg`).
+  Frame 1 is the pressed pose; frames 2 and 3 are the starting pose.
+- `barbell-curl.txt` — *Biceps Curls With Barbell* (`dist/svg/0211-*.svg`).
+  Frame 1 is the curled pose; frames 2 and 3 are the starting pose.
+- `alternating-bicep-curl.txt` — *Alternating Biceps Curl With Dumbbell*
+  (`dist/svg/0223-*.svg`). The frames swap between its two poses.
+- `incline-chest-press.txt` — *Incline Chest Press*, which only exists as
+  `src/images-ai/0084-F.ai.png` and `0084-S.ai.png`. The two poses were aligned
+  on a shared canvas and their lines thickened slightly to match the other
+  frames. Frame 1 is the pressed pose; frames 2 and 3 are the starting pose.
+
+`plank-hold.txt` reuses frames 1 and 2 of Workout Guide's `plank` (frame 1
+again as frame 3), so a held plank never drops to the knees.
 
 ## Fonts
 

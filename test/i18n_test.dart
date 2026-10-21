@@ -187,11 +187,21 @@ void main() {
     });
 
     test('names follow the active language', () {
-      final bench = kExercises.firstWhere((e) => e.id == 'EIeI8Vf');
+      final bench = kExercises.firstWhere((e) => e.id == 'SpYC0Kp');
       setAppLanguage('en');
-      expect(exerciseName(bench), 'Barbell Bench Press');
+      expect(exerciseName(bench), 'Dumbbell Bench Press');
       setAppLanguage('es');
-      expect(exerciseName(bench), 'Press plano');
+      expect(exerciseName(bench), 'Press de banca con mancuernas');
+    });
+
+    test("the gym's own names are the same in every language", () {
+      for (final code in appLanguages) {
+        setAppLanguage(code);
+        for (final id in kGymNamedExercises) {
+          final e = kExercises.firstWhere((e) => e.id == id);
+          expect(exerciseName(e), kExerciseNameEs[id], reason: '$id en $code');
+        }
+      }
     });
 
     test("a user's own exercise is never translated away", () {
