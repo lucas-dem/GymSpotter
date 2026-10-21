@@ -18,6 +18,7 @@ class ExerciseArtData {
 const _cacheLimit = 32;
 final _cache = <String, ExerciseArtData>{};
 final _pending = <String, Future<ExerciseArtData>>{};
+const _rasterArt = {'abs-crunch-bench', 'pendulum-hack', 'converging-flat', 'converging-incline'};
 
 Future<ExerciseArtData> loadExerciseArt(String slug) {
   final hit = _cache.remove(slug);
@@ -93,6 +94,7 @@ class _ExerciseArtState extends State<ExerciseArt> with SingleTickerProviderStat
 
   Future<void> _fetch() async {
     if (widget.slug.isEmpty) return;
+    if (_rasterArt.contains(widget.slug)) return;
     final slug = widget.slug;
     try {
       final data = await loadExerciseArt(slug);
@@ -126,7 +128,19 @@ class _ExerciseArtState extends State<ExerciseArt> with SingleTickerProviderStat
     final gc = context.gc;
     final art = _art;
     Widget child;
-    if (widget.slug.isEmpty || _failed) {
+    if (_rasterArt.contains(widget.slug)) {
+      child = Padding(
+        padding: EdgeInsets.all(widget.height * 0.055),
+        child: Image.asset(
+          'assets/art/${widget.slug}.png',
+          fit: BoxFit.contain,
+          color: gc.text,
+          colorBlendMode: BlendMode.srcIn,
+          filterQuality: FilterQuality.medium,
+          errorBuilder: (_, _, _) => _fallback(gc, widget.height),
+        ),
+      );
+    } else if (widget.slug.isEmpty || _failed) {
       child = _fallback(gc, widget.height);
     } else if (art == null) {
       child = Shimmer(radius: widget.radius);
@@ -134,10 +148,7 @@ class _ExerciseArtState extends State<ExerciseArt> with SingleTickerProviderStat
       final c = _c!;
       child = AnimatedBuilder(
         animation: c,
-        builder: (_, _) => CustomPaint(
-          painter: _ArtPainter(art, gc.text, c.value),
-          size: Size.infinite,
-        ),
+        builder: (_, _) => CustomPaint(painter: _ArtPainter(art, gc.text, c.value), size: Size.infinite),
       );
     } else {
       child = CustomPaint(painter: _ArtPainter(art, gc.text, 0), size: Size.infinite);
@@ -156,8 +167,8 @@ class _ExerciseArtState extends State<ExerciseArt> with SingleTickerProviderStat
   }
 
   Widget _fallback(GymColors gc, double height) => Center(
-        child: Icon(PhosphorIconsRegular.barbell, size: height * 0.32, color: gc.textTertiary),
-      );
+    child: Icon(PhosphorIconsRegular.barbell, size: height * 0.32, color: gc.textTertiary),
+  );
 }
 
 class _ArtPainter extends CustomPainter {
@@ -201,6 +212,5 @@ class _ArtPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_ArtPainter old) =>
-      old.art != art || old.color != color || old.t != t;
+  bool shouldRepaint(_ArtPainter old) => old.art != art || old.color != color || old.t != t;
 }

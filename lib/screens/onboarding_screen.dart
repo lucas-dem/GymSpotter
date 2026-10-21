@@ -22,7 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final _page = PageController();
   late final TextEditingController _name = TextEditingController();
   int _index = 0;
-  static const _last = 5;
+  static const _last = 6;
   final Map<String, Set<String>> _places = {};
 
   @override
@@ -63,7 +63,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: Stack(
         children: [
           Positioned.fill(child: _Glow(gc)),
-          const Positioned.fill(child: AppBackground(pattern: 'dots')),
+          Positioned.fill(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 420),
+              child: AppBackground(
+                key: ValueKey(_index >= 5 ? fit.backgroundForRoute('home') : 'dots'),
+                pattern: _index >= 5 ? fit.backgroundForRoute('home') : 'dots',
+                dim: _index >= 5 ? 0.72 : 0.55,
+              ),
+            ),
+          ),
           SafeArea(
             child: Column(
               children: [
@@ -78,6 +87,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       _unitsStep(gc),
                       _bodyStep(gc),
                       _goalStep(gc),
+                      _branchStep(gc),
                       _placeStep(gc),
                     ],
                   ),
@@ -595,10 +605,68 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     'outdoors': PhosphorIconsRegular.tree,
   };
 
-  Widget _placeStep(GymColors gc) {
+  Widget _branchStep(GymColors gc) {
+    const options = [
+      ('junin', 'Junín', '4 fondos disponibles', PhosphorIconsRegular.mapPin),
+      ('chacabuco', 'Chacabuco', '2 fondos disponibles', PhosphorIconsRegular.mapPin),
+      ('both', 'Ambas', 'Los 6 fondos disponibles', PhosphorIconsRegular.arrowsLeftRight),
+    ];
     return _step(
       gc,
       step: 5,
+      title: t.onbPlaceTitle,
+      why: t.onbPlaceWhy,
+      child: _group(gc, [
+        for (final option in options)
+          Semantics(
+            button: true,
+            selected: fit.gymBranch == option.$1,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => _up(() => fit.setGymBranch(option.$1)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                child: Row(
+                  children: [
+                    _rowIcon(gc, option.$4, color: fit.gymBranch == option.$1 ? gc.ember : null),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            option.$2,
+                            style: AppTheme.f(
+                              14.5,
+                              weight: FontWeight.w700,
+                              color: fit.gymBranch == option.$1 ? gc.ember : gc.text,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            option.$3,
+                            style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary),
+                          ),
+                        ],
+                      ),
+                    ),
+                    AnimatedOpacity(
+                      duration: const Duration(milliseconds: 200),
+                      opacity: fit.gymBranch == option.$1 ? 1 : 0,
+                      child: Icon(PhosphorIconsFill.checkCircle, size: 18, color: gc.ember),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+      ]),
+    );
+  }
+
+  Widget _placeStep(GymColors gc) {
+    return _step(
+      gc,
+      step: 6,
       title: t.onbPlaceTitle,
       why: t.onbPlaceWhy,
       child: Column(

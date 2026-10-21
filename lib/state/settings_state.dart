@@ -25,7 +25,8 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   String? get alarmSoundPath => AlarmStore.pathFor(alarmSound);
 
-  String bgPattern = 'dots';
+  String gymBranch = 'junin';
+  String bgPattern = 'dynamic';
   double bgDim = 0.55;
   bool showFocus = true;
   bool autoAdvance = true;
@@ -342,7 +343,49 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
     notifyListeners();
   }
 
-  static const bgPatterns = ['none', 'dots', 'grid', 'photo'];
+  static const gymBranches = ['junin', 'chacabuco', 'both'];
+  static const juninBackgrounds = ['junin1', 'junin2', 'junin3', 'junin4'];
+  static const chacabucoBackgrounds = ['chaca1', 'chaca2'];
+  static const bgPatterns = [
+    'none',
+    'dynamic',
+    'dots',
+    'grid',
+    'photo',
+    ...juninBackgrounds,
+    ...chacabucoBackgrounds,
+  ];
+
+  List<String> get branchBackgrounds => switch (gymBranch) {
+    'chacabuco' => chacabucoBackgrounds,
+    'both' => [...juninBackgrounds, ...chacabucoBackgrounds],
+    _ => juninBackgrounds,
+  };
+
+  void setGymBranch(String value) {
+    if (!gymBranches.contains(value)) return;
+    gymBranch = value;
+    if (!branchBackgrounds.contains(bgPattern) &&
+        !const ['none', 'dynamic', 'dots', 'grid', 'photo'].contains(bgPattern)) {
+      bgPattern = 'dynamic';
+    }
+    _persist();
+    notifyListeners();
+  }
+
+  String backgroundForRoute(String route) {
+    if (bgPattern != 'dynamic') return bgPattern;
+    final backgrounds = gymBranch == 'both'
+        ? const ['junin1', 'chaca1', 'junin3', 'chaca2']
+        : branchBackgrounds;
+    final index = switch (route) {
+      'progress' || 'measures' || 'timeline' || 'compare' => 1,
+      'exercises' || 'exercise-detail' => 2,
+      'settings' || 'preferences' || 'places' || 'moments' || 'awards' => 3,
+      _ => 0,
+    };
+    return backgrounds[index % backgrounds.length];
+  }
 
   void setBgPattern(String v) {
     if (!bgPatterns.contains(v)) return;
@@ -365,7 +408,7 @@ mixin SettingsState on FitCore, ToolsState, LibraryState {
 
   void clearBgPhoto() {
     clearExerciseMedia(kBgPhotoId);
-    if (bgPattern == 'photo') bgPattern = 'dots';
+    if (bgPattern == 'photo') bgPattern = 'dynamic';
     _persist();
     notifyListeners();
   }

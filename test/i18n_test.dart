@@ -15,14 +15,15 @@ void main() {
   tearDown(() => setAppLanguage('en'));
 
   test('every ARB file in lib/l10n ships as a language of the app', () {
-    final arbs = Directory('lib/l10n')
-        .listSync()
-        .whereType<File>()
-        .map((f) => f.uri.pathSegments.last)
-        .where((n) => n.startsWith('app_') && n.endsWith('.arb'))
-        .map((n) => n.substring(4, n.length - 4))
-        .toList()
-      ..sort();
+    final arbs =
+        Directory('lib/l10n')
+            .listSync()
+            .whereType<File>()
+            .map((f) => f.uri.pathSegments.last)
+            .where((n) => n.startsWith('app_') && n.endsWith('.arb'))
+            .map((n) => n.substring(4, n.length - 4))
+            .toList()
+          ..sort();
     expect(appLanguages.toList()..sort(), arbs);
     for (final code in appLanguages) {
       expect(languageNameOf(code).trim(), isNotEmpty, reason: 'falta languageName en $code');
@@ -46,8 +47,11 @@ void main() {
     final logged = kExercises.take(30).where((e) => kExerciseNameEs.containsKey(e.id)).toList();
     expect(logged, isNotEmpty);
     for (final e in logged) {
-      expect(t.catalogName(e.id, e.name), kExerciseNameEs[e.id],
-          reason: 'catalogName es lo que tienen que llamar las pantallas, no e.name');
+      expect(
+        t.catalogName(e.id, e.name),
+        kExerciseNameEs[e.id],
+        reason: 'catalogName es lo que tienen que llamar las pantallas, no e.name',
+      );
     }
     expect(fit.personalRecords, isA<List<({String id, String name, double topWeight, double oneRm})>>());
   });
@@ -85,7 +89,6 @@ void main() {
   });
 
   test('every key says something different in each language', () {
-
     final same = <String>[];
     for (final probe in <(String, String Function())>[
       ('startWorkout', () => t.startWorkout),
@@ -188,13 +191,19 @@ void main() {
       setAppLanguage('en');
       expect(exerciseName(bench), 'Barbell Bench Press');
       setAppLanguage('es');
-      expect(exerciseName(bench), 'Press de banca con barra');
+      expect(exerciseName(bench), 'Press plano');
     });
 
     test("a user's own exercise is never translated away", () {
       final mine = Exercise(
-        id: 'c123', name: 'Mi invento', primary: 'chest', secondary: const [],
-        equipment: 'Other', difficulty: 'Beginner', art: '', steps: const [],
+        id: 'c123',
+        name: 'Mi invento',
+        primary: 'chest',
+        secondary: const [],
+        equipment: 'Other',
+        difficulty: 'Beginner',
+        art: '',
+        steps: const [],
       );
       setAppLanguage('es');
       expect(exerciseName(mine), 'Mi invento');
@@ -241,8 +250,14 @@ void main() {
 
     test("a user's own exercise keeps its own steps", () {
       final mine = Exercise(
-        id: 'c999', name: 'Mío', primary: 'chest', secondary: const [],
-        equipment: 'Other', difficulty: 'Beginner', art: '', steps: const ['Mi paso'],
+        id: 'c999',
+        name: 'Mío',
+        primary: 'chest',
+        secondary: const [],
+        equipment: 'Other',
+        difficulty: 'Beginner',
+        art: '',
+        steps: const ['Mi paso'],
       );
       setAppLanguage('es');
       expect(exerciseSteps(mine), const ['Mi paso']);
@@ -280,7 +295,6 @@ void main() {
   });
 
   test('no English strings left hard-coded in the widgets', () {
-
     final pattern = RegExp(
       r"""(?:Text\(\s*|label:\s*|hintText:\s*|ScreenTitle\(\s*|title:\s*)'([^']{2,})'""",
     );

@@ -330,6 +330,20 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                       () => fit.demoSize,
                       fit.setDemoSize,
                     ),
+                    _choiceRow(
+                      context,
+                      gc,
+                      PhosphorIconsRegular.mapPin,
+                      'Sede',
+                      const [
+                        ('junin', 'Junín', PhosphorIconsRegular.mapPin),
+                        ('chacabuco', 'Chacabuco', PhosphorIconsRegular.mapPin),
+                        ('both', 'Ambas', PhosphorIconsRegular.arrowsLeftRight),
+                      ],
+                      () => fit.gymBranch,
+                      fit.setGymBranch,
+                      hint: 'Define qué fondos de Infyter aparecen como opción.',
+                    ),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
                       onTap: () => _editBackground(context),
@@ -1117,7 +1131,24 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
     'none' => t.bgNone,
     'grid' => t.bgGrid,
     'photo' => t.bgPhoto,
+    'dynamic' || 'gym' => 'Según sección',
+    'junin1' => 'Junín 1',
+    'junin2' => 'Junín 2',
+    'junin3' => 'Junín 3',
+    'junin4' => 'Junín 4',
+    'chaca1' => 'Chacabuco 1',
+    'chaca2' => 'Chacabuco 2',
     _ => t.bgDots,
+  };
+
+  String _bgAsset(String pattern) => switch (pattern) {
+    'junin1' => 'assets/img/background_junin1.jpeg',
+    'junin2' => 'assets/img/background_junin2.jpeg',
+    'junin3' => 'assets/img/background_junin3.jpeg',
+    'junin4' => 'assets/img/background_junin4.jpeg',
+    'chaca1' => 'assets/img/background_chaca1.jpeg',
+    'chaca2' => 'assets/img/background_chaca2.jpeg',
+    _ => '',
   };
 
   void _editBackground(BuildContext context) {
@@ -1147,6 +1178,7 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                   OptionGroup([
                     for (final (pattern, icon) in const [
                       ('none', PhosphorIconsRegular.square),
+                      ('dynamic', PhosphorIconsRegular.shuffle),
                       ('dots', PhosphorIconsRegular.dotsNine),
                       ('grid', PhosphorIconsRegular.gridFour),
                     ])
@@ -1154,6 +1186,16 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                         _bgName(pattern),
                         icon: icon,
                         selected: fit.bgPattern == pattern,
+                        onTap: () => setSheet(() => fit.setBgPattern(pattern)),
+                      ),
+                    for (final pattern in fit.branchBackgrounds)
+                      OptionItem(
+                        _bgName(pattern),
+                        selected: fit.bgPattern == pattern,
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(6),
+                          child: Image.asset(_bgAsset(pattern), width: 26, height: 20, fit: BoxFit.cover),
+                        ),
                         onTap: () => setSheet(() => fit.setBgPattern(pattern)),
                       ),
                     if (photo != null)
@@ -1174,7 +1216,9 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                       ),
                   ]),
                   const SizedBox(height: 16),
-                  if (photo != null) ...[
+                  if (fit.bgPattern == 'dynamic' ||
+                      fit.branchBackgrounds.contains(fit.bgPattern) ||
+                      (fit.bgPattern == 'photo' && photo != null)) ...[
                     Text(
                       t.bgDim,
                       style: AppTheme.f(

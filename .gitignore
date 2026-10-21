@@ -70,6 +70,7 @@ test/marketing_shots.dart
 site/
 /.codex-apk-share/
 /handoff/
+/.tools/
 
 # OS junk
 Thumbs.db

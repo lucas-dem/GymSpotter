@@ -80,7 +80,19 @@ class FitState extends FitCore
         alarmSound = null;
         alarmSoundName = null;
       }
-      bgPattern = data['bg'] as String? ?? 'dots';
+      gymBranch = SettingsState.gymBranches.contains(data['gymBranch'])
+          ? data['gymBranch'] as String
+          : 'junin';
+      final storedBg = data['bg'] as String? ?? 'dynamic';
+      bgPattern = storedBg == 'gym'
+          ? 'dynamic'
+          : SettingsState.bgPatterns.contains(storedBg)
+          ? storedBg
+          : 'dynamic';
+      if (!branchBackgrounds.contains(bgPattern) &&
+          !const ['none', 'dynamic', 'dots', 'grid', 'photo'].contains(bgPattern)) {
+        bgPattern = 'dynamic';
+      }
       heatTone = data['heatTone'] as String? ?? 'ember';
       _loadToggles(data);
       alarmAskedAt = (data['alarmAskedAt'] as num?)?.toInt();
@@ -366,6 +378,7 @@ class FitState extends FitCore
     'alarmSound': alarmSound,
     'alarmSoundName': alarmSoundName,
     'bg': bgPattern,
+    'gymBranch': gymBranch,
     'heatTone': heatTone,
     'bgDim': bgDim,
     'showFocus': showFocus,
@@ -459,6 +472,9 @@ class FitState extends FitCore
     noSuggest.clear();
     modeOverride.clear();
     demoSize = 'large';
+    gymBranch = 'junin';
+    bgPattern = 'dynamic';
+    bgDim = 0.55;
     MediaStore.clearAll();
     favorites.clear();
     sessionPicks.clear();
@@ -511,7 +527,17 @@ class FitState extends FitCore
     units = map['units'] as String? ?? units;
     _applyLanguage(map['language'] as String? ?? language);
     restSeconds = (map['rest'] as num?)?.toInt() ?? restSeconds;
-    bgPattern = map['bg'] as String? ?? bgPattern;
+    gymBranch = SettingsState.gymBranches.contains(map['gymBranch']) ? map['gymBranch'] as String : gymBranch;
+    final restoredBg = map['bg'] as String? ?? bgPattern;
+    bgPattern = restoredBg == 'gym'
+        ? 'dynamic'
+        : SettingsState.bgPatterns.contains(restoredBg)
+        ? restoredBg
+        : 'dynamic';
+    if (!branchBackgrounds.contains(bgPattern) &&
+        !const ['none', 'dynamic', 'dots', 'grid', 'photo'].contains(bgPattern)) {
+      bgPattern = 'dynamic';
+    }
     _loadToggles(map);
     onboarded = map['onboarded'] as bool? ?? onboarded;
     favorites

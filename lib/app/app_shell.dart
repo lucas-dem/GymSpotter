@@ -210,7 +210,17 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
                 children: [
                   Positioned.fill(child: ColoredBox(color: context.gc.bg)),
                   Positioned.fill(
-                    child: AppBackground(pattern: fit.bgPattern, photo: fit.bgPhotoPath, dim: fit.bgDim),
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 420),
+                      switchInCurve: Curves.easeOut,
+                      switchOutCurve: Curves.easeIn,
+                      child: AppBackground(
+                        key: ValueKey(fit.backgroundForRoute(fit.route)),
+                        pattern: fit.backgroundForRoute(fit.route),
+                        photo: fit.bgPhotoPath,
+                        dim: fit.bgDim,
+                      ),
+                    ),
                   ),
                   Scaffold(
                     backgroundColor: Colors.transparent,

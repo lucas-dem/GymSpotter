@@ -14,9 +14,18 @@ class AppBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
-    if (pattern == 'photo') {
+    final asset = switch (pattern) {
+      'junin1' || 'gym' => 'assets/img/background_junin1.jpeg',
+      'junin2' => 'assets/img/background_junin2.jpeg',
+      'junin3' => 'assets/img/background_junin3.jpeg',
+      'junin4' => 'assets/img/background_junin4.jpeg',
+      'chaca1' => 'assets/img/background_chaca1.jpeg',
+      'chaca2' => 'assets/img/background_chaca2.jpeg',
+      _ => null,
+    };
+    if (asset != null || pattern == 'photo') {
       final path = photo;
-      if (path == null) return const SizedBox.shrink();
+      if (pattern == 'photo' && path == null) return const SizedBox.shrink();
       final media = MediaQuery.of(context);
       final cacheWidth = (media.size.width * media.devicePixelRatio).round();
       return IgnorePointer(
@@ -24,13 +33,22 @@ class AppBackground extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.file(
-                File(path),
-                fit: BoxFit.cover,
-                cacheWidth: cacheWidth,
-                filterQuality: FilterQuality.medium,
-                errorBuilder: (_, _, _) => const SizedBox.shrink(),
-              ),
+              if (asset != null)
+                Image.asset(
+                  asset,
+                  fit: BoxFit.cover,
+                  cacheWidth: cacheWidth,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                )
+              else
+                Image.file(
+                  File(path!),
+                  fit: BoxFit.cover,
+                  cacheWidth: cacheWidth,
+                  filterQuality: FilterQuality.medium,
+                  errorBuilder: (_, _, _) => const SizedBox.shrink(),
+                ),
               DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
