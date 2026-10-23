@@ -61,6 +61,19 @@ through the same sharp, potrace and svgo pipeline. Frame 1 is the extended
 pose; frames 2 and 3 are the starting pose. Because its style reference is
 Everkinetic artwork, it is shared under the same CC BY-SA 4.0 license.
 
+`reverse-pec-deck.txt` keeps its Workout Guide name, but its frames are new,
+because the original frames showed a chest fly seen from the front, with a
+different machine in each frame. The two poses were drawn with ChatGPT's image
+generation (OpenAI) on 2026-10-22. The style reference was frame 1 of three of
+the app's illustrations — `wide-grip-lat-pulldown` (a Workout Guide original),
+`machine-chest-press` and `lateral-raise` (both Everkinetic-based) — plus a
+pose guide made from a simple 3D model of the man and the machine. The poses
+were aligned on a shared canvas (scale and shift only), their lines adjusted
+to the weight of the other frames, and traced through the same sharp, potrace
+and svgo pipeline. Frame 1 is the pose with the arms out to the sides; frames 2
+and 3 are the starting pose, with the arms forward. Because its style
+reference is CC BY-SA 4.0 artwork, it is shared under the same license.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
