@@ -50,6 +50,17 @@ settings), exactly as its Everkinetic-based frames did:
 `plank-hold.txt` reuses frames 1 and 2 of Workout Guide's `plank` (frame 1
 again as frame 3), so a held plank never drops to the knees.
 
+`dead-bug.txt` keeps its Workout Guide name, but its frames are new, because
+the original three frames showed three different figures. The two poses were
+drawn with ChatGPT's image generation (OpenAI) on 2026-10-22. The style
+reference was three of the app's Everkinetic-based frames (`raised-leg-crunch`
+frame 2, `glute-bridge` frame 1 and `lateral-raise` frame 1), plus a
+stick-figure pose guide. The poses were aligned on a shared canvas (scale and
+shift only), their lines adjusted to the weight of the other frames, and traced
+through the same sharp, potrace and svgo pipeline. Frame 1 is the extended
+pose; frames 2 and 3 are the starting pose. Because its style reference is
+Everkinetic artwork, it is shared under the same CC BY-SA 4.0 license.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
