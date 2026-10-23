@@ -1867,10 +1867,10 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Repite las repeticiones que quieras.',
   ],
   'abs-crunches-bench': [
-    'Túmbate boca arriba y apoya las pantorrillas sobre un banco plano, con caderas y rodillas a unos 90 grados.',
+    'Túmbate boca arriba y eleva las piernas con caderas y rodillas a unos 90 grados, las espinillas paralelas al suelo.',
     'Apoya apenas las yemas de los dedos detrás de la cabeza sin tirar del cuello.',
     'Contrae el abdomen y despega del suelo los hombros y la parte alta de la espalda.',
-    'Haz una pausa manteniendo la zona lumbar apoyada y las piernas relajadas sobre el banco.',
+    'Haz una pausa manteniendo la zona lumbar apoyada y las piernas quietas en el aire.',
     'Baja los hombros de forma controlada y repite.',
   ],
   'vptOQ4N': [

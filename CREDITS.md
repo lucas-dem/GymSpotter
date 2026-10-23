@@ -42,6 +42,10 @@ settings), exactly as its Everkinetic-based frames did:
   `src/images-ai/0084-F.ai.png` and `0084-S.ai.png`. The two poses were aligned
   on a shared canvas and their lines thickened slightly to match the other
   frames. Frame 1 is the pressed pose; frames 2 and 3 are the starting pose.
+- `raised-leg-crunch.txt` — *Crunches* (`dist/svg/0291-*.svg`) with the bench
+  masked out, so the legs stay raised at 90 degrees without support. The figure
+  itself is untouched. Frame 1 is the crunched pose; frames 2 and 3 are the
+  starting pose.
 
 `plank-hold.txt` reuses frames 1 and 2 of Workout Guide's `plank` (frame 1
 again as frame 3), so a held plank never drops to the knees.

@@ -78,7 +78,7 @@ const _requestedArt = {
   'cable-pullover': 'straight-arm-pulldown',
   '9WTm7dq': 'chest-dip',
   'TFqbd8t': 'crunch',
-  'abs-crunches-bench': 'crunch',
+  'abs-crunches-bench': 'raised-leg-crunch',
   'pendulum-hack-squat': 'hack-squat',
   'machine-leg-press': 'leg-press',
   'leg-extension': 'leg-extension',
