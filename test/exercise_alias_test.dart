@@ -95,7 +95,7 @@ const _requestedArt = {
   'DsgkuIt': 'lateral-raise',
   '3eGE2JC': 'front-raise',
   'plank-hold': 'plank-hold',
-  'flat-converging-chest-press': 'machine-chest-press',
+  'flat-converging-chest-press': 'flat-converging-chest-press',
   'incline-converging-chest-press': 'incline-chest-press',
   'alternating-dumbbell-curl': 'alternating-bicep-curl',
   'reverse-grip-lat-pulldown': 'lat-pulldown',
@@ -106,6 +106,8 @@ const _requestedArt = {
 const _sharedArtKept = {
   '2gPfomN': 'crunch',
   'NAkmgdx': 'crunch',
+  'WbNq5Xu': 'machine-chest-press',
+  'wDN97Ca': 'machine-chest-press',
 };
 
 List<Exercise> _search(String query) => kExercises.where(exerciseSearch(query)).toList();

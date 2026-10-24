@@ -3049,10 +3049,10 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Abre los brazos despacio hasta notar el estiramiento en el pecho.',
   ],
   'flat-converging-chest-press': [
-    'Ajusta el asiento para que las agarraderas queden a la altura del centro del pecho.',
-    'Siéntate con la espalda apoyada, el pecho alto y los pies firmes en el suelo.',
-    'Empuja las agarraderas hacia delante y hacia dentro hasta dejar los brazos casi estirados.',
-    'Aprieta el pecho cuando las agarraderas converjan sin despegar los hombros del respaldo.',
+    'Túmbate boca arriba en el banco, con la cabeza hacia la máquina y las agarraderas a la altura del pecho.',
+    'Apoya la cabeza, la espalda alta y la cadera en el banco, con el pecho alto y los pies firmes en el suelo.',
+    'Empuja las agarraderas hacia arriba y hacia dentro hasta dejar los brazos casi estirados.',
+    'Aprieta el pecho cuando las agarraderas converjan sin despegar los hombros del banco.',
     'Vuelve despacio hasta notar un estiramiento cómodo en el pecho.',
   ],
   'incline-converging-chest-press': [

@@ -95,6 +95,14 @@ the other frames, and traced through the same sharp, potrace and svgo pipeline.
 Frame 1 is the pose with one leg lowered; frames 2 and 3 are the starting pose.
 It is shared under the same CC BY-SA 4.0 license as the other illustrations.
 
+`flat-converging-chest-press.txt` is new, so `machine-chest-press.txt` stays
+with the other chest presses that share it. The two poses were drawn with
+ChatGPT's image generation (OpenAI) on 2026-10-23. The poses were aligned on a
+shared canvas (scale and shift only), their lines adjusted to the weight of the
+other frames, and traced through the same sharp, potrace and svgo pipeline.
+Frame 1 is the pressed pose; frames 2 and 3 are the starting pose. It is shared
+under the same CC BY-SA 4.0 license as the other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
