@@ -83,6 +83,18 @@ same sharp, potrace and svgo pipeline. Frame 1 is the crunched pose; frames 2
 and 3 are the starting pose. It is shared under the same CC BY-SA 4.0 license
 as the other illustrations.
 
+`banded-dead-bug.txt` keeps its Workout Guide name, but its frames are new,
+because the original frames mixed two figures in two styles, ran the band to
+the feet instead of to an anchor behind the head, and bent one knee the wrong
+way. The figure's two poses were drawn with ChatGPT's image generation (OpenAI)
+on 2026-10-23. The sheet was also edited programmatically, with a tool that is
+not recorded: its background was whitened, and the anchor post and the band
+were drawn as plain shapes, identical in both poses. The poses were aligned on
+a shared canvas (scale and shift only), their lines adjusted to the weight of
+the other frames, and traced through the same sharp, potrace and svgo pipeline.
+Frame 1 is the pose with one leg lowered; frames 2 and 3 are the starting pose.
+It is shared under the same CC BY-SA 4.0 license as the other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
