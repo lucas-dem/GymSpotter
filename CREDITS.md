@@ -38,10 +38,6 @@ settings), exactly as its Everkinetic-based frames did:
   Frame 1 is the curled pose; frames 2 and 3 are the starting pose.
 - `alternating-bicep-curl.txt` — *Alternating Biceps Curl With Dumbbell*
   (`dist/svg/0223-*.svg`). The frames swap between its two poses.
-- `incline-chest-press.txt` — *Incline Chest Press*, which only exists as
-  `src/images-ai/0084-F.ai.png` and `0084-S.ai.png`. The two poses were aligned
-  on a shared canvas and their lines thickened slightly to match the other
-  frames. Frame 1 is the pressed pose; frames 2 and 3 are the starting pose.
 - `raised-leg-crunch.txt` — *Crunches* (`dist/svg/0291-*.svg`) with the bench
   masked out, so the legs stay raised at 90 degrees without support. The figure
   itself is untouched. Frame 1 is the crunched pose; frames 2 and 3 are the
@@ -102,6 +98,15 @@ shared canvas (scale and shift only), their lines adjusted to the weight of the
 other frames, and traced through the same sharp, potrace and svgo pipeline.
 Frame 1 is the pressed pose; frames 2 and 3 are the starting pose. It is shared
 under the same CC BY-SA 4.0 license as the other illustrations.
+
+`incline-chest-press.txt` keeps its name, but its frames are new; the old ones
+came from Everkinetic's *Incline Chest Press* (`src/images-ai/0084-*.ai.png`).
+The two poses were drawn with ChatGPT's image generation (OpenAI) on
+2026-10-23. The poses were aligned on a shared canvas (scale and shift only),
+their lines adjusted to the weight of the other frames, and traced through the
+same sharp, potrace and svgo pipeline. Frame 1 is the pressed pose; frames 2
+and 3 are the starting pose. It is shared under the same CC BY-SA 4.0 license
+as the other illustrations.
 
 ## Fonts
 
