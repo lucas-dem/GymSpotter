@@ -79,7 +79,7 @@ const _requestedArt = {
   'rope-tricep-pushdown': 'rope-tricep-pushdown',
   'cable-pullover': 'straight-arm-pulldown',
   '9WTm7dq': 'chest-dip',
-  'TFqbd8t': 'crunch',
+  'TFqbd8t': 'floor-crunch',
   'abs-crunches-bench': 'raised-leg-crunch',
   'pendulum-hack-squat': 'hack-squat',
   'machine-leg-press': 'leg-press',
@@ -100,6 +100,12 @@ const _requestedArt = {
   'alternating-dumbbell-curl': 'alternating-bicep-curl',
   'reverse-grip-lat-pulldown': 'lat-pulldown',
   'ykUOVze': 'standing-calf-raise',
+};
+
+// Exercises that keep a shared drawing after a requested exercise moved to a drawing of its own.
+const _sharedArtKept = {
+  '2gPfomN': 'crunch',
+  'NAkmgdx': 'crunch',
 };
 
 List<Exercise> _search(String query) => kExercises.where(exerciseSearch(query)).toList();
@@ -125,6 +131,13 @@ void main() {
     expect(_requestedArt.keys.toSet(), _requestedSpanishNames.keys.toSet());
     final byId = {for (final e in kExercises) e.id: e};
     for (final entry in _requestedArt.entries) {
+      expect(byId[entry.key]?.art, entry.value, reason: entry.key);
+    }
+  });
+
+  test('the exercises that shared a replaced drawing still show it', () {
+    final byId = {for (final e in kExercises) e.id: e};
+    for (final entry in _sharedArtKept.entries) {
       expect(byId[entry.key]?.art, entry.value, reason: entry.key);
     }
   });

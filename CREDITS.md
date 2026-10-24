@@ -74,6 +74,15 @@ and svgo pipeline. Frame 1 is the pose with the arms out to the sides; frames 2
 and 3 are the starting pose, with the arms forward. Because its style
 reference is CC BY-SA 4.0 artwork, it is shared under the same license.
 
+`floor-crunch.txt` is new: *Crunch Floor* keeps the feet on the floor, so it no
+longer shares `crunch.txt` (calves on a bench) with the sit-ups that still use
+it. The two poses were drawn with ChatGPT's image generation (OpenAI) on
+2026-10-23. The poses were aligned on a shared canvas (scale and shift only),
+their lines adjusted to the weight of the other frames, and traced through the
+same sharp, potrace and svgo pipeline. Frame 1 is the crunched pose; frames 2
+and 3 are the starting pose. It is shared under the same CC BY-SA 4.0 license
+as the other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License

@@ -850,7 +850,7 @@ const List<Exercise> kExercises = [
     secondary: [],
     equipment: 'Bodyweight',
     difficulty: 'Beginner',
-    art: 'crunch',
+    art: 'floor-crunch',
     steps: [
       'Lie flat on your back with your knees bent and feet flat on the ground.',
       'Place your hands behind your head with your elbows pointing outwards.',
