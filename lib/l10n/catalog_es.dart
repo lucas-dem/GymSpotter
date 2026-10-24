@@ -2399,7 +2399,7 @@ const Map<String, List<String>> kExerciseStepsEs = {
   ],
   'myfUsKf': [
     'Ajusta la altura del asiento y colócate con el pecho contra la almohadilla y los pies apoyados en el suelo.',
-    'Agarra las asas en pronación y mantén los brazos algo flexionados.',
+    'Agarra las asas con agarre neutro y mantén los brazos algo flexionados.',
     'Suelta el aire y junta las escápulas mientras llevas las asas atrás y hacia fuera.',
     'Aguanta un momento en la máxima contracción, coge aire y vuelve despacio a la posición inicial.',
     'Repite las repeticiones que quieras.',

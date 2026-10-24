@@ -1701,7 +1701,7 @@ const Map<String, List<String>> kExerciseStepsIt = {
   ],
   'myfUsKf': [
     "Regola l'altezza del sedile e siediti alla macchina con il petto contro il cuscinetto e i piedi ben piantati a terra.",
-    'Afferra le maniglie con presa prona e tieni le braccia leggermente piegate.',
+    'Afferra le maniglie con presa neutra e tieni le braccia leggermente piegate.',
     "Espira e stringi le scapole mentre tiri le maniglie indietro e verso l'esterno, lontano dal corpo.",
     'Fai una pausa un momento in massima contrazione, poi inspira e torna lentamente alla posizione iniziale.',
     'Ripeti per il numero di ripetizioni voluto.',
