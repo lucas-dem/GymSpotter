@@ -108,6 +108,17 @@ same sharp, potrace and svgo pipeline. Frame 1 is the pressed pose; frames 2
 and 3 are the starting pose. It is shared under the same CC BY-SA 4.0 license
 as the other illustrations.
 
+`pendulum-hack-squat.txt` is new: the gym's hack squat is a pendulum machine,
+with the shoulder pads on an arm that swings around a fixed pivot, so it no
+longer shares `hack-squat.txt` (a 45-degree sled) with the hack squats that
+still use it. The two poses were drawn with Google's generative AI in Google
+Flow on 2026-10-24, from earlier versions, the first of them drawn with
+ChatGPT's image generation (OpenAI) on 2026-10-23. The poses were aligned on a
+shared canvas (scale and shift only), their lines adjusted to the weight of the
+other frames, and traced through the same sharp, potrace and svgo pipeline.
+Frame 1 is the bottom of the squat; frames 2 and 3 are the standing start. It
+is shared under the same CC BY-SA 4.0 license as the other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License

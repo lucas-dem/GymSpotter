@@ -81,7 +81,7 @@ const _requestedArt = {
   '9WTm7dq': 'chest-dip',
   'TFqbd8t': 'floor-crunch',
   'abs-crunches-bench': 'raised-leg-crunch',
-  'pendulum-hack-squat': 'hack-squat',
+  'pendulum-hack-squat': 'pendulum-hack-squat',
   'machine-leg-press': 'leg-press',
   'leg-extension': 'leg-extension',
   'machine-lying-leg-curl': 'lying-leg-curl',
@@ -108,6 +108,8 @@ const _sharedArtKept = {
   'NAkmgdx': 'crunch',
   'WbNq5Xu': 'machine-chest-press',
   'wDN97Ca': 'machine-chest-press',
+  'ZuPXtCK': 'hack-squat',
+  '5VCj6iH': 'hack-squat',
 };
 
 List<Exercise> _search(String query) => kExercises.where(exerciseSearch(query)).toList();

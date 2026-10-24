@@ -2750,7 +2750,7 @@ const List<Exercise> kExercises = [
     secondary: ['glutes', 'hamstrings'],
     equipment: 'Machine',
     difficulty: 'Intermediate',
-    art: 'hack-squat',
+    art: 'pendulum-hack-squat',
     steps: [
       'Set the pendulum hack machine to a comfortable depth and place your shoulders under the pads.',
       'Plant your feet on the platform about shoulder-width apart and release the safety handles.',
