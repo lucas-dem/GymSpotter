@@ -764,6 +764,22 @@ const List<Exercise> kExercises = [
     ],
   ),
   Exercise(
+    id: 'cable-bar-tricep-pushdown',
+    name: 'Cable Bar Tricep Pushdown',
+    primary: 'triceps',
+    secondary: ['forearm'],
+    equipment: 'Cable',
+    difficulty: 'Beginner',
+    art: 'tricep-pushdown',
+    steps: [
+      'Attach a straight bar to a high pulley cable machine.',
+      'Stand facing the machine with your feet shoulder-width apart and a slight bend in your knees.',
+      'Grasp the bar with an overhand grip, hands shoulder-width apart.',
+      'Keep your elbows close to your sides and your upper arms stationary.',
+      'Exhale and push the bar down until your elbows are fully extended.',
+    ],
+  ),
+  Exercise(
     id: 'iZop9xO',
     name: 'Barbell Lying Triceps Extension',
     primary: 'triceps',

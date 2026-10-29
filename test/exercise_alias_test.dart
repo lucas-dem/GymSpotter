@@ -55,7 +55,7 @@ const _requestedSpanishNames = {
   'seated-leg-curl': 'Femoral sentado',
   'dead-bug': 'Bicho muerto',
   'box-step-up': 'Subidas al cajón',
-  'DsgkuIt': 'Vuelos laterales',
+  'DsgkuIt': 'Vuelos laterales con mancuernas',
   '3eGE2JC': 'Vuelos frontales',
   'plank-hold': 'Planchas frontales',
   'flat-converging-chest-press': 'Convergente plano',
