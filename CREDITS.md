@@ -119,6 +119,22 @@ other frames, and traced through the same sharp, potrace and svgo pipeline.
 Frame 1 is the bottom of the squat; frames 2 and 3 are the standing start. It
 is shared under the same CC BY-SA 4.0 license as the other illustrations.
 
+`high-pulley-overhead-tricep-extension.txt` is new: it shows the exercise as its
+steps describe it, facing away from a high pulley with a rope, so *Cable
+Overhead Triceps Extension (Rope Attachment)* no longer shares
+`overhead-tricep-extension.txt` with the overhead extensions that still use it.
+The two poses were drawn with Google's generative AI in Google Flow on
+2026-10-30, from earlier versions, the first of them drawn with ChatGPT's image
+generation (OpenAI) on 2026-10-29. The sheet was then edited programmatically:
+in the bent-elbow pose, the two guide rods under the raised weight stack, which
+the generator had erased, were redrawn in plain black from the rods of the
+other pose. The poses were aligned on a shared canvas with the machine fixed
+(same scale, shift only), their lines adjusted to the weight of the other
+frames, and traced through the same sharp, potrace and svgo pipeline. Frame 1
+is the pose with the elbows bent; frames 2 and 3 are the pose with the arms
+extended. It is shared under the same CC BY-SA 4.0 license as the other
+illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License

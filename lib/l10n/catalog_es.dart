@@ -272,7 +272,7 @@ const Map<String, String> kExerciseNameEs = {
   'cable-bar-tricep-pushdown': 'Jalón con barra',
   'iZop9xO': 'Francés con barra',
   'PdmaD0N': 'Extensión de tríceps de pie con mancuerna',
-  '2IxROQ1': 'Extensión de tríceps sobre la cabeza en polea con cuerda',
+  '2IxROQ1': 'Francés en polea',
   'X6C6i5Y': 'Fondos en paralelas para tríceps',
   'J6Dx1Mu': 'Press de banca con barra y agarre cerrado',
   '7jGOBF3': 'Press con mancuernas y agarre cerrado',

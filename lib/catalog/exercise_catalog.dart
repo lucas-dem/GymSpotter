@@ -818,7 +818,7 @@ const List<Exercise> kExercises = [
     secondary: [],
     equipment: 'Cable',
     difficulty: 'Beginner',
-    art: 'overhead-tricep-extension',
+    art: 'high-pulley-overhead-tricep-extension',
     steps: [
       'Attach a rope to a cable machine at a high position.',
       'Stand facing away from the machine with your feet shoulder-width apart.',
