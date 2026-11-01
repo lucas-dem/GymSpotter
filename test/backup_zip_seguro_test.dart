@@ -125,8 +125,30 @@ void main() {
     expect(await MediaStore.readBytes(restaurada), nueva);
   });
 
-  test('si al backup le falta un archivo, no se borran las fotos que había', () async {
-    final base = await fotoVieja();
+  // Sesión 27 (decisión 2d de Braian): una restauración incompleta ya no deja huérfanos. Se borra lo que no usa nadie,
+  // como en una completa; solo se conserva lo anterior de lo que el backup no pudo traer (puede ser la única copia).
+  test('si al backup le falta un archivo, se borran los que ya no usa nadie', () async {
+    await fotoVieja();
+    final incompleto = zip(
+      {
+        'media': {squat.id: 'media/images/sentadilla.png', pushUp.id: 'media/videos/no-esta.mp4'},
+        'noteMedia': {'suelta.png': 'media/notes/suelta.png'}, // ninguna nota del backup la usa
+      },
+      {'media/images/sentadilla.png': nueva, 'media/notes/suelta.png': nueva},
+    );
+
+    expect(await restoreBackupZip(incompleto), isTrue);
+
+    expect(
+      archivos(media),
+      [fit.exerciseMedia[squat.id]!],
+      reason: 'la foto vieja de otro ejercicio y la de una nota que no existe quedaban huérfanas',
+    );
+  });
+
+  test('si al backup le falta un archivo, se conserva el anterior de ese mismo ejercicio', () async {
+    final propia = (await MediaStore.saveBytes(pushUp.id, 'png', vieja))!;
+    fit.exerciseMedia[pushUp.id] = propia;
     final incompleto = zip(
       {
         'media': {squat.id: 'media/images/sentadilla.png', pushUp.id: 'media/videos/no-esta.mp4'},
@@ -136,9 +158,26 @@ void main() {
 
     expect(await restoreBackupZip(incompleto), isTrue);
 
-    expect(archivos(media), containsAll([base, fit.exerciseMedia[squat.id]!]));
-    expect(await MediaStore.readBytes(base), vieja);
+    expect(archivos(media), unorderedEquals([propia, fit.exerciseMedia[squat.id]!]));
+    expect(await MediaStore.readBytes(propia), vieja);
   });
+
+  test(
+    'si a una foto de nota o del progreso le falta el archivo, se conserva la anterior con ese nombre',
+    () async {
+      final deNota = (await MediaStore.saveBytes('note', 'png', vieja))!;
+      final delProgreso = (await MediaStore.saveBytes('shot', 'png', vieja))!;
+      final otra = (await MediaStore.saveBytes('note', 'png', vieja))!;
+      final incompleto = zip({
+        'noteMedia': {deNota: 'media/notes/no-esta.png'},
+        'shotMedia': {delProgreso: 'timeline/2026-10-01/front.png'},
+      }, const {});
+
+      expect(await restoreBackupZip(incompleto), isTrue);
+
+      expect(archivos(media), unorderedEquals([deNota, delProgreso]), reason: '$otra no lo nombra el backup');
+    },
+  );
 
   test('la alarma actual no se borra si la del backup no se pudo restaurar', () async {
     final actual = await alarmaActual();

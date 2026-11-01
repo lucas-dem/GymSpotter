@@ -120,14 +120,23 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
   // borran solo los archivos nuevos y todo queda como estaba.
   final before = MediaStore.files().toSet();
   final snapshot = fit.backupSnapshot();
+  final mediaBefore = Map<String, String>.of(fit.exerciseMedia);
   final written = <String>[];
-  var complete = true;
+  // Lo anterior de lo que el backup nombra pero no pudo traer: puede ser la única
+  // copia. Una foto de ejercicio se busca por el ejercicio; las de notas,
+  // progreso y momentos, por el nombre que tenían al hacer el backup.
+  final kept = <String>{};
   try {
     final media = await _restoreFiles(archive, data['media'], written, (id) => id);
     final notes = await _restoreFiles(archive, data['noteMedia'], written, (_) => 'note');
     final shots = await _restoreFiles(archive, data['shotMedia'], written, (_) => 'shot');
     final moments = await _restoreFiles(archive, data['momentMedia'], written, (_) => 'moment');
-    complete = media.complete && notes.complete && shots.complete && moments.complete;
+    kept.addAll([
+      for (final id in media.missing) ?mediaBefore[id],
+      ...notes.missing,
+      ...shots.missing,
+      ...moments.missing,
+    ]);
     fit.applyBackup(
       data,
       restoredMedia: media.files,
@@ -157,28 +166,27 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
   }
   fit.endRescueNotice();
   if (alarm != null) await AlarmStore.keepOnly(alarm);
-  // Si faltó algún archivo del backup, no se borra nada de lo anterior. Nunca se
-  // borra un archivo que el estado restaurado todavía usa.
-  if (complete) {
-    final inUse = _mediaInUse();
-    for (final name in before) {
-      if (!inUse.contains(name)) await MediaStore.delete(name);
-    }
+  // Se borra lo que el estado restaurado no usa, aunque al backup le haya faltado
+  // algún archivo: lo anterior y lo del backup que no quedó en uso. Nunca un
+  // archivo que el estado restaurado usa, ni lo que se conserva por las dudas.
+  final keep = {..._mediaInUse(), ...kept};
+  for (final name in {...before, ...written}) {
+    if (!keep.contains(name)) await MediaStore.delete(name);
   }
   return true;
 }
 
 /// Copia al almacén, con nombres nuevos, los archivos que pide [raw] ({clave:
-/// ruta en el ZIP}) y anota cada uno en [written]. `complete` es false si
-/// alguno no estaba en el ZIP o no se pudo leer o escribir.
-Future<({Map<String, String> files, bool complete})> _restoreFiles(
+/// ruta en el ZIP}) y anota cada uno en [written]. `missing` tiene las claves de
+/// los que no estaban en el ZIP o no se pudieron leer o escribir.
+Future<({Map<String, String> files, List<String> missing})> _restoreFiles(
   Archive archive,
   Object? raw,
   List<String> written,
   String Function(String key) owner,
 ) async {
   final files = <String, String>{};
-  var complete = true;
+  final missing = <String>[];
   for (final e in ((raw as Map?) ?? const {}).entries) {
     final key = e.key;
     final path = e.value;
@@ -186,13 +194,13 @@ Future<({Map<String, String> files, bool complete})> _restoreFiles(
     final bytes = _read(archive, path);
     final base = bytes == null ? null : await MediaStore.saveBytes(owner(key), MediaStore.extOf(path), bytes);
     if (base == null) {
-      complete = false;
+      missing.add(key);
       continue;
     }
     written.add(base);
     files[key] = base;
   }
-  return (files: files, complete: complete);
+  return (files: files, missing: missing);
 }
 
 /// La alarma del backup reemplaza a la elegida solo si su archivo se pudo
