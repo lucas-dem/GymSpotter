@@ -1056,9 +1056,14 @@ void main() {
       );
       expect(prefs.getString(kKey), crudo, reason: 'cargar no escribe');
       final rescate = Store.instance.rescue!;
-      expect(rescate.reason, 'loadFailed');
+      expect(rescate.reason, 'itemsSkipped');
       expect(Store.instance.readRescueCopy(rescate.slot), crudo);
-      expect(fit.routines, isNotEmpty, reason: 'lo que cargó antes del error sigue disponible');
+      expect(fit.routines, hasLength((m['routines'] as List).length));
+      expect(
+        fit.sessions,
+        hasLength((m['sessions'] as List).length - 1),
+        reason: 'se saltea solo la sesión con la serie rara; las demás y lo que sigue se cargan',
+      );
 
       fit.persistNow();
       expect(prefs.getString(kKey), isNot(crudo), reason: 'la app quedó usable y vuelve a guardar');

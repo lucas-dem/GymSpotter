@@ -9,7 +9,7 @@ import '../models/workout.dart';
 import 'store_migrations.dart';
 
 /// Indicador de que el blob guardado no se pudo usar tal cual y quedó una
-/// copia cruda de rescate. Pensado para un aviso futuro; hoy no hay UI.
+/// copia cruda de rescate.
 @immutable
 class StoreRescue {
   const StoreRescue({
@@ -22,10 +22,11 @@ class StoreRescue {
     this.count = 1,
   });
 
-  /// `unreadable`, `notAMap`, `unsupportedVersion`, `migrationFailed` o `loadFailed`.
+  /// `unreadable`, `notAMap`, `unsupportedVersion`, `migrationFailed`,
+  /// `itemsSkipped` (se salteó algún ítem ilegible) o `loadFailed`.
   final String reason;
 
-  /// Copia con el crudo de este incidente: `first` o `last`.
+  /// Copia con el crudo de este incidente (ver [Store.rescueCopies]).
   final String slot;
 
   /// `file` (directorio de documentos de la app) o `prefs` (si no hubo archivo).
@@ -75,6 +76,13 @@ class Store {
   static const _key = 'gymmane_v1';
   static const _rescueKey = '${_key}_rescue';
   static const _rescueDirName = 'data_rescue';
+
+  /// Copias de rescate que se conservan como mucho.
+  static const maxRescueCopies = 3;
+
+  // Nombres de la primera versión de esta capa (sesión 16): cuentan como las
+  // copias más viejas.
+  static const _legacySlots = ['first', 'premigration', 'last'];
 
   static String? _rescueDir;
   static bool _rescueDirKnown = false;
@@ -133,7 +141,7 @@ class Store {
       _rescue('unsupportedVersion', raw, version: tag is int ? tag : null);
       return data;
     }
-    _writeCopy('premigration', raw);
+    _saveCopy(raw);
     try {
       return runStoreMigrations(data, from: version, to: _schemaVersion, migrations: _migrations);
     } catch (error) {
@@ -156,7 +164,29 @@ class Store {
   /// Último incidente registrado, para un aviso futuro. `null` = nunca hubo.
   StoreRescue? get rescue => StoreRescue.tryParse(_prefs?.get(_rescueKey));
 
-  /// Crudo guardado en la copia `first`, `last` o `premigration`.
+  /// Copias de rescate que hay, de la más vieja a la más nueva.
+  List<String> get rescueCopies {
+    final ids = <String>{};
+    final dir = _rescueDir;
+    try {
+      if (dir != null && Directory(dir).existsSync()) {
+        for (final f in Directory(dir).listSync()) {
+          final name = f.uri.pathSegments.last;
+          if (f is! File || !name.endsWith('.json')) continue;
+          final id = name.substring(0, name.length - '.json'.length);
+          if (_isCopyId(id)) ids.add(id);
+        }
+      }
+    } catch (_) {}
+    for (final key in _prefs?.getKeys() ?? const <String>{}) {
+      if (!key.startsWith('${_rescueKey}_')) continue;
+      final id = key.substring(_rescueKey.length + 1);
+      if (_isCopyId(id)) ids.add(id);
+    }
+    return ids.toList()..sort((a, b) => _age(a).compareTo(_age(b)));
+  }
+
+  /// Crudo guardado en la copia [slot] (uno de [rescueCopies]).
   String? readRescueCopy(String slot) {
     final file = _slotFile(slot);
     try {
@@ -187,16 +217,13 @@ class Store {
     return value is String ? value : '$value';
   }
 
-  // Como mucho dos copias de incidentes: `first` no se reemplaza (suele tener
-  // el historial más completo) y `last` guarda el más reciente.
   void _rescue(String reason, String raw, {int? version, Object? error}) {
     if (raw == _rescuedRaw) return;
-    final slot = _hasCopy('first') ? 'last' : 'first';
-    final where = _writeCopy(slot, raw);
+    final copy = _saveCopy(raw);
     final notice = StoreRescue(
       reason: reason,
-      slot: slot,
-      where: where,
+      slot: copy.id,
+      where: copy.where,
       at: DateTime.now(),
       version: version,
       error: error?.runtimeType.toString(),
@@ -223,9 +250,79 @@ class Store {
     return 'prefs';
   }
 
-  bool _hasCopy(String slot) {
-    final file = _slotFile(slot);
-    return (file != null && file.existsSync()) || (_prefs?.containsKey(_prefsSlot(slot)) ?? false);
+  /// Guarda [raw] como copia de rescate y deja como mucho [maxRescueCopies].
+  /// Si ya hay una copia con el mismo contenido, no escribe otra.
+  ({String id, String where}) _saveCopy(String raw) {
+    final ids = rescueCopies;
+    for (final id in ids) {
+      if (readRescueCopy(id) == raw) return (id: id, where: _whereOf(id));
+    }
+    final id = _newCopyId(ids);
+    final where = _writeCopy(id, raw);
+    _rotate([...ids, id], keep: id);
+    return (id: id, where: where);
+  }
+
+  // Cuando sobran copias se descartan primero las que no se pueden recuperar,
+  // de la más vieja a la más nueva, y después las útiles más viejas. Nunca la
+  // última copia útil ni la que se acaba de escribir.
+  void _rotate(List<String> ids, {required String keep}) {
+    var extra = ids.length - maxRescueCopies;
+    if (extra <= 0) return;
+    final useful = {
+      for (final id in ids)
+        if (_isUseful(readRescueCopy(id))) id,
+    };
+    final lastUseful = ids.lastWhere(useful.contains, orElse: () => keep);
+    final order = [...ids.where((id) => !useful.contains(id)), ...ids.where(useful.contains)];
+    for (final id in order) {
+      if (extra <= 0) break;
+      if (id == keep || id == lastUseful) continue;
+      _deleteCopy(id);
+      extra--;
+    }
+  }
+
+  /// Una copia es útil si se puede recuperar: es un objeto JSON.
+  static bool _isUseful(String? raw) {
+    if (raw == null) return false;
+    try {
+      return jsonDecode(raw) is Map<String, dynamic>;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  void _deleteCopy(String id) {
+    try {
+      final file = _slotFile(id);
+      if (file != null && file.existsSync()) file.deleteSync();
+    } catch (_) {}
+    _prefs?.remove(_prefsSlot(id));
+  }
+
+  String _whereOf(String id) {
+    final file = _slotFile(id);
+    return file != null && file.existsSync() ? 'file' : 'prefs';
+  }
+
+  // Microsegundos desde 1970, siempre mayor que el de la copia más nueva.
+  static String _newCopyId(List<String> ids) {
+    var next = DateTime.now().microsecondsSinceEpoch;
+    for (final id in ids) {
+      final age = _age(id);
+      if (age >= next) next = age + 1;
+    }
+    return '$next';
+  }
+
+  // Solo nombres que escribe esta capa: los de la s16 o un número que entra en un int.
+  static bool _isCopyId(String id) =>
+      _legacySlots.contains(id) || (RegExp(r'^\d+$').hasMatch(id) && int.tryParse(id) != null);
+
+  static int _age(String id) {
+    final legacy = _legacySlots.indexOf(id);
+    return legacy >= 0 ? legacy - _legacySlots.length : int.parse(id);
   }
 
   File? _slotFile(String slot) => _rescueDir == null ? null : File('$_rescueDir/$slot.json');

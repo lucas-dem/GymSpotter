@@ -58,12 +58,12 @@ class FitState extends FitCore
         RoutinesState,
         WorkoutState {
   /// Nunca lanza: un error acá cortaba main() antes de runApp en cada arranque.
-  /// Si la carga falla, el crudo queda copiado ANTES de habilitar guardados
-  /// (`_loading` sigue en true hasta después de la copia) y la app abre con
-  /// lo que alcanzó a cargar.
+  /// La carga es tolerante: lo que no se puede leer se saltea y el resto se
+  /// carga. Si se salteó algo o la carga falla, el crudo queda copiado ANTES de
+  /// habilitar guardados (`_loading` sigue en true hasta después de la copia).
   void loadFromStore() {
     try {
-      _loadFrom(Store.instance.load());
+      _loadFrom(Store.instance.load(), onSkipped: () => Store.instance.preserveStored('itemsSkipped'));
     } catch (error) {
       Store.instance.preserveStored('loadFailed', error: error);
       _loading = false;
@@ -75,22 +75,26 @@ class FitState extends FitCore
     }
   }
 
-  void _loadFrom(Map<String, dynamic> data) {
+  /// [onSkipped] corre si se salteó algo, todavía con `_loading` en true.
+  void _loadFrom(Map<String, dynamic> data, {VoidCallback? onSkipped}) {
     _loading = true;
+    _skippedOnLoad = 0;
     if (data['language'] == null) _applyLanguage('es');
     if (data.isNotEmpty) {
-      profile = Profile.fromJson((data['profile'] as Map?)?.cast<String, dynamic>() ?? {});
-      if (const {'Athlete', 'Atleta', 'Name'}.contains(profile.name)) {
-        profile.name = kDefaultName;
-      }
+      _part(() {
+        profile = Profile.fromJson((data['profile'] as Map?)?.cast<String, dynamic>() ?? {});
+        if (const {'Athlete', 'Atleta', 'Name'}.contains(profile.name)) {
+          profile.name = kDefaultName;
+        }
+      });
 
       themePref = _themeFrom(data, fallback: 'dark');
-      units = data['units'] as String? ?? 'kg';
+      units = _pick(data['units'], 'kg');
 
-      _applyLanguage(data['language'] as String? ?? language);
-      restSeconds = (data['rest'] as num?)?.toInt() ?? 90;
-      alarmSound = data['alarmSound'] as String?;
-      alarmSoundName = data['alarmSoundName'] as String?;
+      _applyLanguage(_pickOrNull<String>(data['language']) ?? language);
+      restSeconds = _pick<num>(data['rest'], 90).toInt();
+      alarmSound = _pickOrNull<String>(data['alarmSound']);
+      alarmSoundName = _pickOrNull<String>(data['alarmSoundName']);
       RestAlarm.instance.customSoundPath = alarmSoundPath;
 
       if (alarmSoundPath == null) {
@@ -100,7 +104,7 @@ class FitState extends FitCore
       gymBranch = SettingsState.gymBranches.contains(data['gymBranch'])
           ? data['gymBranch'] as String
           : 'junin';
-      final storedBg = data['bg'] as String? ?? 'dynamic';
+      final storedBg = _pick(data['bg'], 'dynamic');
       bgPattern = storedBg == 'gym'
           ? 'dynamic'
           : SettingsState.bgPatterns.contains(storedBg)
@@ -110,77 +114,137 @@ class FitState extends FitCore
           !const ['none', 'dynamic', 'dots', 'grid', 'photo'].contains(bgPattern)) {
         bgPattern = 'dynamic';
       }
-      heatTone = data['heatTone'] as String? ?? 'ember';
-      _loadToggles(data);
-      alarmAskedAt = (data['alarmAskedAt'] as num?)?.toInt();
-      onboarded = data['onboarded'] as bool? ?? false;
+      heatTone = _pick(data['heatTone'], 'ember');
+      _part(() => _loadToggles(data));
+      alarmAskedAt = _pickOrNull<num>(data['alarmAskedAt'])?.toInt();
+      onboarded = _pick(data['onboarded'], false);
       favorites
         ..clear()
-        ..addAll(((data['favorites'] as Map?) ?? {}).map((k, v) => MapEntry(k as String, v as bool)));
-      _loadNotes(data);
-      _loadPlaces(data);
+        ..addAll(_entries(data['favorites'], (k, v) => MapEntry(k as String, v as bool)));
+      _part(() => _loadNotes(data));
+      _part(() => _loadPlaces(data));
       checkins
         ..clear()
-        ..addAll(((data['checkins'] as List?) ?? []).cast<String>());
+        ..addAll(_strings(data['checkins']));
       routines
         ..clear()
-        ..addAll(
-          ((data['routines'] as List?) ?? []).map(
-            (e) => Routine.fromJson((e as Map).cast<String, dynamic>()),
-          ),
-        );
+        ..addAll(_items(data['routines'], Routine.fromJson));
       weeklyPlan
         ..clear()
-        ..addAll(
-          ((data['weeklyPlan'] as Map?) ?? {}).map((k, v) => MapEntry(int.parse(k as String), v as String)),
-        );
-      _loadAthletes(data);
+        ..addAll(_entries(data['weeklyPlan'], (k, v) => MapEntry(int.parse(k as String), v as String)));
+      _part(() => _loadAthletes(data));
       customExercises
         ..clear()
-        ..addAll(
-          ((data['custom'] as List?) ?? []).map((e) => Exercise.fromJson((e as Map).cast<String, dynamic>())),
-        );
-      _loadMedia(data);
-      _loadRepsOnly(data);
-      _loadExerciseRest(data);
+        ..addAll(_items(data['custom'], Exercise.fromJson));
+      _part(() => _loadMedia(data));
+      _part(() => _loadRepsOnly(data));
+      _part(() => _loadExerciseRest(data));
       sessions
         ..clear()
-        ..addAll(
-          ((data['sessions'] as List?) ?? []).map(
-            (e) => LoggedSession.fromJson((e as Map).cast<String, dynamic>()),
-          ),
-        );
+        ..addAll(_items(data['sessions'], LoggedSession.fromJson));
       bodyweight
         ..clear()
-        ..addAll(
-          ((data['bodyweight'] as List?) ?? []).map(
-            (e) => BodyweightEntry.fromJson((e as Map).cast<String, dynamic>()),
-          ),
-        );
-      _loadMeasures(data);
-      _loadShots(data);
+        ..addAll(_items(data['bodyweight'], BodyweightEntry.fromJson));
+      _part(() => _loadMeasures(data));
+      _part(() => _loadShots(data));
       awards
         ..clear()
         ..addAll(
-          ((data['awards'] as Map?) ?? const {}).map(
+          _entries(
+            data['awards'],
             (k, v) => MapEntry(k as String, DateTime.tryParse(v as String? ?? '') ?? DateTime.now()),
           ),
         );
       awardsSeen
         ..clear()
-        ..addAll(((data['awardsSeen'] as List?) ?? const []).cast<String>());
+        ..addAll(_strings(data['awardsSeen']));
       moments
         ..clear()
-        ..addAll(
-          ((data['moments'] as List?) ?? const []).map(
-            (e) => Moment.fromJson((e as Map).cast<String, dynamic>()),
-          ),
-        );
-      photoIntervalDays = (data['photoEvery'] as num?)?.toInt() ?? 30;
-      bodyTimeline = data['bodyTl'] as bool? ?? false;
-      _restoreLiveSession(data);
+        ..addAll(_items(data['moments'], Moment.fromJson));
+      photoIntervalDays = _pick<num>(data['photoEvery'], 30).toInt();
+      bodyTimeline = _pick(data['bodyTl'], false);
+      _part(() => _restoreLiveSession(data));
     }
+    if (_skippedOnLoad > 0) onSkipped?.call();
     _finishLoad();
+  }
+
+  // Carga tolerante (sesión 26): al leer el almacén, lo que no se puede leer se
+  // saltea y se cuenta, y el resto se carga igual. Importar un backup es
+  // estricto (`_strictLoad`): el primer error hace que applyBackup vuelva atrás.
+  bool _strictLoad = false;
+  int _skippedOnLoad = 0;
+
+  /// Corre [body]; si falla y la carga es tolerante, lo cuenta y sigue.
+  void _part(void Function() body) {
+    try {
+      body();
+    } catch (_) {
+      if (_strictLoad) rethrow;
+      _skippedOnLoad++;
+    }
+  }
+
+  void _skipped(String what) {
+    if (_strictLoad) throw FormatException('tipo inesperado: $what');
+    _skippedOnLoad++;
+  }
+
+  /// Los elementos de la lista [raw] que [parse] puede leer; cada uno que
+  /// falla se saltea y se cuenta.
+  List<T> _each<T>(Object? raw, T Function(Object? item) parse) {
+    final out = <T>[];
+    if (raw == null) return out;
+    if (raw is! List) {
+      _skipped('lista');
+      return out;
+    }
+    for (final item in raw) {
+      try {
+        out.add(parse(item));
+      } catch (_) {
+        if (_strictLoad) rethrow;
+        _skippedOnLoad++;
+      }
+    }
+    return out;
+  }
+
+  List<T> _items<T>(Object? raw, T Function(Map<String, dynamic> json) parse) =>
+      _each(raw, (item) => parse((item as Map).cast<String, dynamic>()));
+
+  List<String> _strings(Object? raw) => _each(raw, (item) => item as String);
+
+  /// Las entradas del mapa [raw] que [parse] puede leer (`null` = se ignora sin
+  /// contarla); cada una que falla se saltea y se cuenta.
+  Map<K, V> _entries<K, V>(Object? raw, MapEntry<K, V>? Function(Object? key, Object? value) parse) {
+    final out = <K, V>{};
+    if (raw == null) return out;
+    if (raw is! Map) {
+      _skipped('mapa');
+      return out;
+    }
+    raw.forEach((key, value) {
+      try {
+        final entry = parse(key, value);
+        if (entry != null) out[entry.key] = entry.value;
+      } catch (_) {
+        if (_strictLoad) rethrow;
+        _skippedOnLoad++;
+      }
+    });
+    return out;
+  }
+
+  /// [value] si es un [T]; si falta, [fallback]; con otro tipo se cuenta (o
+  /// falla, si la carga es estricta) y vale [fallback].
+  T _pick<T extends Object>(Object? value, T fallback) => _pickOrNull<T>(value) ?? fallback;
+
+  T? _pickOrNull<T extends Object>(Object? value) {
+    if (value == null) return null;
+    if (value is T) return value;
+    _skipped('$T');
+    return null;
   }
 
   void _finishLoad() {
@@ -211,54 +275,52 @@ class FitState extends FitCore
   }
 
   void _loadToggles(Map<String, dynamic> data) {
-    demoSize = data['demo'] as String? ?? 'large';
-    alarmStyle = data['alarmStyle'] as String? ?? 'quiet';
+    demoSize = _pick(data['demo'], 'large');
+    alarmStyle = _pick(data['alarmStyle'], 'quiet');
     RestAlarm.instance.style = alarmStyle;
     noSuggest
       ..clear()
-      ..addAll(((data['noSuggest'] as List?) ?? const []).cast<String>());
+      ..addAll(_strings(data['noSuggest']));
     modeOverride
       ..clear()
       ..addAll(
-        ((data['exMode'] as Map?) ?? const {}).map((k, v) => MapEntry(k as String, v as String))
+        _entries(data['exMode'], (k, v) => MapEntry(k as String, v as String))
           ..removeWhere((_, v) => !const ['weight', 'cardio', 'time'].contains(v)),
       );
-    bgDim = (data['bgDim'] as num?)?.toDouble() ?? 0.55;
-    showFocus = data['showFocus'] as bool? ?? true;
-    autoAdvance = data['autoAdvance'] as bool? ?? true;
-    keepScreenOn = data['keepAwake'] as bool? ?? true;
-    startCountdown = data['countdown'] as bool? ?? true;
-    gamification = data['gamify'] as bool? ?? true;
-    logRpe = data['rpe'] as bool? ?? false;
+    bgDim = _pick<num>(data['bgDim'], 0.55).toDouble();
+    showFocus = _pick(data['showFocus'], true);
+    autoAdvance = _pick(data['autoAdvance'], true);
+    keepScreenOn = _pick(data['keepAwake'], true);
+    startCountdown = _pick(data['countdown'], true);
+    gamification = _pick(data['gamify'], true);
+    logRpe = _pick(data['rpe'], false);
     effortScale = data['effort'] == 'rir' ? 'rir' : 'rpe';
-    trainReminderMin = (data['trainAt'] as num?)?.toInt();
-    smartReminder = data['trainSmart'] as bool? ?? false;
-    trainerMode = data['trainerMode'] as bool? ?? false;
+    trainReminderMin = _pickOrNull<num>(data['trainAt'])?.toInt();
+    smartReminder = _pick(data['trainSmart'], false);
+    trainerMode = _pick(data['trainerMode'], false);
     progressStep
       ..clear()
-      ..addAll(
-        ((data['progress'] as Map?) ?? const {}).map((k, v) => MapEntry(k as String, (v as num).toDouble())),
-      );
+      ..addAll(_entries(data['progress'], (k, v) => MapEntry(k as String, (v as num).toDouble())));
     autoWarmup
       ..clear()
-      ..addAll(((data['warmup'] as List?) ?? const []).cast<String>());
+      ..addAll(_strings(data['warmup']));
   }
 
   void _loadAthletes(Map<String, dynamic> data) {
     athletes
       ..clear()
+      ..addAll(_items(data['athletes'], Athlete.fromJson).where((a) => a.name.isNotEmpty));
+    athleteWeeklyPlans
+      ..clear()
       ..addAll(
-        ((data['athletes'] as List?) ?? const [])
-            .map((e) => Athlete.fromJson((e as Map).cast<String, dynamic>()))
-            .where((a) => a.name.isNotEmpty),
+        _entries(data['athleteWeeklyPlans'], (key, value) {
+          if (key is! String || value is! Map) return null;
+          return MapEntry(
+            key,
+            _entries(value, (day, routine) => MapEntry(int.parse(day as String), routine as String)),
+          );
+        }),
       );
-    athleteWeeklyPlans.clear();
-    ((data['athleteWeeklyPlans'] as Map?) ?? const {}).forEach((key, value) {
-      if (key is! String || value is! Map) return;
-      athleteWeeklyPlans[key] = value.map(
-        (day, routine) => MapEntry(int.parse(day as String), routine as String),
-      );
-    });
   }
 
   void _restoreLiveSession(Map<String, dynamic> data) {
@@ -284,11 +346,12 @@ class FitState extends FitCore
       exerciseMedia.addAll(restored);
       return;
     }
-    ((data['media'] as Map?) ?? {}).forEach((k, v) {
-      if (v is String && v.isNotEmpty) exerciseMedia[k as String] = v;
-    });
+    exerciseMedia.addAll(
+      _entries(data['media'], (k, v) => k is String && v is String && v.isNotEmpty ? MapEntry(k, v) : null),
+    );
     for (final e in (data['custom'] as List?) ?? const []) {
-      final legacy = (e as Map)['m'];
+      if (e is! Map) continue; // ya contado al cargar los ejercicios propios
+      final legacy = e['m'];
       final id = e['id'];
       if (id is String && legacy is String && legacy.isNotEmpty) {
         exerciseMedia.putIfAbsent(id, () => legacy);
@@ -297,30 +360,29 @@ class FitState extends FitCore
   }
 
   void _loadExerciseRest(Map<String, dynamic> data) {
-    exerciseRest.clear();
-    ((data['exRest'] as Map?) ?? const {}).forEach((k, v) {
-      final n = (v as num?)?.toInt();
-      if (k is String && n != null) exerciseRest[k] = n.clamp(15, 600);
-    });
+    exerciseRest
+      ..clear()
+      ..addAll(
+        _entries(data['exRest'], (k, v) {
+          final n = (v as num?)?.toInt();
+          return k is String && n != null ? MapEntry(k, n.clamp(15, 600)) : null;
+        }),
+      );
   }
 
   void _loadRepsOnly(Map<String, dynamic> data) {
     repsOnly
       ..clear()
-      ..addAll(((data['repsOnly'] as List?) ?? const []).cast<String>());
+      ..addAll(_strings(data['repsOnly']));
     repsOnlyOff
       ..clear()
-      ..addAll(((data['repsOnlyOff'] as List?) ?? const []).cast<String>());
+      ..addAll(_strings(data['repsOnlyOff']));
   }
 
   void _loadShots(Map<String, dynamic> data, {Map<String, String>? restored}) {
     shots
       ..clear()
-      ..addAll(
-        ((data['shots'] as List?) ?? const [])
-            .map((e) => ProgressEntry.fromJson((e as Map).cast<String, dynamic>()))
-            .where((e) => !e.isEmpty),
-      );
+      ..addAll(_items(data['shots'], ProgressEntry.fromJson).where((e) => !e.isEmpty));
     if (restored == null) return;
     for (var i = 0; i < shots.length; i++) {
       final e = shots[i];
@@ -337,20 +399,14 @@ class FitState extends FitCore
   void _loadMeasures(Map<String, dynamic> data) {
     measures
       ..clear()
-      ..addAll(
-        ((data['measures'] as List?) ?? const [])
-            .map((e) => BodyMeasure.fromJson((e as Map).cast<String, dynamic>()))
-            .where((m) => kMeasureKeys.contains(m.key)),
-      );
+      ..addAll(_items(data['measures'], BodyMeasure.fromJson).where((m) => kMeasureKeys.contains(m.key)));
   }
 
   void _loadPlaces(Map<String, dynamic> data) {
     places.clear();
     final raw = data['places'];
-    if (raw is List) {
-      places.addAll(raw.map((e) => GymPlace.fromJson((e as Map).cast<String, dynamic>())));
-    }
-    activePlaceId = data['place'] as String? ?? '';
+    if (raw is List) places.addAll(_items(raw, GymPlace.fromJson));
+    activePlaceId = _pick(data['place'], '');
     if (places.every((p) => p.id != activePlaceId)) activePlaceId = '';
   }
 
@@ -358,7 +414,7 @@ class FitState extends FitCore
     notes.clear();
     final raw = data['notes'];
     if (raw is List) {
-      notes.addAll(raw.map((e) => GymNote.fromJson((e as Map).cast<String, dynamic>())));
+      notes.addAll(_items(raw, GymNote.fromJson));
       return;
     }
 
@@ -373,17 +429,20 @@ class FitState extends FitCore
     );
 
     (data['exNotes'] as Map?)?.forEach((k, v) {
-      for (final e in (v as List)) {
-        final m = (e as Map).cast<String, dynamic>();
-        final text = ((m['t'] ?? '') as String).trim();
-        if (text.isEmpty) continue;
-        notes.add(legacy(k as String, DateTime.tryParse((m['d'] ?? '') as String) ?? DateTime.now(), text));
+      for (final m in _items(v, (m) => m)) {
+        _part(() {
+          final text = ((m['t'] ?? '') as String).trim();
+          if (text.isEmpty) return;
+          notes.add(legacy(k as String, DateTime.tryParse((m['d'] ?? '') as String) ?? DateTime.now(), text));
+        });
       }
     });
     if (raw is Map) {
       raw.forEach((k, v) {
-        final text = (v as String).trim();
-        if (text.isNotEmpty) notes.add(legacy(k as String, DateTime.now(), text));
+        _part(() {
+          final text = (v as String).trim();
+          if (text.isNotEmpty) notes.add(legacy(k as String, DateTime.now(), text));
+        });
       });
     }
   }
@@ -555,6 +614,7 @@ class FitState extends FitCore
     final before = (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
       ..removeWhere((key, _) => _liveKeys.contains(key));
     try {
+      _strictLoad = true;
       _applyBackup(
         map,
         restoredMedia: restoredMedia,
@@ -563,8 +623,11 @@ class FitState extends FitCore
         restoredMoments: restoredMoments,
       );
     } catch (_) {
+      _strictLoad = false;
       _loadFrom(before);
       rethrow;
+    } finally {
+      _strictLoad = false;
     }
   }
 

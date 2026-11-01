@@ -46,6 +46,8 @@ void main() {
 
   Directory rescueDir() => Directory('${tmp.path}/data_rescue');
 
+  List<String?> copias() => [for (final id in Store.instance.rescueCopies) Store.instance.readRescueCopy(id)];
+
   test('un blob sano de 1.3.x (sin versión) se lee igual y no deja copias ni claves nuevas', () async {
     final raw = jsonEncode({'units': 'lb', 'rest': 120, 'routines': [], 'sessions': []});
     final prefs = await boot({kKey: raw});
@@ -72,14 +74,13 @@ void main() {
     expect(Store.instance.load(), isEmpty);
     final rescue = Store.instance.rescue!;
     expect(rescue.reason, 'unreadable');
-    expect(rescue.slot, 'first');
     expect(rescue.count, 1);
-    expect(File('${rescueDir().path}/first.json').readAsStringSync(), corrupt);
+    expect(File('${rescueDir().path}/${rescue.slot}.json').readAsStringSync(), corrupt);
     expect(prefs.getString(kKey), corrupt, reason: 'cargar no reescribe el original');
 
     await Store.instance.save({'units': 'kg'});
     expect(prefs.getString(kKey), isNot(corrupt));
-    expect(Store.instance.readRescueCopy('first'), corrupt, reason: 'la copia sobrevive al guardado');
+    expect(Store.instance.readRescueCopy(rescue.slot), corrupt, reason: 'la copia sobrevive al guardado');
   });
 
   test('JSON válido que no es un objeto: también va a cuarentena', () async {
@@ -87,7 +88,7 @@ void main() {
 
     expect(Store.instance.load(), isEmpty);
     expect(Store.instance.rescue!.reason, 'notAMap');
-    expect(Store.instance.readRescueCopy('first'), '[1,2,3]');
+    expect(Store.instance.readRescueCopy(Store.instance.rescue!.slot), '[1,2,3]');
   });
 
   test('blob de una versión más nueva: carga lo conocido y conserva el crudo con lo desconocido', () async {
@@ -112,16 +113,18 @@ void main() {
     () async {
       final old = jsonEncode({'units': 'lb', 'rest': 90});
       final prefs = await boot({kKey: old});
-      final backupSeenByMigration = <String?>[];
+      final backupSeenByMigration = <List<String?>>[];
       Store.instance.debugSchema(2, {
         1: (data) {
-          backupSeenByMigration.add(Store.instance.readRescueCopy('premigration'));
+          backupSeenByMigration.add(copias());
           return {...data, 'restV2': data['rest']};
         },
       });
 
       final data = Store.instance.load();
-      expect(backupSeenByMigration, [old], reason: 'el respaldo existe antes de que corra la migración');
+      expect(backupSeenByMigration, [
+        [old],
+      ], reason: 'el respaldo existe antes de que corra la migración');
       expect(data['restV2'], 90);
       expect(data['rest'], 90);
       expect(prefs.getString(kKey), old, reason: 'migrar en memoria no reescribe el original');
@@ -129,8 +132,8 @@ void main() {
 
       await Store.instance.save(data);
       expect(jsonDecode(prefs.getString(kKey)!)[kSchemaVersionKey], 2);
-      expect(Store.instance.readRescueCopy('premigration'), old);
-      expect(filesIn(rescueDir()), ['premigration.json']);
+      expect(copias(), [old]);
+      expect(filesIn(rescueDir()), hasLength(1));
     },
   );
 
@@ -145,7 +148,7 @@ void main() {
     expect(Store.instance.readRescueCopy(rescue.slot), old);
   });
 
-  test('copias acotadas: la primera se conserva y después solo se reemplaza la última', () async {
+  test('tres incidentes seguidos: quedan las tres copias (la del medio ya no se pierde)', () async {
     var disk = <String, Object>{};
     for (final junk in ['{a', '{b', '{c']) {
       final prefs = await boot({...disk, kKey: junk});
@@ -153,11 +156,10 @@ void main() {
       disk = diskOf(prefs);
     }
 
-    expect(Store.instance.readRescueCopy('first'), '{a');
-    expect(Store.instance.readRescueCopy('last'), '{c');
-    expect(filesIn(rescueDir()), ['first.json', 'last.json']);
+    expect(copias(), ['{a', '{b', '{c']);
+    expect(filesIn(rescueDir()), hasLength(3));
     expect(Store.instance.rescue!.count, 3);
-    expect(Store.instance.rescue!.slot, 'last');
+    expect(Store.instance.readRescueCopy(Store.instance.rescue!.slot), '{c');
   });
 
   test('sin directorio disponible, la copia queda en SharedPreferences', () async {
@@ -165,9 +167,10 @@ void main() {
     final prefs = await boot({kKey: '{oops'});
 
     Store.instance.load();
-    expect(prefs.getString('${kKey}_rescue_first'), '{oops');
-    expect(Store.instance.readRescueCopy('first'), '{oops');
-    expect(Store.instance.rescue!.where, 'prefs');
+    final rescue = Store.instance.rescue!;
+    expect(prefs.getString('${kKey}_rescue_${rescue.slot}'), '{oops');
+    expect(Store.instance.readRescueCopy(rescue.slot), '{oops');
+    expect(rescue.where, 'prefs');
   });
 
   test('la misma carga repetida no duplica la copia', () async {
@@ -177,7 +180,8 @@ void main() {
     Store.instance.preserveStored('loadFailed');
 
     expect(Store.instance.rescue!.count, 1);
-    expect(filesIn(rescueDir()), ['first.json']);
+    expect(copias(), ['{x']);
+    expect(filesIn(rescueDir()), hasLength(1));
   });
 
   test('guardia: cada versión anterior a la actual tiene su migración', () {
@@ -187,28 +191,34 @@ void main() {
   });
 
   group('FitState', () {
-    test('un tipo inesperado ya no impide abrir y el crudo queda a salvo antes de guardar', () async {
-      fit.resetAllData();
-      final raw = jsonEncode({
-        'units': 5,
-        'onboarded': true,
-        'routines': [
-          {'id': 'r1', 'n': 'Empuje', 'ex': []},
-        ],
-      });
-      final prefs = await boot({kKey: raw});
+    test(
+      'un ajuste con un tipo inesperado vuelve al de siempre, el resto se carga y el crudo queda a salvo',
+      () async {
+        fit.resetAllData();
+        final raw = jsonEncode({
+          'units': 5,
+          'onboarded': true,
+          'routines': [
+            {'id': 'r1', 'n': 'Empuje', 'ex': []},
+          ],
+        });
+        final prefs = await boot({kKey: raw});
 
-      expect(() => fit.loadFromStore(), returnsNormally);
-      expect(prefs.getString(kKey), raw, reason: 'cargar no escribe');
-      final rescue = Store.instance.rescue!;
-      expect(rescue.reason, 'loadFailed');
-      expect(Store.instance.readRescueCopy(rescue.slot), raw);
+        expect(() => fit.loadFromStore(), returnsNormally);
+        expect(prefs.getString(kKey), raw, reason: 'cargar no escribe');
+        final rescue = Store.instance.rescue!;
+        expect(rescue.reason, 'itemsSkipped');
+        expect(Store.instance.readRescueCopy(rescue.slot), raw);
+        expect(fit.units, 'kg', reason: 'el ajuste ilegible vuelve al valor de siempre');
+        expect(fit.onboarded, isTrue, reason: 'lo que viene después del ajuste raro se carga igual');
+        expect(fit.routines.single.name, 'Empuje');
 
-      fit.persistNow();
-      await pumpEventQueue();
-      expect(prefs.getString(kKey), isNot(raw), reason: 'la app quedó usable: vuelve a guardar');
-      expect(Store.instance.readRescueCopy(rescue.slot), raw);
-    });
+        fit.persistNow();
+        await pumpEventQueue();
+        expect(prefs.getString(kKey), isNot(raw), reason: 'la app quedó usable: vuelve a guardar');
+        expect(Store.instance.readRescueCopy(rescue.slot), raw);
+      },
+    );
 
     test('actualización simulada: blob viejo -> código nuevo -> guardar -> reiniciar -> recargar', () async {
       fit.resetAllData();

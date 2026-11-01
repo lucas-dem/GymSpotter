@@ -69,6 +69,8 @@ void main() {
   Map<String, dynamic> stored(SharedPreferences prefs) =>
       jsonDecode(prefs.getString(kKey)!) as Map<String, dynamic>;
 
+  List<String?> copias() => [for (final id in Store.instance.rescueCopies) Store.instance.readRescueCopy(id)];
+
   setUp(() async {
     tmp = await Directory.systemTemp.createTemp('infyter_s17');
     Store.rescueDirectory = '${tmp.path}/data_rescue';
@@ -161,7 +163,7 @@ void main() {
 
       expect(Store.instance.load(), {'units': 'lb'});
       expect(Store.instance.rescue!.reason, 'migrationFailed');
-      expect(Store.instance.readRescueCopy('premigration'), old);
+      expect(copias(), [old], reason: 'la copia previa a migrar y la del incidente son la misma: una sola');
     });
 
     test('versión que no es un entero o es menor que 1: copia cruda y se carga lo conocido', () async {
@@ -191,7 +193,7 @@ void main() {
           2,
           reason: 'una versión posterior con la migración corregida no la vuelve a correr',
         );
-        expect(Store.instance.readRescueCopy('premigration'), old, reason: 'el original queda en las copias');
+        expect(copias(), [old], reason: 'el original queda en las copias');
         expect(Store.instance.readRescueCopy(Store.instance.rescue!.slot), old);
       },
     );
@@ -207,13 +209,12 @@ void main() {
 
       prefs = await boot({...diskOf(prefs), kKey: '{"nuevo":'});
       fit.loadFromStore();
-      expect(Store.instance.readRescueCopy('first'), '{"viejo":');
-      expect(Store.instance.readRescueCopy('last'), '{"nuevo":');
+      expect(copias(), ['{"viejo":', '{"nuevo":']);
       expect(Store.instance.rescue!.count, 2);
     });
 
     test(
-      'caracterización: carga fallida -> el siguiente guardado deja solo lo que alcanzó a cargar',
+      'una sesión rara se saltea: el resto del historial y lo que se carga después quedan, y el original se copia',
       () async {
         fit.resetAllData();
         final raw = jsonEncode({
@@ -232,24 +233,31 @@ void main() {
         final prefs = await boot({kKey: raw});
 
         fit.loadFromStore();
+        final rescue = Store.instance.rescue!;
+        expect(rescue.reason, 'itemsSkipped');
+        expect(
+          Store.instance.readRescueCopy(rescue.slot),
+          raw,
+          reason: 'copiado antes de cualquier guardado',
+        );
         fit.persistNow();
         await pumpEventQueue();
         final saved = stored(prefs);
+        expect(((saved['routines'] as List).single as Map)['n'], 'Empuje');
         expect(
-          ((saved['routines'] as List).single as Map)['n'],
-          'Empuje',
-          reason: 'lo cargado antes del error queda',
+          [for (final s in saved['sessions'] as List) (s as Map)['d']],
+          ['2026-10-20T18:30:00.000'],
+          reason: 'solo se saltea la sesión rara',
         );
         expect(
-          saved['sessions'],
-          isEmpty,
-          reason: 'una sola sesión rara saca todo el historial de la clave principal',
+          saved['bodyweight'] as List,
+          hasLength(1),
+          reason: 'lo que se carga después de las sesiones queda',
         );
-        expect(saved['bodyweight'], isEmpty, reason: 'y también lo que se carga después de las sesiones');
         expect(
-          Store.instance.readRescueCopy(Store.instance.rescue!.slot),
+          Store.instance.readRescueCopy(rescue.slot),
           raw,
-          reason: 'el original solo queda en la copia',
+          reason: 'el original completo sigue en la copia',
         );
       },
     );
@@ -258,7 +266,8 @@ void main() {
       final prefs = await boot({kKey: '{"roto":'});
       fit.setUnits('lb');
       fit.loadFromStore();
-      expect(File('${tmp.path}/data_rescue/first.json').readAsStringSync(), '{"roto":');
+      final slot = Store.instance.rescue!.slot;
+      expect(File('${tmp.path}/data_rescue/$slot.json').readAsStringSync(), '{"roto":');
 
       await Future<void>.delayed(const Duration(milliseconds: 500));
       expect(
@@ -266,7 +275,7 @@ void main() {
         isNot('{"roto":'),
         reason: 'el guardado diferido pisó la clave principal',
       );
-      expect(Store.instance.readRescueCopy('first'), '{"roto":', reason: 'pero la copia ya estaba en disco');
+      expect(Store.instance.readRescueCopy(slot), '{"roto":', reason: 'pero la copia ya estaba en disco');
     });
 
     test('dos guardados superpuestos: queda el último, sin mezclar', () async {
