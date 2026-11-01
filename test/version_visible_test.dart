@@ -1,7 +1,7 @@
-// Versión visible (sesión 17). Sin defines: la de pubspec.yaml. Con los
-// defines de tienda: la publicada. Para probar lo segundo:
+// Versión visible (sesiones 17 y 26). Se muestra "nombre (build)", por ejemplo "1.3.2 (3)". Sin defines: la de
+// pubspec.yaml ("1.3.0+1" se ve "1.3.0 (1)"). Con los defines de tienda: la publicada. Para probar lo segundo:
 //   flutter test test/version_visible_test.dart \
-//     --dart-define=APP_BUILD_NAME=1.3.1 --dart-define=APP_BUILD_NUMBER=2
+//     --dart-define=APP_BUILD_NAME=1.3.2 --dart-define=APP_BUILD_NUMBER=3
 // Los casos que no aplican a la corrida se marcan como omitidos, no pasan solos.
 import 'dart:io';
 
@@ -11,34 +11,42 @@ import 'package:infyter/legal/compliance.dart';
 import 'package:infyter/screens/legal_screen.dart';
 import 'package:infyter/theme/app_theme.dart';
 
-final _format = RegExp(r'^\d+\.\d+\.\d+\+\d+$');
+final _format = RegExp(r'^\d+\.\d+\.\d+ \(\d+\)$');
+
+String _declared() {
+  final pubspec = File('pubspec.yaml').readAsStringSync();
+  return RegExp(r'^version:\s*(\S+)', multiLine: true).firstMatch(pubspec)!.group(1)!;
+}
 
 void main() {
   test('el respaldo de desarrollo es exactamente el version: de pubspec.yaml', () {
-    final pubspec = File('pubspec.yaml').readAsStringSync();
-    final declared = RegExp(r'^version:\s*(\S+)', multiLine: true).firstMatch(pubspec)!.group(1);
-    expect(Compliance.pubspecVersion, declared, reason: 'si cambia pubspec.yaml, actualizá pubspecVersion');
+    expect(
+      Compliance.pubspecVersion,
+      _declared(),
+      reason: 'si cambia pubspec.yaml, actualizá pubspecVersion',
+    );
   });
 
   test(
-    'sin defines, la versión visible es la de pubspec.yaml',
+    'sin defines, se ve la versión de pubspec.yaml como "nombre (build)"',
     () {
-      expect(Compliance.version, Compliance.pubspecVersion);
+      final parts = _declared().split('+');
+      expect(Compliance.version, '${parts[0]} (${parts[1]})');
     },
     skip: Compliance.hasStoreVersion ? 'corrida con APP_BUILD_NAME/APP_BUILD_NUMBER' : false,
   );
 
   test(
-    'con los defines de tienda, la versión visible es build-name+build-number',
+    'con los defines de tienda, se ve "build-name (build-number)"',
     () {
       const name = String.fromEnvironment('APP_BUILD_NAME');
       const number = String.fromEnvironment('APP_BUILD_NUMBER');
-      expect(Compliance.version, '$name+$number');
+      expect(Compliance.version, '$name ($number)');
     },
     skip: Compliance.hasStoreVersion ? false : 'corrida sin defines de tienda',
   );
 
-  test('el formato es X.Y.Z+N', () {
+  test('el formato es "X.Y.Z (N)"', () {
     expect(_format.hasMatch(Compliance.version), isTrue, reason: '"${Compliance.version}"');
   });
 

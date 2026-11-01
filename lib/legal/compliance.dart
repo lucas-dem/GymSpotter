@@ -8,18 +8,21 @@ abstract final class Compliance {
 
   static const appName = 'Infyter';
 
-  /// Versión visible (pantalla legal y licencias). Las builds de tienda pasan
-  /// los mismos valores que `--build-name`/`--build-number`:
-  /// `--dart-define=APP_BUILD_NAME=1.3.1 --dart-define=APP_BUILD_NUMBER=2`.
+  /// Versión visible (pantalla legal y licencias), como "nombre (build)", por
+  /// ejemplo "1.3.2 (3)". Las builds de tienda pasan los mismos valores que
+  /// `--build-name`/`--build-number`:
+  /// `--dart-define=APP_BUILD_NAME=1.3.2 --dart-define=APP_BUILD_NUMBER=3`.
   /// Se usan los dos o ninguno: sin ambos defines (desarrollo, tests, la build
   /// reproducible de GitHub/F-Droid) vale lo de pubspec.yaml, que es también
   /// lo que Flutter pone en el binario cuando no recibe `--build-name`.
   static const hasStoreVersion =
       bool.hasEnvironment('APP_BUILD_NAME') && bool.hasEnvironment('APP_BUILD_NUMBER');
-  static const pubspecVersion = '1.3.0+1';
+  static const _pubspecName = '1.3.0';
+  static const _pubspecBuild = '1';
+  static const pubspecVersion = '$_pubspecName+$_pubspecBuild';
   static const version = hasStoreVersion
-      ? '${String.fromEnvironment('APP_BUILD_NAME')}+${String.fromEnvironment('APP_BUILD_NUMBER')}'
-      : pubspecVersion;
+      ? '${String.fromEnvironment('APP_BUILD_NAME')} (${String.fromEnvironment('APP_BUILD_NUMBER')})'
+      : '$_pubspecName ($_pubspecBuild)';
   static const license = 'GNU General Public License v3.0';
   static const modifiedSince = '22 de septiembre de 2026';
 
