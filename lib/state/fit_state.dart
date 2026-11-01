@@ -57,8 +57,25 @@ class FitState extends FitCore
         AwardsState,
         RoutinesState,
         WorkoutState {
+  /// Nunca lanza: un error acá cortaba main() antes de runApp en cada arranque.
+  /// Si la carga falla, el crudo queda copiado ANTES de habilitar guardados
+  /// (`_loading` sigue en true hasta después de la copia) y la app abre con
+  /// lo que alcanzó a cargar.
   void loadFromStore() {
-    final data = Store.instance.load();
+    try {
+      _loadFrom(Store.instance.load());
+    } catch (error) {
+      Store.instance.preserveStored('loadFailed', error: error);
+      _loading = false;
+      try {
+        _finishLoad();
+      } catch (_) {
+        notifyListeners();
+      }
+    }
+  }
+
+  void _loadFrom(Map<String, dynamic> data) {
     _loading = true;
     if (data['language'] == null) _applyLanguage('es');
     if (data.isNotEmpty) {
@@ -163,6 +180,10 @@ class FitState extends FitCore
       bodyTimeline = data['bodyTl'] as bool? ?? false;
       _restoreLiveSession(data);
     }
+    _finishLoad();
+  }
+
+  void _finishLoad() {
     _stampMemberSince();
     _seedCalculatorsFromProfile();
     _loading = false;
@@ -510,11 +531,46 @@ class FitState extends FitCore
   bool importJson(String raw) {
     final map = Store.instance.tryParse(raw);
     if (map == null) return false;
-    applyBackup(map);
+    try {
+      applyBackup(map);
+    } catch (_) {
+      return false;
+    }
     return true;
   }
 
+  /// Si el backup trae un tipo inesperado, vuelve al estado de antes sin
+  /// guardar nada y relanza. Antes quedaba aplicado a medias y con `_loading`
+  /// en true: la app dejaba de guardar hasta que se reiniciara.
   void applyBackup(
+    Map<String, dynamic> map, {
+    Map<String, String>? restoredMedia,
+    Map<String, String>? restoredNoteMedia,
+    Map<String, String>? restoredShots,
+    Map<String, String>? restoredMoments,
+  }) {
+    // Copia profunda: toJson() comparte mapas vivos (favoritos, medios, descansos)
+    // que _applyBackup vacía. Sin el entrenamiento en curso: applyBackup no lo
+    // toca y restaurarlo reiniciaría sus timers y la ruta.
+    final before = (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
+      ..removeWhere((key, _) => _liveKeys.contains(key));
+    try {
+      _applyBackup(
+        map,
+        restoredMedia: restoredMedia,
+        restoredNoteMedia: restoredNoteMedia,
+        restoredShots: restoredShots,
+        restoredMoments: restoredMoments,
+      );
+    } catch (_) {
+      _loadFrom(before);
+      rethrow;
+    }
+  }
+
+  static const _liveKeys = {'live', 'liveStart', 'liveElapsed', 'livePaused'};
+
+  void _applyBackup(
     Map<String, dynamic> map, {
     Map<String, String>? restoredMedia,
     Map<String, String>? restoredNoteMedia,
