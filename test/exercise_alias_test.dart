@@ -147,11 +147,13 @@ void main() {
   });
 
   test('no two exercises claim the same alias', () {
+    // Con la misma clave que el índice de alias (sortedKey): dos alias con las mismas palabras en otro orden también
+    // chocan ahí, y searchKey no los veía (sesión 27).
     final owners = <String, String>{};
     final clashes = <String>[];
     for (final entry in kExerciseAliases.entries) {
       for (final alias in entry.value) {
-        final owner = owners.putIfAbsent(searchKey(alias), () => entry.key);
+        final owner = owners.putIfAbsent(sortedKey(alias), () => entry.key);
         if (owner != entry.key) clashes.add('$alias: $owner / ${entry.key}');
       }
     }
