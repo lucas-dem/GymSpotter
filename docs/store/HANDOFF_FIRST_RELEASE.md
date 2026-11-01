@@ -32,10 +32,11 @@ with a different identifier without first updating and rebuilding the project.
    `android/key.properties.example` to `android/key.properties` and replace all
    four placeholder values. Never commit or share either secret file.
 3. Commit the exact release source and publish an immutable `v1.3.0` tag.
-4. From a clean checkout, run:
+4. From a clean checkout, run (the version and build number are the ones shown
+   in the app; add `-DryRun` to print the command without building):
 
    ```powershell
-   ./scripts/build_android_store.ps1 -SourceCodeUrl "https://github.com/lucas-dem/GymSpotter/tree/v1.3.0"
+   ./scripts/build_android_store.ps1 -BuildName 1.3.0 -BuildNumber 1 -SourceCodeUrl "https://github.com/lucas-dem/GymSpotter/tree/v1.3.0"
    ```
 
 5. Upload `build/app/outputs/bundle/release/app-release.aab`.
@@ -56,7 +57,7 @@ with a different identifier without first updating and rebuilding the project.
    ```bash
    flutter pub get
    cd ios && pod install && cd ..
-   ./scripts/build_ios_store.sh "https://github.com/lucas-dem/GymSpotter/tree/v1.3.0"
+   ./scripts/build_ios_store.sh 1.3.0 1 "https://github.com/lucas-dem/GymSpotter/tree/v1.3.0"
    ```
 
 4. Validate and upload the resulting archive with Xcode/Transporter.

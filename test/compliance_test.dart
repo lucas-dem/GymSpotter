@@ -46,4 +46,28 @@ void main() {
       expect(ios, contains(define));
     }
   });
+
+  test(
+    'store build scripts pass the visible version from the same values as --build-name/--build-number',
+    () {
+      final android = File('scripts/build_android_store.ps1').readAsStringSync();
+      final ios = File('scripts/build_ios_store.sh').readAsStringSync();
+      for (final arg in [
+        r'--build-name=$BuildName',
+        r'--build-number=$BuildNumber',
+        r'--dart-define=APP_BUILD_NAME=$BuildName',
+        r'--dart-define=APP_BUILD_NUMBER=$BuildNumber',
+      ]) {
+        expect(android, contains(arg));
+      }
+      for (final arg in [
+        r'--build-name=$build_name',
+        r'--build-number=$build_number',
+        r'--dart-define=APP_BUILD_NAME=$build_name',
+        r'--dart-define=APP_BUILD_NUMBER=$build_number',
+      ]) {
+        expect(ios, contains(arg));
+      }
+    },
+  );
 }
