@@ -77,6 +77,19 @@ class MediaStore {
     } catch (_) {}
   }
 
+  /// Nombres de los archivos que hay hoy en la carpeta de medios.
+  static List<String> files() {
+    if (_dir == null) return const [];
+    try {
+      return [
+        for (final f in Directory(_dir!).listSync())
+          if (f is File) f.uri.pathSegments.last,
+      ];
+    } catch (_) {
+      return const [];
+    }
+  }
+
   static int _seq = 0;
 
   static String _newName(String exerciseId, String ext) =>

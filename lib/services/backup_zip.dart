@@ -9,6 +9,7 @@ import '../models/note.dart';
 import '../models/progress_shot.dart';
 import '../state/fit_state.dart';
 import 'alarm_store.dart';
+import 'local_store.dart';
 import 'media_store.dart';
 
 const String kBackupJsonEntry = 'infyter.json';
@@ -115,74 +116,105 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
     return false;
   }
 
-  await MediaStore.clearAll();
-  final wanted = <String, String>{};
-  ((data['media'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wanted[k] = v;
-  });
-  final restored = <String, String>{};
-  for (final e in wanted.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes(e.key, MediaStore.extOf(e.value), bytes);
-    if (base != null) restored[e.key] = base;
+  // Dos fases: primero se escriben los archivos del backup con nombres nuevos y
+  // se aplica; recién si eso salió bien se borra lo anterior. Si algo falla, se
+  // borran solo los archivos nuevos y todo queda como estaba.
+  final before = MediaStore.files().toSet();
+  final written = <String>[];
+  var complete = true;
+  try {
+    final media = await _restoreFiles(archive, data['media'], written, (id) => id);
+    final notes = await _restoreFiles(archive, data['noteMedia'], written, (_) => 'note');
+    final shots = await _restoreFiles(archive, data['shotMedia'], written, (_) => 'shot');
+    final moments = await _restoreFiles(archive, data['momentMedia'], written, (_) => 'moment');
+    complete = media.complete && notes.complete && shots.complete && moments.complete;
+    fit.applyBackup(
+      data,
+      restoredMedia: media.files,
+      restoredNoteMedia: notes.files,
+      restoredShots: shots.files,
+      restoredMoments: moments.files,
+    );
+  } catch (_) {
+    for (final name in written) {
+      await MediaStore.delete(name);
+    }
+    return false;
   }
 
-  final wantedNotes = <String, String>{};
-  ((data['noteMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedNotes[k] = v;
-  });
-  final restoredNotes = <String, String>{};
-  for (final e in wantedNotes.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('note', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredNotes[e.key] = base;
-  }
-
-  final wantedShots = <String, String>{};
-  ((data['shotMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedShots[k] = v;
-  });
-  final restoredShots = <String, String>{};
-  for (final e in wantedShots.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('shot', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredShots[e.key] = base;
-  }
-
-  final wantedMoments = <String, String>{};
-  ((data['momentMedia'] as Map?) ?? {}).forEach((k, v) {
-    if (k is String && v is String && v.isNotEmpty) wantedMoments[k] = v;
-  });
-  final restoredMoments = <String, String>{};
-  for (final e in wantedMoments.entries) {
-    final bytes = archive.findFile(e.value)?.readBytes();
-    if (bytes == null) continue;
-    final base = await MediaStore.saveBytes('moment', MediaStore.extOf(e.value), bytes);
-    if (base != null) restoredMoments[e.key] = base;
-  }
-
-  final alarmName = data['alarmSound'] as String?;
-  String? alarmBase;
-  if (alarmName != null && alarmName.isNotEmpty) {
-    final bytes = archive.findFile('$_alarmDir/$alarmName')?.readBytes();
-    if (bytes != null) alarmBase = await AlarmStore.saveBytes(alarmName, bytes);
-  }
-
-  fit.applyBackup(data,
-      restoredMedia: restored,
-      restoredNoteMedia: restoredNotes,
-      restoredShots: restoredShots,
-      restoredMoments: restoredMoments);
-  if (alarmBase != null) {
-    fit.setAlarmSound(alarmBase, (data['alarmSoundName'] as String?) ?? alarmBase);
-  } else {
-    await fit.clearAlarmSound();
+  final alarm = await _restoreAlarm(archive, data);
+  // El estado restaurado queda guardado antes de borrar nada de lo anterior.
+  await Store.instance.save(fit.toJson());
+  if (alarm != null) await AlarmStore.keepOnly(alarm);
+  // Si faltó algún archivo del backup, no se borra nada de lo anterior. Nunca se
+  // borra un archivo que el estado restaurado todavía usa.
+  if (complete) {
+    final inUse = _mediaInUse();
+    for (final name in before) {
+      if (!inUse.contains(name)) await MediaStore.delete(name);
+    }
   }
   return true;
 }
+
+/// Copia al almacén, con nombres nuevos, los archivos que pide [raw] ({clave:
+/// ruta en el ZIP}) y anota cada uno en [written]. `complete` es false si
+/// alguno no estaba en el ZIP o no se pudo leer o escribir.
+Future<({Map<String, String> files, bool complete})> _restoreFiles(
+  Archive archive,
+  Object? raw,
+  List<String> written,
+  String Function(String key) owner,
+) async {
+  final files = <String, String>{};
+  var complete = true;
+  for (final e in ((raw as Map?) ?? const {}).entries) {
+    final key = e.key;
+    final path = e.value;
+    if (key is! String || path is! String || path.isEmpty) continue;
+    final bytes = _read(archive, path);
+    final base = bytes == null ? null : await MediaStore.saveBytes(owner(key), MediaStore.extOf(path), bytes);
+    if (base == null) {
+      complete = false;
+      continue;
+    }
+    written.add(base);
+    files[key] = base;
+  }
+  return (files: files, complete: complete);
+}
+
+/// La alarma del backup reemplaza a la elegida solo si su archivo se pudo
+/// restaurar, y la devuelve: las anteriores se borran recién después de guardar
+/// el estado. Si no se pudo, o el backup no trae alarma, queda la actual
+/// (applyBackup no cambia la alarma elegida).
+Future<String?> _restoreAlarm(Archive archive, Map<String, dynamic> data) async {
+  final name = data['alarmSound'];
+  if (name is! String || name.isEmpty) return null;
+  final bytes = _read(archive, '$_alarmDir/$name');
+  final base = bytes == null ? null : await AlarmStore.saveBytes(name, bytes);
+  if (base == null) return null;
+  final display = data['alarmSoundName'];
+  fit.setAlarmSound(base, display is String ? display : base);
+  return base;
+}
+
+Uint8List? _read(Archive archive, String path) {
+  try {
+    return archive.findFile(path)?.readBytes();
+  } catch (_) {
+    return null;
+  }
+}
+
+/// Los archivos de medios que usa el estado actual (los mismos que guarda
+/// [buildBackupZip]).
+Set<String> _mediaInUse() => {
+  ...fit.exerciseMedia.values,
+  for (final note in fit.notes) ...note.media,
+  for (final entry in fit.shots) ...entry.shots.values,
+  for (final moment in fit.moments) moment.file,
+};
 
 ArchiveFile? _findJson(Archive a) {
   ArchiveFile? fallback;

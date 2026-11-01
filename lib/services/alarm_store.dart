@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AlarmStore {
@@ -27,6 +27,9 @@ class AlarmStore {
 
   static bool get ready => _dir != null;
 
+  @visibleForTesting
+  static set directory(String? path) => _dir = path;
+
   static String? pathFor(String? basename) {
     if (_dir == null || basename == null || basename.isEmpty) return null;
     final p = '$_dir/$basename';
@@ -47,16 +50,33 @@ class AlarmStore {
     }
   }
 
+  /// Guarda [bytes] como un sonido nuevo, sin borrar los que ya hay: el que
+  /// lo llama borra el anterior con [keepOnly] recién cuando el nuevo quedó
+  /// elegido (restaurar un backup ZIP).
   static Future<String?> saveBytes(String name, Uint8List bytes) async {
     if (_dir == null) return null;
     try {
-      await _clear();
-      final base = 'alarm-${DateTime.now().millisecondsSinceEpoch}.${_ext(name)}';
+      final stamp = DateTime.now().millisecondsSinceEpoch;
+      final ext = _ext(name);
+      var base = 'alarm-$stamp.$ext';
+      for (var n = 2; File('$_dir/$base').existsSync(); n++) {
+        base = 'alarm-$stamp-$n.$ext';
+      }
       await File('$_dir/$base').writeAsBytes(bytes, flush: true);
       return base;
     } catch (_) {
       return null;
     }
+  }
+
+  /// Borra todos los sonidos menos [keep].
+  static Future<void> keepOnly(String keep) async {
+    if (_dir == null) return;
+    try {
+      for (final f in Directory(_dir!).listSync()) {
+        if (f is File && f.uri.pathSegments.last != keep) await f.delete();
+      }
+    } catch (_) {}
   }
 
   static Future<void> clear() => _clear();
