@@ -379,6 +379,8 @@
   "rescueRestore": "還原",
   "rescueRestored": "副本已還原",
   "rescueFailed": "無法還原副本",
+  "rescueSavedTitle": "無法開啟你的資料",
+  "rescueSavedBody": "Infyter 已按原樣保存了一份資料副本，以便日後可能復原。你可以照常繼續使用應用程式。",
   "support": "支援",
   "reportBug": "回報錯誤",
   "requestFeature": "建議功能",

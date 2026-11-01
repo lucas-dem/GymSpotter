@@ -198,6 +198,8 @@
   "rescueRestore": "恢复",
   "rescueRestored": "副本已恢复",
   "rescueFailed": "无法恢复副本",
+  "rescueSavedTitle": "无法打开你的数据",
+  "rescueSavedBody": "Infyter 已按原样保存了一份数据副本，以便日后可能恢复。你可以照常继续使用应用。",
   "support": "支持与帮助",
   "reportBug": "反馈 Bug",
   "requestFeature": "功能建议",

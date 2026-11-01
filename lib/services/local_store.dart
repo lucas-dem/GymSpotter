@@ -204,6 +204,18 @@ class Store {
     return null;
   }
 
+  /// Copia del crudo guardada en un incidente en el que no se pudo usar nada de
+  /// lo guardado, cuando no hay ninguna copia que restaurar (ver [rescueOffer]):
+  /// el inicio solo avisa que quedó guardada. `null` si no aplica o si la
+  /// persona ya cerró el aviso de este incidente.
+  String? get rescueSaved {
+    final incident = rescue;
+    if (incident == null || incident.handled != null) return null;
+    if (!_lostReasons.contains(incident.reason) || !_isCopyId(incident.slot)) return null;
+    if (readRescueCopy(incident.slot) == null) return null;
+    return rescueOffer == null ? incident.slot : null;
+  }
+
   /// Los datos de la copia [slot] listos para cargar (migrados a esta versión),
   /// o `null` si no es un objeto JSON o es de una versión que esta app no
   /// entiende. No registra incidentes.
@@ -350,7 +362,8 @@ class Store {
 
   // Cuando sobran copias se descartan primero las que no se pueden recuperar,
   // de la más vieja a la más nueva, y después las útiles más viejas. Nunca la
-  // última copia útil ni la que se acaba de escribir.
+  // última copia útil, la que se acaba de escribir ni la de un incidente cuyo
+  // aviso sigue abierto (el inicio dice que se guardó).
   void _rotate(List<String> ids, {required String keep}) {
     var extra = ids.length - maxRescueCopies;
     if (extra <= 0) return;
@@ -359,10 +372,14 @@ class Store {
         if (_isUseful(readRescueCopy(id))) id,
     };
     final lastUseful = ids.lastWhere(useful.contains, orElse: () => keep);
+    final incident = rescue;
+    final notice = incident != null && incident.handled == null && _lostReasons.contains(incident.reason)
+        ? incident.slot
+        : null;
     final order = [...ids.where((id) => !useful.contains(id)), ...ids.where(useful.contains)];
     for (final id in order) {
       if (extra <= 0) break;
-      if (id == keep || id == lastUseful) continue;
+      if (id == keep || id == lastUseful || id == notice) continue;
       _deleteCopy(id);
       extra--;
     }

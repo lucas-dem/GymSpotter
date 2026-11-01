@@ -1237,6 +1237,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rescueFailed => 'Не удалось восстановить копию';
 
   @override
+  String get rescueSavedTitle => 'Не удалось открыть твои данные';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter сохранил копию твоих данных в том виде, в каком они были, на случай, если их удастся восстановить позже. Можно продолжать пользоваться приложением как обычно.';
+
+  @override
   String get support => 'ПОДДЕРЖКА';
 
   @override

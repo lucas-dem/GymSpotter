@@ -379,6 +379,8 @@
   "rescueRestore": "استعادة",
   "rescueRestored": "تمت استعادة النسخة",
   "rescueFailed": "تعذّرت استعادة النسخة",
+  "rescueSavedTitle": "تعذّر فتح بياناتك",
+  "rescueSavedBody": "احتفظ Infyter بنسخة من بياناتك كما كانت، تحسّبًا لإمكانية استعادتها لاحقًا. يمكنك متابعة استخدام التطبيق كالمعتاد.",
   "support": "الدعم",
   "reportBug": "الإبلاغ عن خطأ",
   "requestFeature": "اقتراح ميزة",

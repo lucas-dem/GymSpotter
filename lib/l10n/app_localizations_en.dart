@@ -1193,6 +1193,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rescueFailed => 'Couldn\'t restore the copy';
 
   @override
+  String get rescueSavedTitle => 'Your data couldn\'t be opened';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter kept a copy of your data exactly as it was, in case it can be recovered later. You can keep using the app as usual.';
+
+  @override
   String get support => 'SUPPORT';
 
   @override

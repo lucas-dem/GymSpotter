@@ -2126,6 +2126,18 @@ abstract class AppLocalizations {
   /// **'Couldn\'t restore the copy'**
   String get rescueFailed;
 
+  /// No description provided for @rescueSavedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data couldn\'t be opened'**
+  String get rescueSavedTitle;
+
+  /// No description provided for @rescueSavedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter kept a copy of your data exactly as it was, in case it can be recovered later. You can keep using the app as usual.'**
+  String get rescueSavedBody;
+
   /// No description provided for @support.
   ///
   /// In en, this message translates to:

@@ -379,6 +379,8 @@
   "rescueRestore": "Geri yükle",
   "rescueRestored": "Kopya geri yüklendi",
   "rescueFailed": "Kopya geri yüklenemedi",
+  "rescueSavedTitle": "Verilerin açılamadı",
+  "rescueSavedBody": "Infyter, ileride kurtarılabilir diye verilerinin olduğu gibi bir kopyasını sakladı. Uygulamayı normal şekilde kullanmaya devam edebilirsin.",
   "support": "DESTEK",
   "reportBug": "Hata bildir",
   "requestFeature": "Özellik öner",

@@ -379,6 +379,8 @@
   "rescueRestore": "復元",
   "rescueRestored": "コピーを復元しました",
   "rescueFailed": "コピーを復元できませんでした",
+  "rescueSavedTitle": "データを開けませんでした",
+  "rescueSavedBody": "Infyter は、後で復元できる場合に備えて、データのコピーをそのままの状態で保存しました。アプリはこれまでどおり使えます。",
   "support": "サポート",
   "reportBug": "バグを報告",
   "requestFeature": "機能を提案",

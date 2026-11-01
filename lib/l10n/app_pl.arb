@@ -379,6 +379,8 @@
   "rescueRestore": "Przywróć",
   "rescueRestored": "Kopia przywrócona",
   "rescueFailed": "Nie udało się przywrócić kopii",
+  "rescueSavedTitle": "Nie udało się otworzyć twoich danych",
+  "rescueSavedBody": "Infyter zachował kopię twoich danych w niezmienionej postaci, na wypadek gdyby udało się je później odzyskać. Możesz dalej normalnie korzystać z aplikacji.",
   "support": "POMOC",
   "reportBug": "Zgłoś błąd",
   "requestFeature": "Zaproponuj funkcję",

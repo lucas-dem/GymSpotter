@@ -1199,6 +1199,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get rescueFailed => 'Kopie konnte nicht wiederhergestellt werden';
 
   @override
+  String get rescueSavedTitle => 'Deine Daten konnten nicht geöffnet werden';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter hat eine Kopie deiner Daten so aufbewahrt, wie sie waren, falls sie später wiederhergestellt werden können. Du kannst die App ganz normal weiter nutzen.';
+
+  @override
   String get support => 'HILFE';
 
   @override

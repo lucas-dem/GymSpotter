@@ -1138,6 +1138,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get rescueFailed => '无法恢复副本';
 
   @override
+  String get rescueSavedTitle => '无法打开你的数据';
+
+  @override
+  String get rescueSavedBody => 'Infyter 已按原样保存了一份数据副本，以便日后可能恢复。你可以照常继续使用应用。';
+
+  @override
   String get support => '支持与帮助';
 
   @override
@@ -4106,6 +4112,12 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get rescueFailed => '無法還原副本';
+
+  @override
+  String get rescueSavedTitle => '無法開啟你的資料';
+
+  @override
+  String get rescueSavedBody => 'Infyter 已按原樣保存了一份資料副本，以便日後可能復原。你可以照常繼續使用應用程式。';
 
   @override
   String get support => '支援';

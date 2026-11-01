@@ -1195,6 +1195,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get rescueFailed => 'Kopie kon niet worden teruggezet';
 
   @override
+  String get rescueSavedTitle => 'Je gegevens konden niet worden geopend';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter heeft een kopie van je gegevens bewaard zoals ze waren, voor het geval ze later te herstellen zijn. Je kunt de app gewoon blijven gebruiken.';
+
+  @override
   String get support => 'ONDERSTEUNING';
 
   @override

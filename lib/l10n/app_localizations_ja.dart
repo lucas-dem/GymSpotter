@@ -1144,6 +1144,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get rescueFailed => 'コピーを復元できませんでした';
 
   @override
+  String get rescueSavedTitle => 'データを開けませんでした';
+
+  @override
+  String get rescueSavedBody => 'Infyter は、後で復元できる場合に備えて、データのコピーをそのままの状態で保存しました。アプリはこれまでどおり使えます。';
+
+  @override
   String get support => 'サポート';
 
   @override

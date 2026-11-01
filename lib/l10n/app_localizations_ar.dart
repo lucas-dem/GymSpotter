@@ -1185,6 +1185,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get rescueFailed => 'تعذّرت استعادة النسخة';
 
   @override
+  String get rescueSavedTitle => 'تعذّر فتح بياناتك';
+
+  @override
+  String get rescueSavedBody =>
+      'احتفظ Infyter بنسخة من بياناتك كما كانت، تحسّبًا لإمكانية استعادتها لاحقًا. يمكنك متابعة استخدام التطبيق كالمعتاد.';
+
+  @override
   String get support => 'الدعم';
 
   @override

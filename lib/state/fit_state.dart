@@ -75,10 +75,12 @@ class FitState extends FitCore
     }
     try {
       _rescueOffer = _hasOwnRecords ? null : Store.instance.rescueOffer;
+      _rescueSaved = Store.instance.rescueSaved;
     } catch (_) {
       _rescueOffer = null;
+      _rescueSaved = null;
     }
-    if (_rescueOffer != null) notifyListeners();
+    if (_rescueOffer != null || _rescueSaved != null) notifyListeners();
   }
 
   /// [onSkipped] corre si se salteó algo, todavía con `_loading` en true.
@@ -527,6 +529,15 @@ class FitState extends FitCore
   /// incidente: restaurar los reemplazaría.
   String? get rescueOffer => session == null && !_hasOwnRecords ? _rescueOffer : null;
 
+  // Copia guardada tras datos que no se pudieron abrir, cuando no había ninguna
+  // para restaurar (ver Store.rescueSaved). Se calcula al cargar.
+  String? _rescueSaved;
+
+  /// Copia guardada de los datos que no se pudieron abrir, cuando no hay ninguna
+  /// que restaurar: el inicio solo avisa que quedó guardada. Como no reemplaza
+  /// nada, sigue aunque ya haya datos nuevos, hasta que la persona lo cierre.
+  String? get rescueSaved => _rescueSaved;
+
   // Lo que la persona registra y una restauración reemplazaría. La bienvenida
   // solo crea el perfil y los lugares.
   bool get _hasOwnRecords =>
@@ -565,12 +576,14 @@ class FitState extends FitCore
     return true;
   }
 
-  /// Deja de ofrecer la copia sin borrar ninguna copia.
+  /// Cierra el aviso (el que ofrece restaurar o el que avisa que se guardó una
+  /// copia) sin borrar ninguna copia.
   void dismissRescue() {
-    final slot = _rescueOffer;
+    final slot = _rescueOffer ?? _rescueSaved;
     if (slot == null) return;
     Store.instance.markRescueHandled(slot);
     _rescueOffer = null;
+    _rescueSaved = null;
     notifyListeners();
   }
 
@@ -620,6 +633,7 @@ class FitState extends FitCore
     MediaStore.clearAll();
     Store.instance.discardRescue();
     _rescueOffer = null;
+    _rescueSaved = null;
     favorites.clear();
     sessionPicks.clear();
     selectedMuscles.clear();
@@ -694,9 +708,10 @@ class FitState extends FitCore
       _strictLoad = false;
     }
     // Lo importado reemplazó lo que había: la copia de rescate ya no se ofrece.
-    final offered = _rescueOffer;
+    final offered = _rescueOffer ?? _rescueSaved;
     if (offered != null) Store.instance.markRescueHandled(offered);
     _rescueOffer = null;
+    _rescueSaved = null;
   }
 
   static const _liveKeys = {'live', 'liveStart', 'liveElapsed', 'livePaused'};

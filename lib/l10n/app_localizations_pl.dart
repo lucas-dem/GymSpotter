@@ -1194,6 +1194,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get rescueFailed => 'Nie udało się przywrócić kopii';
 
   @override
+  String get rescueSavedTitle => 'Nie udało się otworzyć twoich danych';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter zachował kopię twoich danych w niezmienionej postaci, na wypadek gdyby udało się je później odzyskać. Możesz dalej normalnie korzystać z aplikacji.';
+
+  @override
   String get support => 'POMOC';
 
   @override

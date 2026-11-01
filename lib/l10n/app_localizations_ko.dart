@@ -1162,6 +1162,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get rescueFailed => '사본을 복원할 수 없습니다';
 
   @override
+  String get rescueSavedTitle => '데이터를 열 수 없습니다';
+
+  @override
+  String get rescueSavedBody => 'Infyter가 나중에 복구할 수 있도록 데이터를 그대로 사본으로 보관했습니다. 앱은 평소처럼 계속 사용할 수 있습니다.';
+
+  @override
   String get support => '지원';
 
   @override

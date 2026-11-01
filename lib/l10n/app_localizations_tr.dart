@@ -1194,6 +1194,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get rescueFailed => 'Kopya geri yüklenemedi';
 
   @override
+  String get rescueSavedTitle => 'Verilerin açılamadı';
+
+  @override
+  String get rescueSavedBody =>
+      'Infyter, ileride kurtarılabilir diye verilerinin olduğu gibi bir kopyasını sakladı. Uygulamayı normal şekilde kullanmaya devam edebilirsin.';
+
+  @override
   String get support => 'DESTEK';
 
   @override

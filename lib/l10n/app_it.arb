@@ -408,6 +408,8 @@
   "rescueRestore": "Ripristina",
   "rescueRestored": "Copia ripristinata",
   "rescueFailed": "Impossibile ripristinare la copia",
+  "rescueSavedTitle": "Non è stato possibile aprire i tuoi dati",
+  "rescueSavedBody": "Infyter ha conservato una copia dei tuoi dati così com'erano, nel caso si possano recuperare più avanti. Puoi continuare a usare l'app normalmente.",
 
   "support": "SUPPORTO",
   "reportBug": "Segnala un bug",

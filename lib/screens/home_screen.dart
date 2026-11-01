@@ -35,9 +35,9 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: riseAll([
             _topBar(gc),
-            if (fit.rescueOffer != null) ...[
+            if (fit.rescueOffer != null || fit.rescueSaved != null) ...[
               const SizedBox(height: 20),
-              _rescueNotice(context, gc),
+              _rescueNotice(context, gc, canRestore: fit.rescueOffer != null),
             ],
             const SizedBox(height: 20),
             _hero(context, gc),
@@ -379,8 +379,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Aviso de rescate (sesión 26): los datos guardados no se pudieron abrir y hay
-  // una copia que se puede restaurar. No bloquea: se puede seguir usando la app.
-  Widget _rescueNotice(BuildContext context, GymColors gc) {
+  // una copia que se puede restaurar. Si no hay ninguna (sesión 27), solo avisa
+  // que quedó guardada una copia de lo que había. No bloquea: se puede seguir
+  // usando la app.
+  Widget _rescueNotice(BuildContext context, GymColors gc, {required bool canRestore}) {
     return SoftCard(
       radius: 22,
       padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
@@ -392,13 +394,16 @@ class HomeScreen extends StatelessWidget {
               Icon(PhosphorIconsRegular.shieldCheck, size: 19, color: gc.accent),
               const SizedBox(width: 14),
               Expanded(
-                child: Text(t.rescueTitle, style: AppTheme.f(14.5, color: gc.text)),
+                child: Text(
+                  canRestore ? t.rescueTitle : t.rescueSavedTitle,
+                  style: AppTheme.f(14.5, color: gc.text),
+                ),
               ),
             ],
           ),
           const SizedBox(height: 6),
           Text(
-            t.rescueBody,
+            canRestore ? t.rescueBody : t.rescueSavedBody,
             style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary),
           ),
           const SizedBox(height: 14),
@@ -406,19 +411,20 @@ class HomeScreen extends StatelessWidget {
             spacing: 10,
             runSpacing: 10,
             children: [
-              GhostButton(
-                label: t.rescueRestore,
-                icon: PhosphorIconsRegular.arrowCounterClockwise,
-                onTap: () {
-                  final restored = fit.restoreRescue();
-                  showNotchToast(
-                    context,
-                    restored ? t.rescueRestored : t.rescueFailed,
-                    icon: restored ? PhosphorIconsFill.checkCircle : PhosphorIconsFill.warningCircle,
-                    accent: restored ? gc.sage : gc.ember,
-                  );
-                },
-              ),
+              if (canRestore)
+                GhostButton(
+                  label: t.rescueRestore,
+                  icon: PhosphorIconsRegular.arrowCounterClockwise,
+                  onTap: () {
+                    final restored = fit.restoreRescue();
+                    showNotchToast(
+                      context,
+                      restored ? t.rescueRestored : t.rescueFailed,
+                      icon: restored ? PhosphorIconsFill.checkCircle : PhosphorIconsFill.warningCircle,
+                      accent: restored ? gc.sage : gc.ember,
+                    );
+                  },
+                ),
               GhostButton(label: t.close, icon: PhosphorIconsRegular.x, onTap: fit.dismissRescue),
             ],
           ),

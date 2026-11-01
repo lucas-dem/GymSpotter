@@ -198,6 +198,8 @@
   "rescueRestore": "Restaurar",
   "rescueRestored": "Cópia restaurada",
   "rescueFailed": "Não foi possível restaurar a cópia",
+  "rescueSavedTitle": "Não foi possível abrir os seus dados",
+  "rescueSavedBody": "O Infyter guardou uma cópia dos seus dados exatamente como estavam, caso possam ser recuperados mais tarde. Você pode continuar usando o app normalmente.",
   "support": "SUPORTE",
   "reportBug": "Relatar um bug",
   "requestFeature": "Solicitar um recurso",
