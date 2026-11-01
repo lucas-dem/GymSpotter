@@ -250,7 +250,7 @@ const Map<String, String> kExerciseNameEs = {
   '50BETrz': 'Dominadas cerradas para bíceps',
   'IENzBdA': 'Curl drag con barra',
   'NlfIbzq': 'Curl predicador alterno con mancuernas',
-  'G08RZcQ': 'Curl de bíceps en polea',
+  'G08RZcQ': 'Bíceps en polea',
   'guT8YnS': 'Dominadas para bíceps',
   'SYJ4Bkt': 'Curl predicador tumbado con barra',
   '6em2Dxj': 'Curl martillo sentado alterno con mancuernas',

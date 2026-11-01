@@ -57,7 +57,7 @@ const Map<String, List<String>> kExerciseAliases = {
   'Bicycle Crunch': ['Bicycle Crunch (Bodyweight)'],
   'Bodyweight Squat': ['Squat', 'Squat (Bodyweight)', 'Air Squat'],
   'Cable Cross-over Variation': ['Cable Fly Crossovers', 'Chest Fly (Cable)'],
-  'Cable Curl': ['Bicep Curl (Cable)'],
+  'Cable Curl': ['Bicep Curl (Cable)', 'Bíceps en polea', 'Curl de bíceps en polea'],
   'Cable Front Raise': ['Front Raise (Cable)'],
   'Cable Hammer Curl (With Rope)': ['Hammer Curl (Cable)'],
   'Cable Kickback': ['Triceps Kickback (Cable)'],
