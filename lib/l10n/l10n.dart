@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
+import '../catalog/exercise_catalog.dart' show kExercises;
 import 'app_localizations.dart';
 import 'catalog_es.dart';
 import 'catalog_it.dart';
@@ -274,7 +275,15 @@ extension GymL10n on AppLocalizations {
 
   String shortDateYear(DateTime d) => _dates(DateFormat.yMMMd).format(d);
 
-  String catalogName(String id, String fallback) =>
+  /// Name shown for an exercise. An own exercise whose name repeats the one a catalog exercise shows in this
+  /// language gets a suffix ("Bíceps en polea (propio)"), so the two can be told apart. Only for the screen:
+  /// search, import matching and whatever is saved, exported or shared use [catalogNameRaw].
+  String catalogName(String id, String fallback) {
+    final name = catalogNameRaw(id, fallback);
+    return _isOwnExerciseId(id) && _repeatsCatalogName(name) ? ownExerciseName(name) : name;
+  }
+
+  String catalogNameRaw(String id, String fallback) =>
       (kGymNamedExercises.contains(id) ? kExerciseNameEs[id] : null) ??
       _catalogNames[appLanguage]?[id] ??
       fallback;
@@ -283,3 +292,58 @@ extension GymL10n on AppLocalizations {
 }
 
 String _capitalize(String s) => s.isEmpty ? s : s[0].toUpperCase() + s.substring(1);
+
+// The ids addCustomExercise creates ("c<microseconds>-<n>"). Provisional import ids ("imp:…") are not own exercises.
+final RegExp _ownExerciseIdPattern = RegExp(r'^c\d+-\d+$');
+
+bool _isOwnExerciseId(String id) => _ownExerciseIdPattern.hasMatch(id);
+
+String? _catalogKeysLanguage;
+Set<String> _catalogKeys = const {};
+
+/// Whether [name] is the name some catalog exercise shows in the current language, ignoring case, accents and
+/// punctuation. The index is built once per language.
+bool _repeatsCatalogName(String name) {
+  final key = _nameKey(name);
+  if (key.isEmpty) return false;
+  if (_catalogKeysLanguage != appLanguage) {
+    _catalogKeys = {for (final e in kExercises) _nameKey(t.catalogNameRaw(e.id, e.name))};
+    _catalogKeysLanguage = appLanguage;
+  }
+  return _catalogKeys.contains(key);
+}
+
+const Map<String, String> _accentFold = {
+  'á': 'a',
+  'à': 'a',
+  'ä': 'a',
+  'â': 'a',
+  'ã': 'a',
+  'å': 'a',
+  'é': 'e',
+  'è': 'e',
+  'ë': 'e',
+  'ê': 'e',
+  'í': 'i',
+  'ì': 'i',
+  'ï': 'i',
+  'î': 'i',
+  'ó': 'o',
+  'ò': 'o',
+  'ö': 'o',
+  'ô': 'o',
+  'õ': 'o',
+  'ú': 'u',
+  'ù': 'u',
+  'ü': 'u',
+  'û': 'u',
+  'ñ': 'n',
+  'ç': 'c',
+};
+
+final RegExp _notLetterOrDigit = RegExp(r'[^\p{L}\p{N}]+', unicode: true);
+
+String _nameKey(String raw) {
+  final folded = raw.toLowerCase().split('').map((ch) => _accentFold[ch] ?? ch).join();
+  return folded.split(_notLetterOrDigit).where((part) => part.isNotEmpty).join(' ');
+}

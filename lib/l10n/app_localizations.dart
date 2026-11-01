@@ -410,6 +410,12 @@ abstract class AppLocalizations {
   /// **'Create it as your own instead'**
   String get createItInstead;
 
+  /// No description provided for @ownExerciseName.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} (custom)'**
+  String ownExerciseName(String name);
+
   /// No description provided for @startCount.
   ///
   /// In en, this message translates to:

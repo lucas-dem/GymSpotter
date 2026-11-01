@@ -51,6 +51,7 @@
   "searchAllExercises": "搜索全部动作…",
   "noExercisesMatch": "没有匹配的动作",
   "createItInstead": "添加为自定义动作",
+  "ownExerciseName": "{name}（自定义）",
   "startCount": "开始 · {n, plural, =1{{n} 项动作} other{{n} 项动作}}",
   "inProgress": "进行中",
   "paused": "已暂停",

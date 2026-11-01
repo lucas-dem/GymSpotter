@@ -82,6 +82,7 @@
   "searchAllExercises": "Пошук вправи…",
   "noExercisesMatch": "Немає відповідних вправ",
   "createItInstead": "Створити власну вправу",
+  "ownExerciseName": "{name} (власна)",
   "startCount": "ПОЧАТИ · {n, plural, =1{{n} ВПРАВА} other{{n} ВПРАВ}}",
   "@startCount": {
     "placeholders": {

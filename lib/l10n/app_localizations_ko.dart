@@ -162,6 +162,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get createItInstead => '대신 나만의 운동 만들기';
 
   @override
+  String ownExerciseName(String name) {
+    return '$name (내 운동)';
+  }
+
+  @override
   String startCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n개 운동', one: '$n개 운동');
     return '시작 · $_temp0';

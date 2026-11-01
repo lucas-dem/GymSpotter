@@ -100,6 +100,10 @@ String muscleLabel(String id) => t.muscle(id);
 
 String exerciseName(Exercise e) => t.catalogName(e.id, e.name);
 
+/// The name without the "(propio)" mark: search, import matching, and what leaves the screen (shared text and
+/// stickers, the AI plan list, backups).
+String exerciseNameRaw(Exercise e) => t.catalogNameRaw(e.id, e.name);
+
 List<String> exerciseSteps(Exercise e) => t.catalogSteps(e.id, e.steps);
 
 String muscleGroup(String muscleId) {

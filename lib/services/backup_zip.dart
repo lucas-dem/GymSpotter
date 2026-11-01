@@ -34,7 +34,7 @@ Future<Uint8List> buildBackupZip() async {
     if (bytes == null || bytes.isEmpty) continue;
     final ex = fit.exerciseById(entry.key);
     final dir = MediaStore.isVideo(entry.value) ? _videosDir : _imagesDir;
-    final name = _uniqueName(used, slugify(ex == null ? entry.key : exerciseName(ex)),
+    final name = _uniqueName(used, slugify(ex == null ? entry.key : exerciseNameRaw(ex)),
         MediaStore.extOf(entry.value));
     archive.addFile(ArchiveFile.noCompress('$dir/$name', bytes.length, bytes));
     paths[entry.key] = '$dir/$name';

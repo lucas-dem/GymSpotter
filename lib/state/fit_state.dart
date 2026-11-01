@@ -961,7 +961,7 @@ class FitState extends FitCore
       '',
     ];
     for (final ex in here) {
-      final local = exerciseName(ex);
+      final local = exerciseNameRaw(ex);
       final label = local == ex.name ? ex.name : '${ex.name} ($local)';
       final mode = modeOf(ex.id);
       lines.add(
@@ -1168,7 +1168,7 @@ class FitState extends FitCore
         final kg = planned.isEmpty ? null : planned.first.weightKg;
         final detail = StringBuffer('${routineSets(r, id)}')..write(reps == null ? '' : ' × $reps');
         if (kg != null) detail.write(' @ ${weightLabel(kg)}');
-        out.add('• ${exerciseName(ex)} — $detail${chainsToNext(r, id) ? ' +' : ''}');
+        out.add('• ${exerciseNameRaw(ex)} — $detail${chainsToNext(r, id) ? ' +' : ''}');
       }
       out.add('');
     }

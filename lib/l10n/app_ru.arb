@@ -56,6 +56,7 @@
   "searchAllExercises": "Найти любое упражнение…",
   "noExercisesMatch": "Ничего не найдено",
   "createItInstead": "Создать своё упражнение",
+  "ownExerciseName": "{name} (своё)",
   "startCount": "СТАРТ · {n, plural, one{{n} УПРАЖНЕНИЕ} few{{n} УПРАЖНЕНИЯ} many{{n} УПРАЖНЕНИЙ} other{{n} УПРАЖНЕНИЯ}}",
 
   "inProgress": "ИДЁТ",

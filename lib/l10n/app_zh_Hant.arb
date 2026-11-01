@@ -82,6 +82,7 @@
   "searchAllExercises": "搜尋動作…",
   "noExercisesMatch": "沒有相符的動作",
   "createItInstead": "改為建立自己的動作",
+  "ownExerciseName": "{name}（自訂）",
   "startCount": "開始 · {n, plural, =1{{n} 個動作} other{{n} 個動作}}",
   "@startCount": {
     "placeholders": {

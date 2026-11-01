@@ -60,6 +60,7 @@
   "searchAllExercises": "Cerca un esercizio…",
   "noExercisesMatch": "Nessun esercizio trovato",
   "createItInstead": "Crealo come esercizio personale",
+  "ownExerciseName": "{name} (personale)",
   "startCount": "INIZIA · {n, plural, =1{{n} ESERCIZIO} other{{n} ESERCIZI}}",
   "@startCount": { "placeholders": { "n": { "type": "int" } } },
 

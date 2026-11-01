@@ -60,6 +60,8 @@
   "searchAllExercises": "Search any exercise…",
   "noExercisesMatch": "No exercises match",
   "createItInstead": "Create it as your own instead",
+  "ownExerciseName": "{name} (custom)",
+  "@ownExerciseName": { "placeholders": { "name": { "type": "String" } } },
   "startCount": "START · {n, plural, =1{{n} EXERCISE} other{{n} EXERCISES}}",
   "@startCount": { "placeholders": { "n": { "type": "int" } } },
 

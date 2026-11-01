@@ -68,7 +68,7 @@ ExerciseFilter exerciseSearch(String query) {
   final key = searchKey(query);
 
   return (e) {
-    final label = exerciseName(e);
+    final label = exerciseNameRaw(e);
     if (e.name.toLowerCase().contains(plain) || label.toLowerCase().contains(plain)) return true;
     if (key.isEmpty) return false;
     if (_keyOf(e.name).contains(key) || _keyOf(label).contains(key)) return true;
@@ -152,7 +152,7 @@ Exercise? matchExercise(String name, Iterable<Exercise> pool) {
   }
 
   for (final e in pool) {
-    final label = exerciseName(e);
+    final label = exerciseNameRaw(e);
     if (label != e.name && _keyOf(label) == key) return e;
   }
 

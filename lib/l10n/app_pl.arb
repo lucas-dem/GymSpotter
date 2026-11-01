@@ -82,6 +82,7 @@
   "searchAllExercises": "Szukaj ćwiczenia…",
   "noExercisesMatch": "Brak pasujących ćwiczeń",
   "createItInstead": "Utwórz własne ćwiczenie",
+  "ownExerciseName": "{name} (własne)",
   "startCount": "START · {n, plural, =1{{n} ĆWICZENIE} other{{n} ĆWICZEŃ}}",
   "@startCount": {
     "placeholders": {

@@ -162,6 +162,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get createItInstead => '添加为自定义动作';
 
   @override
+  String ownExerciseName(String name) {
+    return '$name（自定义）';
+  }
+
+  @override
   String startCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 项动作', one: '$n 项动作');
     return '开始 · $_temp0';
@@ -3136,6 +3141,11 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get createItInstead => '改為建立自己的動作';
+
+  @override
+  String ownExerciseName(String name) {
+    return '$name（自訂）';
+  }
 
   @override
   String startCount(int n) {

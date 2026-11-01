@@ -162,6 +162,11 @@ class AppLocalizationsUk extends AppLocalizations {
   String get createItInstead => 'Створити власну вправу';
 
   @override
+  String ownExerciseName(String name) {
+    return '$name (власна)';
+  }
+
+  @override
   String startCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n ВПРАВ', one: '$n ВПРАВА');
     return 'ПОЧАТИ · $_temp0';

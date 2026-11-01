@@ -169,6 +169,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get createItInstead => 'Создать своё упражнение';
 
   @override
+  String ownExerciseName(String name) {
+    return '$name (своё)';
+  }
+
+  @override
   String startCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,

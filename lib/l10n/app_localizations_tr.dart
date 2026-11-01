@@ -162,6 +162,11 @@ class AppLocalizationsTr extends AppLocalizations {
   String get createItInstead => 'Bunun yerine kendi egzersizini oluştur';
 
   @override
+  String ownExerciseName(String name) {
+    return '$name (özel)';
+  }
+
+  @override
   String startCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n EGZERSİZ', one: '$n EGZERSİZ');
     return 'BAŞLA · $_temp0';

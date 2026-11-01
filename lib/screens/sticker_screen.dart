@@ -572,7 +572,8 @@ class _Sticker extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      t.catalogName(e.id, e.name),
+                      // Shared outside the app: the saved name, without the "(propio)" mark.
+                      t.catalogNameRaw(e.id, e.name),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: _s(14, FontWeight.w800, height: 1.2),

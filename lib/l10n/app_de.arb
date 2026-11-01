@@ -60,6 +60,7 @@
   "searchAllExercises": "Übung suchen…",
   "noExercisesMatch": "Keine passenden Übungen",
   "createItInstead": "Stattdessen eigene Übung erstellen",
+  "ownExerciseName": "{name} (eigene)",
   "startCount": "START · {n, plural, =1{{n} ÜBUNG} other{{n} ÜBUNGEN}}",
   "@startCount": { "placeholders": { "n": { "type": "int" } } },
 

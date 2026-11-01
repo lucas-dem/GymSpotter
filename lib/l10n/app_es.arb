@@ -56,6 +56,7 @@
   "searchAllExercises": "Busca cualquier ejercicio…",
   "noExercisesMatch": "Ningún ejercicio coincide",
   "createItInstead": "Créalo como ejercicio propio",
+  "ownExerciseName": "{name} (propio)",
   "startCount": "EMPEZAR · {n, plural, =1{{n} EJERCICIO} other{{n} EJERCICIOS}}",
 
   "inProgress": "EN CURSO",

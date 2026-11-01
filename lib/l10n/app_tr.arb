@@ -82,6 +82,7 @@
   "searchAllExercises": "Egzersiz ara…",
   "noExercisesMatch": "Eşleşen egzersiz yok",
   "createItInstead": "Bunun yerine kendi egzersizini oluştur",
+  "ownExerciseName": "{name} (özel)",
   "startCount": "BAŞLA · {n, plural, =1{{n} EGZERSİZ} other{{n} EGZERSİZ}}",
   "@startCount": {
     "placeholders": {

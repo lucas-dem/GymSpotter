@@ -82,6 +82,7 @@
   "searchAllExercises": "ابحث عن تمرين…",
   "noExercisesMatch": "لا توجد تمارين مطابقة",
   "createItInstead": "أنشئ تمرينك الخاص بدلًا من ذلك",
+  "ownExerciseName": "{name} (خاص بك)",
   "startCount": "ابدأ · {n, plural, =1{تمرين واحد} other{{n} تمارين}}",
   "@startCount": {
     "placeholders": {

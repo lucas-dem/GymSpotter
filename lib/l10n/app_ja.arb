@@ -82,6 +82,7 @@
   "searchAllExercises": "種目を検索…",
   "noExercisesMatch": "一致する種目がありません",
   "createItInstead": "代わりに自分の種目を作成",
+  "ownExerciseName": "{name}（自作）",
   "startCount": "開始 · {n, plural, =1{{n} 種目} other{{n} 種目}}",
   "@startCount": {
     "placeholders": {
