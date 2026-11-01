@@ -1177,8 +1177,28 @@ class FitState extends FitCore
 
   static String _sessionKey(LoggedSession s) =>
       '${s.date.toIso8601String()}|${s.exercises.map((e) => '${e.id}:${e.sets.length}').join(',')}';
+
+  // La clave de una sesión ya guardada con sus ids provisorios ("imp:…")
+  // resueltos con los nombres de hoy: un ejercicio importado antes de que su
+  // nombre tuviera alias ahora se importa con el id del catálogo. [matched]
+  // guarda lo ya resuelto: un historial largo repite pocos nombres.
+  String _storedKey(LoggedSession s, Map<String, String?> matched) => _sessionKey(
+    LoggedSession(s.date, s.durationSec, [
+      for (final e in s.exercises)
+        e.id.startsWith('imp:')
+            ? LoggedExercise(
+                matched.putIfAbsent(e.name, () => matchExerciseByName(e.name)?.id) ?? e.id,
+                e.name,
+                e.primary,
+                e.sets,
+              )
+            : e,
+    ]),
+  );
+
   int importParsedSessions(List<ParsedSession> parsed) {
-    final seen = sessions.map(_sessionKey).toSet();
+    final matched = <String, String?>{};
+    final seen = {...sessions.map(_sessionKey), for (final s in sessions) _storedKey(s, matched)};
     var added = 0;
     for (final ps in parsed) {
       final exs = <LoggedExercise>[];
