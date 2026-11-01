@@ -36,18 +36,19 @@ class AlarmStore {
     return File(p).existsSync() ? p : null;
   }
 
+  /// Copia el sonido elegido con un nombre nuevo y recién entonces borra los
+  /// anteriores: si la copia falla, la alarma que había sigue.
   static Future<String?> importSound(String srcPath) async {
     if (_dir == null) return null;
+    final base = _newName(srcPath);
     try {
-      await _clear();
-      final ext = _ext(srcPath);
-
-      final base = 'alarm-${DateTime.now().millisecondsSinceEpoch}.$ext';
       await File(srcPath).copy('$_dir/$base');
-      return base;
     } catch (_) {
+      await delete(base);
       return null;
     }
+    await keepOnly(base);
+    return base;
   }
 
   /// Guarda [bytes] como un sonido nuevo, sin borrar los que ya hay: el que
@@ -56,17 +57,23 @@ class AlarmStore {
   static Future<String?> saveBytes(String name, Uint8List bytes) async {
     if (_dir == null) return null;
     try {
-      final stamp = DateTime.now().millisecondsSinceEpoch;
-      final ext = _ext(name);
-      var base = 'alarm-$stamp.$ext';
-      for (var n = 2; File('$_dir/$base').existsSync(); n++) {
-        base = 'alarm-$stamp-$n.$ext';
-      }
+      final base = _newName(name);
       await File('$_dir/$base').writeAsBytes(bytes, flush: true);
       return base;
     } catch (_) {
       return null;
     }
+  }
+
+  // Un nombre que no pisa ningún sonido guardado.
+  static String _newName(String source) {
+    final stamp = DateTime.now().millisecondsSinceEpoch;
+    final ext = _ext(source);
+    var base = 'alarm-$stamp.$ext';
+    for (var n = 2; File('$_dir/$base').existsSync(); n++) {
+      base = 'alarm-$stamp-$n.$ext';
+    }
+    return base;
   }
 
   /// Borra el sonido [basename] (uno recién guardado que no quedó elegido).
