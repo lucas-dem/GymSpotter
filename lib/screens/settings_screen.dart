@@ -1352,13 +1352,16 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
       return;
     }
     final basename = await AlarmStore.importSound(path);
-    if (!context.mounted) return;
     if (basename == null) {
-      _snack(context, t.alarmInvalid);
+      if (context.mounted) _snack(context, t.alarmInvalid);
       return;
     }
+    // importSound ya borró los sonidos anteriores: el nuevo queda elegido y
+    // guardado aunque la pantalla ya no esté.
     final display = _prettyName(name ?? basename);
     fit.setAlarmSound(basename, display);
+    fit.persistNow();
+    if (!context.mounted) return;
     _snack(context, t.alarmChanged(display));
   }
 
