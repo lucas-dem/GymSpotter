@@ -1727,11 +1727,11 @@ const Map<String, List<String>> kExerciseStepsIt = {
     'Ripeti per il numero di ripetizioni voluto.',
   ],
   'aqvSOQE': [
-    'Aggancia una maniglia a D a ciascuna puleggia bassa e mettiti al centro della macchina a cavi incrociati.',
-    'Afferra le maniglie con presa prona, palmi in basso, e fai un passo avanti, con i piedi alla larghezza delle spalle.',
-    'Piega leggermente le ginocchia e piegati in avanti con il busto, tenendo la schiena dritta e gli addominali attivi.',
-    'Con le braccia tese ai lati e leggermente piegate ai gomiti, espira e stringi le scapole mentre tiri i cavi indietro e verso lalto in un movimento di aperture inverse.',
-    'Fai una pausa un momento in massima contrazione, poi inspira e torna lentamente alla posizione iniziale.',
+    "Regola entrambe le pulegge della macchina a cavi incrociati all'altezza delle spalle e aggancia una maniglia a D a ciascuna.",
+    'Mettiti al centro della macchina e afferra ogni maniglia con la mano opposta, in modo che i cavi si incrocino davanti a te.',
+    "Stai in piedi con il busto eretto e i piedi alla larghezza delle spalle, le braccia tese davanti al petto all'altezza delle spalle e i gomiti leggermente piegati.",
+    "Espira e apri le braccia ai lati all'altezza delle spalle, stringendo le scapole.",
+    'Fai una pausa per un momento, poi inspira e torna lentamente alla posizione iniziale.',
   ],
   '67n3r98': [
     "Regola l'altezza del sedile e siediti alla macchina con la schiena contro lo schienale.",

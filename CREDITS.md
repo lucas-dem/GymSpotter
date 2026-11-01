@@ -145,6 +145,18 @@ the other frames, and traced through the same sharp, potrace and svgo pipeline.
 Frame 1 is the bottom of the squat; frames 2 and 3 are the standing start. It
 is shared under the same CC BY-SA 4.0 license as the other illustrations.
 
+`reverse-cable-crossover.txt` is new: it shows the reverse fly as its steps
+describe it, standing at a dual cable machine with the pulleys at shoulder
+height and each hand holding the cable from the opposite side, so *Cable
+Cross-over Revers Fly* no longer shares `cable-rear-delt-fly.txt` with the two
+rear delt rows that still use it. The two poses were drawn with OpenAI's image
+generation on 2026-11-01. The poses were aligned on a shared canvas (same
+scale, shift only), their lines adjusted to the weight of the other frames, and
+traced through the same sharp, potrace and svgo pipeline. Frame 1 is the pose
+with the arms out to the sides; frames 2 and 3 are the starting pose, with the
+arms extended in front. It is shared under the same CC BY-SA 4.0 license as the
+other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License

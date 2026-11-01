@@ -1493,11 +1493,11 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Tira de las asas hacia abajo y cruzando el cuerpo, juntando las escápulas.',
   ],
   'aqvSOQE': [
-    'Engancha un asa a cada polea baja y ponte en el centro de la máquina de cruces.',
-    'Agarra las asas en pronación (palmas hacia abajo) y da un paso adelante, con los pies a la anchura de los hombros.',
-    'Flexiona un poco las rodillas e inclínate hacia delante, con la espalda recta y el abdomen apretado.',
-    'Con los brazos abiertos a los lados y los codos algo flexionados, suelta el aire y junta las escápulas mientras llevas los cables atrás y arriba, como en unos pájaros.',
-    'Aguanta un momento en la máxima contracción, coge aire y vuelve despacio a la posición inicial.',
+    'Pon las dos poleas de la máquina de cruces a la altura de los hombros y engancha un asa en cada una.',
+    'Ponte en el centro de la máquina y agarra cada asa con la mano contraria, de modo que los cables se crucen delante de ti.',
+    'Ponte erguido con los pies a la anchura de los hombros, los brazos estirados delante del pecho a la altura de los hombros y los codos algo flexionados.',
+    'Suelta el aire y abre los brazos hacia los lados a la altura de los hombros, juntando las escápulas.',
+    'Aguanta un momento, coge aire y vuelve despacio a la posición inicial.',
   ],
   '0CXGHya': [
     'Ajusta las poleas a la altura del pecho.',
