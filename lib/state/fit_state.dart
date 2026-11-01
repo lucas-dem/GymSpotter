@@ -557,8 +557,7 @@ class FitState extends FitCore
     if (slot == null) return false;
     final data = Store.instance.decodeRescueCopy(slot);
     if (data == null) return false;
-    final before = (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
-      ..removeWhere((key, _) => _liveKeys.contains(key));
+    final before = backupSnapshot();
     Store.instance.keepCopy(before);
     try {
       // Sin el entrenamiento en curso que tuviera la copia: retomarlo
@@ -678,19 +677,18 @@ class FitState extends FitCore
 
   /// Si el backup trae un tipo inesperado, vuelve al estado de antes sin
   /// guardar nada y relanza. Antes quedaba aplicado a medias y con `_loading`
-  /// en true: la app dejaba de guardar hasta que se reiniciara.
+  /// en true: la app dejaba de guardar hasta que se reiniciara. Con
+  /// [endRescue] en false, el aviso de rescate se cierra después, con
+  /// [endRescueNotice], cuando lo importado ya quedó guardado.
   void applyBackup(
     Map<String, dynamic> map, {
     Map<String, String>? restoredMedia,
     Map<String, String>? restoredNoteMedia,
     Map<String, String>? restoredShots,
     Map<String, String>? restoredMoments,
+    bool endRescue = true,
   }) {
-    // Copia profunda: toJson() comparte mapas vivos (favoritos, medios, descansos)
-    // que _applyBackup vacía. Sin el entrenamiento en curso: applyBackup no lo
-    // toca y restaurarlo reiniciaría sus timers y la ruta.
-    final before = (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
-      ..removeWhere((key, _) => _liveKeys.contains(key));
+    final before = backupSnapshot();
     try {
       _strictLoad = true;
       _applyBackup(
@@ -707,14 +705,44 @@ class FitState extends FitCore
     } finally {
       _strictLoad = false;
     }
-    // Lo importado reemplazó lo que había: la copia de rescate ya no se ofrece.
+    if (endRescue) endRescueNotice();
+  }
+
+  /// Lo importado reemplazó lo que había: el aviso de rescate ya no se muestra.
+  void endRescueNotice() {
     final offered = _rescueOffer ?? _rescueSaved;
-    if (offered != null) Store.instance.markRescueHandled(offered);
+    if (offered == null) return;
+    Store.instance.markRescueHandled(offered);
     _rescueOffer = null;
     _rescueSaved = null;
+    notifyListeners();
   }
 
   static const _liveKeys = {'live', 'liveStart', 'liveElapsed', 'livePaused'};
+
+  /// El estado actual, para volver a él con [restoreSnapshot]. Copia profunda:
+  /// toJson() comparte mapas vivos (favoritos, medios, descansos) que
+  /// _applyBackup vacía. Sin el entrenamiento en curso: un backup no lo toca y
+  /// restaurarlo reiniciaría sus timers y la ruta.
+  Map<String, dynamic> backupSnapshot() =>
+      (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
+        ..removeWhere((key, _) => _liveKeys.contains(key));
+
+  /// Vuelve al estado [before] de [backupSnapshot] (si un backup ya aplicado no
+  /// se pudo guardar) y lo vuelve a guardar.
+  void restoreSnapshot(Map<String, dynamic> before) {
+    _loadFrom(before);
+    persistNow();
+    _refreshWidgets();
+  }
+
+  /// Guarda ya y dice si quedó guardado. Cancela el guardado diferido: si no,
+  /// podría escribir después lo que este guardado no pudo.
+  Future<bool> saveNow() {
+    _saveDebounce?.cancel();
+    _saveDebounce = null;
+    return Store.instance.save(toJson());
+  }
 
   void _applyBackup(
     Map<String, dynamic> map, {

@@ -69,6 +69,15 @@ class AlarmStore {
     }
   }
 
+  /// Borra el sonido [basename] (uno recién guardado que no quedó elegido).
+  static Future<void> delete(String basename) async {
+    final path = pathFor(basename);
+    if (path == null) return;
+    try {
+      await File(path).delete();
+    } catch (_) {}
+  }
+
   /// Borra todos los sonidos menos [keep].
   static Future<void> keepOnly(String keep) async {
     if (_dir == null) return;

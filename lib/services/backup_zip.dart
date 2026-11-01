@@ -9,7 +9,6 @@ import '../models/note.dart';
 import '../models/progress_shot.dart';
 import '../state/fit_state.dart';
 import 'alarm_store.dart';
-import 'local_store.dart';
 import 'media_store.dart';
 
 const String kBackupJsonEntry = 'infyter.json';
@@ -120,6 +119,7 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
   // se aplica; recién si eso salió bien se borra lo anterior. Si algo falla, se
   // borran solo los archivos nuevos y todo queda como estaba.
   final before = MediaStore.files().toSet();
+  final snapshot = fit.backupSnapshot();
   final written = <String>[];
   var complete = true;
   try {
@@ -134,6 +134,7 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
       restoredNoteMedia: notes.files,
       restoredShots: shots.files,
       restoredMoments: moments.files,
+      endRescue: false,
     );
   } catch (_) {
     for (final name in written) {
@@ -143,8 +144,18 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
   }
 
   final alarm = await _restoreAlarm(archive, data);
-  // El estado restaurado queda guardado antes de borrar nada de lo anterior.
-  await Store.instance.save(fit.toJson());
+  // El estado restaurado queda guardado antes de borrar nada de lo anterior. Si
+  // no se pudo guardar (por ejemplo, sin espacio), lo guardado sigue siendo lo
+  // anterior, que usa esos archivos: se vuelve atrás y se borran los nuevos.
+  if (!await fit.saveNow()) {
+    fit.restoreSnapshot(snapshot);
+    for (final name in written) {
+      await MediaStore.delete(name);
+    }
+    if (alarm != null) await AlarmStore.delete(alarm);
+    return false;
+  }
+  fit.endRescueNotice();
   if (alarm != null) await AlarmStore.keepOnly(alarm);
   // Si faltó algún archivo del backup, no se borra nada de lo anterior. Nunca se
   // borra un archivo que el estado restaurado todavía usa.

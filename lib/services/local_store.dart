@@ -437,10 +437,14 @@ class Store {
 
   /// Guarda el estado agregando la versión de formato. `toJson()` y los
   /// backups exportados no cambian: la versión solo vive en el almacenamiento.
-  Future<void> save(Map<String, dynamic> data) async {
+  /// Devuelve false si no quedó guardado: en Android SharedPreferences escribe
+  /// con commit(), que da false si no pudo (por ejemplo, sin espacio).
+  Future<bool> save(Map<String, dynamic> data) async {
     try {
-      await _prefs?.setString(_key, _encode(data));
-    } catch (_) {}
+      return await _prefs?.setString(_key, _encode(data)) ?? false;
+    } catch (_) {
+      return false;
+    }
   }
 
   String _encode(Map<String, dynamic> data) => jsonEncode({...data, kSchemaVersionKey: _schemaVersion});
