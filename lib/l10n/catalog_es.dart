@@ -557,6 +557,7 @@ const Map<String, String> kExerciseNameEs = {
   'leg-extension': 'Sillón de cuádriceps',
   'cable-pullover': 'Pull-over en polea',
   'pendulum-hack-squat': 'Prensa hack',
+  'reverse-pendulum-hack-squat': 'Prensa hack de frente',
   'machine-leg-press': 'Prensa 45°',
   'machine-lying-leg-curl': 'Camilla de isquios',
   'static-lunge': 'Estocadas estáticas',
@@ -3083,6 +3084,13 @@ const Map<String, List<String>> kExerciseStepsEs = {
     'Flexiona las rodillas dejando que la máquina recorra su arco con la espalda apoyada.',
     'Baja controlando hasta una profundidad cómoda.',
     'Empuja con toda la planta del pie para subir sin bloquear las rodillas con fuerza.',
+  ],
+  'reverse-pendulum-hack-squat': [
+    'Regula la profundidad de la hack pendular y súbete a la plataforma mirando hacia la máquina.',
+    'Coloca los hombros debajo de las almohadillas y sujeta las asas de las almohadillas.',
+    'Apoya los pies en la plataforma a la anchura de los hombros y libera los seguros.',
+    'Lleva la cadera atrás y flexiona las rodillas dejando que la máquina recorra su arco, con el torso inclinado hacia ella.',
+    'Baja controlando hasta una profundidad cómoda y empuja con toda la planta del pie para subir sin bloquear las rodillas con fuerza.',
   ],
   'machine-leg-press': [
     'Ajusta el asiento y apoya los dos pies en la plataforma a la anchura de los hombros.',

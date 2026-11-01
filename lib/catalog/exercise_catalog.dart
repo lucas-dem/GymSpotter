@@ -2776,6 +2776,22 @@ const List<Exercise> kExercises = [
     ],
   ),
   Exercise(
+    id: 'reverse-pendulum-hack-squat',
+    name: 'Reverse Pendulum Hack Squat',
+    primary: 'glutes',
+    secondary: ['hamstrings', 'quads'],
+    equipment: 'Machine',
+    difficulty: 'Intermediate',
+    art: 'reverse-pendulum-hack-squat',
+    steps: [
+      'Set the pendulum hack machine to a comfortable depth and step onto the platform facing the machine.',
+      'Place your shoulders under the shoulder pads and hold the handles on the pads.',
+      'Plant your feet on the platform about shoulder-width apart and release the safety handles.',
+      'Push your hips back and bend your knees, letting the machine travel through its arc as your torso leans towards it.',
+      'Lower under control to a comfortable depth, then push through your whole foot to return without locking your knees hard.',
+    ],
+  ),
+  Exercise(
     id: 'machine-leg-press',
     name: 'Machine Leg Press',
     primary: 'quads',

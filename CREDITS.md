@@ -135,6 +135,16 @@ is the pose with the elbows bent; frames 2 and 3 are the pose with the arms
 extended. It is shared under the same CC BY-SA 4.0 license as the other
 illustrations.
 
+`reverse-pendulum-hack-squat.txt` is new: it shows the same pendulum machine as
+`pendulum-hack-squat.txt`, with the user facing the machine instead of facing
+away from it. The two poses were drawn with Google's generative AI in Google
+Flow on 2026-10-30, from the sheet the `pendulum-hack-squat.txt` frames come
+from, keeping its machine. The poses were aligned on a shared canvas on the
+machine's frame (same scale, shift only), their lines adjusted to the weight of
+the other frames, and traced through the same sharp, potrace and svgo pipeline.
+Frame 1 is the bottom of the squat; frames 2 and 3 are the standing start. It
+is shared under the same CC BY-SA 4.0 license as the other illustrations.
+
 ## Fonts
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
