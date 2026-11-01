@@ -10,6 +10,9 @@ import 'package:infyter/services/exercise_match.dart';
 const _frances = '2IxROQ1';
 const _gymName = 'Francés en polea';
 
+// Its Spanish name up to 1.3.1, kept only as a search alias: no language shows it as the name.
+const _oldName = 'Extensión de tríceps sobre la cabeza en polea con cuerda';
+
 // The exercises that keep the shared overhead drawing after Francés en polea moved to its own.
 const _overheadArtKept = {'Gchi5Tr', 'Db7eEgw', 'Ser9eQp', '1xHyxys', 'Hx1WC8I', 's0HKO2I'};
 
@@ -53,6 +56,17 @@ void main() {
       expect(kExercises.where(exerciseSearch(_gymName)).map((e) => e.id), [_frances], reason: code);
       expect(matchExercise(_gymName, kExercises)?.id, _frances, reason: code);
       expect(exerciseName(frances), code == 'es' ? _gymName : isNot(_gymName), reason: code);
+    }
+  });
+
+  test('searching or importing its 1.3.1 name still finds it, and not its near twin', () {
+    final frances = byId[_frances]!;
+    expect(kExerciseAliases[frances.name], contains(_oldName));
+    for (final code in appLanguages) {
+      setAppLanguage(code);
+      expect(kExercises.where(exerciseSearch(_oldName)).map((e) => e.id), [_frances], reason: code);
+      expect(matchExercise(_oldName, kExercises)?.id, _frances, reason: code);
+      expect(exerciseName(frances), isNot(_oldName), reason: code);
     }
   });
 }

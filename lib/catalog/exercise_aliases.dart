@@ -67,6 +67,7 @@ const Map<String, List<String>> kExerciseAliases = {
     'Triceps Extension (Cable)',
     'Overhead Tricep Extension (Cable)',
     'Francés en polea',
+    'Extensión de tríceps sobre la cabeza en polea con cuerda',
   ],
   'Cable Pulldown': ['Lat Pulldown (Cable)', 'Lat Pulldown (Machine)', 'Lat Pulldown', 'Jalón al pecho'],
   'Cable Pushdown': ['Triceps Pushdown (Cable)', 'Tricep Pushdown'],
