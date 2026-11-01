@@ -66,6 +66,7 @@ const Map<String, List<String>> kExerciseAliases = {
   'Cable Overhead Triceps Extension (Rope Attachment)': [
     'Triceps Extension (Cable)',
     'Overhead Tricep Extension (Cable)',
+    'Francés en polea',
   ],
   'Cable Pulldown': ['Lat Pulldown (Cable)', 'Lat Pulldown (Machine)', 'Lat Pulldown', 'Jalón al pecho'],
   'Cable Pushdown': ['Triceps Pushdown (Cable)', 'Tricep Pushdown'],
@@ -212,4 +213,6 @@ const Map<String, List<String>> kExerciseAliases = {
   'Box Step-Up': ['Step Up', 'Step-Up (Bodyweight)', 'Subidas al cajón'],
   'Alternating Dumbbell Curl': ['Alternating Bicep Curl', 'Bíceps alternados'],
   'Reverse-Grip Lat Pulldown': ['Underhand Lat Pulldown', 'Reverse Grip Pulldown', 'Jalón invertido'],
+  'Cable Cross-over Revers Fly': ['Pájaros cruzados en polea'],
+  'Reverse Pendulum Hack Squat': ['Prensa hack de frente'],
 };

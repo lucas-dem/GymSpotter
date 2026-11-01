@@ -1,11 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infyter/catalog/exercise_aliases.dart';
 import 'package:infyter/catalog/exercise_catalog.dart';
 import 'package:infyter/l10n/catalog_es.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/exercise.dart';
+import 'package:infyter/services/exercise_match.dart';
 
 // Francés en polea (2IxROQ1) has its own high-pulley drawing and a gym name that only Spanish shows.
 const _frances = '2IxROQ1';
+const _gymName = 'Francés en polea';
 
 // The exercises that keep the shared overhead drawing after Francés en polea moved to its own.
 const _overheadArtKept = {'Gchi5Tr', 'Db7eEgw', 'Ser9eQp', '1xHyxys', 'Hx1WC8I', 's0HKO2I'};
@@ -39,6 +42,17 @@ void main() {
     for (final code in appLanguages.where((code) => code != 'es')) {
       setAppLanguage(code);
       expect(exerciseName(frances), isNot('Francés en polea'), reason: code);
+    }
+  });
+
+  test('searching or importing "Francés en polea" finds it in any language, and not its near twin', () {
+    final frances = byId[_frances]!;
+    expect(kExerciseAliases[frances.name], contains(_gymName));
+    for (final code in appLanguages) {
+      setAppLanguage(code);
+      expect(kExercises.where(exerciseSearch(_gymName)).map((e) => e.id), [_frances], reason: code);
+      expect(matchExercise(_gymName, kExercises)?.id, _frances, reason: code);
+      expect(exerciseName(frances), code == 'es' ? _gymName : isNot(_gymName), reason: code);
     }
   });
 }

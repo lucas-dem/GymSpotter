@@ -1,15 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infyter/catalog/exercise_aliases.dart';
 import 'package:infyter/catalog/exercise_catalog.dart';
 import 'package:infyter/l10n/catalog_es.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/exercise.dart';
+import 'package:infyter/services/exercise_match.dart';
 
 // Prensa hack de frente: the Prensa hack machine with the user facing it. It is its own exercise with its own
 // drawing and a gym name that only Spanish shows; Prensa hack keeps the drawing it has today.
 const _frente = 'reverse-pendulum-hack-squat';
 const _hack = 'pendulum-hack-squat';
+const _gymName = 'Prensa hack de frente';
 
 // FNV-1a (32 bits) of the drawing's text, so the test needs no extra package.
 int _fnv1a(String text) {
@@ -51,6 +54,19 @@ void main() {
     for (final code in appLanguages.where((code) => code != 'es')) {
       setAppLanguage(code);
       expect(exerciseName(frente), 'Reverse Pendulum Hack Squat', reason: code);
+    }
+  });
+
+  test('searching or importing "Prensa hack de frente" finds it in any language, and only it', () {
+    final frente = byId[_frente]!;
+    expect(kExerciseAliases[frente.name], contains(_gymName));
+    for (final code in appLanguages) {
+      setAppLanguage(code);
+      expect(kExercises.where(exerciseSearch(_gymName)).map((e) => e.id), [_frente], reason: code);
+      expect(matchExercise(_gymName, kExercises)?.id, _frente, reason: code);
+      expect(exerciseName(frente), code == 'es' ? _gymName : 'Reverse Pendulum Hack Squat', reason: code);
+      // Prensa hack keeps its own alias: importing "Prensa Hack" still lands on it, not on the facing one.
+      expect(matchExercise('Prensa Hack', kExercises)?.id, _hack, reason: code);
     }
   });
 }

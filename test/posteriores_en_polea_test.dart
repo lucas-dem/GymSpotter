@@ -1,15 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infyter/catalog/exercise_aliases.dart';
 import 'package:infyter/catalog/exercise_catalog.dart';
 import 'package:infyter/l10n/catalog_es.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/exercise.dart';
+import 'package:infyter/services/exercise_match.dart';
 
 // Posteriores en polea (aqvSOQE): the standing reverse fly at a dual cable machine, with the pulleys at shoulder
 // height and the cables crossed. It has its own drawing; the two rear delt rows keep the shared one they have today.
 const _posteriores = 'aqvSOQE';
 const _sharedArtKept = {'G61cXLk', 'yUdIGNs'};
+
+// Its Spanish name up to 1.3.1, kept only as a search alias: no language shows it as the name.
+const _oldName = 'Pájaros cruzados en polea';
 
 // FNV-1a (32 bits) of the drawing's text, so the test needs no extra package.
 int _fnv1a(String text) {
@@ -62,6 +67,17 @@ void main() {
     for (final code in appLanguages.where((code) => code != 'es')) {
       setAppLanguage(code);
       expect(exerciseName(posteriores), isNot('Posteriores en polea'), reason: code);
+    }
+  });
+
+  test('searching or importing its old name "Pájaros cruzados en polea" still finds it', () {
+    final posteriores = byId[_posteriores]!;
+    expect(kExerciseAliases[posteriores.name], contains(_oldName));
+    for (final code in appLanguages) {
+      setAppLanguage(code);
+      expect(kExercises.where(exerciseSearch(_oldName)).map((e) => e.id), [_posteriores], reason: code);
+      expect(matchExercise(_oldName, kExercises)?.id, _posteriores, reason: code);
+      expect(exerciseName(posteriores), isNot(_oldName), reason: code);
     }
   });
 }
