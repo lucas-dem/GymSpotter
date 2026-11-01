@@ -1168,13 +1168,29 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Тренування, рекорди, програми, нотатки та профіль. Це незворотно — спочатку експортуй резервну копію, якщо дані можуть знадобитися.';
+      'Тренування, рекорди, програми, нотатки та профіль, а також аварійні копії, які зберігає Infyter. Це незворотно — спочатку експортуй резервну копію, якщо дані можуть знадобитися.';
 
   @override
   String get resetConfirm => 'Видалити все';
 
   @override
   String get resetDone => 'Усі дані видалено';
+
+  @override
+  String get rescueTitle => 'Є копія твоїх даних';
+
+  @override
+  String get rescueBody =>
+      'Не вдалося відкрити збережені дані. Можна відновити останню копію; перед цим поточні дані збережуться в окрему копію.';
+
+  @override
+  String get rescueRestore => 'Відновити';
+
+  @override
+  String get rescueRestored => 'Копію відновлено';
+
+  @override
+  String get rescueFailed => 'Не вдалося відновити копію';
 
   @override
   String get support => 'ПІДТРИМКА';

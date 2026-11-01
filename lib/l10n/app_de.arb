@@ -398,9 +398,14 @@
 
   "resetData": "Alle meine Daten löschen",
   "resetTitle": "Alles löschen?",
-  "resetBody": "Trainings, Rekorde, Trainingspläne, Notizen und Profil. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.",
+  "resetBody": "Trainings, Rekorde, Trainingspläne, Notizen und Profil sowie die Rettungskopien, die Infyter aufbewahrt. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.",
   "resetConfirm": "Alles löschen",
   "resetDone": "Alle Daten gelöscht",
+  "rescueTitle": "Eine Kopie deiner Daten ist verfügbar",
+  "rescueBody": "Deine gespeicherten Daten konnten nicht geöffnet werden. Du kannst die letzte Kopie wiederherstellen; dein aktueller Stand wird vorher als weitere Kopie gesichert.",
+  "rescueRestore": "Wiederherstellen",
+  "rescueRestored": "Kopie wiederhergestellt",
+  "rescueFailed": "Kopie konnte nicht wiederhergestellt werden",
 
   "support": "HILFE",
   "reportBug": "Fehler melden",

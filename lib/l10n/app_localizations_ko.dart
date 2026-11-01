@@ -1137,13 +1137,29 @@ class AppLocalizationsKo extends AppLocalizations {
   String get resetTitle => '모두 삭제할까요?';
 
   @override
-  String get resetBody => '운동, 기록, 루틴, 메모, 프로필이 모두 삭제됩니다. 되돌릴 수 없으니 필요하다면 먼저 백업을 내보내세요.';
+  String get resetBody =>
+      '운동, 기록, 루틴, 메모, 프로필과 Infyter가 보관하는 복구용 사본까지 모두 삭제됩니다. 되돌릴 수 없으니 필요하다면 먼저 백업을 내보내세요.';
 
   @override
   String get resetConfirm => '모두 삭제';
 
   @override
   String get resetDone => '모든 데이터가 삭제되었습니다';
+
+  @override
+  String get rescueTitle => '데이터 사본이 있습니다';
+
+  @override
+  String get rescueBody => '저장된 데이터를 열 수 없습니다. 최신 사본을 복원할 수 있으며, 복원하기 전에 현재 데이터를 다른 사본으로 저장합니다.';
+
+  @override
+  String get rescueRestore => '복원';
+
+  @override
+  String get rescueRestored => '사본을 복원했습니다';
+
+  @override
+  String get rescueFailed => '사본을 복원할 수 없습니다';
 
   @override
   String get support => '지원';

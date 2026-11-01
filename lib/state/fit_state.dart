@@ -73,6 +73,12 @@ class FitState extends FitCore
         notifyListeners();
       }
     }
+    try {
+      _rescueOffer = _hasOwnRecords ? null : Store.instance.rescueOffer;
+    } catch (_) {
+      _rescueOffer = null;
+    }
+    if (_rescueOffer != null) notifyListeners();
   }
 
   /// [onSkipped] corre si se salteó algo, todavía con `_loading` en true.
@@ -512,6 +518,62 @@ class FitState extends FitCore
     },
   };
 
+  // Copia de rescate para ofrecer en el inicio (ver Store.rescueOffer). Se
+  // calcula al cargar: el getter de Store lee y decodifica copias.
+  String? _rescueOffer;
+
+  /// Copia de rescate que se puede restaurar, o `null`. No se ofrece con un
+  /// entrenamiento abierto ni cuando ya hay datos propios cargados después del
+  /// incidente: restaurar los reemplazaría.
+  String? get rescueOffer => session == null && !_hasOwnRecords ? _rescueOffer : null;
+
+  // Lo que la persona registra y una restauración reemplazaría. La bienvenida
+  // solo crea el perfil y los lugares.
+  bool get _hasOwnRecords =>
+      sessions.isNotEmpty ||
+      routines.isNotEmpty ||
+      bodyweight.isNotEmpty ||
+      notes.isNotEmpty ||
+      measures.isNotEmpty ||
+      shots.isNotEmpty ||
+      moments.isNotEmpty ||
+      customExercises.isNotEmpty;
+
+  /// Restaura [rescueOffer]. Antes guarda el estado actual como otra copia de
+  /// rescate. Si la copia ya no se puede cargar devuelve false y no cambia nada.
+  bool restoreRescue() {
+    final slot = rescueOffer;
+    if (slot == null) return false;
+    final data = Store.instance.decodeRescueCopy(slot);
+    if (data == null) return false;
+    final before = (jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>)
+      ..removeWhere((key, _) => _liveKeys.contains(key));
+    Store.instance.keepCopy(before);
+    try {
+      // Sin el entrenamiento en curso que tuviera la copia: retomarlo
+      // reiniciaría timers y la ruta con un entrenamiento viejo.
+      _loadFrom(data..removeWhere((key, _) => _liveKeys.contains(key)));
+    } catch (_) {
+      _loadFrom(before);
+      return false;
+    }
+    Store.instance.markRescueHandled(slot);
+    _rescueOffer = null;
+    persistNow();
+    _refreshWidgets();
+    notifyListeners();
+    return true;
+  }
+
+  /// Deja de ofrecer la copia sin borrar ninguna copia.
+  void dismissRescue() {
+    final slot = _rescueOffer;
+    if (slot == null) return;
+    Store.instance.markRescueHandled(slot);
+    _rescueOffer = null;
+    notifyListeners();
+  }
+
   void resetAllData() {
     _saveDebounce?.cancel();
     _sessionTimer?.cancel();
@@ -556,6 +618,8 @@ class FitState extends FitCore
     bgPattern = 'dynamic';
     bgDim = 0.55;
     MediaStore.clearAll();
+    Store.instance.discardRescue();
+    _rescueOffer = null;
     favorites.clear();
     sessionPicks.clear();
     selectedMuscles.clear();
@@ -629,6 +693,10 @@ class FitState extends FitCore
     } finally {
       _strictLoad = false;
     }
+    // Lo importado reemplazó lo que había: la copia de rescate ya no se ofrece.
+    final offered = _rescueOffer;
+    if (offered != null) Store.instance.markRescueHandled(offered);
+    _rescueOffer = null;
   }
 
   static const _liveKeys = {'live', 'liveStart', 'liveElapsed', 'livePaused'};

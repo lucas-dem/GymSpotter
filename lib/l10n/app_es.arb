@@ -364,9 +364,14 @@
 
   "resetData": "Borrar todos mis datos",
   "resetTitle": "¿Borrar todo?",
-  "resetBody": "Sesiones, récords, rutinas, notas y perfil. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.",
+  "resetBody": "Sesiones, récords, rutinas, notas y perfil, y también las copias de rescate que guarda Infyter. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.",
   "resetConfirm": "Borrar todo",
   "resetDone": "Todos los datos borrados",
+  "rescueTitle": "Hay una copia de tus datos",
+  "rescueBody": "No se pudieron abrir tus datos guardados. Puedes restaurar la última copia; antes se guarda una copia de lo que tienes ahora.",
+  "rescueRestore": "Restaurar",
+  "rescueRestored": "Copia restaurada",
+  "rescueFailed": "No se pudo restaurar la copia",
 
   "support": "APOYO",
   "reportBug": "Informar de un fallo",

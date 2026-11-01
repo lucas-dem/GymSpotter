@@ -1174,13 +1174,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Trainings, Rekorde, Trainingspläne, Notizen und Profil. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.';
+      'Trainings, Rekorde, Trainingspläne, Notizen und Profil sowie die Rettungskopien, die Infyter aufbewahrt. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.';
 
   @override
   String get resetConfirm => 'Alles löschen';
 
   @override
   String get resetDone => 'Alle Daten gelöscht';
+
+  @override
+  String get rescueTitle => 'Eine Kopie deiner Daten ist verfügbar';
+
+  @override
+  String get rescueBody =>
+      'Deine gespeicherten Daten konnten nicht geöffnet werden. Du kannst die letzte Kopie wiederherstellen; dein aktueller Stand wird vorher als weitere Kopie gesichert.';
+
+  @override
+  String get rescueRestore => 'Wiederherstellen';
+
+  @override
+  String get rescueRestored => 'Kopie wiederhergestellt';
+
+  @override
+  String get rescueFailed => 'Kopie konnte nicht wiederhergestellt werden';
 
   @override
   String get support => 'HILFE';

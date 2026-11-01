@@ -400,9 +400,14 @@
 
   "resetData": "Elimina tutti i miei dati",
   "resetTitle": "Eliminare tutto?",
-  "resetBody": "Sessioni, record, routine, note e profilo. Non si può annullare — esporta prima un backup se pensi di volerlo.",
+  "resetBody": "Sessioni, record, routine, note e profilo, oltre alle copie di emergenza che conserva Infyter. Non si può annullare — esporta prima un backup se pensi di volerlo.",
   "resetConfirm": "Elimina tutto",
   "resetDone": "Tutti i dati eliminati",
+  "rescueTitle": "È disponibile una copia dei tuoi dati",
+  "rescueBody": "Non è stato possibile aprire i tuoi dati salvati. Puoi ripristinare l'ultima copia; prima, quello che hai adesso viene salvato in un'altra copia.",
+  "rescueRestore": "Ripristina",
+  "rescueRestored": "Copia ripristinata",
+  "rescueFailed": "Impossibile ripristinare la copia",
 
   "support": "SUPPORTO",
   "reportBug": "Segnala un bug",

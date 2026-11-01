@@ -1167,13 +1167,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sesiones, récords, rutinas, notas y perfil. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.';
+      'Sesiones, récords, rutinas, notas y perfil, y también las copias de rescate que guarda Infyter. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.';
 
   @override
   String get resetConfirm => 'Borrar todo';
 
   @override
   String get resetDone => 'Todos los datos borrados';
+
+  @override
+  String get rescueTitle => 'Hay una copia de tus datos';
+
+  @override
+  String get rescueBody =>
+      'No se pudieron abrir tus datos guardados. Puedes restaurar la última copia; antes se guarda una copia de lo que tienes ahora.';
+
+  @override
+  String get rescueRestore => 'Restaurar';
+
+  @override
+  String get rescueRestored => 'Copia restaurada';
+
+  @override
+  String get rescueFailed => 'No se pudo restaurar la copia';
 
   @override
   String get support => 'APOYO';

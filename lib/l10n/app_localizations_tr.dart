@@ -1169,13 +1169,29 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Antrenmanlar, rekorlar, programlar, notlar ve profil. Bu işlem geri alınamaz — gerekebilir diye önce yedek dışa aktar.';
+      'Antrenmanlar, rekorlar, programlar, notlar ve profil ile Infyter\'in sakladığı kurtarma kopyaları. Bu işlem geri alınamaz — gerekebilir diye önce yedek dışa aktar.';
 
   @override
   String get resetConfirm => 'Her şeyi sil';
 
   @override
   String get resetDone => 'Tüm veriler silindi';
+
+  @override
+  String get rescueTitle => 'Verilerinin bir kopyası var';
+
+  @override
+  String get rescueBody =>
+      'Kayıtlı verilerin açılamadı. Son kopyayı geri yükleyebilirsin; önce şu anki verilerin ayrı bir kopya olarak saklanır.';
+
+  @override
+  String get rescueRestore => 'Geri yükle';
+
+  @override
+  String get rescueRestored => 'Kopya geri yüklendi';
+
+  @override
+  String get rescueFailed => 'Kopya geri yüklenemedi';
 
   @override
   String get support => 'DESTEK';

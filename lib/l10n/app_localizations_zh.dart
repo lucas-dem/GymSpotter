@@ -1114,13 +1114,28 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetTitle => '确定清空所有数据？';
 
   @override
-  String get resetBody => '将清空所有训练记录、个人纪录、计划、笔记及个人资料。此操作不可逆 — 如有需要，请先导出备份。';
+  String get resetBody => '将清空所有训练记录、个人纪录、计划、笔记及个人资料，以及 Infyter 保存的应急副本。此操作不可逆 — 如有需要，请先导出备份。';
 
   @override
   String get resetConfirm => '清空全部数据';
 
   @override
   String get resetDone => '所有数据已清空';
+
+  @override
+  String get rescueTitle => '有一份数据副本可用';
+
+  @override
+  String get rescueBody => '无法打开已保存的数据。你可以恢复最新的副本；恢复前，当前数据会另存为一份副本。';
+
+  @override
+  String get rescueRestore => '恢复';
+
+  @override
+  String get rescueRestored => '副本已恢复';
+
+  @override
+  String get rescueFailed => '无法恢复副本';
 
   @override
   String get support => '支持与帮助';
@@ -4069,13 +4084,28 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get resetTitle => '全部刪除？';
 
   @override
-  String get resetBody => '訓練、紀錄、課表、筆記與個人檔案都會刪除。此操作無法復原 — 如有需要請先匯出備份。';
+  String get resetBody => '訓練、紀錄、課表、筆記與個人檔案，以及 Infyter 保存的應急副本都會刪除。此操作無法復原 — 如有需要請先匯出備份。';
 
   @override
   String get resetConfirm => '全部刪除';
 
   @override
   String get resetDone => '所有資料已刪除';
+
+  @override
+  String get rescueTitle => '有一份資料副本可用';
+
+  @override
+  String get rescueBody => '無法開啟已儲存的資料。你可以還原最新的副本；還原前，目前的資料會另存為一份副本。';
+
+  @override
+  String get rescueRestore => '還原';
+
+  @override
+  String get rescueRestored => '副本已還原';
+
+  @override
+  String get rescueFailed => '無法還原副本';
 
   @override
   String get support => '支援';

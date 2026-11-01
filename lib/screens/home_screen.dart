@@ -11,6 +11,7 @@ import '../widgets/entrance.dart';
 import '../widgets/exercise_media.dart';
 import '../widgets/glass.dart';
 import '../widgets/home_folder.dart';
+import '../widgets/liquid_notch.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/ui_kit.dart';
 import 'progress_screen.dart';
@@ -34,6 +35,10 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: riseAll([
             _topBar(gc),
+            if (fit.rescueOffer != null) ...[
+              const SizedBox(height: 20),
+              _rescueNotice(context, gc),
+            ],
             const SizedBox(height: 20),
             _hero(context, gc),
             const SizedBox(height: 14),
@@ -370,6 +375,55 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  // Aviso de rescate (sesión 26): los datos guardados no se pudieron abrir y hay
+  // una copia que se puede restaurar. No bloquea: se puede seguir usando la app.
+  Widget _rescueNotice(BuildContext context, GymColors gc) {
+    return SoftCard(
+      radius: 22,
+      padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(PhosphorIconsRegular.shieldCheck, size: 19, color: gc.accent),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(t.rescueTitle, style: AppTheme.f(14.5, color: gc.text)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            t.rescueBody,
+            style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary),
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              GhostButton(
+                label: t.rescueRestore,
+                icon: PhosphorIconsRegular.arrowCounterClockwise,
+                onTap: () {
+                  final restored = fit.restoreRescue();
+                  showNotchToast(
+                    context,
+                    restored ? t.rescueRestored : t.rescueFailed,
+                    icon: restored ? PhosphorIconsFill.checkCircle : PhosphorIconsFill.warningCircle,
+                    accent: restored ? gc.sage : gc.ember,
+                  );
+                },
+              ),
+              GhostButton(label: t.close, icon: PhosphorIconsRegular.x, onTap: fit.dismissRescue),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

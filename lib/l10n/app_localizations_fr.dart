@@ -1172,13 +1172,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Séances, records, programmes, notes et profil. Cette action est irréversible — exporte d’abord une sauvegarde si tu veux pouvoir les récupérer.';
+      'Séances, records, programmes, notes et profil, ainsi que les copies de secours que garde Infyter. Cette action est irréversible — exporte d’abord une sauvegarde si tu veux pouvoir les récupérer.';
 
   @override
   String get resetConfirm => 'Tout supprimer';
 
   @override
   String get resetDone => 'Toutes les données ont été supprimées';
+
+  @override
+  String get rescueTitle => 'Une copie de tes données est disponible';
+
+  @override
+  String get rescueBody =>
+      'Tes données enregistrées n’ont pas pu être ouvertes. Tu peux restaurer la dernière copie ; ce que tu as maintenant est d’abord conservé dans une autre copie.';
+
+  @override
+  String get rescueRestore => 'Restaurer';
+
+  @override
+  String get rescueRestored => 'Copie restaurée';
+
+  @override
+  String get rescueFailed => 'Impossible de restaurer la copie';
 
   @override
   String get support => 'ASSISTANCE';

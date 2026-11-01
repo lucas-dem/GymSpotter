@@ -1160,13 +1160,29 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'التمارين والسجلات والروتينات والملاحظات والملف الشخصي. لا يمكن التراجع عن ذلك — صدّر نسخة احتياطية أولًا إذا قد تحتاجها.';
+      'التمارين والسجلات والروتينات والملاحظات والملف الشخصي، وكذلك نسخ الإنقاذ التي يحتفظ بها Infyter. لا يمكن التراجع عن ذلك — صدّر نسخة احتياطية أولًا إذا قد تحتاجها.';
 
   @override
   String get resetConfirm => 'حذف كل شيء';
 
   @override
   String get resetDone => 'تم حذف جميع البيانات';
+
+  @override
+  String get rescueTitle => 'تتوفر نسخة من بياناتك';
+
+  @override
+  String get rescueBody =>
+      'تعذّر فتح بياناتك المحفوظة. يمكنك استعادة آخر نسخة؛ وقبل ذلك تُحفظ بياناتك الحالية في نسخة أخرى.';
+
+  @override
+  String get rescueRestore => 'استعادة';
+
+  @override
+  String get rescueRestored => 'تمت استعادة النسخة';
+
+  @override
+  String get rescueFailed => 'تعذّرت استعادة النسخة';
 
   @override
   String get support => 'الدعم';

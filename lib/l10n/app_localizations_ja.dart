@@ -1119,13 +1119,29 @@ class AppLocalizationsJa extends AppLocalizations {
   String get resetTitle => 'すべて削除しますか？';
 
   @override
-  String get resetBody => 'ワークアウト、記録、ルーティン、メモ、プロフィールをすべて削除します。元に戻せません — 必要なら先にバックアップを書き出してください。';
+  String get resetBody =>
+      'ワークアウト、記録、ルーティン、メモ、プロフィールに加え、Infyterが保管している復旧用コピーもすべて削除します。元に戻せません — 必要なら先にバックアップを書き出してください。';
 
   @override
   String get resetConfirm => 'すべて削除';
 
   @override
   String get resetDone => 'すべてのデータを削除しました';
+
+  @override
+  String get rescueTitle => 'データのコピーがあります';
+
+  @override
+  String get rescueBody => '保存されたデータを開けませんでした。最新のコピーを復元できます。復元の前に、現在のデータを別のコピーとして保存します。';
+
+  @override
+  String get rescueRestore => '復元';
+
+  @override
+  String get rescueRestored => 'コピーを復元しました';
+
+  @override
+  String get rescueFailed => 'コピーを復元できませんでした';
 
   @override
   String get support => 'サポート';

@@ -1212,13 +1212,29 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Тренировки, рекорды, программы, заметки и профиль. Это необратимо — сначала выгрузи резервную копию, если она может понадобиться.';
+      'Тренировки, рекорды, программы, заметки и профиль, а также аварийные копии, которые хранит Infyter. Это необратимо — сначала выгрузи резервную копию, если она может понадобиться.';
 
   @override
   String get resetConfirm => 'Удалить всё';
 
   @override
   String get resetDone => 'Все данные удалены';
+
+  @override
+  String get rescueTitle => 'Есть копия твоих данных';
+
+  @override
+  String get rescueBody =>
+      'Не удалось открыть сохранённые данные. Можно восстановить последнюю копию; перед этим текущие данные сохранятся в отдельную копию.';
+
+  @override
+  String get rescueRestore => 'Восстановить';
+
+  @override
+  String get rescueRestored => 'Копия восстановлена';
+
+  @override
+  String get rescueFailed => 'Не удалось восстановить копию';
 
   @override
   String get support => 'ПОДДЕРЖКА';

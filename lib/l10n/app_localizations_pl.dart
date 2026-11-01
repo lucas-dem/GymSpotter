@@ -1169,13 +1169,29 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Treningi, rekordy, plany, notatki i profil. Tego nie można cofnąć — najpierw wyeksportuj kopię zapasową, jeśli możesz ich potrzebować.';
+      'Treningi, rekordy, plany, notatki i profil, a także kopie ratunkowe przechowywane przez Infyter. Tego nie można cofnąć — najpierw wyeksportuj kopię zapasową, jeśli możesz ich potrzebować.';
 
   @override
   String get resetConfirm => 'Usuń wszystko';
 
   @override
   String get resetDone => 'Wszystkie dane usunięte';
+
+  @override
+  String get rescueTitle => 'Jest dostępna kopia twoich danych';
+
+  @override
+  String get rescueBody =>
+      'Nie udało się otworzyć zapisanych danych. Możesz przywrócić ostatnią kopię; najpierw to, co masz teraz, zostanie zapisane jako kolejna kopia.';
+
+  @override
+  String get rescueRestore => 'Przywróć';
+
+  @override
+  String get rescueRestored => 'Kopia przywrócona';
+
+  @override
+  String get rescueFailed => 'Nie udało się przywrócić kopii';
 
   @override
   String get support => 'POMOC';

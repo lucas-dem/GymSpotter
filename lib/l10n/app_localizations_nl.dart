@@ -1170,13 +1170,29 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Trainingen, records, routines, notities en profiel. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.';
+      'Trainingen, records, routines, notities en profiel, plus de noodkopieën die Infyter bewaart. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.';
 
   @override
   String get resetConfirm => 'Alles verwijderen';
 
   @override
   String get resetDone => 'Alle gegevens zijn verwijderd';
+
+  @override
+  String get rescueTitle => 'Er is een kopie van je gegevens';
+
+  @override
+  String get rescueBody =>
+      'Je opgeslagen gegevens konden niet worden geopend. Je kunt de laatste kopie terugzetten; wat je nu hebt, wordt eerst als extra kopie bewaard.';
+
+  @override
+  String get rescueRestore => 'Terugzetten';
+
+  @override
+  String get rescueRestored => 'Kopie teruggezet';
+
+  @override
+  String get rescueFailed => 'Kopie kon niet worden teruggezet';
 
   @override
   String get support => 'ONDERSTEUNING';

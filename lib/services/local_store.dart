@@ -20,6 +20,7 @@ class StoreRescue {
     this.version,
     this.error,
     this.count = 1,
+    this.handled,
   });
 
   /// `unreadable`, `notAMap`, `unsupportedVersion`, `migrationFailed`,
@@ -40,6 +41,21 @@ class StoreRescue {
   /// Incidentes acumulados desde que existe el indicador.
   final int count;
 
+  /// Copia que la persona restauró o cuyo aviso cerró: el aviso de este
+  /// incidente no vuelve a aparecer.
+  final String? handled;
+
+  StoreRescue handledAs(String copy) => StoreRescue(
+    reason: reason,
+    slot: slot,
+    where: where,
+    at: at,
+    version: version,
+    error: error,
+    count: count,
+    handled: copy,
+  );
+
   Map<String, dynamic> toJson() => {
     'reason': reason,
     'slot': slot,
@@ -48,6 +64,7 @@ class StoreRescue {
     if (version != null) 'version': version,
     if (error != null) 'error': error,
     'count': count,
+    if (handled != null) 'handled': handled,
   };
 
   static StoreRescue? tryParse(Object? raw) {
@@ -62,6 +79,7 @@ class StoreRescue {
         version: j['version'] as int?,
         error: j['error'] as String?,
         count: j['count'] as int? ?? 1,
+        handled: j['handled'] as String?,
       );
     } catch (_) {
       return null;
@@ -161,8 +179,75 @@ class Store {
     _rescue(reason, raw, version: _storedVersion, error: error);
   }
 
-  /// Último incidente registrado, para un aviso futuro. `null` = nunca hubo.
+  /// Último incidente registrado. `null` = nunca hubo.
   StoreRescue? get rescue => StoreRescue.tryParse(_prefs?.get(_rescueKey));
+
+  // Incidentes en los que no se pudo usar nada de lo guardado: la app arrancó
+  // vacía. En los demás cargó lo que pudo (de una versión más nueva, lo
+  // conocido; con ítems ilegibles, el resto) y restaurar una copia lo pisaría.
+  static const _lostReasons = {'unreadable', 'notAMap'};
+
+  /// Copia para ofrecer restaurar tras un incidente en el que no se pudo usar
+  /// nada de lo guardado: la más reciente de las que ya existían en ese momento
+  /// y que esta versión puede cargar. `null` si no hay ninguna o si la persona
+  /// ya restauró o cerró el aviso de este incidente. Lee y decodifica copias:
+  /// no llamarlo en cada `build`.
+  String? get rescueOffer {
+    final incident = rescue;
+    if (incident == null || incident.handled != null) return null;
+    if (!_lostReasons.contains(incident.reason) || !_isCopyId(incident.slot)) return null;
+    final limit = _age(incident.slot);
+    for (final id in rescueCopies.reversed) {
+      if (_age(id) > limit) continue;
+      if (decodeRescueCopy(id) != null) return id;
+    }
+    return null;
+  }
+
+  /// Los datos de la copia [slot] listos para cargar (migrados a esta versión),
+  /// o `null` si no es un objeto JSON o es de una versión que esta app no
+  /// entiende. No registra incidentes.
+  Map<String, dynamic>? decodeRescueCopy(String slot) {
+    final raw = readRescueCopy(slot);
+    if (raw == null) return null;
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) return null;
+      final tag = decoded[kSchemaVersionKey];
+      final version = tag == null ? 1 : (tag is int ? tag : -1);
+      if (version < 1 || version > _schemaVersion) return null;
+      final data = Map<String, dynamic>.of(decoded)..remove(kSchemaVersionKey);
+      if (version == _schemaVersion) return data;
+      return runStoreMigrations(data, from: version, to: _schemaVersion, migrations: _migrations);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Guarda [data] (el estado actual) como otra copia de rescate, en la misma
+  /// rotación. No es un incidente. Devuelve la copia.
+  String keepCopy(Map<String, dynamic> data) => _saveCopy(_encode(data)).id;
+
+  /// La copia [slot] ya se restauró o la persona la dejó de lado.
+  void markRescueHandled(String slot) {
+    final incident = rescue;
+    if (incident == null) return;
+    _prefs?.setString(_rescueKey, jsonEncode(incident.handledAs(slot).toJson()));
+  }
+
+  /// Borra todas las copias de rescate, su carpeta y el indicador ("Borrar
+  /// todos los datos").
+  void discardRescue() {
+    for (final id in rescueCopies) {
+      _deleteCopy(id);
+    }
+    final dir = _rescueDir;
+    try {
+      if (dir != null && Directory(dir).existsSync()) Directory(dir).deleteSync(recursive: true);
+    } catch (_) {}
+    _prefs?.remove(_rescueKey);
+    _rescuedRaw = null;
+  }
 
   /// Copias de rescate que hay, de la más vieja a la más nueva.
   List<String> get rescueCopies {
@@ -337,9 +422,11 @@ class Store {
   /// backups exportados no cambian: la versión solo vive en el almacenamiento.
   Future<void> save(Map<String, dynamic> data) async {
     try {
-      await _prefs?.setString(_key, jsonEncode({...data, kSchemaVersionKey: _schemaVersion}));
+      await _prefs?.setString(_key, _encode(data));
     } catch (_) {}
   }
+
+  String _encode(Map<String, dynamic> data) => jsonEncode({...data, kSchemaVersionKey: _schemaVersion});
 
   String exportJson(Map<String, dynamic> data) => const JsonEncoder.withIndent('  ').convert(data);
 

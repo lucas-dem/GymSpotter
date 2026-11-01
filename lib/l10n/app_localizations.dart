@@ -2081,7 +2081,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetBody.
   ///
   /// In en, this message translates to:
-  /// **'Sessions, records, routines, notes and profile. This cannot be undone — export a backup first if you might want it.'**
+  /// **'Sessions, records, routines, notes and profile, plus the rescue copies Infyter keeps. This cannot be undone — export a backup first if you might want it.'**
   String get resetBody;
 
   /// No description provided for @resetConfirm.
@@ -2095,6 +2095,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All data deleted'**
   String get resetDone;
+
+  /// No description provided for @rescueTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A copy of your data is available'**
+  String get rescueTitle;
+
+  /// No description provided for @rescueBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your saved data couldn\'t be opened. You can restore the latest copy; what you have now is kept as another copy first.'**
+  String get rescueBody;
+
+  /// No description provided for @rescueRestore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get rescueRestore;
+
+  /// No description provided for @rescueRestored.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy restored'**
+  String get rescueRestored;
+
+  /// No description provided for @rescueFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t restore the copy'**
+  String get rescueFailed;
 
   /// No description provided for @support.
   ///

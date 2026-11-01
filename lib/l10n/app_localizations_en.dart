@@ -1168,13 +1168,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sessions, records, routines, notes and profile. This cannot be undone — export a backup first if you might want it.';
+      'Sessions, records, routines, notes and profile, plus the rescue copies Infyter keeps. This cannot be undone — export a backup first if you might want it.';
 
   @override
   String get resetConfirm => 'Delete everything';
 
   @override
   String get resetDone => 'All data deleted';
+
+  @override
+  String get rescueTitle => 'A copy of your data is available';
+
+  @override
+  String get rescueBody =>
+      'Your saved data couldn\'t be opened. You can restore the latest copy; what you have now is kept as another copy first.';
+
+  @override
+  String get rescueRestore => 'Restore';
+
+  @override
+  String get rescueRestored => 'Copy restored';
+
+  @override
+  String get rescueFailed => 'Couldn\'t restore the copy';
 
   @override
   String get support => 'SUPPORT';

@@ -1170,13 +1170,29 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sessões, registros, rotinas, notas e perfil. Isso não pode ser desfeito — exporte um backup primeiro, caso queira mantê-lo';
+      'Sessões, registros, rotinas, notas e perfil, além das cópias de resgate que o Infyter guarda. Isso não pode ser desfeito — exporte um backup primeiro, caso queira mantê-lo.';
 
   @override
   String get resetConfirm => 'Excluir tudo';
 
   @override
   String get resetDone => 'Todos os dados excluídos';
+
+  @override
+  String get rescueTitle => 'Há uma cópia dos seus dados';
+
+  @override
+  String get rescueBody =>
+      'Não foi possível abrir os seus dados salvos. Você pode restaurar a última cópia; antes, o que você tem agora é guardado em outra cópia.';
+
+  @override
+  String get rescueRestore => 'Restaurar';
+
+  @override
+  String get rescueRestored => 'Cópia restaurada';
+
+  @override
+  String get rescueFailed => 'Não foi possível restaurar a cópia';
 
   @override
   String get support => 'SUPORTE';
