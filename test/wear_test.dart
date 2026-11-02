@@ -73,6 +73,7 @@ void main() {
     expect(fit.route, 'routines');
     expect(find.text(t.templates), findsOneWidget);
 
+    await _reveal(tester, find.text('Push Pull Legs'));
     await tester.tap(find.text('Push Pull Legs'));
     await _settle(tester);
     expect(fit.routines, isNotEmpty);
