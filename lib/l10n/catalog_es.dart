@@ -209,7 +209,7 @@ const Map<String, String> kExerciseNameEs = {
   'FkBIE6a': 'Femoral tumbado con mancuerna',
   'GwYwElT': 'Curl femoral inverso autoasistido',
   'LNE3wfo': 'Deslizamiento a una pierna en plataforma',
-  'C5jncD2': 'Curl femoral a una pierna de pie',
+  'C5jncD2': 'Femoral parado',
   'qKBpF7I': 'Puente de glúteo con barra',
   'OM46QHm': 'Pull through en polea con cuerda',
   'qg2PGl6': 'Puente de glúteo con barra y pies en banco',

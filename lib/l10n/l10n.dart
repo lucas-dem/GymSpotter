@@ -42,6 +42,7 @@ const Set<String> kGymNamedExercises = {
   'leg-extension', // Sillón de cuádriceps
   'machine-lying-leg-curl', // Camilla de isquios
   'static-lunge', // Estocadas estáticas
+  'C5jncD2', // Femoral parado
   'hip-thrust', // Hip thrust
   'ila4NZS', // Peso muerto
   '9E25EOx', // Búlgara

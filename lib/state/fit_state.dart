@@ -896,13 +896,24 @@ class FitState extends FitCore
     final sameDay = <String, String>{};
     for (final day in template.days) {
       final ids = <String, int>{};
+      final planned = <String, List<PlannedSet>>{};
       for (final (name, sets) in day.exercises) {
         final ex = matchExerciseByName(name);
         if (ex == null || ids.containsKey(ex.id)) continue;
         ids[ex.id] = sets;
+        final reps = day.reps[name];
+        final seconds = day.seconds[name];
+        if (reps != null || seconds != null) {
+          planned[ex.id] = List.generate(sets, (_) => PlannedSet(reps: reps, sec: seconds));
+        }
       }
       if (ids.isEmpty) continue;
-      final key = '${day.name}|${ids.entries.map((e) => '${e.key}:${e.value}').join(',')}';
+      final key =
+          '${day.name}|${ids.entries.map((e) {
+            final plan = planned[e.key];
+            final detail = plan == null || plan.isEmpty ? '' : ':${plan.first.reps ?? ''}:${plan.first.sec ?? ''}';
+            return '${e.key}:${e.value}$detail';
+          }).join(',')}';
       final twin = sameDay[key];
       if (twin != null) {
         if (planWasEmpty && day.weekday != null) targetPlan[day.weekday!] = twin;
@@ -913,7 +924,12 @@ class FitState extends FitCore
       setRoutineGroup(id, template.name);
       for (final entry in ids.entries) {
         toggleRoutineExercise(id, entry.key);
-        bumpRoutineSets(id, entry.key, entry.value - kDefaultRoutineSets);
+        final plan = planned[entry.key];
+        if (plan == null) {
+          bumpRoutineSets(id, entry.key, entry.value - kDefaultRoutineSets);
+        } else {
+          setPlannedSets(id, entry.key, plan);
+        }
       }
       if (planWasEmpty && day.weekday != null) targetPlan[day.weekday!] = id;
       made++;

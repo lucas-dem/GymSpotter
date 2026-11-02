@@ -1,20 +1,632 @@
 class ProgramDay {
-  const ProgramDay(this.name, this.exercises, {this.weekday});
+  const ProgramDay(this.name, this.exercises, {this.weekday, this.reps = const {}, this.seconds = const {}});
 
   final String name;
   final List<(String, int)> exercises;
   final int? weekday;
+  final Map<String, int> reps;
+  final Map<String, int> seconds;
 }
 
 class ProgramTemplate {
-  const ProgramTemplate(this.id, this.name, this.days);
+  const ProgramTemplate(this.id, this.name, this.days, {this.blurb});
 
   final String id;
   final String name;
   final List<ProgramDay> days;
+  final String? blurb;
 }
 
 const List<ProgramTemplate> kProgramTemplates = [
+  ProgramTemplate(
+    'mujer-principiante-5',
+    'Mujer principiante – 5 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Leg Extension', 4),
+          ('Machine Leg Press', 4),
+          ('Belt Squat', 4),
+          ('Crunch Floor', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Pendulum Hack Squat': 8,
+          'Leg Extension': 12,
+          'Machine Leg Press': 10,
+          'Belt Squat': 12,
+          'Crunch Floor': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Reverse-Grip Lat Pulldown', 4),
+          ('Cable Seated Row', 4),
+          ('Lever T Bar Row', 4),
+          ('Plank', 4),
+        ],
+        weekday: 2,
+        reps: {
+          'Cable Pulldown': 12,
+          'Reverse-Grip Lat Pulldown': 10,
+          'Cable Seated Row': 12,
+          'Lever T Bar Row': 10,
+        },
+        seconds: {'Plank': 20},
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Hip Thrust', 4),
+          ('Seated Leg Curl', 4),
+          ('Hip Abduction Machine', 4),
+          ('Machine Glute Kickback', 4),
+          ('Dumbbell Front Raise', 4),
+        ],
+        weekday: 3,
+        reps: {
+          'Hip Thrust': 12,
+          'Seated Leg Curl': 12,
+          'Hip Abduction Machine': 12,
+          'Machine Glute Kickback': 12,
+          'Dumbbell Front Raise': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 4',
+        [
+          ('Incline Converging Chest Press', 4),
+          ('Dumbbell Lateral Raise', 4),
+          ('Fly Deck Rear Delts', 4),
+          ('Cable Bar Tricep Pushdown', 4),
+          ('Single Arm Dumbbell Tricep Extension', 4),
+        ],
+        weekday: 4,
+        reps: {
+          'Incline Converging Chest Press': 12,
+          'Dumbbell Lateral Raise': 12,
+          'Fly Deck Rear Delts': 12,
+          'Cable Bar Tricep Pushdown': 12,
+          'Single Arm Dumbbell Tricep Extension': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 5',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Machine Lying Leg Curl', 4),
+          ('Hip Adduction Machine', 4),
+          ('Dumbbell Biceps Curl', 4),
+          ('Cable Curl', 4),
+        ],
+        weekday: 5,
+        reps: {
+          'Pendulum Hack Squat': 12,
+          'Machine Lying Leg Curl': 12,
+          'Hip Adduction Machine': 12,
+          'Dumbbell Biceps Curl': 12,
+          'Cable Curl': 12,
+        },
+      ),
+    ],
+    blurb: 'Cinco días con foco progresivo en piernas, glúteos, espalda, hombros y brazos.',
+  ),
+  ProgramTemplate('mujer-2', 'Mujer – 2 días', [
+    ProgramDay(
+      'Día 1',
+      [
+        ('Dumbbell Goblet Squat', 4),
+        ('Belt Squat', 3),
+        ('Machine Glute Kickback', 3),
+        ('Dumbbell Front Raise', 4),
+        ('Dumbbell Lateral Raise', 4),
+        ('Plank', 3),
+      ],
+      weekday: 1,
+      reps: {
+        'Dumbbell Goblet Squat': 8,
+        'Belt Squat': 12,
+        'Machine Glute Kickback': 10,
+        'Dumbbell Front Raise': 8,
+        'Dumbbell Lateral Raise': 8,
+      },
+      seconds: {'Plank': 30},
+    ),
+    ProgramDay(
+      'Día 2',
+      [
+        ('Machine Lying Leg Curl', 4),
+        ('Leg Extension', 4),
+        ('Machine Leg Press', 3),
+        ('Cable Pulldown', 4),
+        ('Dumbbell Biceps Curl', 4),
+        ('Cable Seated Row', 3),
+      ],
+      weekday: 4,
+      reps: {
+        'Machine Lying Leg Curl': 8,
+        'Leg Extension': 10,
+        'Machine Leg Press': 12,
+        'Cable Pulldown': 10,
+        'Dumbbell Biceps Curl': 10,
+        'Cable Seated Row': 12,
+      },
+    ),
+  ], blurb: 'Dos días completos con énfasis en piernas, glúteos, espalda y hombros.'),
+  ProgramTemplate(
+    'hombre-avanzado-3',
+    'Hombre avanzado – 3 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Barbell Bench Press', 4),
+          ('Dumbbell Incline Bench Press', 4),
+          ('Fly Deck Chest', 4),
+          ('Barbell Curl', 4),
+          ('Incline Dumbbell Curl', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Barbell Bench Press': 10,
+          'Dumbbell Incline Bench Press': 8,
+          'Fly Deck Chest': 8,
+          'Barbell Curl': 12,
+          'Incline Dumbbell Curl': 10,
+        },
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Cable Seated Row', 4),
+          ('Lever T Bar Row', 4),
+          ('Rope Tricep Pushdown', 4),
+          ('Cable Pullover', 4),
+          ('Chest Dip', 4),
+          ('Crunch Floor', 4),
+        ],
+        weekday: 3,
+        reps: {
+          'Cable Pulldown': 10,
+          'Cable Seated Row': 10,
+          'Lever T Bar Row': 8,
+          'Rope Tricep Pushdown': 8,
+          'Cable Pullover': 8,
+          'Chest Dip': 8,
+          'Crunch Floor': 15,
+        },
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Machine Leg Press', 4),
+          ('Leg Extension', 4),
+          ('Machine Lying Leg Curl', 4),
+          ('Static Lunge', 4),
+        ],
+        weekday: 5,
+        reps: {
+          'Pendulum Hack Squat': 10,
+          'Machine Leg Press': 8,
+          'Leg Extension': 10,
+          'Machine Lying Leg Curl': 10,
+          'Static Lunge': 8,
+        },
+      ),
+    ],
+    blurb: 'Tres días avanzados para trabajar pecho, espalda, brazos y piernas.',
+  ),
+  ProgramTemplate(
+    'hombre-principiante-3',
+    'Hombre principiante – 3 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Flat Converging Chest Press', 4),
+          ('Incline Converging Chest Press', 4),
+          ('Fly Deck Chest', 4),
+          ('Barbell Curl', 4),
+          ('Alternating Dumbbell Curl', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Flat Converging Chest Press': 12,
+          'Incline Converging Chest Press': 8,
+          'Fly Deck Chest': 10,
+          'Barbell Curl': 8,
+          'Alternating Dumbbell Curl': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Reverse-Grip Lat Pulldown', 4),
+          ('Cable Seated Row', 4),
+          ('Lever T Bar Row', 4),
+          ('Chest Dip', 4),
+          ('Rope Tricep Pushdown', 4),
+        ],
+        weekday: 3,
+        reps: {
+          'Cable Pulldown': 10,
+          'Reverse-Grip Lat Pulldown': 12,
+          'Cable Seated Row': 10,
+          'Lever T Bar Row': 10,
+          'Chest Dip': 10,
+          'Rope Tricep Pushdown': 8,
+        },
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Machine Leg Press', 3),
+          ('Leg Extension', 3),
+          ('Machine Lying Leg Curl', 4),
+          ('Lever Standing Calf Raise', 3),
+        ],
+        weekday: 5,
+        reps: {
+          'Pendulum Hack Squat': 10,
+          'Machine Leg Press': 10,
+          'Leg Extension': 10,
+          'Machine Lying Leg Curl': 12,
+          'Lever Standing Calf Raise': 10,
+        },
+      ),
+    ],
+    blurb: 'Tres días para aprender los movimientos base de torso, brazos y piernas.',
+  ),
+  ProgramTemplate(
+    'mujer-principiante-3',
+    'Mujer principiante – 3 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Glute Bridge', 4),
+          ('Machine Glute Kickback', 4),
+          ('Machine Lying Leg Curl', 4),
+          ('Standing Single Leg Curl', 4),
+          ('Plank', 3),
+        ],
+        weekday: 1,
+        reps: {
+          'Glute Bridge': 12,
+          'Machine Glute Kickback': 8,
+          'Machine Lying Leg Curl': 12,
+          'Standing Single Leg Curl': 8,
+        },
+        seconds: {'Plank': 30},
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Cable Seated Row', 4),
+          ('Dumbbell Front Raise', 3),
+          ('Dumbbell Lateral Raise', 3),
+          ('Dumbbell Biceps Curl', 4),
+          ('Crunch Floor', 3),
+        ],
+        weekday: 3,
+        reps: {
+          'Cable Pulldown': 8,
+          'Cable Seated Row': 10,
+          'Dumbbell Front Raise': 12,
+          'Dumbbell Lateral Raise': 12,
+          'Dumbbell Biceps Curl': 10,
+          'Crunch Floor': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Smith Full Squat', 4),
+          ('Leg Extension', 4),
+          ('Machine Leg Press', 4),
+          ('Dumbbell Goblet Squat', 4),
+          ('Russian Twist', 4),
+        ],
+        weekday: 5,
+        reps: {
+          'Smith Full Squat': 10,
+          'Leg Extension': 12,
+          'Machine Leg Press': 8,
+          'Dumbbell Goblet Squat': 8,
+          'Russian Twist': 12,
+        },
+      ),
+    ],
+    blurb: 'Tres días para aprender movimientos de glúteos, piernas, espalda, hombros y brazos.',
+  ),
+  ProgramTemplate(
+    'hombre-avanzado-4',
+    'Hombre avanzado – 4 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Barbell Bench Press', 4),
+          ('Dumbbell Incline Bench Press', 4),
+          ('Cable Cross-over Variation', 4),
+          ('Incline Dumbbell Curl', 4),
+          ('Fly Deck Chest', 4),
+          ('Alternating Dumbbell Curl', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Barbell Bench Press': 10,
+          'Dumbbell Incline Bench Press': 12,
+          'Cable Cross-over Variation': 8,
+          'Incline Dumbbell Curl': 8,
+          'Fly Deck Chest': 12,
+          'Alternating Dumbbell Curl': 10,
+        },
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Cable Seated Row', 3),
+          ('Lever T Bar Row', 4),
+          ('Rope Tricep Pushdown', 4),
+          ('Cable Pullover', 3),
+          ('Chest Dip', 3),
+          ('Plank', 4),
+        ],
+        weekday: 2,
+        reps: {
+          'Cable Pulldown': 10,
+          'Cable Seated Row': 10,
+          'Lever T Bar Row': 8,
+          'Rope Tricep Pushdown': 8,
+          'Cable Pullover': 10,
+          'Chest Dip': 10,
+        },
+        seconds: {'Plank': 30},
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Banded Pallof Press', 4),
+          ('Machine Leg Press', 3),
+          ('Leg Extension', 4),
+          ('Smith Full Squat', 4),
+          ('Machine Lying Leg Curl', 4),
+        ],
+        weekday: 4,
+        reps: {
+          'Pendulum Hack Squat': 10,
+          'Banded Pallof Press': 10,
+          'Machine Leg Press': 8,
+          'Leg Extension': 10,
+          'Smith Full Squat': 10,
+          'Machine Lying Leg Curl': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 4',
+        [
+          ('Dumbbell Standing Overhead Press', 4),
+          ('Dumbbell Front Raise', 4),
+          ('Dumbbell Lateral Raise', 4),
+          ('Fly Deck Rear Delts', 4),
+          ('Cable Lateral Raise', 4),
+        ],
+        weekday: 5,
+        reps: {
+          'Dumbbell Standing Overhead Press': 12,
+          'Dumbbell Front Raise': 10,
+          'Dumbbell Lateral Raise': 12,
+          'Fly Deck Rear Delts': 12,
+          'Cable Lateral Raise': 10,
+        },
+      ),
+    ],
+    blurb: 'Cuatro días avanzados para distribuir pecho, espalda, piernas y hombros.',
+  ),
+  ProgramTemplate(
+    'hombre-avanzado-5',
+    'Hombre avanzado – 5 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Barbell Bench Press', 4),
+          ('Dumbbell Incline Bench Press', 4),
+          ('Cable Cross-over Variation', 4),
+          ('Dumbbell Fly', 4),
+          ('Barbell Curl', 4),
+          ('Dumbbell Concentration Curl', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Barbell Bench Press': 12,
+          'Dumbbell Incline Bench Press': 10,
+          'Cable Cross-over Variation': 8,
+          'Dumbbell Fly': 10,
+          'Barbell Curl': 8,
+          'Dumbbell Concentration Curl': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Pendulum Hack Squat', 4),
+          ('Machine Leg Press', 3),
+          ('Leg Extension', 4),
+          ('Machine Lying Leg Curl', 4),
+          ('Hip Adduction Machine', 4),
+          ('Lever Standing Calf Raise', 3),
+        ],
+        weekday: 2,
+        reps: {
+          'Pendulum Hack Squat': 8,
+          'Machine Leg Press': 12,
+          'Leg Extension': 10,
+          'Machine Lying Leg Curl': 10,
+          'Hip Adduction Machine': 10,
+          'Lever Standing Calf Raise': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Cable Pulldown', 4),
+          ('Reverse-Grip Lat Pulldown', 4),
+          ('Barbell Bent Over Row', 4),
+          ('Single-Arm Cable Row', 4),
+          ('Cable Bar Tricep Pushdown', 4),
+          ('Cable Overhead Triceps Extension (Rope Attachment)', 4),
+        ],
+        weekday: 3,
+        reps: {
+          'Cable Pulldown': 12,
+          'Reverse-Grip Lat Pulldown': 8,
+          'Barbell Bent Over Row': 10,
+          'Single-Arm Cable Row': 8,
+          'Cable Bar Tricep Pushdown': 12,
+          'Cable Overhead Triceps Extension (Rope Attachment)': 12,
+        },
+      ),
+      ProgramDay(
+        'Día 4',
+        [
+          ('Dumbbell Standing Overhead Press', 4),
+          ('Dumbbell Front Raise', 4),
+          ('Dumbbell Lateral Raise', 4),
+          ('Cable Cross-over Revers Fly', 4),
+          ('Cable Lateral Raise', 3),
+        ],
+        weekday: 4,
+        reps: {
+          'Dumbbell Standing Overhead Press': 8,
+          'Dumbbell Front Raise': 12,
+          'Dumbbell Lateral Raise': 8,
+          'Cable Cross-over Revers Fly': 12,
+          'Cable Lateral Raise': 10,
+        },
+      ),
+      ProgramDay(
+        'Día 5',
+        [
+          ('Incline Dumbbell Curl', 4),
+          ('Barbell Alternate Biceps Curl', 4),
+          ('Dumbbell Hammer Curl', 4),
+          ('Barbell Lying Triceps Extension', 4),
+          ('Single Arm Dumbbell Tricep Extension', 4),
+        ],
+        weekday: 5,
+        reps: {
+          'Incline Dumbbell Curl': 12,
+          'Barbell Alternate Biceps Curl': 12,
+          'Dumbbell Hammer Curl': 10,
+          'Barbell Lying Triceps Extension': 8,
+          'Single Arm Dumbbell Tricep Extension': 12,
+        },
+      ),
+    ],
+    blurb: 'Cinco días avanzados para repartir pecho, piernas, espalda, hombros y brazos.',
+  ),
+  ProgramTemplate(
+    'mujer-avanzada-4',
+    'Mujer avanzada – 4 días',
+    [
+      ProgramDay(
+        'Día 1',
+        [
+          ('Hip Thrust', 4),
+          ('Donkey Kick', 4),
+          ('Machine Glute Kickback', 4),
+          ('Hip Abduction Machine', 4),
+          ('Dumbbell Single Leg Split Squat', 4),
+          ('Plank', 4),
+        ],
+        weekday: 1,
+        reps: {
+          'Hip Thrust': 10,
+          'Donkey Kick': 8,
+          'Machine Glute Kickback': 10,
+          'Hip Abduction Machine': 12,
+          'Dumbbell Single Leg Split Squat': 8,
+        },
+        seconds: {'Plank': 30},
+      ),
+      ProgramDay(
+        'Día 2',
+        [
+          ('Cable Pulldown', 4),
+          ('Reverse-Grip Lat Pulldown', 4),
+          ('Cable Seated Row', 4),
+          ('Barbell Alternate Biceps Curl', 4),
+          ('Lever Shoulder Press', 4),
+          ('Dumbbell Hammer Curl', 4),
+          ('Dumbbell Front Raise', 4),
+        ],
+        weekday: 2,
+        reps: {
+          'Cable Pulldown': 10,
+          'Reverse-Grip Lat Pulldown': 12,
+          'Cable Seated Row': 8,
+          'Barbell Alternate Biceps Curl': 8,
+          'Lever Shoulder Press': 8,
+          'Dumbbell Hammer Curl': 8,
+          'Dumbbell Front Raise': 8,
+        },
+      ),
+      ProgramDay(
+        'Día 3',
+        [
+          ('Barbell Deadlift', 4),
+          ('Standing Single Leg Curl', 4),
+          ('Machine Lying Leg Curl', 3),
+          ('Pendulum Hack Squat', 4),
+          ('Cable Bar Tricep Pushdown', 4),
+          ('Crunch Floor', 4),
+        ],
+        weekday: 4,
+        reps: {
+          'Barbell Deadlift': 8,
+          'Standing Single Leg Curl': 10,
+          'Machine Lying Leg Curl': 10,
+          'Pendulum Hack Squat': 10,
+          'Cable Bar Tricep Pushdown': 8,
+          'Crunch Floor': 8,
+        },
+      ),
+      ProgramDay(
+        'Día 4',
+        [
+          ('Barbell Full Squat', 4),
+          ('Machine Leg Press', 4),
+          ('Leg Extension', 4),
+          ('Reverse Pendulum Hack Squat', 4),
+          ('Hip Adduction Machine', 4),
+          ('Belt Squat', 6),
+        ],
+        weekday: 5,
+        reps: {
+          'Barbell Full Squat': 10,
+          'Machine Leg Press': 8,
+          'Leg Extension': 8,
+          'Reverse Pendulum Hack Squat': 8,
+          'Hip Adduction Machine': 10,
+          'Belt Squat': 12,
+        },
+      ),
+    ],
+    blurb: 'Cuatro días avanzados con énfasis en glúteos, piernas, espalda y hombros.',
+  ),
   ProgramTemplate('fullbody', 'Full Body', [
     ProgramDay('Full Body', [
       ('Barbell Squat', 3),
@@ -165,31 +777,14 @@ const List<ProgramTemplate> kProgramTemplates = [
       ('Barbell Bench Press', 5),
       ('Barbell Row', 5),
     ], weekday: 1),
-    ProgramDay('Workout B', [
-      ('Barbell Squat', 5),
-      ('Overhead Press', 5),
-      ('Deadlift', 1),
-    ], weekday: 3),
+    ProgramDay('Workout B', [('Barbell Squat', 5), ('Overhead Press', 5), ('Deadlift', 1)], weekday: 3),
   ]),
   ProgramTemplate('startingstrength', 'Starting Strength', [
-    ProgramDay('Workout A', [
-      ('Barbell Squat', 3),
-      ('Barbell Bench Press', 3),
-      ('Deadlift', 1),
-    ], weekday: 1),
-    ProgramDay('Workout B', [
-      ('Barbell Squat', 3),
-      ('Overhead Press', 3),
-      ('Barbell Row', 3),
-    ], weekday: 3),
+    ProgramDay('Workout A', [('Barbell Squat', 3), ('Barbell Bench Press', 3), ('Deadlift', 1)], weekday: 1),
+    ProgramDay('Workout B', [('Barbell Squat', 3), ('Overhead Press', 3), ('Barbell Row', 3)], weekday: 3),
   ]),
   ProgramTemplate('home', 'No Kit', [
-    ProgramDay('Home A', [
-      ('Push Up', 3),
-      ('Pull Up', 3),
-      ('Bodyweight Squat', 3),
-      ('Plank', 3),
-    ], weekday: 2),
+    ProgramDay('Home A', [('Push Up', 3), ('Pull Up', 3), ('Bodyweight Squat', 3), ('Plank', 3)], weekday: 2),
     ProgramDay('Home B', [
       ('Triceps Dip', 3),
       ('Chin Up', 3),

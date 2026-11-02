@@ -304,6 +304,198 @@ void main() {
       expect(fit.routineSets(a, a.exerciseIds.first), 5);
     });
 
+    test('el plan de mujer principiante conserva series, repeticiones y tiempo', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'mujer-principiante-5');
+      expect(fit.applyTemplate(template), 5);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(5));
+      expect(fit.weeklyPlan.keys, containsAll([1, 2, 3, 4, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == day.seconds[name]),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de mujer de dos días conserva repeticiones y plancha por tiempo', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'mujer-2');
+      expect(fit.applyTemplate(template), 2);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(2));
+      expect(fit.weeklyPlan.keys, containsAll([1, 4]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == day.seconds[name]),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de hombre avanzado de tres días conserva series y repeticiones', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'hombre-avanzado-3');
+      expect(fit.applyTemplate(template), 3);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(3));
+      expect(fit.weeklyPlan.keys, containsAll([1, 3, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == null),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de hombre principiante de tres días conserva series y repeticiones', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'hombre-principiante-3');
+      expect(fit.applyTemplate(template), 3);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(3));
+      expect(fit.weeklyPlan.keys, containsAll([1, 3, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == null),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de mujer principiante de tres días conserva repeticiones y plancha por tiempo', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'mujer-principiante-3');
+      expect(fit.applyTemplate(template), 3);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(3));
+      expect(fit.weeklyPlan.keys, containsAll([1, 3, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == day.seconds[name]),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de hombre avanzado de cuatro días conserva series, repeticiones y plancha', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'hombre-avanzado-4');
+      expect(fit.applyTemplate(template), 4);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(4));
+      expect(fit.weeklyPlan.keys, containsAll([1, 2, 4, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == day.seconds[name]),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de hombre avanzado de cinco días conserva series y repeticiones', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'hombre-avanzado-5');
+      expect(fit.applyTemplate(template), 5);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(5));
+      expect(fit.weeklyPlan.keys, containsAll([1, 2, 3, 4, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == null),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
+    test('el plan de mujer avanzada de cuatro días conserva series, repeticiones y plancha', () {
+      final template = kProgramTemplates.firstWhere((x) => x.id == 'mujer-avanzada-4');
+      expect(fit.applyTemplate(template), 4);
+
+      final routines = fit.routinesInGroup(template.name);
+      expect(routines, hasLength(4));
+      expect(fit.weeklyPlan.keys, containsAll([1, 2, 4, 5]));
+
+      for (final day in template.days) {
+        final routine = routines.firstWhere((r) => r.name == day.name);
+        for (final (name, sets) in day.exercises) {
+          final exercise = fit.matchExerciseByName(name)!;
+          expect(fit.routineSets(routine, exercise.id), sets, reason: '${day.name} · $name');
+          final planned = fit.plannedSets(routine, exercise.id);
+          expect(planned, hasLength(sets), reason: '${day.name} · $name');
+          expect(
+            planned.every((set) => set.reps == day.reps[name] && set.sec == day.seconds[name]),
+            isTrue,
+            reason: '${day.name} · $name',
+          );
+        }
+      }
+    });
+
     test('coloca los días solo si el plan semanal estaba vacío', () {
       fit.applyTemplate(kProgramTemplates.firstWhere((x) => x.id == 'stronglifts'));
       expect(fit.weeklyPlan.length, 2);

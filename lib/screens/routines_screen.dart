@@ -561,7 +561,7 @@ class RoutinesScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    t.templateBlurb(template.id),
+                    template.blurb ?? t.templateBlurb(template.id),
                     style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary, height: 1.35),
                   ),
                   const SizedBox(height: 4),
