@@ -1149,6 +1149,26 @@ class AppLocalizationsZh extends AppLocalizations {
   String get rescueSavedBody => 'Infyter 已按原样保存了一份数据副本，以便日后可能恢复。你可以照常继续使用应用。';
 
   @override
+  String get updateRequiredTitle => '请更新 Infyter';
+
+  @override
+  String get updateRequiredBody => '商店里有新版本的 Infyter。更新应用后即可继续使用。';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return '新版本：$version';
+  }
+
+  @override
+  String get updateRequiredData => '你的训练、训练计划和其他数据都会保留在这台设备上。';
+
+  @override
+  String get updateRequiredButton => '更新';
+
+  @override
+  String get updateStoreFailed => '无法打开商店。请在商店中搜索 Infyter 并从那里更新。';
+
+  @override
   String get support => '支持与帮助';
 
   @override
@@ -4128,6 +4148,26 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get rescueSavedBody => 'Infyter 已按原樣保存了一份資料副本，以便日後可能復原。你可以照常繼續使用應用程式。';
+
+  @override
+  String get updateRequiredTitle => '請更新 Infyter';
+
+  @override
+  String get updateRequiredBody => '商店裡有新版本的 Infyter。更新應用程式後即可繼續使用。';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return '新版本：$version';
+  }
+
+  @override
+  String get updateRequiredData => '你的訓練、課表和其他資料都會保留在這台裝置上。';
+
+  @override
+  String get updateRequiredButton => '更新';
+
+  @override
+  String get updateStoreFailed => '無法開啟商店。請在商店中搜尋 Infyter 並從那裡更新。';
 
   @override
   String get support => '支援';

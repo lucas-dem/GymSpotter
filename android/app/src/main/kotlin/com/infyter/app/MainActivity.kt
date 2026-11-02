@@ -30,6 +30,7 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val messenger = flutterEngine.dartExecutor.binaryMessenger
+        StoreUpdate.register(this, messenger)
 
         MethodChannel(messenger, "infyter/haptics").setMethodCallHandler { call, result ->
             if (call.method != "buzz") {

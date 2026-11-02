@@ -22,4 +22,12 @@ Flutter and third-party packages retain their respective licenses. Their
 notices are available inside the application under “Información legal y
 licencias” → “Licencias de dependencias”.
 
+The Android build also includes Google's Play In-App Updates library
+(`com.google.android.play:app-update` 2.1.0, with `core-common` and the Play
+services `basement` and `tasks` libraries). It is used only to ask the Google
+Play Store app whether an update is available. Google distributes these
+libraries under its own terms (Play Core Software Development Kit Terms of
+Service and Android Software Development Kit License); they are not free
+software.
+
 Infyter is provided without warranty, to the extent permitted by law.

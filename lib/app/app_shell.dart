@@ -30,8 +30,10 @@ import '../screens/timeline_screen.dart';
 import '../screens/tool_detail_screen.dart';
 import '../screens/tools_screen.dart';
 import '../screens/train_screen.dart';
+import '../screens/update_required_screen.dart';
 import '../services/incoming_share.dart';
 import '../state/fit_state.dart';
+import '../state/update_gate.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
@@ -76,6 +78,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   String? _incoming;
   bool _scrolled = false;
   int _restTick = fit.restDoneTick;
+  // The version check can cover the app at any moment (it waits for an open workout to end).
+  late final Listenable _shell = Listenable.merge([fit, updateGate]);
 
   @override
   void initState() {
@@ -91,6 +95,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
       final text = await IncomingShare.take();
       if (text != null) _receive(text);
     });
+    // After the first frame, so the app opens at once; the answer may cover it a moment later.
+    WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(updateGate.checkNow()));
   }
 
   void _receive(String text) {
@@ -100,7 +106,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
 
   void _offerIncoming() {
     final text = _incoming;
-    if (text == null || !mounted || !fit.onboarded || fit.isSessionActive) return;
+    if (text == null || !mounted || !fit.onboarded || fit.isSessionActive || updateGate.blocks(fit)) return;
     _incoming = null;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) showPlanImportSheet(context, text: text);
@@ -175,14 +181,16 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
       fit.refreshAlarmPermission();
       fit.syncRest();
       fit.refreshWidgets();
+      unawaited(updateGate.resumed());
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: fit,
+      animation: _shell,
       builder: (context, _) {
+        if (updateGate.blocks(fit)) return UpdateRequiredScreen(version: updateGate.storeVersion);
         if (!fit.onboarded) return const OnboardingScreen();
 
         return PopScope(

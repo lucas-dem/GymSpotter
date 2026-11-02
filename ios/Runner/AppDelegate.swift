@@ -36,6 +36,16 @@ enum InfyterChannels {
         savePng(bytes.data, name: args?["name"] as? String ?? "infyter.png", result: result)
       }
 
+    // Version check (lib/state/update_gate.dart): the version of this binary, the one the App Store compares.
+    FlutterMethodChannel(name: "infyter/app_version", binaryMessenger: messenger)
+      .setMethodCallHandler { call, result in
+        guard call.method == "versionName" else {
+          result(FlutterMethodNotImplemented)
+          return
+        }
+        result(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
+      }
+
     FlutterMethodChannel(name: "infyter/screen", binaryMessenger: messenger)
       .setMethodCallHandler { call, result in
         switch call.method {

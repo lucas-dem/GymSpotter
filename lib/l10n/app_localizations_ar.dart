@@ -1197,6 +1197,26 @@ class AppLocalizationsAr extends AppLocalizations {
       'احتفظ Infyter بنسخة من بياناتك كما كانت، تحسّبًا لإمكانية استعادتها لاحقًا. يمكنك متابعة استخدام التطبيق كالمعتاد.';
 
   @override
+  String get updateRequiredTitle => 'حدّث Infyter';
+
+  @override
+  String get updateRequiredBody => 'يتوفر إصدار جديد من Infyter في المتجر. حدّث التطبيق لمواصلة استخدامه.';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return 'الإصدار الجديد: $version';
+  }
+
+  @override
+  String get updateRequiredData => 'تبقى تمارينك وروتيناتك وبقية بياناتك محفوظة على هذا الجهاز.';
+
+  @override
+  String get updateRequiredButton => 'تحديث';
+
+  @override
+  String get updateStoreFailed => 'تعذّر فتح المتجر. ابحث عن Infyter في المتجر وحدّثه من هناك.';
+
+  @override
   String get support => 'الدعم';
 
   @override

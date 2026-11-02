@@ -8,7 +8,9 @@
         android:maxSdkVersion="28"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" tools:node="remove"/>
+    <!-- Version check: only asks whether the phone is online, so an update is never required without connection.
+         It gives no internet access; the app still has no INTERNET permission. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 

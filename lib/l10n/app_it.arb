@@ -411,6 +411,12 @@
   "rescueFailed": "Impossibile ripristinare la copia",
   "rescueSavedTitle": "Non è stato possibile aprire i tuoi dati",
   "rescueSavedBody": "Infyter ha conservato una copia dei tuoi dati così com'erano, nel caso si possano recuperare più avanti. Puoi continuare a usare l'app normalmente.",
+  "updateRequiredTitle": "Aggiorna Infyter",
+  "updateRequiredBody": "Nello store è disponibile una nuova versione di Infyter. Aggiorna l'app per continuare a usarla.",
+  "updateRequiredVersion": "Nuova versione: {version}",
+  "updateRequiredData": "I tuoi allenamenti, le routine e gli altri dati restano salvati su questo dispositivo.",
+  "updateRequiredButton": "Aggiorna",
+  "updateStoreFailed": "Impossibile aprire lo store. Cerca Infyter nello store e aggiorna l'app da lì.",
 
   "support": "SUPPORTO",
   "reportBug": "Segnala un bug",

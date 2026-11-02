@@ -1205,6 +1205,29 @@ class AppLocalizationsUk extends AppLocalizations {
       'Infyter зберіг копію твоїх даних у тому вигляді, в якому вони були, на випадок, якщо їх вдасться відновити пізніше. Можна й далі користуватися застосунком як звичайно.';
 
   @override
+  String get updateRequiredTitle => 'Онови Infyter';
+
+  @override
+  String get updateRequiredBody =>
+      'У магазині є нова версія Infyter. Онови застосунок, щоб і далі ним користуватися.';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return 'Нова версія: $version';
+  }
+
+  @override
+  String get updateRequiredData =>
+      'Твої тренування, програми та інші дані залишаються збереженими на цьому пристрої.';
+
+  @override
+  String get updateRequiredButton => 'Оновити';
+
+  @override
+  String get updateStoreFailed =>
+      'Не вдалося відкрити магазин. Знайди Infyter у магазині й онови застосунок звідти.';
+
+  @override
   String get support => 'ПІДТРИМКА';
 
   @override

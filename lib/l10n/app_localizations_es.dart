@@ -1204,6 +1204,29 @@ class AppLocalizationsEs extends AppLocalizations {
       'Infyter guardó una copia de tus datos tal como estaban, por si más adelante se pueden recuperar. Puedes seguir usando la app con normalidad.';
 
   @override
+  String get updateRequiredTitle => 'Actualiza Infyter';
+
+  @override
+  String get updateRequiredBody =>
+      'Hay una versión nueva de Infyter en la tienda. Actualiza la app para seguir usándola.';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return 'Versión nueva: $version';
+  }
+
+  @override
+  String get updateRequiredData =>
+      'Tus entrenamientos, rutinas y demás datos quedan guardados en este dispositivo.';
+
+  @override
+  String get updateRequiredButton => 'Actualizar';
+
+  @override
+  String get updateStoreFailed =>
+      'No se pudo abrir la tienda. Busca Infyter en la tienda y actualiza la app desde ahí.';
+
+  @override
   String get support => 'APOYO';
 
   @override

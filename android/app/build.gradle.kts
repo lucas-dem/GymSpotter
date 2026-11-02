@@ -93,6 +93,8 @@ android.applicationVariants.configureEach {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    // Version check (StoreUpdate.kt): asks the Play Store app; adds no permission.
+    implementation("com.google.android.play:app-update:2.1.0")
 }
 
 flutter {

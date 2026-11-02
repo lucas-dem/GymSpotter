@@ -1207,6 +1207,29 @@ class AppLocalizationsNl extends AppLocalizations {
       'Infyter heeft een kopie van je gegevens bewaard zoals ze waren, voor het geval ze later te herstellen zijn. Je kunt de app gewoon blijven gebruiken.';
 
   @override
+  String get updateRequiredTitle => 'Werk Infyter bij';
+
+  @override
+  String get updateRequiredBody =>
+      'Er staat een nieuwe versie van Infyter in de store. Werk de app bij om hem te blijven gebruiken.';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return 'Nieuwe versie: $version';
+  }
+
+  @override
+  String get updateRequiredData =>
+      'Je trainingen, routines en andere gegevens blijven op dit apparaat bewaard.';
+
+  @override
+  String get updateRequiredButton => 'Bijwerken';
+
+  @override
+  String get updateStoreFailed =>
+      'De store kon niet worden geopend. Zoek Infyter in de store en werk de app daar bij.';
+
+  @override
   String get support => 'ONDERSTEUNING';
 
   @override

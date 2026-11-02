@@ -2144,6 +2144,42 @@ abstract class AppLocalizations {
   /// **'Infyter kept a copy of your data exactly as it was, in case it can be recovered later. You can keep using the app as usual.'**
   String get rescueSavedBody;
 
+  /// No description provided for @updateRequiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Infyter'**
+  String get updateRequiredTitle;
+
+  /// No description provided for @updateRequiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of Infyter is available in the store. Update the app to keep using it.'**
+  String get updateRequiredBody;
+
+  /// No description provided for @updateRequiredVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'New version: {version}'**
+  String updateRequiredVersion(String version);
+
+  /// No description provided for @updateRequiredData.
+  ///
+  /// In en, this message translates to:
+  /// **'Your workouts, routines and other data stay saved on this device.'**
+  String get updateRequiredData;
+
+  /// No description provided for @updateRequiredButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get updateRequiredButton;
+
+  /// No description provided for @updateStoreFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t open the store. Look for Infyter in the store and update it from there.'**
+  String get updateStoreFailed;
+
   /// No description provided for @support.
   ///
   /// In en, this message translates to:

@@ -1155,6 +1155,26 @@ class AppLocalizationsJa extends AppLocalizations {
   String get rescueSavedBody => 'Infyter は、後で復元できる場合に備えて、データのコピーをそのままの状態で保存しました。アプリはこれまでどおり使えます。';
 
   @override
+  String get updateRequiredTitle => 'Infyter をアップデートしてください';
+
+  @override
+  String get updateRequiredBody => 'ストアに Infyter の新しいバージョンがあります。引き続き使うには、アプリをアップデートしてください。';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return '新しいバージョン：$version';
+  }
+
+  @override
+  String get updateRequiredData => 'トレーニング、ルーティン、その他のデータはこのデバイスに保存されたままです。';
+
+  @override
+  String get updateRequiredButton => 'アップデート';
+
+  @override
+  String get updateStoreFailed => 'ストアを開けませんでした。ストアで Infyter を探して、そこからアップデートしてください。';
+
+  @override
   String get support => 'サポート';
 
   @override

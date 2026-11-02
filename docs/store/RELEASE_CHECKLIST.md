@@ -39,6 +39,18 @@ privacy, permission and content forms in each store console.
    store's privacy/data-safety questionnaire accurately.
 10. Publish `PRIVACY.md` at a permanent HTTPS URL and add a monitored support
     contact to both store listings. Do not submit with placeholder contact data.
+11. Never pass `INFYTER_TIENDA_SIMULADA` to a store build: it replaces Google
+    Play's answer with a local test file. Only test builds use it.
+12. Check the permissions of the Android release: for the bundle,
+    `bundletool dump manifest --bundle <app-release.aab>`; for an APK built
+    from the same commit, `aapt2 dump permissions <apk>`. `INTERNET` must not
+    appear; `ACCESS_NETWORK_STATE` is expected (version check).
+13. Pass `--dart-define=APP_BUILD_NAME` and `APP_BUILD_NUMBER` with exactly the
+    values of `--build-name` and `--build-number`, the same on Android and iOS.
+    The legal screen shows the defines; the iPhone version check compares the
+    version of the binary itself. In TestFlight or internal testing, the
+    version in "Información legal y licencias" must equal the one the store
+    lists for that build.
 
 ## Google Play
 

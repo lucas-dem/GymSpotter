@@ -1206,6 +1206,28 @@ class AppLocalizationsTr extends AppLocalizations {
       'Infyter, ileride kurtarılabilir diye verilerinin olduğu gibi bir kopyasını sakladı. Uygulamayı normal şekilde kullanmaya devam edebilirsin.';
 
   @override
+  String get updateRequiredTitle => 'Infyter\'ı güncelle';
+
+  @override
+  String get updateRequiredBody =>
+      'Mağazada Infyter\'ın yeni bir sürümü var. Kullanmaya devam etmek için uygulamayı güncelle.';
+
+  @override
+  String updateRequiredVersion(String version) {
+    return 'Yeni sürüm: $version';
+  }
+
+  @override
+  String get updateRequiredData =>
+      'Antrenmanların, programların ve diğer verilerin bu cihazda kayıtlı kalır.';
+
+  @override
+  String get updateRequiredButton => 'Güncelle';
+
+  @override
+  String get updateStoreFailed => 'Mağaza açılamadı. Mağazada Infyter\'ı bul ve oradan güncelle.';
+
+  @override
   String get support => 'DESTEK';
 
   @override

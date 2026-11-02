@@ -20,7 +20,16 @@ Connect. Re-check it against the final signed binaries before submission.
 - Data shared with third parties: none.
 - Tracking: none.
 - Analytics, advertising or crash-reporting SDKs: none.
-- Network access in the Android release binary: none.
+- Network access in the Android release binary: none (no `INTERNET`
+  permission). To check for updates, the app asks the on-device Google Play
+  Store app through Google's Play In-App Updates library (an inter-process
+  call, not a connection made by the app) and reads whether the device is
+  online (`ACCESS_NETWORK_STATE`).
+- Network access in the iOS binary: one HTTPS request to Apple's public lookup
+  (`https://itunes.apple.com/lookup?bundleId=com.infyter.app&country=<region>`)
+  when the app opens, and again when it returns after at least an hour, to
+  compare versions. It sends no user data; Apple receives the device's IP
+  address as with any request. Nothing reaches the developer or a third party.
 - Workout history, body measurements, notes and attached media remain on the
   device. They leave it only when the user explicitly exports or shares them.
 - QR recognition runs locally on the device; QR plan payloads are not sent to
@@ -36,6 +45,10 @@ sharing only if the final signed bundle still matches this document.
 For Apple App Privacy, select **Data Not Collected** and **No tracking** only
 if Xcode's privacy report for the final archive confirms the same result.
 
+The version check does not change these answers: nothing it sends reaches the
+developer or a third party. For Google Play Data safety, re-check Google's
+guidance for the Play In-App Updates library when filling the form.
+
 ## Permissions and purpose
 
 - Camera: local QR plan scanning and photos/videos the user chooses to add.
@@ -46,6 +59,9 @@ if Xcode's privacy report for the final archive confirms the same result.
   the app falls back to an inexact notification if access is unavailable.
 - Vibration and wake lock (Android): alert for an active rest timer while the
   display is off.
+- Network state (Android, `ACCESS_NETWORK_STATE`): checks that the device is
+  online before requiring an update, so the app never blocks without a
+  connection. It does not give internet access.
 
 The app does not request `INTERNET`, `USE_EXACT_ALARM`,
 `USE_FULL_SCREEN_INTENT` or promoted-notification permission in release.
