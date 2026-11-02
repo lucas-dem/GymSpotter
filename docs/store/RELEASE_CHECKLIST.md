@@ -47,10 +47,12 @@ privacy, permission and content forms in each store console.
     appear; `ACCESS_NETWORK_STATE` is expected (version check).
 13. Pass `--dart-define=APP_BUILD_NAME` and `APP_BUILD_NUMBER` with exactly the
     values of `--build-name` and `--build-number`, the same on Android and iOS.
-    The legal screen shows the defines; the iPhone version check compares the
-    version of the binary itself. In TestFlight or internal testing, the
-    version in "Información legal y licencias" must equal the one the store
-    lists for that build.
+    The legal screen shows only the version name (`APP_BUILD_NAME`, for
+    example "Versión 1.3.2"), never the build number. Both defines are still
+    required: together they turn on the iPhone version check, which compares
+    the version of the binary itself. In TestFlight or internal testing, the
+    version in "Información legal y licencias" must equal the version name
+    the store lists for that build.
 
 ## Google Play
 

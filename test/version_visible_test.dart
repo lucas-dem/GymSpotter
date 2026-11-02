@@ -1,7 +1,8 @@
-// Versión visible (sesiones 17 y 26). Se muestra "nombre (build)", por ejemplo "1.3.2 (3)". Sin defines: la de
-// pubspec.yaml ("1.3.0+1" se ve "1.3.0 (1)"). Con los defines de tienda: la publicada. Para probar lo segundo:
+// Versión visible (sesiones 17, 26 y 31). Se muestra solo el nombre, por ejemplo "1.3.2", sin el
+// número de build (hasta la sesión 30 se veía "1.3.2 (5)"). Sin defines: el nombre de pubspec.yaml
+// ("1.3.0+1" se ve "1.3.0"). Con los defines de tienda: el publicado. Para probar lo segundo:
 //   flutter test test/version_visible_test.dart \
-//     --dart-define=APP_BUILD_NAME=1.3.2 --dart-define=APP_BUILD_NUMBER=3
+//     --dart-define=APP_BUILD_NAME=1.3.2 --dart-define=APP_BUILD_NUMBER=5
 // Los casos que no aplican a la corrida se marcan como omitidos, no pasan solos.
 import 'dart:io';
 
@@ -11,7 +12,7 @@ import 'package:infyter/legal/compliance.dart';
 import 'package:infyter/screens/legal_screen.dart';
 import 'package:infyter/theme/app_theme.dart';
 
-final _format = RegExp(r'^\d+\.\d+\.\d+ \(\d+\)$');
+final _format = RegExp(r'^\d+\.\d+\.\d+$');
 
 String _declared() {
   final pubspec = File('pubspec.yaml').readAsStringSync();
@@ -28,25 +29,23 @@ void main() {
   });
 
   test(
-    'sin defines, se ve la versión de pubspec.yaml como "nombre (build)"',
+    'sin defines, se ve solo el nombre de la versión de pubspec.yaml',
     () {
-      final parts = _declared().split('+');
-      expect(Compliance.version, '${parts[0]} (${parts[1]})');
+      expect(Compliance.version, _declared().split('+').first);
     },
     skip: Compliance.hasStoreVersion ? 'corrida con APP_BUILD_NAME/APP_BUILD_NUMBER' : false,
   );
 
   test(
-    'con los defines de tienda, se ve "build-name (build-number)"',
+    'con los defines de tienda, se ve solo el build-name',
     () {
       const name = String.fromEnvironment('APP_BUILD_NAME');
-      const number = String.fromEnvironment('APP_BUILD_NUMBER');
-      expect(Compliance.version, '$name ($number)');
+      expect(Compliance.version, name);
     },
     skip: Compliance.hasStoreVersion ? false : 'corrida sin defines de tienda',
   );
 
-  test('el formato es "X.Y.Z (N)"', () {
+  test('el formato es "X.Y.Z", sin el número de build', () {
     expect(_format.hasMatch(Compliance.version), isTrue, reason: '"${Compliance.version}"');
   });
 
@@ -56,8 +55,9 @@ void main() {
     expect(Compliance.buildDate, const String.fromEnvironment('BUILD_DATE'));
   });
 
-  testWidgets('la pantalla legal muestra la versión visible', (tester) async {
+  testWidgets('la pantalla legal muestra la versión visible, sin el número de build', (tester) async {
     await tester.pumpWidget(MaterialApp(theme: AppTheme.dark, home: const LegalScreen()));
     expect(find.text('Versión ${Compliance.version}'), findsOneWidget);
+    expect(find.textContaining(RegExp(r'Versión \S+ \(')), findsNothing);
   });
 }
