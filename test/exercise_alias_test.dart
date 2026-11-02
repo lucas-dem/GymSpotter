@@ -238,4 +238,19 @@ void main() {
   test('an empty search keeps the whole catalog', () {
     expect(_search('   ').length, kExercises.length);
   });
+
+  test('searching or importing the 1.3.1 name of Femoral parado still finds it', () {
+    // "Curl femoral a una pierna de pie" was the Spanish name of C5jncD2 up to 1.3.1. Since b04865a
+    // every language shows the gym name "Femoral parado", so the old name is only a search alias.
+    const oldName = 'Curl femoral a una pierna de pie';
+    final femoral = kExercises.firstWhere((e) => e.id == 'C5jncD2');
+    addTearDown(() => setAppLanguage('en'));
+    for (final code in appLanguages) {
+      setAppLanguage(code);
+      expect(_search(oldName).map((e) => e.id), [femoral.id], reason: code);
+      expect(matchExercise(oldName, kExercises)?.id, femoral.id, reason: code);
+      expect(exerciseName(femoral), isNot(oldName), reason: code);
+    }
+    expect(kExerciseAliases[femoral.name], contains(oldName));
+  });
 }
