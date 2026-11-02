@@ -39,7 +39,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
 
   List<Exercise> getFilteredExercises(List<String> sel) {
     if (sel.isEmpty) return const [];
-    return allExercises
+    return listedExercises
         .where((ex) => sel.contains(ex.primary) || ex.secondary.any(sel.contains))
         .where(fitsHere)
         .toList();
@@ -90,7 +90,7 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
 
   List<Exercise> trainSearchResults(String query) {
     if (query.trim().isEmpty) return const [];
-    return allExercises.where(exerciseSearch(query)).take(40).toList();
+    return listedExercises.where(exerciseSearch(query)).take(40).toList();
   }
 
   static const _pickTarget = 6;
@@ -925,11 +925,12 @@ mixin WorkoutState on FitCore, SettingsState, LibraryState, PlacesState, StatsSt
   List<Exercise> sessionSuggestions() {
     final inSession = session?.exercises.map((e) => e.id).toSet() ?? <String>{};
     final ids = <String>[];
-    for (final e in allExercises) {
+    for (final e in listedExercises) {
       if (favorites[e.id] == true && !inSession.contains(e.id)) ids.add(e.id);
     }
     for (final s in sessions.reversed) {
       for (final e in s.exercises) {
+        if (kHiddenExercises.contains(e.id)) continue;
         if (!inSession.contains(e.id) && !ids.contains(e.id)) ids.add(e.id);
       }
       if (ids.length >= 12) break;

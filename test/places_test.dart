@@ -123,7 +123,8 @@ void main() {
 
     expect(fit.places, isEmpty);
     expect(fit.activePlaceId, '');
-    expect(fit.exercisesFiltered.length, fit.allExercises.length);
+    // The whole library: every exercise the app lists (hidden catalog exercises never show).
+    expect(fit.exercisesFiltered.length, fit.listedExercises.length);
   });
 
   test('an exercise you cannot do here offers what you can', () {

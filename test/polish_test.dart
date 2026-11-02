@@ -61,7 +61,8 @@ void main() {
       fit.setMuscleFilter('chest');
       fit.setExSearch('press');
       fit.clearExFilters();
-      expect(fit.exercisesFiltered.length, fit.allExercises.length);
+      // The whole library: every exercise the app lists (hidden catalog exercises never show).
+      expect(fit.exercisesFiltered.length, fit.listedExercises.length);
     });
 
     test('the muscle filter leads with the exercises that actually train it', () {

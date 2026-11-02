@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../catalog/exercise_catalog.dart';
+import '../catalog/hidden_exercises.dart';
 import '../catalog/program_templates.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
@@ -966,7 +967,7 @@ class FitState extends FitCore
       ']}';
 
   String planRequestText() {
-    final here = allExercises.where(fitsHere).toList();
+    final here = listedExercises.where(fitsHere).toList();
     final lines = <String>[
       'Infyter · ${activePlace?.name ?? t.placeAll}',
       t.planIntro,

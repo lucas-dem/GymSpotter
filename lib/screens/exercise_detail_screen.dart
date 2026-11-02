@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
+import '../catalog/hidden_exercises.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
 import '../models/workout.dart';
@@ -154,14 +155,16 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                     _modeRow(context, gc, ex.id, mode),
                     if (mode != 'cardio') _repsOnlyRow(gc, ex.id, repsOnly),
                     _restRow(gc, ex.id),
-                    _switchRow(
-                      gc,
-                      PhosphorIconsRegular.sparkle,
-                      t.suggestInWorkouts,
-                      t.suggestInWorkoutsHint,
-                      fit.suggests(ex.id),
-                      () => fit.toggleSuggest(ex.id),
-                    ),
+                    // A hidden exercise is never suggested, so the switch would do nothing.
+                    if (!kHiddenExercises.contains(ex.id))
+                      _switchRow(
+                        gc,
+                        PhosphorIconsRegular.sparkle,
+                        t.suggestInWorkouts,
+                        t.suggestInWorkoutsHint,
+                        fit.suggests(ex.id),
+                        () => fit.toggleSuggest(ex.id),
+                      ),
                     if (!repsOnly && mode.isEmpty) ...[
                       _progressRow(gc, ex.id),
                       _switchRow(

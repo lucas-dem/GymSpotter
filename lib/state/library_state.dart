@@ -9,6 +9,13 @@ mixin LibraryState on FitCore {
   int _customSeq = 0;
   List<Exercise> get allExercises => [...kExercises, ...customExercises];
 
+  /// What the app lists, searches and suggests: [allExercises] without [kHiddenExercises]. Saved routines, history,
+  /// backups and imports keep resolving through [allExercises] ([exerciseById], `matchExerciseByName`).
+  List<Exercise> get listedExercises => [
+    for (final e in allExercises)
+      if (!kHiddenExercises.contains(e.id)) e,
+  ];
+
   Exercise? exerciseById(String id) {
     for (final e in allExercises) {
       if (e.id == id) return e;
@@ -65,13 +72,14 @@ mixin LibraryState on FitCore {
     notifyListeners();
   }
 
-  int get favouriteCount => favorites.values.where((v) => v).length;
+  int get favouriteCount =>
+      favorites.entries.where((e) => e.value && !kHiddenExercises.contains(e.key)).length;
 
   List<Exercise> get exercisesFiltered => exercisesMatching(exSearch);
 
   List<Exercise> exercisesMatching(String query) {
     final matchesSearch = exerciseSearch(query);
-    final list = allExercises.where((ex) {
+    final list = listedExercises.where((ex) {
       if (exFavouritesOnly && favorites[ex.id] != true) return false;
       if (!matchesSearch(ex)) return false;
       if (exMuscleFilter != null &&
@@ -105,7 +113,7 @@ mixin LibraryState on FitCore {
 
   List<String> activeExerciseSteps(Exercise ex) => exerciseSteps(ex);
 
-  List<Exercise> similarExercises(Exercise ex, int n) => allExercises
+  List<Exercise> similarExercises(Exercise ex, int n) => listedExercises
       .where((e) => e.id != ex.id && e.primary == ex.primary)
       .take(n)
       .toList();

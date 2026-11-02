@@ -729,7 +729,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget _placeRow(GymColors gc, String preset) {
     final on = _places.containsKey(preset);
     final gear = {...?(_places[preset] ?? kPlacePresetGear[preset]), 'Bodyweight'};
-    final n = fit.allExercises.where((e) => gear.contains(e.equipment)).length;
+    final n = fit.exerciseCountFor(gear);
     return Semantics(
       button: true,
       selected: on,

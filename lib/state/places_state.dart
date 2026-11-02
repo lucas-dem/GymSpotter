@@ -27,14 +27,17 @@ mixin PlacesState on FitCore, LibraryState {
   bool fitsHere(Exercise ex) =>
       activePlace == null || gearHere.contains(ex.equipment) || isCustom(ex.id);
 
-  int placeExerciseCount(GymPlace place) {
-    final gear = {...place.equipment, 'Bodyweight'};
-    return allExercises.where((e) => gear.contains(e.equipment)).length;
+  int placeExerciseCount(GymPlace place) => exerciseCountFor(place.equipment);
+
+  /// How many listed exercises a place with [equipment] (plus bodyweight) offers.
+  int exerciseCountFor(Set<String> equipment) {
+    final gear = {...equipment, 'Bodyweight'};
+    return listedExercises.where((e) => gear.contains(e.equipment)).length;
   }
 
   List<Exercise> alternativesHere(Exercise ex, int n) {
     if (fitsHere(ex)) return const [];
-    final pool = allExercises
+    final pool = listedExercises
         .where((e) => e.id != ex.id && e.primary == ex.primary && fitsHere(e))
         .toList();
     pool.sort((a, b) {

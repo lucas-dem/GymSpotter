@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
+import '../catalog/hidden_exercises.dart';
 import '../l10n/l10n.dart';
 import '../models/exercise.dart';
 import '../models/note.dart';
@@ -332,7 +333,9 @@ class _ExercisePickerSheetState extends State<_ExercisePickerSheet> {
   }
 
   List<Exercise> get _results {
-    final all = fit.allExercises;
+    // A note already linked to a hidden exercise keeps it as its current choice.
+    final kept = kHiddenExercises.contains(widget.current) ? fit.exerciseById(widget.current) : null;
+    final all = [?kept, ...fit.listedExercises];
     if (_q.text.trim().isEmpty) return all.take(40).toList();
     return all.where(exerciseSearch(_q.text)).take(60).toList();
   }

@@ -3,7 +3,7 @@ part of 'fit_state.dart';
 mixin StatsState on FitCore, ToolsState, LibraryState, TimelineState {
   List<Exercise> recommendedExercises(int n) {
     final muscles = suggestedFocus.muscles;
-    final pool = kExercises.where((e) => !noSuggest.contains(e.id));
+    final pool = kExercises.where((e) => !noSuggest.contains(e.id) && !kHiddenExercises.contains(e.id));
     final picks = [
       for (final m in muscles) ...pool.where((e) => e.primary == m).take(1),
     ];
