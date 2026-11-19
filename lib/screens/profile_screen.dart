@@ -12,6 +12,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/entrance.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/rolling_text.dart';
 import '../widgets/medal_shelf.dart';
 import '../widgets/photo_source_sheet.dart';
@@ -225,19 +226,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           if (best > 0) ...[
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Text(
-                  '${t.yearBestMonth} · ',
-                  style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary),
-                ),
-                Flexible(
-                  child: Text(
-                    t.monthName(best),
+            Text.rich(
+              TextSpan(
+                text: '${t.yearBestMonth} · ',
+                style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary),
+                children: [
+                  TextSpan(
+                    text: t.monthName(best),
                     style: AppTheme.f(12, weight: FontWeight.w700, color: gc.textSecondary),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ],
@@ -249,27 +248,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
-          children: [
-            RollIn(
-              value,
-              style: AppTheme.f(26, weight: FontWeight.w800, color: gc.text),
-            ),
-            if (unit.isNotEmpty)
-              Text(
-                unit,
-                style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: AlignmentDirectional.centerStart,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              RollIn(
+                value,
+                style: AppTheme.f(26, weight: FontWeight.w800, color: gc.text),
               ),
-          ],
+              if (unit.isNotEmpty)
+                Text(
+                  unit,
+                  style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
+                ),
+            ],
+          ),
         ),
         const SizedBox(height: 5),
-        Text(
-          label.toUpperCase(),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: AppTheme.f(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(end: 8),
+          child: FitText(
+            label.toUpperCase(),
+            style: AppTheme.f(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9),
+          ),
         ),
       ],
     );
@@ -407,7 +411,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: Text(
+                    child: FitText(
                       label,
                       textAlign: TextAlign.center,
                       style: AppTheme.f(14.5, color: gc.text),
@@ -696,11 +700,14 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
               ),
               const SizedBox(width: 8),
               Flexible(
-                child: Text(
-                  t.levelToNext(fit.sessionsToNextLevel, fit.athleteLevel + 1),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    t.levelToNext(fit.sessionsToNextLevel, fit.athleteLevel + 1),
+                    maxLines: 1,
+                    style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary),
+                  ),
                 ),
               ),
             ],

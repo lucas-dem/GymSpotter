@@ -9,6 +9,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/routine_folder.dart';
@@ -600,17 +601,19 @@ class RoutinesScreen extends StatelessWidget {
             ),
             const SizedBox(width: 14),
             Expanded(
-              child: Text(
-                assigned == null ? t.restDayShort : fit.routineTitle(assigned),
-                textAlign: TextAlign.right,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.f(
-                  14,
-                  weight: FontWeight.w500,
-                  color: assigned != null ? gc.text : gc.textTertiary,
-                ),
-              ),
+              child: assigned == null
+                  ? FitText(
+                      t.restDayShort,
+                      textAlign: TextAlign.right,
+                      style: AppTheme.f(14, weight: FontWeight.w500, color: gc.textTertiary),
+                    )
+                  : Text(
+                      fit.routineTitle(assigned),
+                      textAlign: TextAlign.right,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTheme.f(14, weight: FontWeight.w500, color: gc.text),
+                    ),
             ),
             const SizedBox(width: 8),
             SvgPathIcon(Ic.chevronRight, size: 14, color: gc.textTertiary),

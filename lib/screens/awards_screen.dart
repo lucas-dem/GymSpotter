@@ -7,6 +7,7 @@ import '../l10n/l10n.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/medal.dart';
 import '../widgets/medal_shelf.dart';
 import '../widgets/ui_kit.dart';
@@ -59,7 +60,8 @@ class AwardsScreen extends StatelessWidget {
 
   Widget _grid(BuildContext context, List<AwardId> ids) {
     final scaler = MediaQuery.textScalerOf(context);
-    final content = 30 + 96 + 14 + 4 + scaler.scale(14) * 1.15 * 2 + scaler.scale(11.5) * 1.15 + 4;
+    final lines = _nameLines(context);
+    final content = 30 + 96 + 14 + 4 + scaler.scale(14) * 1.15 * lines + scaler.scale(11.5) * 1.15 + 4;
     return LayoutBuilder(
       builder: (context, box) => GridView.builder(
         shrinkWrap: true,
@@ -75,6 +77,9 @@ class AwardsScreen extends StatelessWidget {
       ),
     );
   }
+
+  /// Medal names take up to two lines, three once the user enlarges the text.
+  int _nameLines(BuildContext context) => MediaQuery.textScalerOf(context).scale(14) > 14 ? 3 : 2;
 
   Widget _card(BuildContext context, AwardId id) {
     final gc = context.gc;
@@ -94,11 +99,10 @@ class AwardsScreen extends StatelessWidget {
           children: [
             Medal(id: id, size: 96, locked: !won),
             const SizedBox(height: 14),
-            Text(
+            FitText(
               awardName(id),
-              maxLines: 2,
+              maxLines: _nameLines(context),
               textAlign: TextAlign.center,
-              overflow: TextOverflow.ellipsis,
               style: AppTheme.f(14, color: won ? gc.text : gc.textSecondary),
             ),
             const SizedBox(height: 4),

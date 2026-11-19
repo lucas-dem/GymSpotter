@@ -5,6 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'fit_text.dart';
 import 'ui_kit.dart';
 
 class HomeFolder extends StatelessWidget {
@@ -29,7 +30,7 @@ class HomeFolder extends StatelessWidget {
     final gc = context.gc;
     final dark = gc.bg.computeLuminance() < 0.5;
     final scaler = MediaQuery.textScalerOf(context);
-    final words = scaler.scale(15.5) * 1.15 + scaler.scale(11) * 1.15 + 4;
+    final words = scaler.scale(15.5) * 1.15 + 2 * scaler.scale(11) * 1.15 + 4;
     final tall = height + math.max(0.0, words - (height - _front - 36)).ceilToDouble();
     return Semantics(
       button: true,
@@ -71,10 +72,8 @@ class HomeFolder extends StatelessWidget {
                           ),
                         ),
                         const Spacer(),
-                        Text(
+                        FitText(
                           detail,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                           style: AppTheme.f(11, weight: FontWeight.w600, color: gc.textSecondary),
                         ),
                       ],

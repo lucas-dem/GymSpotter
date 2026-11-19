@@ -26,6 +26,7 @@ import '../theme/app_theme.dart';
 import '../widgets/body_rulers.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/entrance.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/photo_source_sheet.dart';
@@ -35,6 +36,8 @@ import '../widgets/timer_panel.dart';
 import 'profile_screen.dart';
 import 'legal_screen.dart';
 import '../widgets/ui_kit.dart';
+
+final _sinEspacios = RegExp('[฀-๿぀-ヿ㐀-鿿가-힯豈-﫿]');
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -224,13 +227,19 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                           children: [
                             ConstrainedBox(
                               constraints: const BoxConstraints(maxWidth: 128),
-                              child: Text(
-                                fit.alarmSoundName ?? t.alarmDefaultName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.right,
-                                style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary),
-                              ),
+                              child: fit.alarmSoundName == null
+                                  ? FitText(
+                                      t.alarmDefaultName,
+                                      textAlign: TextAlign.right,
+                                      style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary),
+                                    )
+                                  : Text(
+                                      fit.alarmSoundName!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      textAlign: TextAlign.right,
+                                      style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary),
+                                    ),
                             ),
                             const SizedBox(width: 6),
                             Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
@@ -410,27 +419,40 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
   );
 
   Widget _prefRow(GymColors gc, IconData icon, String label, Widget control) {
+    final style = AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text);
     return ConstrainedBox(
       constraints: const BoxConstraints(minHeight: 52),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: LayoutBuilder(
-          builder: (context, box) => Row(
-            children: [
-              _rowIcon(gc, icon),
-              Expanded(
-                child: Text(
-                  label,
-                  style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text),
-                ),
-              ),
-              const SizedBox(width: 12),
-              TrailingFit(maxWidth: box.maxWidth * 0.55, child: control),
-            ],
-          ),
+          builder: (context, box) {
+            final room = box.maxWidth - 36 - 12 - _widestWord(context, label, style);
+            return Row(
+              children: [
+                _rowIcon(gc, icon),
+                Expanded(child: FitText(label, style: style)),
+                const SizedBox(width: 12),
+                TrailingFit(maxWidth: room.clamp(box.maxWidth * 0.3, box.maxWidth * 0.55), child: control),
+              ],
+            );
+          },
         ),
       ),
     );
+  }
+
+  /// Width of the widest word of [text] at the user's text size, so the trailing control leaves room for it.
+  double _widestWord(BuildContext context, String text, TextStyle style) {
+    if (_sinEspacios.hasMatch(text)) return 0;
+    final p = TextPainter(
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    );
+    p.text = TextSpan(text: text, style: effectiveTextStyle(context, style));
+    p.layout();
+    final widest = p.minIntrinsicWidth;
+    p.dispose();
+    return widest + 1;
   }
 
   Widget _choiceRow(
@@ -457,10 +479,8 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
           children: [
             ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 128),
-              child: Text(
+              child: FitText(
                 shown.$2,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.right,
                 style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary),
               ),

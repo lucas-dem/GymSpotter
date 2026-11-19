@@ -16,6 +16,7 @@ import '../widgets/charts.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/entrance.dart';
 import '../widgets/exercise_media.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/muscle_radar.dart';
 import '../widgets/rolling_text.dart';
@@ -48,7 +49,7 @@ class ProgressScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: Text(t.progressTitle,
+                  child: FitText(t.progressTitle,
                       style: AppTheme.f(27, weight: FontWeight.w800, color: gc.text)),
                 ),
                 Semantics(
@@ -120,11 +121,14 @@ class ProgressScreen extends StatelessWidget {
         children: [
           Row(children: [
             Expanded(
-              child: Text(label.toUpperCase(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTheme.f(10,
-                      weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(label.toUpperCase(),
+                    maxLines: 1,
+                    style: AppTheme.f(10,
+                        weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+              ),
             ),
             ?badge,
           ]),
@@ -146,10 +150,12 @@ class ProgressScreen extends StatelessWidget {
           ),
           if (note != null) ...[
             const SizedBox(height: 4),
-            Text(note,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Text(note,
+                  maxLines: 1, style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
+            ),
           ],
           if (chart != null) ...[
             const SizedBox(height: 12),
@@ -266,7 +272,7 @@ class ProgressScreen extends StatelessWidget {
             Icon(PhosphorIconsFill.fire, size: 14, color: gc.accent),
             const SizedBox(width: 7),
             Expanded(
-              child: Text(t.streakDays(fit.currentStreak),
+              child: FitText(t.streakDays(fit.currentStreak),
                   style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.text)),
             ),
             const SizedBox(width: 8),
@@ -786,7 +792,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
           LayoutBuilder(builder: (context, box) => Row(children: [
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: box.maxWidth * 0.28),
-              child: Text(t.heatLow, style: AppTheme.s(11, color: gc.textTertiary)),
+              child: FitText(t.heatLow, style: AppTheme.s(11, color: gc.textTertiary)),
             ),
             const SizedBox(width: 8),
             for (int i = 0; i <= heatLevels; i++) ...[
@@ -804,7 +810,11 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
             const SizedBox(width: 8),
             ConstrainedBox(
               constraints: BoxConstraints(maxWidth: box.maxWidth * 0.28),
-              child: Text(t.heatHigh, textAlign: TextAlign.end, style: AppTheme.s(11, color: gc.textTertiary)),
+              child: FitText(
+                t.heatHigh,
+                textAlign: TextAlign.end,
+                style: AppTheme.s(11, color: gc.textTertiary),
+              ),
             ),
           ])),
           const SizedBox(height: 14),

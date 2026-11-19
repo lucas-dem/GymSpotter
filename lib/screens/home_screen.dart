@@ -11,6 +11,7 @@ import '../theme/app_theme.dart';
 import '../widgets/charts.dart';
 import '../widgets/entrance.dart';
 import '../widgets/exercise_media.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/home_folder.dart';
 import '../widgets/liquid_notch.dart';
@@ -185,6 +186,7 @@ class HomeScreen extends StatelessWidget {
         : (fit.hasData
             ? '${focus.subtitle} · ${t.exerciseCount(fit.getFilteredExercises(focus.muscles).length)}'
             : t.firstSessionHint);
+    final titleStyle = AppTheme.f(30, weight: FontWeight.w800, color: gc.text, height: 1.1);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(26),
@@ -233,16 +235,13 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 9),
                   Padding(
                     padding: const EdgeInsets.only(right: 96),
-                    child: Text(title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTheme.f(30,
-                            weight: FontWeight.w800, color: gc.text, height: 1.1)),
+                    child: isRoutine
+                        ? Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: titleStyle)
+                        : FitText(title, style: titleStyle),
                   ),
                   const SizedBox(height: 7),
-                  Text(subtitle,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                  FitText(subtitle,
+                      maxLines: 3,
                       style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
                   const SizedBox(height: 20),
                   PrimaryButton(
@@ -321,6 +320,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           Expanded(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Expanded(
                   child: _stat(gc, t.volume, fit.volumeValue(fit.volumeThisWeekKg),
@@ -352,11 +352,11 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label.toUpperCase(),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: AppTheme.f(9.5,
-                weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+        Padding(
+          padding: const EdgeInsetsDirectional.only(end: 8),
+          child: FitText(label.toUpperCase(),
+              style: AppTheme.f(9.5, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+        ),
         const SizedBox(height: 6),
         Row(
           crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -481,9 +481,7 @@ class HomeScreen extends StatelessWidget {
             ExerciseMedia(ex: ex, height: 88, radius: 12),
             const SizedBox(height: 9),
             Expanded(
-              child: Text(exerciseName(ex),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+              child: _WordFitName(exerciseName(ex),
                   style: AppTheme.f(12, weight: FontWeight.w600, color: gc.text, height: 1.25)),
             ),
           ],
@@ -491,6 +489,38 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+final _sinEspacios = RegExp('[฀-๿぀-ヿ㐀-鿿가-힯豈-﫿]');
+
+/// A two-line name that ends in "…" when long but shrinks, instead of splitting it, when one word is too wide.
+class _WordFitName extends StatelessWidget {
+  const _WordFitName(this.text, {required this.style});
+
+  final String text;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+    builder: (context, c) {
+      final texto = Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, style: style);
+      if (_sinEspacios.hasMatch(text)) return texto;
+      final p = TextPainter(
+        textDirection: Directionality.of(context),
+        textScaler: MediaQuery.textScalerOf(context),
+      );
+      p.text = TextSpan(text: text, style: effectiveTextStyle(context, style));
+      p.layout();
+      final palabra = p.minIntrinsicWidth;
+      p.dispose();
+      if (palabra < c.maxWidth - 0.5) return texto;
+      return FittedBox(
+        fit: BoxFit.scaleDown,
+        alignment: AlignmentDirectional.topStart,
+        child: SizedBox(width: palabra + 0.5, child: texto),
+      );
+    },
+  );
 }
 
 void showWeeklyGoalSheet(BuildContext context) {

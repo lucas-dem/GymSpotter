@@ -12,6 +12,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/exercise_media.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/ui_kit.dart';
@@ -241,9 +242,7 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
                             overflow: TextOverflow.ellipsis,
                             style: AppTheme.f(14.5, weight: FontWeight.w600, color: gc.text)),
                         const SizedBox(height: 4),
-                        Text('${t.equipment(ex.equipment)} · ${t.difficulty(ex.difficulty)}',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                        FitText('${t.equipment(ex.equipment)} · ${t.difficulty(ex.difficulty)}',
                             style: AppTheme.f(12,
                                 weight: FontWeight.w500, color: gc.textSecondary)),
                       ],

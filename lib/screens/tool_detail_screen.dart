@@ -5,6 +5,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/ui_kit.dart';
 
@@ -215,7 +216,9 @@ class ToolDetailScreen extends StatelessWidget {
             borderColor: Colors.transparent,
             padding: const EdgeInsets.all(12),
             child: Column(children: [
-              Text(label, style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textSecondary)),
+              FitText(label,
+                  textAlign: TextAlign.center,
+                  style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textSecondary)),
               const SizedBox(height: 4),
               Text(value, style: AppTheme.f(16, weight: FontWeight.w700, color: gc.text)),
             ]),
@@ -321,7 +324,7 @@ class ToolDetailScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(t.rampSet(sets[i].pct, sets[i].reps),
+                    child: FitText(t.rampSet(sets[i].pct, sets[i].reps),
                         style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
                   ),
                   const SizedBox(width: 12),

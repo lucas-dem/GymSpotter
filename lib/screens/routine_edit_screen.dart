@@ -11,6 +11,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/exercise_media.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/ruler_picker.dart';
 import '../widgets/glass.dart';
 import '../widgets/routine_folder.dart';
@@ -225,19 +226,25 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
               color: gc.bgRaised,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Row(
-              children: [
-                Icon(PhosphorIconsRegular.folderSimple, size: 17, color: gc.textSecondary),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(t.routineGroup,
-                      style: AppTheme.f(13, weight: FontWeight.w600, color: gc.text)),
-                ),
-                Text(routine.group.isEmpty ? t.noGroup : routine.group,
-                    style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary)),
-                const SizedBox(width: 6),
-                Icon(PhosphorIconsRegular.caretRight, size: 14, color: gc.textTertiary),
-              ],
+            child: LayoutBuilder(
+              builder: (context, box) => Row(
+                children: [
+                  Icon(PhosphorIconsRegular.folderSimple, size: 17, color: gc.textSecondary),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FitText(t.routineGroup,
+                        style: AppTheme.f(13, weight: FontWeight.w600, color: gc.text)),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
+                    child: FitText(routine.group.isEmpty ? t.noGroup : routine.group,
+                        textAlign: TextAlign.end,
+                        style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary)),
+                  ),
+                  const SizedBox(width: 6),
+                  Icon(PhosphorIconsRegular.caretRight, size: 14, color: gc.textTertiary),
+                ],
+              ),
             ),
           ),
         ),

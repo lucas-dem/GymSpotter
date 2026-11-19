@@ -101,6 +101,7 @@ class TimerPanel extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(child: _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start)),
+                      const SizedBox(width: 10),
                       ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
                         child: Column(
@@ -121,6 +122,7 @@ class TimerPanel extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SizedBox(width: 10),
                       Expanded(child: _stat(gc, sets, setsLabel, CrossAxisAlignment.end)),
                     ],
                   )),

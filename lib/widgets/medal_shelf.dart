@@ -5,6 +5,7 @@ import '../l10n/l10n.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'fit_text.dart';
 import 'glass.dart';
 import 'medal.dart';
 import 'ui_kit.dart';
@@ -68,11 +69,9 @@ class MedalShelf extends StatelessWidget {
               ),
               if (won) ...[
                 const SizedBox(height: 7),
-                Text(
+                FitText(
                   awardName(id),
-                  maxLines: 2,
                   textAlign: TextAlign.center,
-                  overflow: TextOverflow.ellipsis,
                   style: AppTheme.f(9.5,
                       weight: FontWeight.w600, color: context.gc.textSecondary, height: 1.15),
                 ),

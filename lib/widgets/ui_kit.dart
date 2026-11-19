@@ -5,6 +5,7 @@ import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'fit_text.dart';
 import 'rolling_text.dart';
 import 'svg_icon.dart';
 
@@ -62,6 +63,10 @@ class SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
+    final textStyle = AppTheme.f(14, weight: FontWeight.w500, color: gc.text);
+    final hintStyle = Theme.of(context).textTheme.bodyLarge!
+        .merge(textStyle)
+        .merge(AppTheme.f(14, weight: FontWeight.w500, color: gc.textSecondary));
     return Container(
       height: 48,
       padding: const EdgeInsets.only(left: 16, right: 6),
@@ -76,13 +81,16 @@ class SearchField extends StatelessWidget {
           child: TextField(
             controller: controller,
             onChanged: onChanged,
-            style: AppTheme.f(14, weight: FontWeight.w500, color: gc.text),
+            style: textStyle,
             cursorColor: gc.accent,
             decoration: InputDecoration(
               isCollapsed: true,
               border: InputBorder.none,
-              hintText: hint,
-              hintStyle: AppTheme.f(14, weight: FontWeight.w500, color: gc.textSecondary),
+              hint: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(hint, maxLines: 1, style: hintStyle),
+              ),
             ),
           ),
         ),
@@ -492,10 +500,7 @@ class ScreenTitle extends StatelessWidget {
   final double spacing;
   @override
   Widget build(BuildContext context) =>
-      Text(titleCase(text),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: AppTheme.f(size, weight: FontWeight.w800, color: context.gc.text));
+      FitText(titleCase(text), style: AppTheme.f(size, weight: FontWeight.w800, color: context.gc.text));
 }
 
 class Kicker extends StatelessWidget {
@@ -599,7 +604,9 @@ class ToolRow extends StatelessWidget {
           builder: (context, box) => Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(child: Text(sentenceCase(label), style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text))),
+              Flexible(
+                child: FitText(sentenceCase(label), style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text)),
+              ),
               const SizedBox(width: 12),
               TrailingFit(maxWidth: box.maxWidth * 0.62, child: control),
             ],

@@ -245,12 +245,18 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 Text(sentenceCase(label), style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text)),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(value,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.right,
-                      style: AppTheme.f(13,
-                          weight: FontWeight.w600, color: muted ? gc.textTertiary : gc.textSecondary)),
+                  child: muted
+                      ? FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: Text(value,
+                              maxLines: 1, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textTertiary)),
+                        )
+                      : Text(value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.right,
+                          style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
                 ),
                 const SizedBox(width: 6),
                 trailing ?? Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
@@ -293,7 +299,14 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 children: [
                   Icon(PhosphorIconsRegular.images, size: 20, color: gc.textSecondary),
                   const SizedBox(height: 5),
-                  Text(t.noteAttach, style: AppTheme.f(10.5, weight: FontWeight.w500, color: gc.textTertiary)),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(t.noteAttach,
+                          maxLines: 1, style: AppTheme.f(10.5, weight: FontWeight.w500, color: gc.textTertiary)),
+                    ),
+                  ),
                 ],
               ),
             ),

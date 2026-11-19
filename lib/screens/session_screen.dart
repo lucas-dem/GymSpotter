@@ -13,6 +13,7 @@ import '../widgets/celebration.dart';
 import '../widgets/dialogs.dart';
 import '../widgets/entrance.dart';
 import '../widgets/exercise_media.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/set_kind.dart';
@@ -449,7 +450,7 @@ class SessionScreen extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Flexible(
-                child: Text(
+                child: FitText(
                   fit.sessionPaused ? t.paused : t.inProgress,
                   style: AppTheme.f(12,
                       weight: FontWeight.w600,
@@ -820,9 +821,7 @@ class SessionScreen extends StatelessWidget {
               Icon(PhosphorIconsRegular.circlesThree, size: 13, color: gc.textTertiary),
               const SizedBox(width: 7),
               Expanded(
-                child: Text(t.platesPerSide(hint),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                child: FitText(t.platesPerSide(hint),
                     style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
               ),
               const SizedBox(width: 6),
@@ -1278,7 +1277,8 @@ class SessionScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 210),
-                    child: Text(t.finishHeadline(prs: prs, streak: streak, goalHit: goalHit),
+                    child: FitText(t.finishHeadline(prs: prs, streak: streak, goalHit: goalHit),
+                        maxLines: 4,
                         style: AppTheme.f(28, weight: FontWeight.w700, color: gc.text, height: 1.05)),
                   ),
                   const SizedBox(height: 8),
@@ -1335,7 +1335,7 @@ class SessionScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4)),
+          FitText(label, style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4)),
           const SizedBox(height: 4),
           Text(value, style: AppTheme.f(18, weight: FontWeight.w700, color: gc.text)),
         ],

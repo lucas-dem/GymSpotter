@@ -13,6 +13,7 @@ import '../services/screen_awake.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/timer_panel.dart';
 import '../widgets/ui_kit.dart' show sentenceCase;
 
@@ -414,15 +415,19 @@ class _WeekRing extends StatelessWidget {
       child: CustomPaint(
         painter: _RingPainter(track: gc.bgRaised2, fill: gc.accent, pct: pct),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 10),
           child: Center(
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Text('$done/$goal', style: AppTheme.f(20, weight: FontWeight.w800, color: gc.text)),
-                Text(t.thisWeek,
-                    style: AppTheme.f(9, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
-              ]),
+              child: SizedBox(
+                width: 80,
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text('$done/$goal', style: AppTheme.f(20, weight: FontWeight.w800, color: gc.text)),
+                  FitText(t.thisWeek,
+                      textAlign: TextAlign.center,
+                      style: AppTheme.f(9, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
+                ]),
+              ),
             ),
           ),
         ),
@@ -776,9 +781,12 @@ class _WearStepper extends StatelessWidget {
             child: Text(value, maxLines: 1, style: AppTheme.f(20, weight: FontWeight.w800, color: gc.text, height: 1.1)),
           ),
           if (label != null)
-            Text(label!,
-                maxLines: 1,
-                style: AppTheme.f(10, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(label!,
+                  maxLines: 1,
+                  style: AppTheme.f(10, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
+            ),
         ]),
       ),
       b(PhosphorIconsBold.plus, t.increase, onInc),

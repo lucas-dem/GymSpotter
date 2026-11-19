@@ -9,6 +9,7 @@ import '../models/exercise.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/ui_kit.dart';
 
 IconData _toolIcon(String id) => switch (id) {
@@ -41,36 +42,58 @@ class ToolsScreen extends StatelessWidget {
               subtitle: t.calculatorsCount(kToolMeta.length),
             ),
             const SizedBox(height: 22),
-            LayoutBuilder(
-              builder: (context, box) => GridView(
+            LayoutBuilder(builder: (context, box) {
+              final inner = (box.maxWidth - 12) / 2 - 32;
+              int most(String Function(ToolMeta) text, TextStyle style) =>
+                  kToolMeta.map((m) => _lines(context, text(m), style, inner)).fold(0, math.max);
+              final nameLines = most((m) => t.toolName(m.id), _nameStyle(gc)).clamp(1, 2);
+              final descLines = most((m) => t.toolDesc(m.id), _descStyle(gc)).clamp(2, 4);
+              return GridView(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
-                  mainAxisExtent: math.max((box.maxWidth - 12) / 2 / 1.12, _cardContent(context)),
+                  mainAxisExtent:
+                      math.max((box.maxWidth - 12) / 2 / 1.12, _cardContent(context, nameLines, descLines)),
                 ),
-                children: [for (final tool in kToolMeta) _card(context, gc, tool)],
-              ),
-            ),
+                children: [for (final tool in kToolMeta) _card(context, gc, tool, nameLines, descLines)],
+              );
+            }),
           ],
         ),
       ),
     );
   }
 
-  int _nameLines(BuildContext context) => MediaQuery.textScalerOf(context).scale(1) > 1 ? 2 : 1;
+  TextStyle _nameStyle(GymColors gc) => AppTheme.f(14.5, weight: FontWeight.w700, color: gc.text);
 
-  double _descHeight(BuildContext context) =>
-      (MediaQuery.textScalerOf(context).scale(11.5) * 1.3 * 2 + 1).ceilToDouble();
+  TextStyle _descStyle(GymColors gc) =>
+      AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textSecondary, height: 1.3);
 
-  double _cardContent(BuildContext context) =>
-      (32 + 36 + 10 + MediaQuery.textScalerOf(context).scale(14.5) * 1.15 * _nameLines(context) + 2 +
-              _descHeight(context))
+  /// Lines [text] takes at [width] when, as in [FitText], a word wider than [width] shrinks instead of breaking.
+  int _lines(BuildContext context, String text, TextStyle style, double width) {
+    final p = TextPainter(textDirection: Directionality.of(context), textScaler: MediaQuery.textScalerOf(context));
+    p.text = TextSpan(text: text, style: effectiveTextStyle(context, style));
+    p.layout();
+    final widest = math.max(width, p.minIntrinsicWidth);
+    p.layout(maxWidth: widest > width ? widest + 0.5 : width);
+    final n = p.computeLineMetrics().length;
+    p.dispose();
+    return n;
+  }
+
+  double _descHeight(BuildContext context, int lines) =>
+      (MediaQuery.textScalerOf(context).scale(11.5) * 1.3 * lines + 1).ceilToDouble();
+
+  double _cardContent(BuildContext context, int nameLines, int descLines) =>
+      (32 + 36 + 10 + MediaQuery.textScalerOf(context).scale(14.5) * 1.15 * nameLines + 2 +
+              _descHeight(context, descLines))
           .ceilToDouble();
 
-  Widget _card(BuildContext context, GymColors gc, ToolMeta tool) {
+  Widget _card(BuildContext context, GymColors gc, ToolMeta tool, int nameLines, int descLines) {
+    final name = t.toolName(tool.id);
     return GestureDetector(
       onTap: () => fit.openTool(tool.id),
       child: Container(
@@ -91,18 +114,18 @@ class ToolsScreen extends StatelessWidget {
               child: Center(child: Icon(_toolIcon(tool.id), size: 19, color: gc.textSecondary)),
             ),
             const Spacer(),
-            Text(t.toolName(tool.id),
-                maxLines: _nameLines(context),
-                overflow: TextOverflow.ellipsis,
-                style: AppTheme.f(14.5, weight: FontWeight.w700, color: gc.text)),
+            if (nameLines == 1)
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(name, maxLines: 1, style: _nameStyle(gc)),
+              )
+            else
+              FitText(name, style: _nameStyle(gc)),
             const SizedBox(height: 2),
             SizedBox(
-              height: _descHeight(context),
-              child: Text(t.toolDesc(tool.id),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTheme.f(11.5,
-                      weight: FontWeight.w500, color: gc.textSecondary, height: 1.3)),
+              height: _descHeight(context, descLines),
+              child: FitText(t.toolDesc(tool.id), maxLines: descLines, style: _descStyle(gc)),
             ),
           ],
         ),
