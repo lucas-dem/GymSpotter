@@ -109,7 +109,9 @@ class ProgressScreen extends StatelessWidget {
     Widget? chart,
     Widget? badge,
     VoidCallback? onTap,
+    bool sameSize = false,
   }) {
+    final labelStyle = AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: onTap,
@@ -121,14 +123,13 @@ class ProgressScreen extends StatelessWidget {
         children: [
           Row(children: [
             Expanded(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.centerStart,
-                child: Text(label.toUpperCase(),
-                    maxLines: 1,
-                    style: AppTheme.f(10,
-                        weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-              ),
+              child: sameSize
+                  ? FitText(label.toUpperCase(), maxLines: 1, style: labelStyle)
+                  : FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Text(label.toUpperCase(), maxLines: 1, style: labelStyle),
+                    ),
             ),
             ?badge,
           ]),
@@ -299,15 +300,19 @@ class ProgressScreen extends StatelessWidget {
         hours >= 1 ? t.unitHours : 'min'
       ),
     ];
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (var i = 0; i < cells.length; i++) ...[
-            Expanded(child: _tile(gc, label: cells[i].$1, value: cells[i].$2, unit: cells[i].$3)),
-            if (i < cells.length - 1) const SizedBox(width: 12),
+    return FitTextGroup(
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < cells.length; i++) ...[
+              Expanded(
+                child: _tile(gc, label: cells[i].$1, value: cells[i].$2, unit: cells[i].$3, sameSize: true),
+              ),
+              if (i < cells.length - 1) const SizedBox(width: 12),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

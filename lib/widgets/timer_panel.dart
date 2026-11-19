@@ -1,8 +1,11 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'fit_text.dart';
 import 'rolling_text.dart';
 
 String clockLabel(int seconds) {
@@ -97,35 +100,57 @@ class TimerPanel extends StatelessWidget {
                 children: [
                   _Ticks(left: left, lit: accent, dim: gc.bgRaised2),
                   const SizedBox(height: 14),
-                  LayoutBuilder(builder: (context, box) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(child: _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start)),
-                      const SizedBox(width: 10),
-                      ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
-                        child: Column(
-                          children: [
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: RollingText(clockLabel(remaining),
-                                  countsDown: true,
-                                  style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05)),
-                            ),
-                            const SizedBox(height: 4),
-                            FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(hint.toUpperCase(),
-                                  maxLines: 1,
-                                  style: AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6)),
-                            ),
-                          ],
+                  LayoutBuilder(builder: (context, box) {
+                    final clock = Column(
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: RollingText(clockLabel(remaining),
+                              countsDown: true,
+                              style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05)),
                         ),
+                        const SizedBox(height: 4),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(hint.toUpperCase(), maxLines: 1, style: _hintStyle(accent)),
+                        ),
+                      ],
+                    );
+                    final ancho = _anchos(context, box.maxWidth);
+                    if (ancho == null) {
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(child: _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start)),
+                          const SizedBox(width: 10),
+                          ConstrainedBox(constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5), child: clock),
+                          const SizedBox(width: 10),
+                          Expanded(child: _stat(gc, sets, setsLabel, CrossAxisAlignment.end)),
+                        ],
+                      );
+                    }
+                    final left = _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start, grouped: true);
+                    final right = _stat(gc, sets, setsLabel, CrossAxisAlignment.end, grouped: true);
+                    return FitTextGroup(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          clock,
+                          const SizedBox(height: 12),
+                          if (ancho)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [Expanded(child: left), const SizedBox(width: 10), Expanded(child: right)],
+                            )
+                          else ...[
+                            left,
+                            const SizedBox(height: 8),
+                            right,
+                          ],
+                        ],
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(child: _stat(gc, sets, setsLabel, CrossAxisAlignment.end)),
-                    ],
-                  )),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -135,7 +160,47 @@ class TimerPanel extends StatelessWidget {
     );
   }
 
-  Widget _stat(GymColors gc, String value, String caption, CrossAxisAlignment align) => Column(
+  static TextStyle _captionStyle(GymColors gc) =>
+      AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5);
+
+  static TextStyle _hintStyle(Color accent) => AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6);
+
+  /// With large text, when a caption no longer fits at full size beside the clock: null keeps the three columns;
+  /// true puts both stats in one row under the clock, false gives each stat its own line.
+  bool? _anchos(BuildContext context, double width) {
+    final scaler = MediaQuery.textScalerOf(context);
+    if (!width.isFinite || scaler.scale(10) <= 10) return null;
+    final gc = context.gc;
+    final dir = Directionality.of(context);
+    double w(String s, TextStyle style) {
+      final p = TextPainter(
+        text: TextSpan(text: s, style: effectiveTextStyle(context, style)),
+        textDirection: dir,
+        textScaler: scaler,
+        maxLines: 1,
+      )..layout();
+      final r = p.width;
+      p.dispose();
+      return r;
+    }
+
+    final hintWidth = w(hint.toUpperCase(), _hintStyle(gc.sage));
+    final clockStyle = AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05);
+    final longest = clockLabel(math.max(remaining, total));
+    final digits = longest.replaceAll(':', '').length;
+    final clockWidth = digitCell(clockStyle, scaler) * digits + w(':', clockStyle) * (longest.length - digits);
+    final center = math.min(width * 0.5, math.max(hintWidth, clockWidth));
+    final side = (width - 20 - center) / 2;
+    final captions = math.max(
+      w(elapsedLabel.toUpperCase(), _captionStyle(gc)),
+      w(setsLabel.toUpperCase(), _captionStyle(gc)),
+    );
+    if (hintWidth <= center && captions <= side) return null;
+    return captions <= (width - 10) / 2;
+  }
+
+  Widget _stat(GymColors gc, String value, String caption, CrossAxisAlignment align, {bool grouped = false}) =>
+      Column(
         crossAxisAlignment: align,
         children: [
           FittedBox(
@@ -143,12 +208,17 @@ class TimerPanel extends StatelessWidget {
             child: RollingText(value, style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text, height: 1.1)),
           ),
           const SizedBox(height: 3),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(caption.toUpperCase(),
-                maxLines: 1,
-                style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-          ),
+          grouped
+              ? FitText(
+                  caption.toUpperCase(),
+                  maxLines: 1,
+                  textAlign: align == CrossAxisAlignment.end ? TextAlign.end : TextAlign.start,
+                  style: _captionStyle(gc),
+                )
+              : FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(caption.toUpperCase(), maxLines: 1, style: _captionStyle(gc)),
+                ),
         ],
       );
 

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
@@ -124,14 +126,16 @@ class SessionScreen extends StatelessWidget {
                   locked,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: _rowPad),
-                    child: Row(
-                      children: [
-                        Expanded(child: _dashedAction(gc, t.addSet, () => fit.addSet(exIdx))),
-                        if (second != null) ...[
-                          const SizedBox(width: 8),
-                          Expanded(child: second),
+                    child: FitTextGroup(
+                      child: Row(
+                        children: [
+                          Expanded(child: _dashedAction(gc, t.addSet, () => fit.addSet(exIdx))),
+                          if (second != null) ...[
+                            const SizedBox(width: 8),
+                            Expanded(child: second),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
                   ),
                 ),
@@ -362,32 +366,59 @@ class SessionScreen extends StatelessWidget {
 
   Widget _nextRow(GymColors gc, String id) {
     final target = fit.nextTarget(id)!;
+    final labelStyle = AppTheme.f(11, weight: FontWeight.w600, color: gc.brass, letterSpacing: 0.4);
+    final span = TextSpan(
+      text: fit.nextTargetLabel(id),
+      style: AppTheme.f(12, weight: FontWeight.w600, color: target.up ? gc.ember : gc.textSecondary),
+      children: [
+        if (!target.up)
+          TextSpan(text: ' · ${t.nextHold}', style: AppTheme.f(11.5, weight: FontWeight.w400, color: gc.textTertiary)),
+      ],
+    );
     return Padding(
       padding: const EdgeInsets.only(top: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(t.nextTime,
-              style: AppTheme.f(11, weight: FontWeight.w600, color: gc.brass, letterSpacing: 0.4)),
-          const SizedBox(width: 8),
-          Expanded(
-            child: RichText(
-              text: TextSpan(
-                text: fit.nextTargetLabel(id),
-                style: AppTheme.f(12,
-                    weight: FontWeight.w600, color: target.up ? gc.ember : gc.textSecondary),
-                children: [
-                  if (!target.up)
-                    TextSpan(
-                        text: ' · ${t.nextHold}',
-                        style: AppTheme.f(11.5, weight: FontWeight.w400, color: gc.textTertiary)),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: LayoutBuilder(builder: (context, c) {
+        final scaler = MediaQuery.textScalerOf(context);
+        final value = RichText(textScaler: scaler, text: span);
+        if (c.hasBoundedWidth && _nextOnOwnLine(context, labelStyle, span, c.maxWidth)) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [Text(t.nextTime, style: labelStyle), const SizedBox(height: 2), value],
+          );
+        }
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(t.nextTime, style: labelStyle),
+            const SizedBox(width: 8),
+            Expanded(child: value),
+          ],
+        );
+      }),
     );
+  }
+
+  /// Whether the next target needs more lines beside its label than at normal text size (and more than two): it
+  /// then goes under the label at full size instead of squeezing into a narrow column.
+  bool _nextOnOwnLine(BuildContext context, TextStyle labelStyle, TextSpan span, double width) {
+    final scaler = MediaQuery.textScalerOf(context);
+    final dir = Directionality.of(context);
+    int lines(TextScaler s) {
+      final label = TextPainter(
+        text: TextSpan(text: t.nextTime, style: effectiveTextStyle(context, labelStyle)),
+        textDirection: dir,
+        textScaler: s,
+      )..layout();
+      final value = TextPainter(text: span, textDirection: dir, textScaler: s)
+        ..layout(maxWidth: math.max(0, width - label.width - 8));
+      final n = value.computeLineMetrics().length;
+      label.dispose();
+      value.dispose();
+      return n;
+    }
+
+    final now = lines(scaler);
+    return now > 2 && now > lines(TextScaler.noScaling);
   }
 
   Future<void> _confirmDrop(BuildContext context, int exIdx, String name) async {
@@ -411,14 +442,10 @@ class SessionScreen extends StatelessWidget {
   Widget _setsHeader(GymColors gc, String mode, bool repsOnly) {
     final s = AppTheme.f(11, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4);
 
-    Widget label(String t) => FittedBox(
-          fit: BoxFit.scaleDown,
-          alignment: Alignment.center,
-          child: Text(t, maxLines: 1, softWrap: false, style: s),
-        );
+    Widget label(String t) => FitText(t, maxLines: 1, textAlign: TextAlign.center, style: s);
     final effort = _showsEffort(mode);
     final gap = effort ? _tightGap : _gap;
-    return Row(children: [
+    return FitTextGroup(child: Row(children: [
       SizedBox(width: _numCol, child: label(t.setCol)),
       for (final h in _headers(mode, repsOnly)) ...[
         SizedBox(width: gap),
@@ -430,7 +457,7 @@ class SessionScreen extends StatelessWidget {
       ],
       SizedBox(width: gap),
       const SizedBox(width: _checkCol),
-    ]);
+    ]));
   }
 
   Widget _liveBar(GymColors gc, bool locked) {
@@ -791,13 +818,10 @@ class SessionScreen extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
           ),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(label,
-                maxLines: 1,
-                style: AppTheme.f(13,
-                    weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4)),
-          ),
+          child: FitText(label,
+              maxLines: 1,
+              textAlign: TextAlign.center,
+              style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary, letterSpacing: 0.4)),
         ),
       );
 
