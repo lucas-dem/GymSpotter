@@ -506,6 +506,10 @@ class Kicker extends StatelessWidget {
       Text(text, style: AppTheme.f(size, weight: FontWeight.w600, color: color, letterSpacing: spacing));
 }
 
+/// Side of a badge or button that keeps [base] but grows with the user's text size so its label fits.
+double badgeSide(BuildContext context, double base, double fontSize, {double height = 1.15, double pad = 6}) =>
+    math.max(base, (MediaQuery.textScalerOf(context).scale(fontSize) * height + pad).ceilToDouble());
+
 class StepperControl extends StatelessWidget {
   const StepperControl({
     super.key,
@@ -533,11 +537,12 @@ class StepperControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
+    final side = badgeSide(context, btnSize, fontSize + 2, height: 1);
     Widget btn(String glyph, VoidCallback onTap) => GestureDetector(
           onTap: onTap,
           child: Container(
-            width: btnSize,
-            height: btnSize,
+            width: side,
+            height: side,
             decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(btnRadius)),
             alignment: Alignment.center,
             child: Text(glyph, style: TextStyle(color: gc.text, fontSize: fontSize + 2, height: 1, fontWeight: FontWeight.w500)),
@@ -551,15 +556,18 @@ class StepperControl extends StatelessWidget {
     if (onEdit != null) {
       label = GestureDetector(behavior: HitTestBehavior.opaque, onTap: onEdit, child: label);
     }
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        btn('–', onDec),
-        SizedBox(width: gap),
-        label,
-        SizedBox(width: gap),
-        btn('+', onInc),
-      ],
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          btn('–', onDec),
+          SizedBox(width: gap),
+          label,
+          SizedBox(width: gap),
+          btn('+', onInc),
+        ],
+      ),
     );
   }
 }

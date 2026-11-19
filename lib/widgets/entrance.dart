@@ -168,8 +168,9 @@ class _RollInState extends State<RollIn> with SingleTickerProviderStateMixin {
     final chars = widget.text.characters.toList();
     final digits = [for (var i = 0; i < chars.length; i++) if (_isDigit(chars[i])) i];
     final total = int.parse(digits.map((i) => chars[i]).join());
-    final line = (widget.style.fontSize ?? 14) * (widget.style.height ?? 1.2);
-    final cell = digitCell(widget.style, MediaQuery.textScalerOf(context));
+    final scaler = MediaQuery.textScalerOf(context);
+    final line = lineHeight(widget.style, scaler);
+    final cell = digitCell(widget.style, scaler);
     return Semantics(
       label: widget.text,
       excludeSemantics: true,
@@ -186,7 +187,7 @@ class _RollInState extends State<RollIn> with SingleTickerProviderStateMixin {
                     height: line,
                     child: Stack(
                       alignment: Alignment.center,
-                      children: [Text(chars[i], style: widget.style, textHeightBehavior: _tight)],
+                      children: [Text(chars[i], style: widget.style, textHeightBehavior: evenLine)],
                     ),
                   )
                 else
@@ -212,7 +213,7 @@ class _RollInState extends State<RollIn> with SingleTickerProviderStateMixin {
     final frac = pos - low;
     Widget digit(int v, double dy) => Transform.translate(
           offset: Offset(0, dy),
-          child: Text('${v % 10}', style: widget.style, textHeightBehavior: _tight),
+          child: Text('${v % 10}', style: widget.style, textHeightBehavior: evenLine),
         );
     return Opacity(
       opacity: place == 0 ? 1 : scaled.clamp(0.0, 1.0),
@@ -235,5 +236,3 @@ class _RollInState extends State<RollIn> with SingleTickerProviderStateMixin {
 
   static bool _isDigit(String c) => c.length == 1 && c.codeUnitAt(0) >= 48 && c.codeUnitAt(0) <= 57;
 }
-
-const _tight = TextHeightBehavior(applyHeightToFirstAscent: false, applyHeightToLastDescent: false);

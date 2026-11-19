@@ -4,7 +4,7 @@ final _digitCells = <(TextStyle, double), double>{};
 
 double digitCell(TextStyle style, TextScaler scaler) {
   if (_digitCells.length > 48) _digitCells.clear();
-  return _digitCells.putIfAbsent((style, scaler.scale(100)), () {
+  return _digitCells.putIfAbsent((style, scaler.scale(style.fontSize ?? 14)), () {
     var widest = 0.0;
     for (var d = 0; d < 10; d++) {
       final p = TextPainter(
@@ -18,6 +18,12 @@ double digitCell(TextStyle style, TextScaler scaler) {
     return widest.ceilToDouble();
   });
 }
+
+/// Height of one line of [style] at the user's text size; at 100 % it is the same box as before scaling existed.
+double lineHeight(TextStyle style, TextScaler scaler) => scaler.scale(style.fontSize ?? 14) * (style.height ?? 1.2);
+
+/// Lays a single line out exactly [lineHeight] tall, trimming the font's spare ascent and descent evenly.
+const evenLine = TextHeightBehavior(leadingDistribution: TextLeadingDistribution.even);
 
 class RollingText extends StatefulWidget {
   const RollingText(
@@ -72,8 +78,9 @@ class _RollingTextState extends State<RollingText> {
     final chars = widget.text.characters.toList();
     final n = chars.length;
     final reduce = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-    final line = (widget.style.fontSize ?? 14) * (widget.style.height ?? 1.2);
-    final digit = digitCell(widget.style, MediaQuery.textScalerOf(context));
+    final scaler = MediaQuery.textScalerOf(context);
+    final line = lineHeight(widget.style, scaler);
+    final digit = digitCell(widget.style, scaler);
     final row = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -159,14 +166,9 @@ class _RollingChar extends StatelessWidget {
               },
             );
           },
-          child: Text(char, key: ValueKey(char), style: style, textHeightBehavior: _tight),
+          child: Text(char, key: ValueKey(char), style: style, textHeightBehavior: evenLine),
         ),
       ),
     );
   }
-
-  static const _tight = TextHeightBehavior(
-    applyHeightToFirstAscent: false,
-    applyHeightToLastDescent: false,
-  );
 }
