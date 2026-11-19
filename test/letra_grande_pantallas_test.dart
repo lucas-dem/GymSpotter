@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infyter/app/app_shell.dart';
 import 'package:infyter/app/infyter_app.dart';
+import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/workout.dart';
 import 'package:infyter/screens/progress_screen.dart';
 import 'package:infyter/screens/session_screen.dart';
@@ -188,6 +189,23 @@ void main() {
         }
       }
     }
+  }
+
+  for (final ancho in const [360.0, 411.0]) {
+    testWidgets('at normal text size the muscle map title and its modes share one line at ${ancho.toInt()} dp', (
+      tester,
+    ) async {
+      usarPantalla(tester, ancho: ancho, alto: 780);
+      fit.setLanguage('es');
+      fit.route = 'progress';
+      await _revisar(tester, const InfyterApp(), 'progreso');
+      await tester.scrollUntilVisible(find.text(t.muscleMap), 200, scrollable: find.byType(Scrollable).first);
+      await tester.pump(const Duration(milliseconds: 400));
+      final titulo = tester.getCenter(find.text(t.muscleMap));
+      final modo = tester.getCenter(find.text(t.days7).first);
+      expect((titulo.dy - modo.dy).abs(), lessThan(4), reason: 'como antes: el selector al lado del título');
+      await _cerrar(tester);
+    });
   }
 
   for (final escala in _escalas) {

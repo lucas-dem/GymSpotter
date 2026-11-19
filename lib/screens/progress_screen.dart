@@ -328,7 +328,7 @@ class ProgressScreen extends StatelessWidget {
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
+              spacing: 0,
               runSpacing: 4,
               children: [
                 Text(t.thisWeekTitle.toUpperCase(),
@@ -767,7 +767,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
+              spacing: 0,
               runSpacing: 8,
               children: [
                 Text(t.muscleMap,
@@ -853,7 +853,7 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 8,
+              spacing: 0,
               runSpacing: 8,
               children: [
                 Text(t.muscleMap,
