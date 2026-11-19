@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:infyter/app/app_shell.dart';
 import 'package:infyter/app/infyter_app.dart';
@@ -49,6 +52,7 @@ Future<List<String>> _revisar(
   WidgetTester tester,
   Widget app,
   String que, {
+  String idioma = 'es',
   void Function(BuildContext)? abrir,
 }) async {
   final errores = await conErrores(() async {
@@ -68,7 +72,7 @@ Future<List<String>> _revisar(
       debugPrint('PUNTOS $que: $p');
     }
   }
-  return [for (final e in errores) '$que: $e', for (final c in textoCortado(tester)) '$que: $c'];
+  return [for (final e in errores) '$que: $e', for (final c in problemasDeTexto(tester, idioma)) '$que: $c'];
 }
 
 Future<void> _cerrar(WidgetTester tester) async {
@@ -157,7 +161,7 @@ void main() {
             usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
             fit.setLanguage(idioma);
             preparar();
-            final fallas = await _revisar(tester, const InfyterApp(), nombre);
+            final fallas = await _revisar(tester, const InfyterApp(), nombre, idioma: idioma);
             await _cerrar(tester);
             for (final f in fallas) {
               debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');
@@ -179,7 +183,7 @@ void main() {
             usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
             fit.setLanguage(idioma);
             preparar();
-            final fallas = await _revisar(tester, const InfyterApp(), 'hoja $nombre', abrir: abrir);
+            final fallas = await _revisar(tester, const InfyterApp(), 'hoja $nombre', idioma: idioma, abrir: abrir);
             await _cerrar(tester);
             for (final f in fallas) {
               debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');
@@ -208,21 +212,51 @@ void main() {
     });
   }
 
-  for (final escala in _escalas) {
-    testWidgets('the watch home and workout fit with text scale $escala', (tester) async {
+  for (final idioma in _idiomas.split(',')) {
+    for (final (ancho, alto) in _pantallas) {
+      for (final escala in _escalas) {
+        testWidgets('the four tab bar labels share one size at ${ancho.toInt()} dp, scale $escala, $idioma', (
+          tester,
+        ) async {
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          fit.route = 'home';
+          final fallas = await _revisar(tester, const InfyterApp(), 'barra', idioma: idioma);
+          final altos = <String, double>{};
+          for (final label in [t.home, t.progress, t.exercises, t.profile]) {
+            final r = tester
+                .renderObjectList<RenderParagraph>(find.text(label))
+                .reduce((a, b) => a.localToGlobal(Offset.zero).dy > b.localToGlobal(Offset.zero).dy ? a : b);
+            final m = r.getTransformTo(null);
+            altos[label] = r.textSize.height * MatrixUtils.transformRect(m, const Rect.fromLTWH(0, 0, 1, 1)).height;
+          }
+          await _cerrar(tester);
+          final menor = altos.values.reduce(math.min), mayor = altos.values.reduce(math.max);
+          expect(fallas, isEmpty);
+          expect(mayor / menor, lessThan(1.01), reason: 'alto visible de cada rótulo: $altos');
+        });
+      }
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final escala in _escalas) {
+    testWidgets('the watch home and workout fit with text scale $escala in $idioma', (tester) async {
       tester.view.physicalSize = const Size(454, 454);
       tester.view.devicePixelRatio = 2;
       tester.platformDispatcher.textScaleFactorTestValue = escala;
       addTearDown(tester.view.reset);
       addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
-      final fallas = await _revisar(tester, const WearApp(), 'reloj inicio');
+      fit.setLanguage(idioma);
+      final fallas = await _revisar(tester, const WearApp(), 'reloj inicio', idioma: idioma);
       _entreno(descanso: true);
-      fallas.addAll(await _revisar(tester, const WearApp(), 'reloj entreno'));
+      fallas.addAll(await _revisar(tester, const WearApp(), 'reloj entreno', idioma: idioma));
       await _cerrar(tester);
       for (final f in fallas) {
-        debugPrint('FALLA reloj x$escala $f');
+        debugPrint('FALLA $idioma 227dp x$escala $f');
       }
       expect(fallas, isEmpty);
     });
+    }
   }
 }
