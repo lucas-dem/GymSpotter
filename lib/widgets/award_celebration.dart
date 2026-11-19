@@ -133,6 +133,8 @@ class _AwardCelebrationState extends State<AwardCelebration> with TickerProvider
               Positioned.fill(
                 child: SafeArea(
                   child: CustomScrollView(
+                    primary: false,
+                    physics: const ClampingScrollPhysics(),
                     slivers: [
                       SliverFillRemaining(
                         hasScrollBody: false,
