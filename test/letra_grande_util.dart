@@ -319,7 +319,7 @@ List<String> palabrasPartidas(WidgetTester tester) {
 
 bool _seAdapta(RenderParagraph r) {
   for (RenderObject? a = r.parent; a != null; a = a.parent) {
-    if (a is RenderFittedBox) return true;
+    if (a is RenderFittedBox || a.runtimeType.toString() == '_RenderAchique') return true;
     if (a is RenderAbstractViewport) return false;
   }
   return false;
@@ -352,33 +352,44 @@ bool _ladoALado(RenderObject a, RenderObject b) {
   return false;
 }
 
+/// The part of the screen where [r] can be seen: its clipping ancestors and scroll views, in global coordinates.
+Rect _zonaVisible(RenderObject r) {
+  var visible = Rect.largest;
+  for (RenderObject? a = r.parent; a != null; a = a.parent) {
+    if (a is RenderBox && a.hasSize && (_recorta(a) || a is RenderAbstractViewport)) {
+      visible = visible.intersect(MatrixUtils.transformRect(a.getTransformTo(null), Offset.zero & a.size));
+    }
+  }
+  return visible;
+}
+
+/// Each drawn line of [r] as a global rectangle, cut to the part that can be seen.
+List<Rect> _lineasVisibles(RenderParagraph r) {
+  final txt = r.text.toPlainText();
+  final m = r.getTransformTo(null);
+  final visible = _zonaVisible(r).intersect(MatrixUtils.transformRect(m, Offset.zero & r.size).inflate(0.5));
+  final propias = <Rect>[];
+  for (final b in r.getBoxesForSelection(TextSelection(baseOffset: 0, extentOffset: txt.trimRight().length))) {
+    final rect = MatrixUtils.transformRect(m, b.toRect());
+    final k = propias.indexWhere((p) => (p.top - rect.top).abs() < 1);
+    if (k < 0) {
+      propias.add(rect);
+    } else {
+      propias[k] = propias[k].expandToInclude(rect);
+    }
+  }
+  return [
+    for (final p in propias.map(visible.intersect))
+      if (p.width > 0 && p.height > 0) p,
+  ];
+}
+
 /// Two labels on the same line whose glyphs touch or overlap (less than [minimo] dp apart).
 List<String> rotulosPegados(WidgetTester tester, String idioma, {double minimo = 3}) {
   final lineas = <(RenderParagraph, Rect)>[];
   for (final r in _visibles(tester)) {
-    final txt = r.text.toPlainText();
-    if (!esRotulo(txt, idioma)) continue;
-    final m = r.getTransformTo(null);
-    var visible = Rect.largest;
-    for (RenderObject? a = r.parent; a != null; a = a.parent) {
-      if (a is RenderBox && a.hasSize && (_recorta(a) || a is RenderAbstractViewport)) {
-        visible = visible.intersect(MatrixUtils.transformRect(a.getTransformTo(null), Offset.zero & a.size));
-      }
-    }
-    final propias = <Rect>[];
-    for (final b in r.getBoxesForSelection(TextSelection(baseOffset: 0, extentOffset: txt.trimRight().length))) {
-      final rect = MatrixUtils.transformRect(m, b.toRect());
-      final k = propias.indexWhere((p) => (p.top - rect.top).abs() < 1);
-      if (k < 0) {
-        propias.add(rect);
-      } else {
-        propias[k] = propias[k].expandToInclude(rect);
-      }
-    }
-    lineas.addAll([
-      for (final p in propias.map(visible.intersect))
-        if (p.width > 0 && p.height > 0) (r, p),
-    ]);
+    if (!esRotulo(r.text.toPlainText(), idioma)) continue;
+    lineas.addAll([for (final p in _lineasVisibles(r)) (r, p)]);
   }
   final out = <String>{};
   for (var i = 0; i < lineas.length; i++) {
@@ -400,12 +411,152 @@ List<String> rotulosPegados(WidgetTester tester, String idioma, {double minimo =
   return out.toList();
 }
 
-/// Everything the large-text checks flag: clipped, split, shortened and touching text.
+bool _desciende(RenderObject hijo, RenderObject ancestro) {
+  for (RenderObject? a = hijo.parent; a != null; a = a.parent) {
+    if (identical(a, ancestro)) return true;
+  }
+  return false;
+}
+
+/// Whether [a] and [b] belong to different overlay entries (a sheet over a screen), not to one layout.
+bool _otraCapa(RenderObject a, RenderObject b) {
+  final deA = <RenderObject>{};
+  for (RenderObject? x = a.parent; x != null; x = x.parent) {
+    deA.add(x);
+  }
+  for (RenderObject? x = b.parent; x != null; x = x.parent) {
+    if (deA.contains(x)) return x.runtimeType.toString() == '_RenderTheater';
+  }
+  return true;
+}
+
+String _r(Rect r) =>
+    '(${r.left.toStringAsFixed(1)}, ${r.top.toStringAsFixed(1)}, ${r.right.toStringAsFixed(1)}, '
+    '${r.bottom.toStringAsFixed(1)})';
+
+/// The nearest scroll view around [r] (null for fixed chrome such as the tab bar).
+RenderObject? _vista(RenderObject r) {
+  for (RenderObject? a = r.parent; a != null; a = a.parent) {
+    if (a is RenderAbstractViewport) return a;
+  }
+  return null;
+}
+
+/// Whether [a] and [b] can be drawn over each other on purpose: different overlay entries, or one scrolls under
+/// the other (list content passing beneath the floating tab bar or a celebration).
+bool _capasDistintas(RenderObject a, RenderObject b) => _otraCapa(a, b) || !identical(_vista(a), _vista(b));
+
+bool _seMontan(Rect a, Rect b, {double minimo = 2}) {
+  final i = a.intersect(b);
+  return i.width > minimo && i.height > math.max(minimo, 0.25 * math.min(a.height, b.height));
+}
+
+/// Tappable areas of buttons (a tap handler and a text or icon of their own), in global coordinates cut to what
+/// can be seen. Bare tappable surfaces such as a banner under its own buttons are not buttons.
+List<(RenderBox, Rect)> _botones(WidgetTester tester) {
+  final textos = _visibles(tester).toList();
+  final pantalla = tester.view.physicalSize / tester.view.devicePixelRatio;
+  final out = <(RenderBox, Rect)>[];
+  for (final e in tester.allElements) {
+    final w = e.widget;
+    final toca = switch (w) {
+      GestureDetector(:final onTap, :final onLongPress) => onTap != null || onLongPress != null,
+      _ => w.runtimeType.toString() == 'InkWell' || w.runtimeType.toString() == 'InkResponse',
+    };
+    if (!toca) continue;
+    final r = e.renderObject;
+    if (r is! RenderBox || !r.attached || !r.hasSize || r.size.isEmpty || _oculto(r)) continue;
+    final rect = MatrixUtils.transformRect(
+      r.getTransformTo(null),
+      Offset.zero & r.size,
+    ).intersect(_zonaVisible(r));
+    if (rect.width <= 0 || rect.height <= 0) continue;
+    if (rect.width * rect.height > 0.25 * pantalla.width * pantalla.height) continue;
+    if (!textos.any((p) => _desciende(p, r))) continue;
+    out.add((r, rect));
+  }
+  return out;
+}
+
+/// Text drawn over another text, or over a button it does not belong to.
+List<String> encimados(WidgetTester tester) {
+  final lineas = <(RenderParagraph, Rect)>[
+    for (final r in _visibles(tester))
+      for (final p in _lineasVisibles(r)) (r, p),
+  ];
+  final out = <String>{};
+  for (var i = 0; i < lineas.length; i++) {
+    final (ra, a) = lineas[i];
+    for (var j = i + 1; j < lineas.length; j++) {
+      final (rb, b) = lineas[j];
+      if (identical(ra, rb) || _desciende(ra, rb) || _desciende(rb, ra) || _capasDistintas(ra, rb)) continue;
+      if (_seMontan(a, b)) {
+        out.add(
+          'encimados "${ra.text.toPlainText().replaceAll('\n', ' ')}" y "${rb.text.toPlainText().replaceAll('\n', ' ')}" '
+          '${_r(a)} ${_r(b)} [${_origen(ra)}] [${_origen(rb)}]',
+        );
+      }
+    }
+  }
+  final botones = _botones(tester);
+  for (final (r, linea) in lineas) {
+    for (final (boton, zona) in botones) {
+      if (_desciende(r, boton) || _desciende(boton, r) || _capasDistintas(r, boton)) continue;
+      if (_seMontan(linea, zona)) {
+        final propio = [
+          for (final p in _visibles(tester))
+            if (_desciende(p, boton)) p.text.toPlainText().replaceAll('\n', ' '),
+        ].join(' / ');
+        out.add(
+          'sobre boton "${r.text.toPlainText().replaceAll('\n', ' ')}" encima de [$propio]: texto ${_r(linea)}, '
+          'boton ${_r(zona)} [${_origen(r)}]',
+        );
+      }
+    }
+  }
+  return out.toList();
+}
+
+/// Labels of one [FitTextGroup] drawn at different sizes (more than [tolerancia] apart), with the system text
+/// enlarged (at normal size each label keeps its own size, as before groups existed).
+List<String> gruposDesparejos(WidgetTester tester, {double tolerancia = 0.01}) {
+  final grupos = <Element, List<(String, double)>>{};
+  for (final r in _visibles(tester)) {
+    final c = r.debugCreator;
+    if (c is! DebugCreator) continue;
+    var enFit = false;
+    Element? grupo;
+    c.element.visitAncestorElements((e) {
+      final w = e.widget.runtimeType.toString();
+      if (w == 'FitText') enFit = true;
+      if (w == 'FitTextGroup') {
+        grupo = e;
+        return false;
+      }
+      return true;
+    });
+    final tam = r.text.style?.fontSize;
+    if (!enFit || grupo == null || tam == null || r.textScaler.scale(10) <= 10) continue;
+    final escala = MatrixUtils.transformRect(r.getTransformTo(null), const Rect.fromLTWH(0, 0, 1, 1)).height;
+    grupos.putIfAbsent(grupo!, () => []).add((r.text.toPlainText(), r.textScaler.scale(tam) * escala));
+  }
+  return [
+    for (final g in grupos.values)
+      if (g.length > 1 &&
+          g.map((x) => x.$2).reduce(math.max) > (1 + tolerancia) * g.map((x) => x.$2).reduce(math.min))
+        'grupo desparejo: ${g.map((x) => '"${x.$1}" ${x.$2.toStringAsFixed(2)}').join(', ')}',
+  ];
+}
+
+/// Everything the large-text checks flag: clipped, split, shortened, touching and overlapping text, and labels
+/// of one group drawn at different sizes.
 List<String> problemasDeTexto(WidgetTester tester, String idioma) => [
   ...textoCortado(tester),
   ...palabrasPartidas(tester),
   ...rotulosAcortados(tester, idioma),
   ...rotulosPegados(tester, idioma),
+  ...encimados(tester),
+  ...gruposDesparejos(tester),
 ];
 
 /// Runs [body] collecting layout errors (overflows) instead of failing on the first one.

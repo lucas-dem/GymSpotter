@@ -13,7 +13,9 @@ import 'package:infyter/state/fit_state.dart';
 import 'package:infyter/wear/wear_app.dart';
 import 'package:infyter/widgets/dialogs.dart';
 import 'package:infyter/widgets/medal_shelf.dart';
+import 'package:infyter/widgets/routine_folder.dart';
 import 'package:infyter/widgets/ruler_picker.dart';
+import 'package:infyter/widgets/ui_kit.dart';
 
 import 'letra_grande_util.dart';
 
@@ -37,11 +39,16 @@ void _datos() {
     );
 }
 
-void _entreno({bool descanso = false}) {
+String _rutina() {
   final id = fit.createRoutine('Pecho y espalda pesado');
   for (final e in fit.allExercises.take(4)) {
     fit.toggleRoutineExercise(id, e.id);
   }
+  return id;
+}
+
+void _entreno({bool descanso = false}) {
+  _rutina();
   fit.startRoutine(fit.routines.first);
   fit.setSessionReps(0, 0, 12);
   fit.setSessionWeight(0, 0, 102.5);
@@ -117,6 +124,10 @@ void main() {
       fit.toggleRoutineExercise(fit.activeRoutineId!, 'EIeI8Vf');
       fit.route = 'routine-edit';
     },
+    'routines-folder': () {
+      _rutina();
+      fit.route = 'routines';
+    },
     'onboarding': () => fit.onboarded = false,
     'session': _entreno,
     'session-descanso': () => _entreno(descanso: true),
@@ -191,6 +202,135 @@ void main() {
             expect(fallas, isEmpty);
           });
         }
+      }
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final (ancho, alto) in _pantallas) {
+      for (final escala in _escalas) {
+        testWidgets('the routine card keeps its text inside at ${ancho.toInt()} dp, scale $escala, $idioma', (
+          tester,
+        ) async {
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          _rutina();
+          fit.createRoutine('Vacía');
+          final pierna = fit.createRoutine('Pierna');
+          fit.toggleRoutineExercise(pierna, fit.allExercises.last.id);
+          // At 1.0 a grouped count keeps its old one line (with "…" when long), so it gets a short group there.
+          final grupo = escala > 1 ? 'Bloque Lunes' : 'A';
+          final hombros = fit.createRoutine('Hombros');
+          fit.toggleRoutineExercise(hombros, fit.allExercises.first.id);
+          fit.setRoutineGroup(hombros, grupo);
+          final espalda = fit.createRoutine('Espalda');
+          for (final e in fit.allExercises.take(12)) {
+            fit.toggleRoutineExercise(espalda, e.id);
+          }
+          fit.setRoutineGroup(espalda, grupo);
+          fit.route = 'routines';
+          final fallas = <String>[];
+          final tarjetas = <Rect>[];
+          await tester.pumpWidget(const InfyterApp());
+          for (var i = 0; i < 12; i++) {
+            await tester.pump(const Duration(milliseconds: 200));
+          }
+          for (var k = 0; k < tester.widgetList(find.byType(RoutineFolder)).length; k++) {
+            final tarjeta = find.byType(RoutineFolder).at(k);
+            fallas.addAll(
+              await conErrores(() async {
+                await tester.ensureVisible(tarjeta);
+                for (var i = 0; i < 4; i++) {
+                  await tester.pump(const Duration(milliseconds: 200));
+                }
+              }),
+            );
+            final caja = tester.getRect(tarjeta);
+            tarjetas.add(caja);
+            final cuenta = tester.getRect(
+              find
+                  .descendant(
+                    of: tarjeta,
+                    matching: find.byWidgetPredicate(
+                      (w) => w is Text && [0, 1, 4, 12].any((k) => w.data?.endsWith(t.exerciseCount(k)) ?? false),
+                    ),
+                  )
+                  .last,
+            );
+            final boton = find.descendant(
+              of: tarjeta,
+              matching: find.byWidgetPredicate(
+                (w) => w is Text && (w.data == titleCase(t.startWorkout) || w.data == t.addExercises),
+              ),
+            );
+            final empezar = tester.getRect(boton);
+            if (cuenta.bottom > empezar.top) fallas.add('tarjeta $k: la cuenta baja hasta "Empezar"');
+            if (!caja.contains(empezar.bottomCenter - const Offset(0, 1))) fallas.add('tarjeta $k: "Empezar" afuera');
+            if (escala == 1.0 && caja.height != 196) fallas.add('tarjeta $k: a 1.0 mide ${caja.height}, no 196');
+            fallas.addAll(problemasDeTexto(tester, idioma));
+          }
+          final juntas = [for (final e in find.byType(RoutineFolder).evaluate()) tester.getRect(find.byWidget(e.widget))];
+          await _cerrar(tester);
+          for (var a = 0; a < juntas.length; a++) {
+            for (var b = a + 1; b < juntas.length; b++) {
+              final fila = (juntas[a].top - juntas[b].top).abs() < 1;
+              if (fila && (juntas[a].height - juntas[b].height).abs() > 0.5) {
+                fallas.add('tarjetas $a y $b lado a lado con distinto alto');
+              }
+            }
+          }
+          for (final f in fallas) {
+            debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala tarjeta: $f');
+          }
+          expect(tarjetas, hasLength(5));
+          expect(fallas, isEmpty);
+        });
+      }
+    }
+  }
+
+  double dibujado(RenderParagraph r) =>
+      r.textScaler.scale(r.text.style!.fontSize!) *
+      MatrixUtils.transformRect(r.getTransformTo(null), const Rect.fromLTWH(0, 0, 1, 1)).height;
+
+  RenderParagraph parrafo(WidgetTester tester, bool Function(String) cumple) => tester.allRenderObjects
+      .whereType<RenderParagraph>()
+      .firstWhere((r) => r.attached && r.hasSize && cumple(r.text.toPlainText()));
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final (ancho, alto) in _pantallas) {
+      for (final escala in _escalas) {
+        testWidgets('elapsed and next target are not smaller than their neighbours at ${ancho.toInt()} dp, '
+            'scale $escala, $idioma', (tester) async {
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          _entreno();
+          await _revisar(tester, const InfyterApp(), 'entreno', idioma: idioma);
+          final id = fit.session!.exercises.first.id;
+          final ultima = dibujado(parrafo(tester, (s) => s == fit.lastSummaryFor(id)));
+          final siguiente = dibujado(parrafo(tester, (s) => s.startsWith(fit.nextTargetLabel(id)!)));
+          await _cerrar(tester);
+          _datos();
+          _entreno(descanso: true);
+          await _revisar(tester, const InfyterApp(), 'descanso', idioma: idioma);
+          final transcurrido = dibujado(parrafo(tester, (s) => s == t.elapsedCaps.toUpperCase()));
+          final series = dibujado(parrafo(tester, (s) => s == t.setsCaps.toUpperCase()));
+          await _cerrar(tester);
+          expect(
+            siguiente,
+            greaterThanOrEqualTo(0.99 * ultima),
+            reason: 'SIGUIENTE $siguiente, ÚLTIMA $ultima',
+          );
+          expect(siguiente, greaterThanOrEqualTo(0.99 * 12 * escala), reason: 'SIGUIENTE achicado');
+          if (escala > 1) {
+            expect(
+              transcurrido,
+              greaterThanOrEqualTo(0.99 * series),
+              reason: 'TRANSCURRIDO $transcurrido, SERIES $series',
+            );
+            expect(transcurrido, greaterThanOrEqualTo(0.99 * 9.5 * escala), reason: 'TRANSCURRIDO achicado');
+          }
+        });
       }
     }
   }
