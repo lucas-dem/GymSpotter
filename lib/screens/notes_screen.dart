@@ -98,7 +98,7 @@ class NotesScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        Row(
+        LayoutBuilder(builder: (context, box) => Row(
           children: [
             Expanded(
               child: Column(
@@ -112,15 +112,18 @@ class NotesScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Pill(
-              label: t.noteAddOnDay,
-              bg: gc.bgRaised,
-              fg: gc.text,
-              fontSize: 12,
-              onTap: () => fit.openNoteEditor(exerciseId: fit.noteScope, date: day),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.45),
+              child: Pill(
+                label: t.noteAddOnDay,
+                bg: gc.bgRaised,
+                fg: gc.text,
+                fontSize: 12,
+                onTap: () => fit.openNoteEditor(exerciseId: fit.noteScope, date: day),
+              ),
             ),
           ],
-        ),
+        )),
         const SizedBox(height: 14),
         if (notes.isEmpty)
           Container(

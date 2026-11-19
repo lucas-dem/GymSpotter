@@ -20,8 +20,9 @@ class MedalShelf extends StatelessWidget {
       ...AwardId.values.where(fit.hasAward),
       ...AwardId.values.where((a) => !fit.hasAward(a)),
     ];
+    final label = MediaQuery.textScalerOf(context).scale(9.5) * 1.15 * 2;
     return SizedBox(
-      height: size + 32,
+      height: size + 32 + (label > 21.85 ? label - 21.85 : 0),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: order.length,
@@ -110,31 +111,33 @@ class _MedalSheet extends StatelessWidget {
         color: gc.bgRaised,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SheetHandle(margin: EdgeInsets.only(bottom: 22)),
-          MedalSpin(id: id, size: 236, locked: !won),
-          const SizedBox(height: 8),
-          Text(t.awardSpinHint,
-              style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
-          const SizedBox(height: 22),
-          Text(awardName(id), textAlign: TextAlign.center, style: AppTheme.f(21, color: gc.text)),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Text(awardLine(id),
-                textAlign: TextAlign.center,
-                style: AppTheme.f(13,
-                    weight: FontWeight.w500, color: gc.textSecondary, height: 1.45)),
-          ),
-          const SizedBox(height: 18),
-          if (won && at != null)
-            Text(t.awardWonOn(t.shortDateYear(at)),
-                style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textTertiary))
-          else
-            _progress(gc),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SheetHandle(margin: EdgeInsets.only(bottom: 22)),
+            MedalSpin(id: id, size: 236, locked: !won),
+            const SizedBox(height: 8),
+            Text(t.awardSpinHint,
+                style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
+            const SizedBox(height: 22),
+            Text(awardName(id), textAlign: TextAlign.center, style: AppTheme.f(21, color: gc.text)),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 22),
+              child: Text(awardLine(id),
+                  textAlign: TextAlign.center,
+                  style: AppTheme.f(13,
+                      weight: FontWeight.w500, color: gc.textSecondary, height: 1.45)),
+            ),
+            const SizedBox(height: 18),
+            if (won && at != null)
+              Text(t.awardWonOn(t.shortDateYear(at)),
+                  style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textTertiary))
+            else
+              _progress(gc),
+          ],
+        ),
       ),
     );
   }

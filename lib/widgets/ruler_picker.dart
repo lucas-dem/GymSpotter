@@ -265,7 +265,9 @@ Future<double?> askRuler(
     builder: (sheet) => StatefulBuilder(
       builder: (sheet, setSheet) {
         final gc = sheet.gc;
-        final reading = Row(
+        final reading = FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.baseline,
           textBaseline: TextBaseline.alphabetic,
@@ -276,6 +278,7 @@ Future<double?> askRuler(
               Text(unit, style: AppTheme.f(18, weight: FontWeight.w700, color: gc.textSecondary)),
             ],
           ],
+          ),
         );
         final ruler = RulerPicker(
           value: current,

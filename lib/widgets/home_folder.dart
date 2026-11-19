@@ -28,6 +28,9 @@ class HomeFolder extends StatelessWidget {
   Widget build(BuildContext context) {
     final gc = context.gc;
     final dark = gc.bg.computeLuminance() < 0.5;
+    final scaler = MediaQuery.textScalerOf(context);
+    final words = scaler.scale(15.5) * 1.15 + scaler.scale(11) * 1.15 + 4;
+    final tall = height + math.max(0.0, words - (height - _front - 36)).ceilToDouble();
     return Semantics(
       button: true,
       label: '$title, $detail',
@@ -35,7 +38,7 @@ class HomeFolder extends StatelessWidget {
         onTap: onTap,
         scale: 0.96,
         child: SizedBox(
-          height: height,
+          height: tall,
           child: Stack(
             clipBehavior: Clip.none,
             children: [

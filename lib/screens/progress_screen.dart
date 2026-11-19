@@ -262,15 +262,21 @@ class ProgressScreen extends StatelessWidget {
           const SizedBox(height: 14),
           Heatmap(levels: fit.heatmapLevels, onTapDay: (i) => _showDay(context, i)),
           const SizedBox(height: 14),
-          Row(children: [
+          LayoutBuilder(builder: (context, box) => Row(children: [
             Icon(PhosphorIconsFill.fire, size: 14, color: gc.accent),
             const SizedBox(width: 7),
-            Text(t.streakDays(fit.currentStreak),
-                style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.text)),
-            const Spacer(),
-            Text(t.weekOfGoal(fit.sessionsThisWeek, fit.weeklyTarget),
-                style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary)),
-          ]),
+            Expanded(
+              child: Text(t.streakDays(fit.currentStreak),
+                  style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.text)),
+            ),
+            const SizedBox(width: 8),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
+              child: Text(t.weekOfGoal(fit.sessionsThisWeek, fit.weeklyTarget),
+                  textAlign: TextAlign.end,
+                  style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary)),
+            ),
+          ])),
         ],
       ),
     );
@@ -317,14 +323,22 @@ class ProgressScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
-            Text(t.thisWeekTitle.toUpperCase(),
-                style: AppTheme.f(10,
-                    weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-            const Spacer(),
-            Text(t.setsThisWeek(sets.fold(0, (a, b) => a + b)),
-                style: AppTheme.f(11.5, weight: FontWeight.w600, color: gc.textSecondary)),
-          ]),
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                Text(t.thisWeekTitle.toUpperCase(),
+                    style: AppTheme.f(10,
+                        weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+                Text(t.setsThisWeek(sets.fold(0, (a, b) => a + b)),
+                    style: AppTheme.f(11.5, weight: FontWeight.w600, color: gc.textSecondary)),
+              ],
+            ),
+          ),
           const SizedBox(height: 18),
           SizedBox(
             height: 92,
@@ -748,13 +762,19 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(t.muscleMap,
-                  style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-              _modes(),
-            ],
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Text(t.muscleMap,
+                    style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+                _modes(),
+              ],
+            ),
           ),
           const SizedBox(height: 16),
           BodyHeatMap(
@@ -763,8 +783,11 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
             onTap: (id) => setState(() => _focus = focus == id ? null : id),
           ),
           const SizedBox(height: 16),
-          Row(children: [
-            Text(t.heatLow, style: AppTheme.s(11, color: gc.textTertiary)),
+          LayoutBuilder(builder: (context, box) => Row(children: [
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.28),
+              child: Text(t.heatLow, style: AppTheme.s(11, color: gc.textTertiary)),
+            ),
             const SizedBox(width: 8),
             for (int i = 0; i <= heatLevels; i++) ...[
               if (i > 0) const SizedBox(width: 3),
@@ -779,8 +802,11 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
               ),
             ],
             const SizedBox(width: 8),
-            Text(t.heatHigh, style: AppTheme.s(11, color: gc.textTertiary)),
-          ]),
+            ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.28),
+              child: Text(t.heatHigh, textAlign: TextAlign.end, style: AppTheme.s(11, color: gc.textTertiary)),
+            ),
+          ])),
           const SizedBox(height: 14),
           Container(
             constraints: const BoxConstraints(minHeight: 36),
@@ -822,13 +848,19 @@ class _MuscleMapCardState extends State<_MuscleMapCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(t.muscleMap,
-                  style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
-              _modes(),
-            ],
+          SizedBox(
+            width: double.infinity,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Text(t.muscleMap,
+                    style: AppTheme.f(10, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 0.9)),
+                _modes(),
+              ],
+            ),
           ),
           const SizedBox(height: 14),
           Row(children: [
@@ -1231,7 +1263,14 @@ class _PrCardState extends State<_PrCard> {
                       shape: BoxShape.circle,
                       border: Border.all(color: gc.bgRaised, width: 2),
                     ),
-                    child: Text('${rank + 1}', style: AppTheme.f(9, weight: FontWeight.w800, color: gc.bgRaised)),
+                    child: MediaQuery.withClampedTextScaling(
+                      maxScaleFactor: 1.3,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('${rank + 1}',
+                            style: AppTheme.f(9, weight: FontWeight.w800, color: gc.bgRaised, height: 1)),
+                      ),
+                    ),
                   ),
                 ),
             ],

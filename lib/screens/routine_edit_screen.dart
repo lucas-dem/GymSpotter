@@ -88,8 +88,13 @@ class _RoutineEditScreenState extends State<RoutineEditScreen> {
                     child: Container(
                       height: 56,
                       alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
-                      child: Text(t.save, style: AppTheme.f(15.5, weight: FontWeight.w700, color: gc.text)),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(t.save,
+                            maxLines: 1, style: AppTheme.f(15.5, weight: FontWeight.w700, color: gc.text)),
+                      ),
                     ),
                   ),
                 ),

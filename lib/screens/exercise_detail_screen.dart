@@ -535,8 +535,8 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 24,
-          height: 24,
+          width: badgeSide(context, 24, 12),
+          height: badgeSide(context, 24, 12),
           decoration: BoxDecoration(color: gc.emberSoft, shape: BoxShape.circle),
           alignment: Alignment.center,
           child: Text('$n', style: AppTheme.f(12, weight: FontWeight.w700, color: gc.ember)),
@@ -808,18 +808,24 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       onTap: () => _pickMode(context, id),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        child: Row(
-          children: [
-            _rowIcon(gc, mode == 'cardio' ? PhosphorIconsRegular.personSimpleRun : PhosphorIconsRegular.listNumbers,
-                mode.isNotEmpty),
-            Expanded(
-              child: Text(t.exerciseTypeLabel,
-                  style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text)),
-            ),
-            Text(_modeName(mode), style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
-            const SizedBox(width: 6),
-            Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
-          ],
+        child: LayoutBuilder(
+          builder: (context, box) => Row(
+            children: [
+              _rowIcon(gc, mode == 'cardio' ? PhosphorIconsRegular.personSimpleRun : PhosphorIconsRegular.listNumbers,
+                  mode.isNotEmpty),
+              Expanded(
+                child: Text(t.exerciseTypeLabel,
+                    style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text)),
+              ),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: box.maxWidth * 0.45),
+                child: Text(_modeName(mode),
+                    textAlign: TextAlign.end, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
+              ),
+              const SizedBox(width: 6),
+              Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
+            ],
+          ),
         ),
       ),
     );

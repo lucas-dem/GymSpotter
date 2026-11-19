@@ -413,12 +413,18 @@ class _WeekRing extends StatelessWidget {
       height: 80,
       child: CustomPaint(
         painter: _RingPainter(track: gc.bgRaised2, fill: gc.accent, pct: pct),
-        child: Center(
-          child: Column(mainAxisSize: MainAxisSize.min, children: [
-            Text('$done/$goal', style: AppTheme.f(20, weight: FontWeight.w800, color: gc.text)),
-            Text(t.thisWeek,
-                style: AppTheme.f(9, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
-          ]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+          child: Center(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Text('$done/$goal', style: AppTheme.f(20, weight: FontWeight.w800, color: gc.text)),
+                Text(t.thisWeek,
+                    style: AppTheme.f(9, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 0.8)),
+              ]),
+            ),
+          ),
         ),
       ),
     );

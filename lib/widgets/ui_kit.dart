@@ -201,8 +201,8 @@ class GhostButton extends StatelessWidget {
     return Pressable(
       onTap: onTap,
       child: Container(
-        height: 46,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        constraints: const BoxConstraints(minHeight: 46),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: context.gc.bgRaised2,
@@ -213,8 +213,11 @@ class GhostButton extends StatelessWidget {
           children: [
             Icon(icon, size: 16, color: gc.ember),
             const SizedBox(width: 8),
-            Text(titleCase(label),
-                style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.text)),
+            Flexible(
+              child: Text(titleCase(label),
+                  textAlign: TextAlign.center,
+                  style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.text)),
+            ),
           ],
         ),
       ),
@@ -592,17 +595,33 @@ class ToolRow extends StatelessWidget {
       constraints: const BoxConstraints(minHeight: 56),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text(sentenceCase(label), style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text))),
-            const SizedBox(width: 12),
-            control,
-          ],
+        child: LayoutBuilder(
+          builder: (context, box) => Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(child: Text(sentenceCase(label), style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text))),
+              const SizedBox(width: 12),
+              TrailingFit(maxWidth: box.maxWidth * 0.62, child: control),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/// A row's trailing control at its natural size, shrunk only when it would not fit in [maxWidth].
+class TrailingFit extends StatelessWidget {
+  const TrailingFit({super.key, required this.maxWidth, required this.child});
+
+  final double maxWidth;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: maxWidth),
+        child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerRight, child: child),
+      );
 }
 
 class ToolGroup extends StatelessWidget {
@@ -645,27 +664,30 @@ class SegToggle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final o in options)
-            GestureDetector(
-              onTap: o.onTap,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
-                decoration: BoxDecoration(
-                  color: o.selected ? gc.ember : Colors.transparent,
-                  borderRadius: BorderRadius.circular(100),
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+        child: Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (final o in options)
+              GestureDetector(
+                onTap: o.onTap,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+                  decoration: BoxDecoration(
+                    color: o.selected ? gc.ember : Colors.transparent,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Text(o.label,
+                      style: AppTheme.f(fontSize,
+                          weight: FontWeight.w600, color: o.selected ? gc.onEmber : gc.textSecondary)),
                 ),
-                child: Text(o.label,
-                    style: AppTheme.f(fontSize,
-                        weight: FontWeight.w600, color: o.selected ? gc.onEmber : gc.textSecondary)),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -743,7 +765,7 @@ class Pill extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
         decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(100)),
         child: Text(titleCase(label),
-            style: AppTheme.f(fontSize, weight: FontWeight.w600, color: fg)),
+            textAlign: TextAlign.center, style: AppTheme.f(fontSize, weight: FontWeight.w600, color: fg)),
       ),
     );
   }

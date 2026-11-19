@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
@@ -39,14 +41,18 @@ class ToolsScreen extends StatelessWidget {
               subtitle: t.calculatorsCount(kToolMeta.length),
             ),
             const SizedBox(height: 22),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 1.12,
-              children: [for (final tool in kToolMeta) _card(gc, tool)],
+            LayoutBuilder(
+              builder: (context, box) => GridView(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  mainAxisExtent: math.max((box.maxWidth - 12) / 2 / 1.12, _cardContent(context)),
+                ),
+                children: [for (final tool in kToolMeta) _card(context, gc, tool)],
+              ),
             ),
           ],
         ),
@@ -54,7 +60,17 @@ class ToolsScreen extends StatelessWidget {
     );
   }
 
-  Widget _card(GymColors gc, ToolMeta tool) {
+  int _nameLines(BuildContext context) => MediaQuery.textScalerOf(context).scale(1) > 1 ? 2 : 1;
+
+  double _descHeight(BuildContext context) =>
+      (MediaQuery.textScalerOf(context).scale(11.5) * 1.3 * 2 + 1).ceilToDouble();
+
+  double _cardContent(BuildContext context) =>
+      (32 + 36 + 10 + MediaQuery.textScalerOf(context).scale(14.5) * 1.15 * _nameLines(context) + 2 +
+              _descHeight(context))
+          .ceilToDouble();
+
+  Widget _card(BuildContext context, GymColors gc, ToolMeta tool) {
     return GestureDetector(
       onTap: () => fit.openTool(tool.id),
       child: Container(
@@ -76,12 +92,12 @@ class ToolsScreen extends StatelessWidget {
             ),
             const Spacer(),
             Text(t.toolName(tool.id),
-                maxLines: 1,
+                maxLines: _nameLines(context),
                 overflow: TextOverflow.ellipsis,
                 style: AppTheme.f(14.5, weight: FontWeight.w700, color: gc.text)),
             const SizedBox(height: 2),
             SizedBox(
-              height: 31,
+              height: _descHeight(context),
               child: Text(t.toolDesc(tool.id),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

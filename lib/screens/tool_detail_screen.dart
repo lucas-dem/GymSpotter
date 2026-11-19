@@ -320,7 +320,11 @@ class ToolDetailScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(t.rampSet(sets[i].pct, sets[i].reps), style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
+                  Expanded(
+                    child: Text(t.rampSet(sets[i].pct, sets[i].reps),
+                        style: AppTheme.f(13, weight: FontWeight.w500, color: gc.textSecondary)),
+                  ),
+                  const SizedBox(width: 12),
                   Text('${fmt(sets[i].weight)} ${fit.units}', style: AppTheme.f(15, weight: FontWeight.w700, color: gc.text)),
                 ],
               ),

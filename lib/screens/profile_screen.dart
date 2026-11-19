@@ -12,6 +12,7 @@ import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/entrance.dart';
+import '../widgets/rolling_text.dart';
 import '../widgets/medal_shelf.dart';
 import '../widgets/photo_source_sheet.dart';
 import '../widgets/profile_avatar.dart';
@@ -230,9 +231,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   '${t.yearBestMonth} · ',
                   style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary),
                 ),
-                Text(
-                  t.monthName(best),
-                  style: AppTheme.f(12, weight: FontWeight.w700, color: gc.textSecondary),
+                Flexible(
+                  child: Text(
+                    t.monthName(best),
+                    style: AppTheme.f(12, weight: FontWeight.w700, color: gc.textSecondary),
+                  ),
                 ),
               ],
             ),
@@ -301,8 +304,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       (t.statLifted, fit.liftedSpan.$1, fit.liftedSpan.$2),
       (t.statStreak, '${fit.currentStreak}', t.statDays),
     ];
+    final scaler = MediaQuery.textScalerOf(context);
+    final tall =
+        scaler.scale(10.5) * 1.15 + 7 + lineHeight(AppTheme.f(23, weight: FontWeight.w800), scaler) + 6;
     return SizedBox(
-      height: 52,
+      height: tall < 52 ? 52 : tall.ceilToDouble(),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(right: 20),
@@ -400,7 +406,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(label, style: AppTheme.f(14.5, color: gc.text)),
+                  Flexible(
+                    child: Text(
+                      label,
+                      textAlign: TextAlign.center,
+                      style: AppTheme.f(14.5, color: gc.text),
+                    ),
+                  ),
                   if (trailing != null) ...[
                     const SizedBox(width: 7),
                     Text(
@@ -625,16 +637,22 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             ProfileAvatar(size: 76),
-            const Spacer(),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: onEdit,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
-                child: Text(
-                  t.editProfile,
-                  style: AppTheme.f(13.5, weight: FontWeight.w600, color: gc.text),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: onEdit,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                    decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(100)),
+                    child: Text(
+                      t.editProfile,
+                      textAlign: TextAlign.center,
+                      style: AppTheme.f(13.5, weight: FontWeight.w600, color: gc.text),
+                    ),
+                  ),
                 ),
               ),
             ),

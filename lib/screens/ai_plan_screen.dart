@@ -105,24 +105,37 @@ class _AiPlanScreenState extends State<AiPlanScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              children: [
-                _chip(gc, PhosphorIconsRegular.clipboardText, t.pasteAction, _paste),
-                const SizedBox(width: 8),
-                _chip(gc, PhosphorIconsRegular.fileArrowUp, t.chooseFile, _file),
-                const Spacer(),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => setState(() => _format = !_format),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-                    child: Text(
-                      t.showFormat,
-                      style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.accent),
+            LayoutBuilder(
+              builder: (context, box) => Row(
+                children: [
+                  Expanded(
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: [
+                        _chip(gc, PhosphorIconsRegular.clipboardText, t.pasteAction, _paste),
+                        _chip(gc, PhosphorIconsRegular.fileArrowUp, t.chooseFile, _file),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: box.maxWidth * 0.4),
+                    child: GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => setState(() => _format = !_format),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                        child: Text(
+                          t.showFormat,
+                          textAlign: TextAlign.end,
+                          style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.accent),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             if (_format) ...[
               const SizedBox(height: 8),
@@ -167,9 +180,11 @@ class _AiPlanScreenState extends State<AiPlanScreen> {
         children: [
           Icon(icon, size: 15, color: gc.text),
           const SizedBox(width: 7),
-          Text(
-            label,
-            style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.text),
+          Flexible(
+            child: Text(
+              label,
+              style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.text),
+            ),
           ),
         ],
       ),
@@ -181,8 +196,8 @@ class _AiPlanScreenState extends State<AiPlanScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 22,
-          height: 22,
+          width: badgeSide(context, 22, 12),
+          height: badgeSide(context, 22, 12),
           alignment: Alignment.center,
           decoration: BoxDecoration(color: gc.emberSoft, shape: BoxShape.circle),
           child: Text(

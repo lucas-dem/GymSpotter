@@ -122,7 +122,9 @@ class _AwardCelebrationState extends State<AwardCelebration> with TickerProvider
                 top: 0,
                 child: RepaintBoundary(
                   key: _cardKey,
-                  child: _SaveCard(id: widget.id, gc: gc, bits: _bits),
+                  child: MediaQuery.withNoTextScaling(
+                    child: _SaveCard(id: widget.id, gc: gc, bits: _bits),
+                  ),
                 ),
               ),
               Positioned.fill(
@@ -130,111 +132,122 @@ class _AwardCelebrationState extends State<AwardCelebration> with TickerProvider
               ),
               Positioned.fill(
                 child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(26, 12, 26, 22),
-                    child: Column(
-                      children: [
-                        const Spacer(),
-                        Transform.scale(
-                          scale: 0.74 + 0.26 * _stagger(0, 0.55),
-                          child: Opacity(
-                            opacity: _stagger(0, 0.3),
-                            child: SizedBox(
-                              width: medal,
-                              height: medal,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: RadialGradient(
-                                        colors: [
-                                          glow.withValues(alpha: 0.30 * _stagger(0.1, 0.7)),
-                                          glow.withValues(alpha: 0),
-                                        ],
-                                        stops: const [0.18, 0.74],
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(26, 12, 26, 22),
+                          child: Column(
+                            children: [
+                              const Spacer(),
+                              Transform.scale(
+                                scale: 0.74 + 0.26 * _stagger(0, 0.55),
+                                child: Opacity(
+                                  opacity: _stagger(0, 0.3),
+                                  child: SizedBox(
+                                    width: medal,
+                                    height: medal,
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            gradient: RadialGradient(
+                                              colors: [
+                                                glow.withValues(alpha: 0.30 * _stagger(0.1, 0.7)),
+                                                glow.withValues(alpha: 0),
+                                              ],
+                                              stops: const [0.18, 0.74],
+                                            ),
+                                          ),
+                                          child: const SizedBox.expand(),
+                                        ),
+                                        MedalSpin(id: widget.id, size: medal, spinIn: true, faceFront: true),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 28),
+                              _fade(
+                                0.3,
+                                0.65,
+                                Text(
+                                  t.awardUnlocked.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.f(
+                                    11.5,
+                                    weight: FontWeight.w700,
+                                    color: gc.textSecondary,
+                                    letterSpacing: 2.6,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _fade(
+                                0.38,
+                                0.75,
+                                Text(
+                                  awardName(widget.id),
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.f(32, weight: FontWeight.w800, color: gc.text),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              _fade(
+                                0.46,
+                                0.85,
+                                Text(
+                                  awardLine(widget.id),
+                                  textAlign: TextAlign.center,
+                                  style: AppTheme.f(
+                                    13.5,
+                                    weight: FontWeight.w500,
+                                    color: gc.textSecondary,
+                                    height: 1.45,
+                                  ),
+                                ),
+                              ),
+                              const Spacer(),
+                              _fade(0.54, 0.95, _Signature(gc: gc, avatar: 34)),
+                              const SizedBox(height: 26),
+                              if (_toast != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 14),
+                                  child: Text(
+                                    _toast!,
+                                    style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
+                                  ),
+                                ),
+                              _fade(0.6, 1, PrimaryButton(label: t.awardNice, onTap: widget.onClose)),
+                              const SizedBox(height: 4),
+                              _fade(
+                                0.68,
+                                1,
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: _saving ? null : _save,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 14),
+                                    child: Text(
+                                      _saving ? '…' : t.awardSaveImage,
+                                      textAlign: TextAlign.center,
+                                      style: AppTheme.f(
+                                        13.5,
+                                        weight: FontWeight.w700,
+                                        color: gc.textSecondary,
                                       ),
                                     ),
-                                    child: const SizedBox.expand(),
                                   ),
-                                  MedalSpin(id: widget.id, size: medal, spinIn: true, faceFront: true),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 28),
-                        _fade(
-                          0.3,
-                          0.65,
-                          Text(
-                            t.awardUnlocked.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: AppTheme.f(
-                              11.5,
-                              weight: FontWeight.w700,
-                              color: gc.textSecondary,
-                              letterSpacing: 2.6,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        _fade(
-                          0.38,
-                          0.75,
-                          Text(
-                            awardName(widget.id),
-                            textAlign: TextAlign.center,
-                            style: AppTheme.f(32, weight: FontWeight.w800, color: gc.text),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        _fade(
-                          0.46,
-                          0.85,
-                          Text(
-                            awardLine(widget.id),
-                            textAlign: TextAlign.center,
-                            style: AppTheme.f(
-                              13.5,
-                              weight: FontWeight.w500,
-                              color: gc.textSecondary,
-                              height: 1.45,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        _fade(0.54, 0.95, _Signature(gc: gc, avatar: 34)),
-                        const SizedBox(height: 26),
-                        if (_toast != null)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 14),
-                            child: Text(
-                              _toast!,
-                              style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
-                            ),
-                          ),
-                        _fade(0.6, 1, PrimaryButton(label: t.awardNice, onTap: widget.onClose)),
-                        const SizedBox(height: 4),
-                        _fade(
-                          0.68,
-                          1,
-                          GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onTap: _saving ? null : _save,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              child: Text(
-                                _saving ? '…' : t.awardSaveImage,
-                                textAlign: TextAlign.center,
-                                style: AppTheme.f(13.5, weight: FontWeight.w700, color: gc.textSecondary),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -338,18 +351,20 @@ class _Signature extends StatelessWidget {
           children: [
             ProfileAvatar(size: avatar),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  fit.displayName,
-                  style: AppTheme.f(15, weight: FontWeight.w700, color: gc.text),
-                ),
-                Text(
-                  '@${fit.profileHandle}',
-                  style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary),
-                ),
-              ],
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    fit.displayName,
+                    style: AppTheme.f(15, weight: FontWeight.w700, color: gc.text),
+                  ),
+                  Text(
+                    '@${fit.profileHandle}',
+                    style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

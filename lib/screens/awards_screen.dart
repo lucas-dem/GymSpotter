@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import '../catalog/awards.dart';
@@ -56,17 +58,21 @@ class AwardsScreen extends StatelessWidget {
   }
 
   Widget _grid(BuildContext context, List<AwardId> ids) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: ids.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 0.86,
+    final scaler = MediaQuery.textScalerOf(context);
+    final content = 30 + 96 + 14 + 4 + scaler.scale(14) * 1.15 * 2 + scaler.scale(11.5) * 1.15 + 4;
+    return LayoutBuilder(
+      builder: (context, box) => GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: ids.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 12,
+          crossAxisSpacing: 12,
+          mainAxisExtent: math.max((box.maxWidth - 12) / 2 / 0.86, content.ceilToDouble()),
+        ),
+        itemBuilder: (_, i) => _card(context, ids[i]),
       ),
-      itemBuilder: (_, i) => _card(context, ids[i]),
     );
   }
 
@@ -96,11 +102,15 @@ class AwardsScreen extends StatelessWidget {
               style: AppTheme.f(14, color: won ? gc.text : gc.textSecondary),
             ),
             const SizedBox(height: 4),
-            Text(
-              won && at != null
-                  ? t.shortDateYear(at)
-                  : '${medalShort(fit.awardValue(id))} / ${medalShort(fit.awardGoal(id))}',
-              style: AppTheme.f(11.5, weight: FontWeight.w600, color: gc.textTertiary),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                won && at != null
+                    ? t.shortDateYear(at)
+                    : '${medalShort(fit.awardValue(id))} / ${medalShort(fit.awardGoal(id))}',
+                maxLines: 1,
+                style: AppTheme.f(11.5, weight: FontWeight.w600, color: gc.textTertiary),
+              ),
             ),
           ],
         ),

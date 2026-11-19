@@ -170,9 +170,15 @@ class _TimelineScreenState extends State<TimelineScreen> {
                   children: [
                     Icon(icon, size: 15, color: on ? gc.onEmber : gc.textSecondary),
                     const SizedBox(width: 7),
-                    Text(label,
-                        style: AppTheme.s(13,
-                            weight: FontWeight.w600, color: on ? gc.onEmber : gc.textSecondary)),
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(label,
+                            maxLines: 1,
+                            style: AppTheme.s(13,
+                                weight: FontWeight.w600, color: on ? gc.onEmber : gc.textSecondary)),
+                      ),
+                    ),
                   ],
                 ),
               ),

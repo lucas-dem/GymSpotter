@@ -74,8 +74,12 @@ class TimerPanel extends StatelessWidget {
                         color: gc.bgRaised2,
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
                       ),
-                      child: Text(label.toUpperCase(),
-                          style: AppTheme.f(11, weight: FontWeight.w800, color: gc.text, letterSpacing: 2)),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(label.toUpperCase(),
+                            maxLines: 1,
+                            style: AppTheme.f(11, weight: FontWeight.w800, color: gc.text, letterSpacing: 2)),
+                      ),
                     ),
                   ),
                   _nudge(gc, '+15', onPlus),
@@ -93,23 +97,33 @@ class TimerPanel extends StatelessWidget {
                 children: [
                   _Ticks(left: left, lit: accent, dim: gc.bgRaised2),
                   const SizedBox(height: 14),
-                  Row(
+                  LayoutBuilder(builder: (context, box) => Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(child: _stat(gc, elapsed, elapsedLabel, CrossAxisAlignment.start)),
-                      Column(
-                        children: [
-                          RollingText(clockLabel(remaining),
-                              countsDown: true,
-                              style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05)),
-                          const SizedBox(height: 4),
-                          Text(hint.toUpperCase(),
-                              style: AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6)),
-                        ],
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: box.maxWidth * 0.5),
+                        child: Column(
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: RollingText(clockLabel(remaining),
+                                  countsDown: true,
+                                  style: AppTheme.f(36, weight: FontWeight.w800, color: gc.text, height: 1.05)),
+                            ),
+                            const SizedBox(height: 4),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(hint.toUpperCase(),
+                                  maxLines: 1,
+                                  style: AppTheme.f(10, weight: FontWeight.w800, color: accent, letterSpacing: 1.6)),
+                            ),
+                          ],
+                        ),
                       ),
                       Expanded(child: _stat(gc, sets, setsLabel, CrossAxisAlignment.end)),
                     ],
-                  ),
+                  )),
                 ],
               ),
             ),
@@ -122,10 +136,17 @@ class TimerPanel extends StatelessWidget {
   Widget _stat(GymColors gc, String value, String caption, CrossAxisAlignment align) => Column(
         crossAxisAlignment: align,
         children: [
-          RollingText(value, style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: RollingText(value, style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text, height: 1.1)),
+          ),
           const SizedBox(height: 3),
-          Text(caption.toUpperCase(),
-              style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(caption.toUpperCase(),
+                maxLines: 1,
+                style: AppTheme.f(9.5, weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
+          ),
         ],
       );
 

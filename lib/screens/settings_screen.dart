@@ -410,20 +410,25 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
   );
 
   Widget _prefRow(GymColors gc, IconData icon, String label, Widget control) {
-    return SizedBox(
-      height: 52,
-      child: Row(
-        children: [
-          _rowIcon(gc, icon),
-          Expanded(
-            child: Text(
-              label,
-              style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text),
-            ),
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 52),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: LayoutBuilder(
+          builder: (context, box) => Row(
+            children: [
+              _rowIcon(gc, icon),
+              Expanded(
+                child: Text(
+                  label,
+                  style: AppTheme.f(14.5, weight: FontWeight.w500, color: gc.text),
+                ),
+              ),
+              const SizedBox(width: 12),
+              TrailingFit(maxWidth: box.maxWidth * 0.55, child: control),
+            ],
           ),
-          const SizedBox(width: 12),
-          control,
-        ],
+        ),
       ),
     );
   }
@@ -545,8 +550,8 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
               behavior: HitTestBehavior.opaque,
               onTap: items[i].$3,
               child: Container(
-                height: 52,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                constraints: const BoxConstraints(minHeight: 52),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 decoration: BoxDecoration(
                   border: i < items.length - 1
                       ? Border(bottom: BorderSide(color: gc.border.withValues(alpha: 0.6)))
@@ -586,8 +591,8 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
               behavior: HitTestBehavior.opaque,
               onTap: () => _toggleWidget(context, items[i].$3),
               child: Container(
-                height: 52,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                constraints: const BoxConstraints(minHeight: 52),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 decoration: BoxDecoration(
                   border: i < items.length - 1
                       ? Border(bottom: BorderSide(color: gc.border.withValues(alpha: 0.6)))

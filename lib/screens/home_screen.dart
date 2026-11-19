@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
@@ -67,7 +69,7 @@ class HomeScreen extends StatelessWidget {
               _heading(gc, t.recommended, onMore: fit.goExercises),
               const SizedBox(height: 14),
               SizedBox(
-                height: 158,
+                height: math.max(158, (18 + 88 + 9 + MediaQuery.textScalerOf(context).scale(12) * 1.25 * 2 + 2).ceilToDouble()),
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: recommended.length,

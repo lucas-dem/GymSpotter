@@ -185,11 +185,13 @@ class SessionScreen extends StatelessWidget {
           locked,
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             if (ex != null && s.exercises.length > 1) ...[
-              _textAction(gc, t.dropExerciseAction,
-                  () => _confirmDrop(context, exIdx, t.catalogName(ex.id, ex.name))),
+              Flexible(
+                child: _textAction(gc, t.dropExerciseAction,
+                    () => _confirmDrop(context, exIdx, t.catalogName(ex.id, ex.name))),
+              ),
               Container(width: 1, height: 12, color: gc.border),
             ],
-            _textAction(gc, t.finishSession, fit.finishSession),
+            Flexible(child: _textAction(gc, t.finishSession, fit.finishSession)),
           ]),
         ),
       ],
@@ -437,22 +439,26 @@ class SessionScreen extends StatelessWidget {
         if (locked)
           Flexible(child: _lockedChip(gc))
         else
-          Row(children: [
-            Container(
-              width: 8,
-              height: 8,
-              decoration: BoxDecoration(
-                  color: fit.sessionPaused ? gc.textTertiary : gc.ember, shape: BoxShape.circle),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              fit.sessionPaused ? t.paused : t.inProgress,
-              style: AppTheme.f(12,
-                  weight: FontWeight.w600,
-                  color: fit.sessionPaused ? gc.textTertiary : gc.ember,
-                  letterSpacing: 0.4),
-            ),
-          ]),
+          Flexible(
+            child: Row(children: [
+              Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                    color: fit.sessionPaused ? gc.textTertiary : gc.ember, shape: BoxShape.circle),
+              ),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  fit.sessionPaused ? t.paused : t.inProgress,
+                  style: AppTheme.f(12,
+                      weight: FontWeight.w600,
+                      color: fit.sessionPaused ? gc.textTertiary : gc.ember,
+                      letterSpacing: 0.4),
+                ),
+              ),
+            ]),
+          ),
         Row(children: [
           RollingText(fit.elapsedLabel,
               style: AppTheme.f(18,
@@ -950,19 +956,19 @@ class SessionScreen extends StatelessWidget {
     double minW, {
     required void Function(BuildContext) onEdit,
   }) {
-    Widget b(String g, String semantic, VoidCallback t) => Semantics(
+    Widget b(double side, String g, String semantic, VoidCallback t) => Semantics(
           button: true,
           label: semantic,
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: t,
             child: SizedBox(
-              width: 34,
-              height: 44,
+              width: side + 6,
+              height: side + 16,
               child: Center(
                 child: Container(
-                  width: 28,
-                  height: 28,
+                  width: side,
+                  height: side,
                   decoration: BoxDecoration(color: gc.bgRaised2, borderRadius: BorderRadius.circular(8)),
                   alignment: Alignment.center,
                   child: Text(g, style: TextStyle(color: gc.text, fontSize: 17, height: 1)),
@@ -971,13 +977,14 @@ class SessionScreen extends StatelessWidget {
             ),
           ),
         );
-    return Builder(
-      builder: (context) => FittedBox(
+    return Builder(builder: (context) {
+      final side = badgeSide(context, 28, 17, height: 1);
+      return FittedBox(
         fit: BoxFit.scaleDown,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            b('–', t.decrease, dec),
+            b(side, '–', t.decrease, dec),
             const SizedBox(width: 3),
             GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -991,11 +998,11 @@ class SessionScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 3),
-          b('+', t.increase, inc),
+          b(side, '+', t.increase, inc),
         ],
         ),
-      ),
-    );
+      );
+    });
   }
 
   Future<void> _ruler(
@@ -1095,6 +1102,7 @@ class SessionScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             child: Text(label,
+                textAlign: TextAlign.center,
                 style: AppTheme.f(12, weight: FontWeight.w600, color: gc.textTertiary)),
           ),
         ),
@@ -1254,11 +1262,10 @@ class SessionScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(children: [
+                  Wrap(spacing: 8, runSpacing: 6, crossAxisAlignment: WrapCrossAlignment.center, children: [
                     Text(t.sessionComplete.toUpperCase(),
                         style: AppTheme.f(11, weight: FontWeight.w600, color: gc.brass, letterSpacing: 1.4)),
                     if (prs > 0) ...[
-                      const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration:
