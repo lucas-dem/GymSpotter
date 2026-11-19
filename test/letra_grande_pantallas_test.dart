@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:infyter/app/app_shell.dart';
 import 'package:infyter/app/infyter_app.dart';
 import 'package:infyter/l10n/l10n.dart';
@@ -20,6 +21,7 @@ import 'package:infyter/widgets/ui_kit.dart';
 import 'letra_grande_util.dart';
 
 const _pantallas = [(360.0, 780.0), (411.0, 914.0)];
+const _estrecha = (320.0, 711.0);
 const _escalas = [1.0, 1.3, 1.5, 2.0];
 const _idiomas = String.fromEnvironment('IDIOMAS', defaultValue: 'es,en');
 const _listarPuntos = bool.fromEnvironment('LISTAR_PUNTOS');
@@ -181,6 +183,22 @@ void main() {
           });
         }
       }
+    }
+  }
+
+  for (final escala in _escalas) {
+    for (final nombre in const ['home', 'session', 'session-descanso']) {
+      testWidgets('$nombre fits at 320 dp with text scale $escala in es', (tester) async {
+        final (ancho, alto) = _estrecha;
+        usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+        casos[nombre]!();
+        final fallas = await _revisar(tester, const InfyterApp(), nombre);
+        await _cerrar(tester);
+        for (final f in fallas) {
+          debugPrint('FALLA es 320dp x$escala $f');
+        }
+        expect(fallas, isEmpty);
+      });
     }
   }
 
@@ -353,7 +371,7 @@ void main() {
   }
 
   for (final idioma in _idiomas.split(',')) {
-    for (final (ancho, alto) in _pantallas) {
+    for (final (ancho, alto) in [..._pantallas, if (idioma == 'es') _estrecha]) {
       for (final escala in _escalas) {
         testWidgets('the four tab bar labels share one size at ${ancho.toInt()} dp, scale $escala, $idioma', (
           tester,
@@ -377,6 +395,38 @@ void main() {
         });
       }
     }
+  }
+
+  for (final escala in _escalas) {
+    testWidgets('the tab bar fits whole inside a 320 dp screen at scale $escala', (tester) async {
+      final (ancho, alto) = _estrecha;
+      usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+      fit.route = 'home';
+      final fallas = await _revisar(tester, const InfyterApp(), 'barra 320');
+      Rect caja(RenderBox r) => MatrixUtils.transformRect(r.getTransformTo(null), Offset.zero & r.size);
+      RenderBox abajo(Finder f) => tester
+          .renderObjectList<RenderBox>(f)
+          .reduce((a, b) => a.localToGlobal(Offset.zero).dy > b.localToGlobal(Offset.zero).dy ? a : b);
+      final pantalla = Rect.fromLTWH(0, 0, ancho, alto);
+      final barra = caja(tester.renderObject<RenderBox>(find.byWidgetPredicate((w) => '${w.runtimeType}' == '_NavBar')));
+      final piezas = <String, Rect>{
+        for (final label in [t.home, t.progress, t.exercises, t.profile]) label: caja(abajo(find.text(label))),
+        'play': caja(abajo(find.ancestor(of: find.byIcon(PhosphorIconsFill.play), matching: find.byType(Container)).first)),
+      };
+      await _cerrar(tester);
+      for (final MapEntry(key: n, value: r) in piezas.entries) {
+        if (!pantalla.contains(r.topLeft) || !pantalla.contains(r.bottomRight - const Offset(0.01, 0.01))) {
+          fallas.add('$n fuera de la pantalla: $r');
+        }
+        if (r.left < barra.left || r.right > barra.right) fallas.add('$n fuera de la barra: $r, barra $barra');
+      }
+      final orden = [t.home, t.progress, 'play', t.exercises, t.profile];
+      for (var i = 0; i + 1 < orden.length; i++) {
+        final hueco = piezas[orden[i + 1]]!.left - piezas[orden[i]]!.right;
+        if (hueco < 2) fallas.add('${orden[i]} y ${orden[i + 1]} a ${hueco.toStringAsFixed(1)} dp');
+      }
+      expect(fallas, isEmpty);
+    });
   }
 
   for (final idioma in _idiomas.split(',')) {

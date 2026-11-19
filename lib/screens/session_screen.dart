@@ -188,7 +188,7 @@ class SessionScreen extends StatelessWidget {
         const SizedBox(height: 10),
         _guard(
           locked,
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          FitTextGroup(child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             if (ex != null && s.exercises.length > 1) ...[
               Flexible(
                 child: _textAction(gc, t.dropExerciseAction,
@@ -197,7 +197,7 @@ class SessionScreen extends StatelessWidget {
               Container(width: 1, height: 12, color: gc.border),
             ],
             Flexible(child: _textAction(gc, t.finishSession, fit.finishSession)),
-          ]),
+          ])),
         ),
       ],
     );
@@ -1124,7 +1124,7 @@ class SessionScreen extends StatelessWidget {
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-            child: Text(label,
+            child: FitText(label,
                 textAlign: TextAlign.center,
                 style: AppTheme.f(12, weight: FontWeight.w600, color: gc.textTertiary)),
           ),

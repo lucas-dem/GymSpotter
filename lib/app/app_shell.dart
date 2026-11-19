@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
@@ -426,15 +427,17 @@ class _NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<_NavBar> {
-  static const _iw = 58.0;
+  static const _fullW = 58.0;
+  static const _minGap = 4.0;
   static const _fabW = 54.0;
   static const _routes = ['home', 'progress', 'exercises', 'settings'];
 
   double? _dragX;
   int? _hover;
   double _slotW = 0;
+  double _iw = _fullW;
   double _gap = 0;
-  double _labelW = _iw;
+  double _labelW = _fullW;
   double _labelSize = 9.5;
   double _labelSpacing = 0.2;
 
@@ -488,6 +491,7 @@ class _NavBarState extends State<_NavBar> {
       child: LayoutBuilder(
         builder: (context, c) {
           _slotW = c.maxWidth - 16;
+          _iw = math.min(_fullW, (_slotW - _fabW - 4 * _minGap) / 4);
           _gap = ((_slotW - 4 * _iw - _fabW) / 4).clamp(0.0, 40.0);
           _fitLabels(context);
           final drag = _dragX;
@@ -589,7 +593,7 @@ class _NavBarState extends State<_NavBar> {
 
   /// One size for the four labels: the widest must fit its slot plus part of the gaps, keeping 4 dp between.
   void _fitLabels(BuildContext context) {
-    _labelW = _iw + (_gap - 4).clamp(0.0, 12.0);
+    _labelW = _iw + (_gap - _minGap).clamp(0.0, 12.0);
     final scaler = MediaQuery.textScalerOf(context);
     final p = TextPainter(textDirection: TextDirection.ltr, textScaler: scaler, maxLines: 1);
     var widest = 0.0;
