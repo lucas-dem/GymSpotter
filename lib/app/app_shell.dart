@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' show OverflowBoxFit;
 import 'package:flutter/services.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
@@ -39,6 +40,7 @@ import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 import '../widgets/award_celebration.dart';
 import '../widgets/dialogs.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/start_countdown.dart';
@@ -432,6 +434,9 @@ class _NavBarState extends State<_NavBar> {
   int? _hover;
   double _slotW = 0;
   double _gap = 0;
+  double _labelW = _iw;
+  double _labelSize = 9.5;
+  double _labelSpacing = 0.2;
 
   int get _selectedIndex {
     if (_hover != null) return _hover!;
@@ -484,6 +489,7 @@ class _NavBarState extends State<_NavBar> {
         builder: (context, c) {
           _slotW = c.maxWidth - 16;
           _gap = ((_slotW - 4 * _iw - _fabW) / 4).clamp(0.0, 40.0);
+          _fitLabels(context);
           final drag = _dragX;
 
           return Stack(
@@ -581,6 +587,26 @@ class _NavBarState extends State<_NavBar> {
     );
   }
 
+  /// One size for the four labels: the widest must fit its slot plus part of the gaps, keeping 4 dp between.
+  void _fitLabels(BuildContext context) {
+    _labelW = _iw + (_gap - 4).clamp(0.0, 12.0);
+    final scaler = MediaQuery.textScalerOf(context);
+    final p = TextPainter(textDirection: TextDirection.ltr, textScaler: scaler, maxLines: 1);
+    var widest = 0.0;
+    for (final label in [t.home, t.progress, t.exercises, t.profile]) {
+      p.text = TextSpan(
+        text: label,
+        style: effectiveTextStyle(context, AppTheme.s(9.5, weight: FontWeight.w600, letterSpacing: 0.2)),
+      );
+      p.layout();
+      if (p.maxIntrinsicWidth > widest) widest = p.maxIntrinsicWidth;
+    }
+    p.dispose();
+    final k = widest > _labelW - 1 ? (_labelW - 1) / widest : 1.0;
+    _labelSize = scaler.scale(9.5) * k;
+    _labelSpacing = 0.2 * k;
+  }
+
   Widget _item(
     BuildContext context,
     int index,
@@ -627,15 +653,21 @@ class _NavBarState extends State<_NavBar> {
                 ),
               ),
               const SizedBox(height: 3),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+              OverflowBox(
+                maxWidth: _labelW,
+                fit: OverflowBoxFit.deferToChild,
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: AnimatedDefaultTextStyle(
                     duration: dur,
                     curve: Curves.easeOut,
-                    style: AppTheme.s(9.5, weight: FontWeight.w600, color: color, letterSpacing: 0.2),
-                    child: Text(label, maxLines: 1, softWrap: false),
+                    style: AppTheme.s(
+                      _labelSize,
+                      weight: FontWeight.w600,
+                      color: color,
+                      letterSpacing: _labelSpacing,
+                    ),
+                    child: Text(label, maxLines: 1, softWrap: false, textScaler: TextScaler.noScaling),
                   ),
                 ),
               ),
