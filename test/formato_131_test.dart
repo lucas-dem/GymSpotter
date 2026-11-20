@@ -923,8 +923,13 @@ void main() {
     );
     expect(perdidas, isEmpty, reason: perdidas.join('\n'));
     expect(nuevas, [
+      r'$.steps: apareció ({})',
+      r'$.stepsFrom: apareció ({})',
+      r'$.stepGoal: apareció (8000)',
+      r'$.stepsOn: apareció (false)',
+      r'$.stepsAskedAt: apareció (null)',
       '\$.$kSchemaVersionKey: apareció ($kStoreSchemaVersion)',
-    ], reason: 'la única clave nueva es la versión de formato');
+    ], reason: 'las únicas claves nuevas son la versión de formato y las de pasos, con sus valores por defecto');
     expect(Store.instance.rescue, isNull, reason: 'un blob 1.3.1 sano no genera copias de rescate');
 
     fit.loadFromStore();

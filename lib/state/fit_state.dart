@@ -40,6 +40,7 @@ part 'places_state.dart';
 part 'routines_state.dart';
 part 'settings_state.dart';
 part 'stats_state.dart';
+part 'steps_state.dart';
 part 'timeline_state.dart';
 part 'tools_state.dart';
 part 'workout_state.dart';
@@ -55,6 +56,7 @@ class FitState extends FitCore
         MomentsState,
         TimelineState,
         StatsState,
+        StepsState,
         AwardsState,
         RoutinesState,
         WorkoutState {
@@ -172,6 +174,9 @@ class FitState extends FitCore
         ..addAll(_items(data['moments'], Moment.fromJson));
       photoIntervalDays = _pick<num>(data['photoEvery'], 30).toInt();
       bodyTimeline = _pick(data['bodyTl'], false);
+      _part(() => _loadSteps(data));
+      stepsOn = _pick(data['stepsOn'], false);
+      stepsAskedAt = _pickOrNull<num>(data['stepsAskedAt'])?.toInt();
       _part(() => _restoreLiveSession(data));
     }
     if (_skippedOnLoad > 0) onSkipped?.call();
@@ -405,6 +410,16 @@ class FitState extends FitCore
     shots.removeWhere((e) => e.isEmpty);
   }
 
+  void _loadSteps(Map<String, dynamic> data) {
+    steps
+      ..clear()
+      ..addAll(_entries(data['steps'], _stepEntry));
+    stepsFrom
+      ..clear()
+      ..addAll(_entries(data['stepsFrom'], _stepEntry));
+    stepGoal = normalizeStepGoal(_pick<num>(data['stepGoal'], kDefaultStepGoal));
+  }
+
   void _loadMeasures(Map<String, dynamic> data) {
     measures
       ..clear()
@@ -513,6 +528,11 @@ class FitState extends FitCore
     'moments': moments.map((m) => m.toJson()).toList(),
     'photoEvery': photoIntervalDays,
     'bodyTl': bodyTimeline,
+    'steps': steps,
+    'stepsFrom': stepsFrom,
+    'stepGoal': stepGoal,
+    'stepsOn': stepsOn,
+    'stepsAskedAt': stepsAskedAt,
     if (session != null && !session!.complete) ...{
       'live': session!.toJson(),
       'liveStart': _runningSince?.toIso8601String(),
@@ -634,6 +654,7 @@ class FitState extends FitCore
     Store.instance.discardRescue();
     _rescueOffer = null;
     _rescueSaved = null;
+    _clearSteps();
     favorites.clear();
     sessionPicks.clear();
     selectedMuscles.clear();
@@ -661,7 +682,12 @@ class FitState extends FitCore
     notifyListeners();
   }
 
-  String exportJson() => Store.instance.exportJson(toJson());
+  // Lo que es de este teléfono y no viaja en una copia.
+  static const _deviceKeys = {'stepsAskedAt'};
+
+  Map<String, dynamic> backupJson() => toJson()..removeWhere((key, _) => _deviceKeys.contains(key));
+
+  String exportJson() => Store.instance.exportJson(backupJson());
 
   String exportCsv() => Store.instance.exportCsv(sessions);
 
@@ -819,6 +845,8 @@ class FitState extends FitCore
     _loadMoments(map, restored: restoredMoments);
     photoIntervalDays = (map['photoEvery'] as num?)?.toInt() ?? photoIntervalDays;
     bodyTimeline = map['bodyTl'] as bool? ?? bodyTimeline;
+    _loadSteps(map);
+    stepsOn = _pickOrNull<bool>(map['stepsOn']) ?? stepsOn;
     _seedCalculatorsFromProfile();
     _loading = false;
     _persist();

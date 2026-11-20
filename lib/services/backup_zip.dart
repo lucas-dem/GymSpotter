@@ -24,7 +24,7 @@ bool looksLikeZip(Uint8List b) =>
     b.length > 4 && b[0] == 0x50 && b[1] == 0x4B && (b[2] == 0x03 || b[2] == 0x05 || b[2] == 0x07);
 
 Future<Uint8List> buildBackupZip() async {
-  final data = fit.toJson();
+  final data = fit.backupJson();
   final archive = Archive();
   final used = <String>{};
   final paths = <String, String>{};
