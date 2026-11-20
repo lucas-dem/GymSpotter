@@ -100,6 +100,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     });
     // After the first frame, so the app opens at once; the answer may cover it a moment later.
     WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(updateGate.checkNow()));
+    WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(fit.refreshSteps()));
   }
 
   void _receive(String text) {
@@ -180,7 +181,9 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
         state == AppLifecycleState.detached) {
       fit.persistNow();
     }
+    if (state == AppLifecycleState.paused) unawaited(fit.refreshSteps(saveNow: true));
     if (state == AppLifecycleState.resumed) {
+      unawaited(fit.refreshSteps());
       fit.refreshAlarmPermission();
       fit.syncRest();
       fit.refreshWidgets();

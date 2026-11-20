@@ -27,6 +27,7 @@ import '../services/media_store.dart';
 import '../services/progress_reminder.dart';
 import '../services/plan_share.dart';
 import '../services/rest_alarm.dart';
+import '../services/step_source.dart';
 import '../services/train_reminder.dart';
 import '../services/workout_import.dart';
 
@@ -847,11 +848,13 @@ class FitState extends FitCore
     bodyTimeline = map['bodyTl'] as bool? ?? bodyTimeline;
     _loadSteps(map);
     stepsOn = _pickOrNull<bool>(map['stepsOn']) ?? stepsOn;
+    _stepsRestored();
     _seedCalculatorsFromProfile();
     _loading = false;
     _persist();
     _refreshWidgets();
     notifyListeners();
+    unawaited(refreshSteps());
   }
 
   void _loadAwards(Map<String, dynamic> map) {
