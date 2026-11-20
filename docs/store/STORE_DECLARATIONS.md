@@ -13,6 +13,7 @@ Connect. Re-check it against the final signed binaries before submission.
 - Account or login: no
 - Paid subscription or in-app purchase: no
 - Health Connect / HealthKit: not used
+- Step counting: on-device (Android step counter sensor / Core Motion)
 
 ## Privacy and data safety
 
@@ -54,6 +55,10 @@ guidance for the Play In-App Updates library when filling the form.
 - Camera: local QR plan scanning and photos/videos the user chooses to add.
 - Photos/files: import, export, backup, restore and user-selected media.
 - Microphone (iOS): audio in a video the user chooses to record.
+- Physical activity (Android `ACTIVITY_RECOGNITION`, iOS Motion & Fitness /
+  `NSMotionUsageDescription`): daily step count and estimated active calories,
+  only after the user enables step counting. Read and stored on the device;
+  nothing is sent anywhere. No Google Play services and no foreground service.
 - Notifications: rest-timer and training reminders.
 - Schedule exact alarms (Android): optional precision for short rest timers;
   the app falls back to an inexact notification if access is unavailable.
@@ -63,11 +68,17 @@ guidance for the Play In-App Updates library when filling the form.
   online before requiring an update, so the app never blocks without a
   connection. It does not give internet access.
 
-The app does not request `INTERNET`, `USE_EXACT_ALARM`,
+The step feature does not add `INTERNET`. The app does not request `INTERNET`, `USE_EXACT_ALARM`,
 `USE_FULL_SCREEN_INTENT` or promoted-notification permission in release.
 
 ## Content and review notes
 
+- Play Console, App content: mark the health apps declaration "Activity and
+  fitness / activity tracking". There is no Health Connect form, because
+  Health Connect is not used.
+- App Store review note: "Step count is read with Core Motion only after the
+  user enables it; it stays on the device; calories are labelled as
+  estimates."
 - Infyter is a workout log, not a medical device, diagnosis tool or treatment.
 - It contains no social feed, chat, gambling, ads or user-generated public
   content.

@@ -1,6 +1,6 @@
 # Política de privacidad de Infyter
 
-Última actualización: 1 de noviembre de 2026.
+Última actualización: 20 de noviembre de 2026.
 
 Infyter funciona localmente y no requiere una cuenta. La aplicación no
 incluye publicidad, analítica ni rastreadores propios, y no envía
@@ -25,10 +25,20 @@ función del sistema para compartir o exportar, el destino elegido recibe el
 contenido seleccionado. Al abrir el enlace del código fuente, ese enlace se
 entrega al navegador predeterminado.
 
-La aplicación puede solicitar acceso a fotos, cámara, archivos o
-notificaciones únicamente para las funciones que la persona usuaria decida
-utilizar. El sistema operativo permite revocar esos permisos desde sus
-ajustes.
+La aplicación puede solicitar acceso a fotos, cámara, archivos,
+notificaciones o actividad física (pasos) únicamente para las funciones que
+la persona usuaria decida utilizar. El sistema operativo permite revocar
+esos permisos desde sus ajustes.
+
+Si activás el conteo de pasos, Infyter lee del teléfono la cantidad de pasos
+de cada día (en iPhone, con el sensor de movimiento del sistema (Core Motion);
+en Android, con el sensor de pasos del teléfono) y la guarda en el dispositivo
+junto con tu meta diaria. Con esa cantidad y el último peso que registraste (o
+el de tu perfil) estima las calorías activas; es una estimación y no un dato
+médico. Estos datos no se envían a ningún servidor ni al desarrollador, y
+salen del dispositivo solo si exportás una copia. Podés apagar el conteo en
+Ajustes o quitar el permiso en los ajustes del sistema; "Borrar todos mis
+datos" borra también los pasos guardados.
 
 Desinstalar la aplicación o usar la función correspondiente del sistema puede
 eliminar los datos locales. Infyter no puede recuperar información que no
