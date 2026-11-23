@@ -30,6 +30,7 @@ void main() {
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
+    Store.instance.debugReset();
     await Store.instance.init();
     media = await Directory.systemTemp.createTemp('infyter_zip_media');
     alarms = await Directory.systemTemp.createTemp('infyter_zip_alarm');
