@@ -3060,10 +3060,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get qrLabel => 'QR';
 
   @override
-  String get stepsToday => 'Steps today';
+  String get stepsToday => '오늘 걸음 수';
 
   @override
-  String get activeKcal => 'Active kcal';
+  String get activeKcal => '활동 kcal';
 
   @override
   String stepsGoalUnit(String goal) {
@@ -3072,132 +3072,133 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String estimatedWithWeight(String weight) {
-    return 'Estimated with your weight ($weight)';
+    return '체중($weight)으로 추정';
   }
 
   @override
-  String get stepsEnableTitle => 'Count your steps';
+  String get stepsEnableTitle => '걸음 수를 세어 보세요';
 
   @override
-  String get stepsEnableBody => 'Use your phone\'s sensor to see your steps and estimated active calories.';
+  String get stepsEnableBody => '휴대폰 센서로 걸음 수와 추정 활동 칼로리를 확인하세요.';
 
   @override
-  String get stepsEnable => 'Turn on';
+  String get stepsEnable => '켜기';
 
   @override
-  String get stepsDeniedTitle => 'Steps are off';
+  String get stepsDeniedTitle => '걸음 수가 꺼져 있습니다';
 
   @override
-  String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
+  String get stepsDeniedBody => '휴대폰 설정에서 신체 활동을 허용하세요';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => '설정 열기';
 
   @override
   String stepsCountingSince(String time) {
-    return 'Counting since $time';
+    return '$time부터 측정 중';
   }
 
   @override
-  String get stepsContinue => 'Continue';
+  String get stepsContinue => '계속';
 
   @override
-  String get stepsHide => 'Hide the steps card';
+  String get stepsHide => '걸음 수 카드 숨기기';
 
   @override
-  String get stepsOpenProgress => 'Opens Progress';
+  String get stepsOpenProgress => '진행 상황을 엽니다';
 
   @override
-  String get stepsChangeGoal => 'Changes the goal';
+  String get stepsChangeGoal => '목표를 변경합니다';
 
   @override
-  String get stepsShowEstimate => 'Shows how they are estimated';
+  String get stepsShowEstimate => '추정 방법을 보여 줍니다';
 
   @override
-  String get stepsGoalReached => 'Goal reached';
+  String get stepsGoalReached => '목표 달성';
 
   @override
-  String get stepsPermissionBody =>
-      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+  String get stepsPermissionBody => 'Infyter는 휴대폰 센서로 걸음 수를 세어 진행 상황과 추정 활동 칼로리를 보여 줍니다. 데이터는 휴대폰에 보관됩니다.';
 
   @override
-  String get stepGoal => 'Daily goal';
+  String get stepGoal => '일일 목표';
 
   @override
-  String get stepGoalHint => 'A goal you can reach on most days.';
+  String get stepGoalHint => '대부분의 날에 달성할 수 있는 목표입니다.';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps steps';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(steps, locale: localeName, other: '$stepsString걸음');
+    return '$_temp0';
   }
 
   @override
-  String get stepsHelpTitle => 'Estimated active calories';
+  String get stepsHelpTitle => '추정 활동 칼로리';
 
   @override
-  String get stepsHelpBody =>
-      'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.';
+  String get stepsHelpBody => '안정 시를 넘어 소모하는 양을 오늘의 걸음 수와 운동으로 추정한 값입니다. 의료 데이터가 아닙니다.';
 
   @override
-  String get stepsByWalking => 'From steps';
+  String get stepsByWalking => '걸음 수 기준';
 
   @override
-  String get kcalByWorkouts => 'From workouts';
+  String get kcalByWorkouts => '운동 기준';
 
   @override
-  String get stepsOverlapHint => 'Steps during a workout are counted in both.';
+  String get stepsOverlapHint => '운동 중의 걸음 수는 양쪽에 모두 포함됩니다.';
 
   @override
-  String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
+  String get stepsAndroidHint => '같은 날 두 번의 측정 사이에 휴대폰이 센 걸음 수를 더합니다.';
 
   @override
-  String get stepsTitle => 'Steps';
+  String get stepsTitle => '걸음 수';
 
   @override
-  String get stepsAvgUnit => 'per day';
+  String get stepsAvgUnit => '하루당';
 
   @override
   String stepsGoalDays(String goal, int done, int days) {
-    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days', one: '$days day');
-    return 'Goal $goal · reached $done of $_temp0';
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days일');
+    return '목표 $goal · $_temp0 중 $done일 달성';
   }
 
   @override
-  String get stepsPeriodEmpty => 'No steps counted in this period';
+  String get stepsPeriodEmpty => '이 기간에 측정된 걸음 수가 없습니다';
 
   @override
-  String get stepsLegendGaps => 'Gaps are periods without data.';
+  String get stepsLegendGaps => '빈 구간은 데이터가 없는 기간입니다.';
 
   @override
-  String get stepsLegendPartial => 'Lighter bars are partial days.';
+  String get stepsLegendPartial => '연한 막대는 일부만 기록된 날입니다.';
 
   @override
   String kcalWeightPerDay(String weight) {
-    return 'Estimated with your weight on each day (today $weight)';
+    return '매일의 체중으로 추정(오늘 $weight)';
   }
 
   @override
-  String get stepsRangeLabel => 'Period';
+  String get stepsRangeLabel => '기간';
 
   @override
-  String get months12 => '12M';
+  String get months12 => '12개월';
 
   @override
-  String get kcalTitle => 'Active calories (estimated)';
+  String get kcalTitle => '활동 칼로리(추정)';
 
   @override
-  String get countSteps => 'Count steps';
+  String get countSteps => '걸음 수 세기';
 
   @override
-  String get stepsNeedsPermission => 'Permission is needed to count your steps.';
+  String get stepsNeedsPermission => '걸음 수를 세려면 권한이 필요합니다.';
 
   @override
-  String get stepsSettingsHint =>
-      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+  String get stepsSettingsHint => '걸음 수는 휴대폰 센서에서 읽어 이 기기에 저장됩니다. 사본을 내보낼 때만 기기 밖으로 나갑니다.';
 
   @override
-  String get stepsUnavailable => 'Not available on this phone';
+  String get stepsUnavailable => '이 휴대폰에서는 사용할 수 없습니다';
 
   @override
-  String get stepsAllow => 'Allow';
+  String get stepsAllow => '허용';
 }

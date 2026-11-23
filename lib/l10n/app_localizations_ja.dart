@@ -3045,10 +3045,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get qrLabel => 'QR';
 
   @override
-  String get stepsToday => 'Steps today';
+  String get stepsToday => '今日の歩数';
 
   @override
-  String get activeKcal => 'Active kcal';
+  String get activeKcal => 'アクティブkcal';
 
   @override
   String stepsGoalUnit(String goal) {
@@ -3057,132 +3057,133 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String estimatedWithWeight(String weight) {
-    return 'Estimated with your weight ($weight)';
+    return '体重（$weight）で推定';
   }
 
   @override
-  String get stepsEnableTitle => 'Count your steps';
+  String get stepsEnableTitle => '歩数を数えよう';
 
   @override
-  String get stepsEnableBody => 'Use your phone\'s sensor to see your steps and estimated active calories.';
+  String get stepsEnableBody => 'スマートフォンのセンサーで歩数と推定アクティブカロリーを確認できます。';
 
   @override
-  String get stepsEnable => 'Turn on';
+  String get stepsEnable => 'オンにする';
 
   @override
-  String get stepsDeniedTitle => 'Steps are off';
+  String get stepsDeniedTitle => '歩数はオフです';
 
   @override
-  String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
+  String get stepsDeniedBody => 'スマートフォンの設定で「身体活動」を許可してください';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => '設定を開く';
 
   @override
   String stepsCountingSince(String time) {
-    return 'Counting since $time';
+    return '$timeから計測中';
   }
 
   @override
-  String get stepsContinue => 'Continue';
+  String get stepsContinue => '続ける';
 
   @override
-  String get stepsHide => 'Hide the steps card';
+  String get stepsHide => '歩数カードを非表示';
 
   @override
-  String get stepsOpenProgress => 'Opens Progress';
+  String get stepsOpenProgress => '進捗を開きます';
 
   @override
-  String get stepsChangeGoal => 'Changes the goal';
+  String get stepsChangeGoal => '目標を変更します';
 
   @override
-  String get stepsShowEstimate => 'Shows how they are estimated';
+  String get stepsShowEstimate => '推定方法を表示します';
 
   @override
-  String get stepsGoalReached => 'Goal reached';
+  String get stepsGoalReached => '目標達成';
 
   @override
-  String get stepsPermissionBody =>
-      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+  String get stepsPermissionBody => 'Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。データはスマートフォンの中に保存されます。';
 
   @override
-  String get stepGoal => 'Daily goal';
+  String get stepGoal => '1日の目標';
 
   @override
-  String get stepGoalHint => 'A goal you can reach on most days.';
+  String get stepGoalHint => 'ほとんどの日に達成できる目標にしましょう。';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps steps';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(steps, locale: localeName, other: '$stepsString歩');
+    return '$_temp0';
   }
 
   @override
-  String get stepsHelpTitle => 'Estimated active calories';
+  String get stepsHelpTitle => '推定アクティブカロリー';
 
   @override
-  String get stepsHelpBody =>
-      'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.';
+  String get stepsHelpBody => '安静時を上回る消費量の推定値で、今日の歩数とトレーニングから算出します。医療データではありません。';
 
   @override
-  String get stepsByWalking => 'From steps';
+  String get stepsByWalking => '歩数から';
 
   @override
-  String get kcalByWorkouts => 'From workouts';
+  String get kcalByWorkouts => 'トレーニングから';
 
   @override
-  String get stepsOverlapHint => 'Steps during a workout are counted in both.';
+  String get stepsOverlapHint => 'トレーニング中の歩数は両方に含まれます。';
 
   @override
-  String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
+  String get stepsAndroidHint => '同じ日の2回の取得の間にスマートフォンが数えた歩数を加算します。';
 
   @override
-  String get stepsTitle => 'Steps';
+  String get stepsTitle => '歩数';
 
   @override
-  String get stepsAvgUnit => 'per day';
+  String get stepsAvgUnit => '1日あたり';
 
   @override
   String stepsGoalDays(String goal, int done, int days) {
-    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days', one: '$days day');
-    return 'Goal $goal · reached $done of $_temp0';
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days日');
+    return '目標 $goal · $_temp0中$done日達成';
   }
 
   @override
-  String get stepsPeriodEmpty => 'No steps counted in this period';
+  String get stepsPeriodEmpty => 'この期間に記録された歩数はありません';
 
   @override
-  String get stepsLegendGaps => 'Gaps are periods without data.';
+  String get stepsLegendGaps => '空白はデータのない期間です。';
 
   @override
-  String get stepsLegendPartial => 'Lighter bars are partial days.';
+  String get stepsLegendPartial => '薄い棒は一部のみの日です。';
 
   @override
   String kcalWeightPerDay(String weight) {
-    return 'Estimated with your weight on each day (today $weight)';
+    return '毎日の体重で推定（今日 $weight）';
   }
 
   @override
-  String get stepsRangeLabel => 'Period';
+  String get stepsRangeLabel => '期間';
 
   @override
-  String get months12 => '12M';
+  String get months12 => '12か月';
 
   @override
-  String get kcalTitle => 'Active calories (estimated)';
+  String get kcalTitle => 'アクティブカロリー（推定）';
 
   @override
-  String get countSteps => 'Count steps';
+  String get countSteps => '歩数を数える';
 
   @override
-  String get stepsNeedsPermission => 'Permission is needed to count your steps.';
+  String get stepsNeedsPermission => '歩数を数えるには許可が必要です。';
 
   @override
-  String get stepsSettingsHint =>
-      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+  String get stepsSettingsHint => '歩数はスマートフォンのセンサーから読み取り、この端末に保存します。コピーを書き出した場合のみ端末の外に出ます。';
 
   @override
-  String get stepsUnavailable => 'Not available on this phone';
+  String get stepsUnavailable => 'このスマートフォンでは利用できません';
 
   @override
-  String get stepsAllow => 'Allow';
+  String get stepsAllow => '許可';
 }

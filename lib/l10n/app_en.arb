@@ -23,7 +23,7 @@
 
   "today": "TODAY",
   "thisWeek": "THIS WEEK",
-  "recommended": "RECOMMENDED",
+  "recommended": "SUGGESTED",
   "goal": "GOAL",
   "volume": "VOLUME",
   "setsToday": "SETS TODAY",
@@ -1109,8 +1109,8 @@
   "stepsPermissionBody": "Infyter counts your steps with your phone's sensor to show your progress and estimated active calories. Your data stays on your phone.",
   "stepGoal": "Daily goal",
   "stepGoalHint": "A goal you can reach on most days.",
-  "stepsCount": "{steps} steps",
-  "@stepsCount": {"placeholders": {"steps": {"type": "String"}}},
+  "stepsCount": "{steps, plural, one{{steps} step} other{{steps} steps}}",
+  "@stepsCount": {"placeholders": {"steps": {"type": "int", "format": "decimalPattern"}}},
   "stepsHelpTitle": "Estimated active calories",
   "stepsHelpBody": "An estimate of what you burn above rest, from today's steps and workouts. It is not medical data.",
   "stepsByWalking": "From steps",
@@ -1131,7 +1131,7 @@
   "kcalTitle": "Active calories (estimated)",
   "countSteps": "Count steps",
   "stepsNeedsPermission": "Permission is needed to count your steps.",
-  "stepsSettingsHint": "Steps come from your phone's sensor and are stored on this device; they leave it only if you export a copy.",
+  "stepsSettingsHint": "Steps are read from your phone's sensor and stored on this device. They leave it only if you export a copy.",
   "stepsUnavailable": "Not available on this phone",
   "stepsAllow": "Allow"
 }

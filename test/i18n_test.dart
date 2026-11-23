@@ -56,6 +56,15 @@ void main() {
     expect(fit.personalRecords, isA<List<({String id, String name, double topWeight, double oneRm})>>());
   });
 
+  test('the step count agrees in number with the language', () {
+    setAppLanguage('ru');
+    expect([1, 2, 5, 21].map(t.stepsCount), ['1 шаг', '2 шага', '5 шагов', '21 шаг']);
+    setAppLanguage('es');
+    expect([1, 2].map(t.stepsCount), ['1 paso', '2 pasos']);
+    setAppLanguage('en');
+    expect([1, 2].map(t.stepsCount), ['1 step', '2 steps']);
+  });
+
   test('an unknown language falls back to English instead of crashing', () {
     setAppLanguage('xx');
     expect(appLanguage, 'en');

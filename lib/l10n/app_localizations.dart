@@ -215,7 +215,7 @@ abstract class AppLocalizations {
   /// No description provided for @recommended.
   ///
   /// In en, this message translates to:
-  /// **'RECOMMENDED'**
+  /// **'SUGGESTED'**
   String get recommended;
 
   /// No description provided for @goal.
@@ -5753,8 +5753,8 @@ abstract class AppLocalizations {
   /// No description provided for @stepsCount.
   ///
   /// In en, this message translates to:
-  /// **'{steps} steps'**
-  String stepsCount(String steps);
+  /// **'{steps, plural, one{{steps} step} other{{steps} steps}}'**
+  String stepsCount(int steps);
 
   /// No description provided for @stepsHelpTitle.
   ///
@@ -5867,7 +5867,7 @@ abstract class AppLocalizations {
   /// No description provided for @stepsSettingsHint.
   ///
   /// In en, this message translates to:
-  /// **'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.'**
+  /// **'Steps are read from your phone\'s sensor and stored on this device. They leave it only if you export a copy.'**
   String get stepsSettingsHint;
 
   /// No description provided for @stepsUnavailable.

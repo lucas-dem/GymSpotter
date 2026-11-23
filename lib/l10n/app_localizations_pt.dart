@@ -3139,10 +3139,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get qrLabel => 'QR';
 
   @override
-  String get stepsToday => 'Steps today';
+  String get stepsToday => 'Passos hoje';
 
   @override
-  String get activeKcal => 'Active kcal';
+  String get activeKcal => 'Kcal ativas';
 
   @override
   String stepsGoalUnit(String goal) {
@@ -3151,132 +3151,142 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String estimatedWithWeight(String weight) {
-    return 'Estimated with your weight ($weight)';
+    return 'Estimadas com seu peso ($weight)';
   }
 
   @override
-  String get stepsEnableTitle => 'Count your steps';
+  String get stepsEnableTitle => 'Conte seus passos';
 
   @override
-  String get stepsEnableBody => 'Use your phone\'s sensor to see your steps and estimated active calories.';
+  String get stepsEnableBody =>
+      'Use o sensor do celular para ver seus passos e as calorias ativas estimadas.';
 
   @override
-  String get stepsEnable => 'Turn on';
+  String get stepsEnable => 'Ativar';
 
   @override
-  String get stepsDeniedTitle => 'Steps are off';
+  String get stepsDeniedTitle => 'Passos desativados';
 
   @override
-  String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
+  String get stepsDeniedBody => 'Permita Atividade física nas configurações do celular';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'Abrir';
 
   @override
   String stepsCountingSince(String time) {
-    return 'Counting since $time';
+    return 'Contando desde as $time';
   }
 
   @override
-  String get stepsContinue => 'Continue';
+  String get stepsContinue => 'Continuar';
 
   @override
-  String get stepsHide => 'Hide the steps card';
+  String get stepsHide => 'Ocultar o cartão de passos';
 
   @override
-  String get stepsOpenProgress => 'Opens Progress';
+  String get stepsOpenProgress => 'Abre Progresso';
 
   @override
-  String get stepsChangeGoal => 'Changes the goal';
+  String get stepsChangeGoal => 'Altera a meta';
 
   @override
-  String get stepsShowEstimate => 'Shows how they are estimated';
+  String get stepsShowEstimate => 'Mostra como são estimadas';
 
   @override
-  String get stepsGoalReached => 'Goal reached';
+  String get stepsGoalReached => 'Meta cumprida';
 
   @override
   String get stepsPermissionBody =>
-      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+      'O Infyter conta seus passos com o sensor do celular para mostrar seu progresso e as calorias ativas estimadas. Seus dados ficam no celular.';
 
   @override
-  String get stepGoal => 'Daily goal';
+  String get stepGoal => 'Meta diária';
 
   @override
-  String get stepGoalHint => 'A goal you can reach on most days.';
+  String get stepGoalHint => 'Uma meta que você consiga cumprir quase todos os dias.';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps steps';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      steps,
+      locale: localeName,
+      other: '$stepsString passos',
+      one: '$stepsString passo',
+    );
+    return '$_temp0';
   }
 
   @override
-  String get stepsHelpTitle => 'Estimated active calories';
+  String get stepsHelpTitle => 'Calorias ativas estimadas';
 
   @override
   String get stepsHelpBody =>
-      'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.';
+      'É uma estimativa do que você gasta acima do repouso, com seus passos e treinos de hoje. Não é um dado médico.';
 
   @override
-  String get stepsByWalking => 'From steps';
+  String get stepsByWalking => 'Por passos';
 
   @override
-  String get kcalByWorkouts => 'From workouts';
+  String get kcalByWorkouts => 'Por treinos';
 
   @override
-  String get stepsOverlapHint => 'Steps during a workout are counted in both.';
+  String get stepsOverlapHint => 'Os passos durante um treino são contados nos dois.';
 
   @override
-  String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
+  String get stepsAndroidHint => 'Somam-se os passos que o celular contou entre duas leituras no mesmo dia.';
 
   @override
-  String get stepsTitle => 'Steps';
+  String get stepsTitle => 'Passos';
 
   @override
-  String get stepsAvgUnit => 'per day';
+  String get stepsAvgUnit => 'por dia';
 
   @override
   String stepsGoalDays(String goal, int done, int days) {
-    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days', one: '$days day');
-    return 'Goal $goal · reached $done of $_temp0';
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days dias', one: '$days dia');
+    return 'Meta $goal · cumprida em $done de $_temp0';
   }
 
   @override
-  String get stepsPeriodEmpty => 'No steps counted in this period';
+  String get stepsPeriodEmpty => 'Nenhum passo contado neste período';
 
   @override
-  String get stepsLegendGaps => 'Gaps are periods without data.';
+  String get stepsLegendGaps => 'Os vazios são períodos sem dados.';
 
   @override
-  String get stepsLegendPartial => 'Lighter bars are partial days.';
+  String get stepsLegendPartial => 'As barras mais claras são dias parciais.';
 
   @override
   String kcalWeightPerDay(String weight) {
-    return 'Estimated with your weight on each day (today $weight)';
+    return 'Estimadas com seu peso de cada dia (hoje $weight)';
   }
 
   @override
-  String get stepsRangeLabel => 'Period';
+  String get stepsRangeLabel => 'Período';
 
   @override
   String get months12 => '12M';
 
   @override
-  String get kcalTitle => 'Active calories (estimated)';
+  String get kcalTitle => 'Calorias ativas (estimadas)';
 
   @override
-  String get countSteps => 'Count steps';
+  String get countSteps => 'Contar passos';
 
   @override
-  String get stepsNeedsPermission => 'Permission is needed to count your steps.';
+  String get stepsNeedsPermission => 'É preciso permissão para contar seus passos.';
 
   @override
   String get stepsSettingsHint =>
-      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+      'Os passos são lidos do sensor do celular e guardados neste aparelho. Só saem dele se você exportar uma cópia.';
 
   @override
-  String get stepsUnavailable => 'Not available on this phone';
+  String get stepsUnavailable => 'Indisponível neste celular';
 
   @override
-  String get stepsAllow => 'Allow';
+  String get stepsAllow => 'Permitir';
 }

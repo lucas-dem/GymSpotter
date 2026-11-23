@@ -1030,7 +1030,7 @@
   "stepsPermissionBody": "Infyter cuenta tus pasos con el sensor del teléfono para mostrarte tu avance y las calorías activas estimadas. Los datos quedan en tu teléfono.",
   "stepGoal": "Meta diaria",
   "stepGoalHint": "Una meta que puedas cumplir casi todos los días.",
-  "stepsCount": "{steps} pasos",
+  "stepsCount": "{steps, plural, one{{steps} paso} other{{steps} pasos}}",
   "stepsHelpTitle": "Calorías activas estimadas",
   "stepsHelpBody": "Es una estimación de lo que gastás por encima del reposo, con tus pasos y tus entrenamientos de hoy. No es un dato médico.",
   "stepsByWalking": "Por pasos",
@@ -1049,7 +1049,7 @@
   "kcalTitle": "Calorías activas (estimadas)",
   "countSteps": "Contar pasos",
   "stepsNeedsPermission": "Falta el permiso para contar tus pasos.",
-  "stepsSettingsHint": "Los pasos salen del sensor del teléfono y se guardan en este dispositivo; salen de él solo si exportás una copia.",
+  "stepsSettingsHint": "Los pasos se leen del sensor del teléfono y se guardan en este dispositivo. Solo salen de él si exportás una copia.",
   "stepsUnavailable": "No disponible en este teléfono",
   "stepsAllow": "Dar permiso"
 }

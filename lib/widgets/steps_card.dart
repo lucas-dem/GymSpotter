@@ -201,7 +201,7 @@ class _StepsCardState extends State<StepsCard> {
       button: true,
       label: t.stepGoal,
       hint: t.stepsChangeGoal,
-      value: done ? '${t.stepsCount(_count(goal))}, ${t.stepsGoalReached}' : t.stepsCount(_count(goal)),
+      value: done ? '${t.stepsCount(goal)}, ${t.stepsGoalReached}' : t.stepsCount(goal),
       onTap: () => showStepGoalSheet(context),
       excludeSemantics: true,
       child: GestureDetector(
@@ -411,14 +411,14 @@ void showStepGoalSheet(BuildContext context) {
             ),
             const SizedBox(height: 6),
             Text(
-              t.stepsCount(_count(fit.steps[_dayKey(DateTime.now())] ?? 0)),
+              t.stepsCount(fit.steps[_dayKey(DateTime.now())] ?? 0),
               textAlign: TextAlign.center,
               style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary),
             ),
             const SizedBox(height: 20),
             Center(
               child: StepperControl(
-                value: t.stepsCount(_count(fit.stepGoal)),
+                value: t.stepsCount(fit.stepGoal),
                 minWidth: 148,
                 onDec: () => setSheet(() => fit.setStepGoal(fit.stepGoal - kStepGoalStep)),
                 onInc: () => setSheet(() => fit.setStepGoal(fit.stepGoal + kStepGoalStep)),

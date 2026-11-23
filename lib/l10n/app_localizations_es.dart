@@ -3207,8 +3207,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stepGoalHint => 'Una meta que puedas cumplir casi todos los días.';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps pasos';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      steps,
+      locale: localeName,
+      other: '$stepsString pasos',
+      one: '$stepsString paso',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3273,7 +3282,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Los pasos salen del sensor del teléfono y se guardan en este dispositivo; salen de él solo si exportás una copia.';
+      'Los pasos se leen del sensor del teléfono y se guardan en este dispositivo. Solo salen de él si exportás una copia.';
 
   @override
   String get stepsUnavailable => 'No disponible en este teléfono';

@@ -58,7 +58,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get thisWeek => 'THIS WEEK';
 
   @override
-  String get recommended => 'RECOMMENDED';
+  String get recommended => 'SUGGESTED';
 
   @override
   String get goal => 'GOAL';
@@ -3203,8 +3203,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stepGoalHint => 'A goal you can reach on most days.';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps steps';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      steps,
+      locale: localeName,
+      other: '$stepsString steps',
+      one: '$stepsString step',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3269,7 +3278,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+      'Steps are read from your phone\'s sensor and stored on this device. They leave it only if you export a copy.';
 
   @override
   String get stepsUnavailable => 'Not available on this phone';

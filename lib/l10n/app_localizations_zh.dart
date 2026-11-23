@@ -3005,10 +3005,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get qrLabel => 'QR';
 
   @override
-  String get stepsToday => 'Steps today';
+  String get stepsToday => '今日步数';
 
   @override
-  String get activeKcal => 'Active kcal';
+  String get activeKcal => '活动 kcal';
 
   @override
   String stepsGoalUnit(String goal) {
@@ -3017,134 +3017,135 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String estimatedWithWeight(String weight) {
-    return 'Estimated with your weight ($weight)';
+    return '按你的体重估算（$weight）';
   }
 
   @override
-  String get stepsEnableTitle => 'Count your steps';
+  String get stepsEnableTitle => '数你的步数';
 
   @override
-  String get stepsEnableBody => 'Use your phone\'s sensor to see your steps and estimated active calories.';
+  String get stepsEnableBody => '用手机传感器查看你的步数和估算的活动热量。';
 
   @override
-  String get stepsEnable => 'Turn on';
+  String get stepsEnable => '开启';
 
   @override
-  String get stepsDeniedTitle => 'Steps are off';
+  String get stepsDeniedTitle => '步数已关闭';
 
   @override
-  String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
+  String get stepsDeniedBody => '请在手机设置中允许“身体活动”';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => '打开设置';
 
   @override
   String stepsCountingSince(String time) {
-    return 'Counting since $time';
+    return '自 $time 起计数';
   }
 
   @override
-  String get stepsContinue => 'Continue';
+  String get stepsContinue => '继续';
 
   @override
-  String get stepsHide => 'Hide the steps card';
+  String get stepsHide => '隐藏步数卡片';
 
   @override
-  String get stepsOpenProgress => 'Opens Progress';
+  String get stepsOpenProgress => '打开“进度”';
 
   @override
-  String get stepsChangeGoal => 'Changes the goal';
+  String get stepsChangeGoal => '更改目标';
 
   @override
-  String get stepsShowEstimate => 'Shows how they are estimated';
+  String get stepsShowEstimate => '显示估算方式';
 
   @override
-  String get stepsGoalReached => 'Goal reached';
+  String get stepsGoalReached => '目标已达成';
 
   @override
-  String get stepsPermissionBody =>
-      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+  String get stepsPermissionBody => 'Infyter 通过手机传感器统计你的步数，用于显示进度和估算的活动热量。数据保存在你的手机上。';
 
   @override
-  String get stepGoal => 'Daily goal';
+  String get stepGoal => '每日目标';
 
   @override
-  String get stepGoalHint => 'A goal you can reach on most days.';
+  String get stepGoalHint => '一个你大多数日子都能达成的目标。';
 
   @override
-  String stepsCount(String steps) {
-    return '$steps steps';
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(steps, locale: localeName, other: '$stepsString 步');
+    return '$_temp0';
   }
 
   @override
-  String get stepsHelpTitle => 'Estimated active calories';
+  String get stepsHelpTitle => '估算的活动热量';
 
   @override
-  String get stepsHelpBody =>
-      'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.';
+  String get stepsHelpBody => '估算你高于静息水平的消耗量，依据今天的步数和训练。这不是医疗数据。';
 
   @override
-  String get stepsByWalking => 'From steps';
+  String get stepsByWalking => '来自步数';
 
   @override
-  String get kcalByWorkouts => 'From workouts';
+  String get kcalByWorkouts => '来自训练';
 
   @override
-  String get stepsOverlapHint => 'Steps during a workout are counted in both.';
+  String get stepsOverlapHint => '训练期间的步数在两边都会计入。';
 
   @override
-  String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
+  String get stepsAndroidHint => '累加手机在同一天两次读取之间统计的步数。';
 
   @override
-  String get stepsTitle => 'Steps';
+  String get stepsTitle => '步数';
 
   @override
-  String get stepsAvgUnit => 'per day';
+  String get stepsAvgUnit => '每天';
 
   @override
   String stepsGoalDays(String goal, int done, int days) {
-    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days', one: '$days day');
-    return 'Goal $goal · reached $done of $_temp0';
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days 天');
+    return '目标 $goal · $_temp0中达成 $done 天';
   }
 
   @override
-  String get stepsPeriodEmpty => 'No steps counted in this period';
+  String get stepsPeriodEmpty => '此期间没有统计到步数';
 
   @override
-  String get stepsLegendGaps => 'Gaps are periods without data.';
+  String get stepsLegendGaps => '空缺表示没有数据的时段。';
 
   @override
-  String get stepsLegendPartial => 'Lighter bars are partial days.';
+  String get stepsLegendPartial => '较浅的柱表示不完整的天。';
 
   @override
   String kcalWeightPerDay(String weight) {
-    return 'Estimated with your weight on each day (today $weight)';
+    return '按每天的体重估算（今天 $weight）';
   }
 
   @override
-  String get stepsRangeLabel => 'Period';
+  String get stepsRangeLabel => '时段';
 
   @override
-  String get months12 => '12M';
+  String get months12 => '12个月';
 
   @override
-  String get kcalTitle => 'Active calories (estimated)';
+  String get kcalTitle => '活动热量（估算）';
 
   @override
-  String get countSteps => 'Count steps';
+  String get countSteps => '统计步数';
 
   @override
-  String get stepsNeedsPermission => 'Permission is needed to count your steps.';
+  String get stepsNeedsPermission => '统计步数需要权限。';
 
   @override
-  String get stepsSettingsHint =>
-      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+  String get stepsSettingsHint => '步数从手机传感器读取，并保存在此设备上。只有导出副本时才会离开设备。';
 
   @override
-  String get stepsUnavailable => 'Not available on this phone';
+  String get stepsUnavailable => '此手机不支持';
 
   @override
-  String get stepsAllow => 'Allow';
+  String get stepsAllow => '允许';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -6169,4 +6170,147 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get qrLabel => 'QR';
+
+  @override
+  String get stepsToday => '今日步數';
+
+  @override
+  String get activeKcal => '活動 kcal';
+
+  @override
+  String stepsGoalUnit(String goal) {
+    return '/ $goal';
+  }
+
+  @override
+  String estimatedWithWeight(String weight) {
+    return '依你的體重估算（$weight）';
+  }
+
+  @override
+  String get stepsEnableTitle => '計算你的步數';
+
+  @override
+  String get stepsEnableBody => '用手機感測器查看你的步數與估算的活動熱量。';
+
+  @override
+  String get stepsEnable => '開啟';
+
+  @override
+  String get stepsDeniedTitle => '步數已關閉';
+
+  @override
+  String get stepsDeniedBody => '請在手機設定中允許「身體活動」';
+
+  @override
+  String get openSettings => '開啟設定';
+
+  @override
+  String stepsCountingSince(String time) {
+    return '自 $time 起計算';
+  }
+
+  @override
+  String get stepsContinue => '繼續';
+
+  @override
+  String get stepsHide => '隱藏步數卡片';
+
+  @override
+  String get stepsOpenProgress => '開啟「進度」';
+
+  @override
+  String get stepsChangeGoal => '變更目標';
+
+  @override
+  String get stepsShowEstimate => '顯示估算方式';
+
+  @override
+  String get stepsGoalReached => '已達成目標';
+
+  @override
+  String get stepsPermissionBody => 'Infyter 透過手機感測器計算你的步數，用於顯示進度與估算的活動熱量。資料保留在你的手機上。';
+
+  @override
+  String get stepGoal => '每日目標';
+
+  @override
+  String get stepGoalHint => '一個你大多數日子都能達成的目標。';
+
+  @override
+  String stepsCount(int steps) {
+    final intl.NumberFormat stepsNumberFormat = intl.NumberFormat.decimalPattern(localeName);
+    final String stepsString = stepsNumberFormat.format(steps);
+
+    String _temp0 = intl.Intl.pluralLogic(steps, locale: localeName, other: '$stepsString 步');
+    return '$_temp0';
+  }
+
+  @override
+  String get stepsHelpTitle => '估算的活動熱量';
+
+  @override
+  String get stepsHelpBody => '估算你高於靜息水準的消耗量，依據今天的步數與訓練。這不是醫療資料。';
+
+  @override
+  String get stepsByWalking => '來自步數';
+
+  @override
+  String get kcalByWorkouts => '來自訓練';
+
+  @override
+  String get stepsOverlapHint => '訓練期間的步數兩邊都會計入。';
+
+  @override
+  String get stepsAndroidHint => '累加手機在同一天兩次讀取之間計算的步數。';
+
+  @override
+  String get stepsTitle => '步數';
+
+  @override
+  String get stepsAvgUnit => '每天';
+
+  @override
+  String stepsGoalDays(String goal, int done, int days) {
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days 天');
+    return '目標 $goal · $_temp0中達成 $done 天';
+  }
+
+  @override
+  String get stepsPeriodEmpty => '此期間沒有計算到步數';
+
+  @override
+  String get stepsLegendGaps => '空缺表示沒有資料的時段。';
+
+  @override
+  String get stepsLegendPartial => '較淺的長條表示不完整的日子。';
+
+  @override
+  String kcalWeightPerDay(String weight) {
+    return '依每天的體重估算（今天 $weight）';
+  }
+
+  @override
+  String get stepsRangeLabel => '期間';
+
+  @override
+  String get months12 => '12 個月';
+
+  @override
+  String get kcalTitle => '活動熱量（估算）';
+
+  @override
+  String get countSteps => '計算步數';
+
+  @override
+  String get stepsNeedsPermission => '計算步數需要權限。';
+
+  @override
+  String get stepsSettingsHint => '步數從手機感測器讀取，並儲存在此裝置上。只有匯出副本時才會離開裝置。';
+
+  @override
+  String get stepsUnavailable => '此手機不支援';
+
+  @override
+  String get stepsAllow => '允許';
 }

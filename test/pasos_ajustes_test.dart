@@ -331,7 +331,7 @@ void main() {
     await tester.tap(find.text(titleCase(t.done)).last);
     await _pasar(tester);
     final meta = fit.stepGoal;
-    final fila = _hay(t.stepsCount('8.500'));
+    final fila = _hay(t.stepsCount(8500));
     await _cerrar(tester);
     expect(hoja, isTrue);
     expect(meta, 8500);

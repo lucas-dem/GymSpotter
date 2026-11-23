@@ -1414,7 +1414,7 @@ class _DaySheet extends StatelessWidget {
         : '${(from ~/ 60).toString().padLeft(2, '0')}:${(from % 60).toString().padLeft(2, '0')}';
     return [
       Text(
-        '${t.stepsCount(NumberFormat.decimalPattern(intlLocale).format(count))} · ≈ ${NumberFormat.decimalPattern(intlLocale).format(kcal.total)} kcal',
+        '${t.stepsCount(count)} · ≈ ${NumberFormat.decimalPattern(intlLocale).format(kcal.total)} kcal',
         style: AppTheme.f(14, weight: FontWeight.w700, color: gc.text),
       ),
       if (clock != null) ...[
