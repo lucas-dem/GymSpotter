@@ -231,6 +231,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
                       duration: const Duration(milliseconds: 420),
                       switchInCurve: Curves.easeOut,
                       switchOutCurve: Curves.easeIn,
+                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
                       child: AppBackground(
                         key: ValueKey(fit.backgroundForRoute(fit.route)),
                         pattern: fit.backgroundForRoute(fit.route),

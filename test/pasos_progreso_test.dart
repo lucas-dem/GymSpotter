@@ -378,7 +378,6 @@ void main() {
 
     testWidgets('ir y volver a Progreso rapido no deja dos bloques con la misma clave', (tester) async {
       usarPantalla(tester, ancho: 360, alto: 780);
-      fit.bgPattern = 'junin1';
       _preparar(pasos: {0: 6412, 1: 3000});
       await _abrir(tester);
       for (var i = 0; i < 3; i++) {
