@@ -3177,6 +3177,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get stepsDeniedBody => 'Дозволь «Фізична активність» у налаштуваннях телефона';
 
   @override
+  String get stepsDeniedBodyIos => 'Дозволь «Рух і фітнес» у налаштуваннях телефона';
+
+  @override
   String get openSettings => 'Відкрити налаштування';
 
   @override
@@ -3204,7 +3207,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter рахує твої кроки датчиком телефона, щоб показати твій прогрес і орієнтовні активні калорії. Дані залишаються на твоєму телефоні.';
+      'Infyter рахує твої кроки датчиком телефона, щоб показати твій прогрес і орієнтовні активні калорії. Infyter не надсилає твої кроки на жоден сервер; вони потрапляють лише в копію, яку ти експортуєш, або в резервні копії та перенесення даних самого телефона.';
 
   @override
   String get stepGoal => 'Щоденна ціль';
@@ -3298,7 +3301,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Кроки зчитуються з датчика телефона й зберігаються на цьому пристрої. Залишають його, лише якщо ти експортуєш копію.';
+      'Кроки зчитуються з датчика телефона й зберігаються на цьому пристрої. Infyter не надсилає їх на жоден сервер; вони потрапляють лише в копію, яку ти експортуєш, або в резервні копії та перенесення даних самого телефона.';
 
   @override
   String get stepsUnavailable => 'Недоступно на цьому телефоні';

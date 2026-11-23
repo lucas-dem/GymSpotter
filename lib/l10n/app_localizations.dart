@@ -5684,6 +5684,12 @@ abstract class AppLocalizations {
   /// **'Allow Physical activity in your phone\'s settings'**
   String get stepsDeniedBody;
 
+  /// No description provided for @stepsDeniedBodyIos.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Motion & Fitness in your phone\'s settings'**
+  String get stepsDeniedBodyIos;
+
   /// No description provided for @openSettings.
   ///
   /// In en, this message translates to:
@@ -5735,7 +5741,7 @@ abstract class AppLocalizations {
   /// No description provided for @stepsPermissionBody.
   ///
   /// In en, this message translates to:
-  /// **'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.'**
+  /// **'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Infyter doesn\'t send your steps to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.'**
   String get stepsPermissionBody;
 
   /// No description provided for @stepGoal.
@@ -5867,7 +5873,7 @@ abstract class AppLocalizations {
   /// No description provided for @stepsSettingsHint.
   ///
   /// In en, this message translates to:
-  /// **'Steps are read from your phone\'s sensor and stored on this device. They leave it only if you export a copy.'**
+  /// **'Steps are read from your phone\'s sensor and stored on this device. Infyter doesn\'t send them to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.'**
   String get stepsSettingsHint;
 
   /// No description provided for @stepsUnavailable.

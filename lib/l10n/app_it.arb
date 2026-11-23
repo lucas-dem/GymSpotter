@@ -1040,6 +1040,7 @@
   "stepsEnable": "Attiva",
   "stepsDeniedTitle": "Passi disattivati",
   "stepsDeniedBody": "Consenti Attività fisica nelle impostazioni del telefono",
+  "stepsDeniedBodyIos": "Consenti Movimento e fitness nelle impostazioni del telefono",
   "openSettings": "Apri impostazioni",
   "stepsCountingSince": "Conteggio dalle {time}",
   "stepsContinue": "Continua",
@@ -1048,7 +1049,7 @@
   "stepsChangeGoal": "Cambia l'obiettivo",
   "stepsShowEstimate": "Mostra come vengono stimate",
   "stepsGoalReached": "Obiettivo raggiunto",
-  "stepsPermissionBody": "Infyter conta i tuoi passi con il sensore del telefono per mostrarti i progressi e le calorie attive stimate. I dati restano sul tuo telefono.",
+  "stepsPermissionBody": "Infyter conta i tuoi passi con il sensore del telefono per mostrarti i progressi e le calorie attive stimate. Infyter non invia i tuoi passi a nessun server; viaggiano solo in una copia che esporti o nei backup e nei trasferimenti del telefono stesso.",
   "stepGoal": "Obiettivo giornaliero",
   "stepGoalHint": "Un obiettivo che puoi raggiungere quasi ogni giorno.",
   "stepsCount": "{steps, plural, one{{steps} passo} other{{steps} passi}}",
@@ -1070,7 +1071,7 @@
   "kcalTitle": "Calorie attive (stimate)",
   "countSteps": "Conta i passi",
   "stepsNeedsPermission": "Serve il permesso per contare i tuoi passi.",
-  "stepsSettingsHint": "I passi vengono letti dal sensore del telefono e salvati su questo dispositivo. Lo lasciano solo se esporti una copia.",
+  "stepsSettingsHint": "I passi vengono letti dal sensore del telefono e salvati su questo dispositivo. Infyter non li invia a nessun server; viaggiano solo in una copia che esporti o nei backup e nei trasferimenti del telefono stesso.",
   "stepsUnavailable": "Non disponibile su questo telefono",
   "stepsAllow": "Consenti"
 }

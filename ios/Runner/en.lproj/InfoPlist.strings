@@ -2,4 +2,4 @@
 "NSMicrophoneUsageDescription" = "Infyter uses the microphone only when you record a video you choose to attach.";
 "NSPhotoLibraryUsageDescription" = "Infyter accesses your photos only when you choose an image or video for your profile or log.";
 "NSPhotoLibraryAddUsageDescription" = "Infyter saves content to Photos only when you request it.";
-"NSMotionUsageDescription" = "Infyter reads your daily step count to show your steps and estimated active calories. It stays on your device.";
+"NSMotionUsageDescription" = "Infyter reads your daily steps to show them with your estimated active calories. It doesn't send them to any server; they travel only in a copy you export or in your phone's own backups and transfers.";

@@ -1192,6 +1192,7 @@
   "stepsEnable": "켜기",
   "stepsDeniedTitle": "걸음 수가 꺼져 있습니다",
   "stepsDeniedBody": "휴대폰 설정에서 신체 활동을 허용하세요",
+  "stepsDeniedBodyIos": "휴대폰 설정에서 동작 및 피트니스를 허용하세요",
   "openSettings": "설정 열기",
   "stepsCountingSince": "{time}부터 측정 중",
   "stepsContinue": "계속",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "목표를 변경합니다",
   "stepsShowEstimate": "추정 방법을 보여 줍니다",
   "stepsGoalReached": "목표 달성",
-  "stepsPermissionBody": "Infyter는 휴대폰 센서로 걸음 수를 세어 진행 상황과 추정 활동 칼로리를 보여 줍니다. 데이터는 휴대폰에 보관됩니다.",
+  "stepsPermissionBody": "Infyter는 휴대폰 센서로 걸음 수를 세어 진행 상황과 추정 활동 칼로리를 보여 줍니다. Infyter는 걸음 수를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.",
   "stepGoal": "일일 목표",
   "stepGoalHint": "대부분의 날에 달성할 수 있는 목표입니다.",
   "stepsCount": "{steps, plural, other{{steps}걸음}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "활동 칼로리(추정)",
   "countSteps": "걸음 수 세기",
   "stepsNeedsPermission": "걸음 수를 세려면 권한이 필요합니다.",
-  "stepsSettingsHint": "걸음 수는 휴대폰 센서에서 읽어 이 기기에 저장됩니다. 사본을 내보낼 때만 기기 밖으로 나갑니다.",
+  "stepsSettingsHint": "걸음 수는 휴대폰 센서에서 읽어 이 기기에 저장됩니다. Infyter는 이를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.",
   "stepsUnavailable": "이 휴대폰에서는 사용할 수 없습니다",
   "stepsAllow": "허용"
 }

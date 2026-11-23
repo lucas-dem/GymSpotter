@@ -1,5 +1,6 @@
 import 'dart:ui' show Tristate;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
@@ -221,6 +222,26 @@ void main() {
     expect(abrirAjustes, isFalse);
   });
 
+  testWidgets('negar para siempre en iPhone: el aviso nombra Movimiento y forma física', (tester) async {
+    usarPantalla(tester, ancho: 360, alto: 780);
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    try {
+      _preparar(respuesta: StepPermission.denied);
+      await _abrir(tester);
+      await _tocar(tester, find.text(t.countSteps));
+      await tester.tap(find.text(t.stepsContinue));
+      await _pasar(tester);
+      final ios = _hay(t.stepsDeniedBodyIos);
+      final android = _hay(t.stepsDeniedBody);
+      await _cerrar(tester);
+      expect(t.stepsDeniedBodyIos, contains('Movimiento y forma física'));
+      expect(ios, isTrue);
+      expect(android, isFalse);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
+  });
+
   testWidgets('revocar desde el sistema: al volver a la app aparece Abrir ajustes', (tester) async {
     usarPantalla(tester, ancho: 360, alto: 780);
     final fuente = _preparar(activado: true, permiso: StepPermission.granted);
@@ -331,7 +352,7 @@ void main() {
     await tester.tap(find.text(titleCase(t.done)).last);
     await _pasar(tester);
     final meta = fit.stepGoal;
-    final fila = _hay(t.stepsCount(8500));
+    final fila = _hay('8.500 pasos');
     await _cerrar(tester);
     expect(hoja, isTrue);
     expect(meta, 8500);

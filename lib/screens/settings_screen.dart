@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -463,7 +463,7 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
           if (available && on && status == StepsStatus.denied)
             _stepsPermissionNote(
               gc,
-              t.stepsDeniedBody,
+              defaultTargetPlatform == TargetPlatform.iOS ? t.stepsDeniedBodyIos : t.stepsDeniedBody,
               t.openSettings,
               PhosphorIconsRegular.gear,
               () => AppSettings.openAppSettings(),

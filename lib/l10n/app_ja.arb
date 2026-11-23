@@ -1192,6 +1192,7 @@
   "stepsEnable": "オンにする",
   "stepsDeniedTitle": "歩数はオフです",
   "stepsDeniedBody": "スマートフォンの設定で「身体活動」を許可してください",
+  "stepsDeniedBodyIos": "スマートフォンの設定で「モーションとフィットネス」を許可してください",
   "openSettings": "設定を開く",
   "stepsCountingSince": "{time}から計測中",
   "stepsContinue": "続ける",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "目標を変更します",
   "stepsShowEstimate": "推定方法を表示します",
   "stepsGoalReached": "目標達成",
-  "stepsPermissionBody": "Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。データはスマートフォンの中に保存されます。",
+  "stepsPermissionBody": "Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。",
   "stepGoal": "1日の目標",
   "stepGoalHint": "ほとんどの日に達成できる目標にしましょう。",
   "stepsCount": "{steps, plural, other{{steps}歩}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "アクティブカロリー（推定）",
   "countSteps": "歩数を数える",
   "stepsNeedsPermission": "歩数を数えるには許可が必要です。",
-  "stepsSettingsHint": "歩数はスマートフォンのセンサーから読み取り、この端末に保存します。コピーを書き出した場合のみ端末の外に出ます。",
+  "stepsSettingsHint": "歩数はスマートフォンのセンサーから読み取り、この端末に保存します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。",
   "stepsUnavailable": "このスマートフォンでは利用できません",
   "stepsAllow": "許可"
 }

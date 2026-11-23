@@ -94,6 +94,7 @@ const _stepKeys = [
   'stepsEnable',
   'stepsDeniedTitle',
   'stepsDeniedBody',
+  'stepsDeniedBodyIos',
   'stepsCountingSince',
   'stepsContinue',
   'stepsHide',

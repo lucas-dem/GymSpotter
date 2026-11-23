@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -185,6 +186,22 @@ void main() {
     final alPrincipio = find.text(t.stepsEnableTitle).evaluate().isNotEmpty;
     await _cerrar(tester);
     expect(alPrincipio, isFalse);
+  });
+
+  testWidgets('negado en iPhone: la tarjeta nombra Movimiento y forma física', (tester) async {
+    usarPantalla(tester, ancho: 360, alto: 780);
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    try {
+      _preparar(permiso: StepPermission.denied);
+      await _abrir(tester);
+      final ios = find.text(t.stepsDeniedBodyIos).evaluate().isNotEmpty;
+      final android = find.text(t.stepsDeniedBody).evaluate().isNotEmpty;
+      await _cerrar(tester);
+      expect(ios, isTrue);
+      expect(android, isFalse);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
   });
 
   testWidgets('tocar el aro abre la hoja de meta', (tester) async {

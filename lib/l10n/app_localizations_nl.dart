@@ -3179,6 +3179,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get stepsDeniedBody => 'Sta Fysieke activiteit toe in de instellingen van je telefoon';
 
   @override
+  String get stepsDeniedBodyIos => 'Sta Beweging en fitness toe in de instellingen van je telefoon';
+
+  @override
   String get openSettings => 'Instellingen openen';
 
   @override
@@ -3206,7 +3209,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter telt je stappen met de sensor van je telefoon om je voortgang en geschatte actieve calorieën te tonen. Je gegevens blijven op je telefoon.';
+      'Infyter telt je stappen met de sensor van je telefoon om je voortgang en geschatte actieve calorieën te tonen. Infyter stuurt je stappen naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.';
 
   @override
   String get stepGoal => 'Dagdoel';
@@ -3291,7 +3294,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Stappen worden gelezen van de sensor van je telefoon en op dit apparaat opgeslagen. Ze verlaten het alleen als je een kopie exporteert.';
+      'Stappen worden gelezen van de sensor van je telefoon en op dit apparaat opgeslagen. Infyter stuurt ze naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.';
 
   @override
   String get stepsUnavailable => 'Niet beschikbaar op deze telefoon';

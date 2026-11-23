@@ -3171,6 +3171,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get stepsDeniedBody => 'Permita Atividade física nas configurações do celular';
 
   @override
+  String get stepsDeniedBodyIos => 'Permita Movimento e Preparo Físico nas configurações do celular';
+
+  @override
   String get openSettings => 'Abrir';
 
   @override
@@ -3198,7 +3201,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'O Infyter conta seus passos com o sensor do celular para mostrar seu progresso e as calorias ativas estimadas. Seus dados ficam no celular.';
+      'O Infyter conta seus passos com o sensor do celular para mostrar seu progresso e as calorias ativas estimadas. O Infyter não envia seus passos a nenhum servidor; eles só viajam em uma cópia que você exportar ou nos backups e nas transferências do próprio celular.';
 
   @override
   String get stepGoal => 'Meta diária';
@@ -3282,7 +3285,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Os passos são lidos do sensor do celular e guardados neste aparelho. Só saem dele se você exportar uma cópia.';
+      'Os passos são lidos do sensor do celular e guardados neste aparelho. O Infyter não os envia a nenhum servidor; eles só viajam em uma cópia que você exportar ou nos backups e nas transferências do próprio celular.';
 
   @override
   String get stepsUnavailable => 'Indisponível neste celular';

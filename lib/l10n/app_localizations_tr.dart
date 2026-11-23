@@ -3173,6 +3173,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get stepsDeniedBody => 'Telefonunun ayarlarında Fiziksel aktiviteye izin ver';
 
   @override
+  String get stepsDeniedBodyIos => 'Telefonunun ayarlarında Hareket ve Fitness’a izin ver';
+
+  @override
   String get openSettings => 'Ayarları aç';
 
   @override
@@ -3200,7 +3203,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için adımlarını telefonunun sensörüyle sayar. Verilerin telefonunda kalır.';
+      'Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için adımlarını telefonunun sensörüyle sayar. Infyter adımlarını hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.';
 
   @override
   String get stepGoal => 'Günlük hedef';
@@ -3279,7 +3282,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Adımlar telefonunun sensöründen okunur ve bu cihazda saklanır. Cihazdan yalnızca bir kopya dışa aktarırsan çıkar.';
+      'Adımlar telefonunun sensöründen okunur ve bu cihazda saklanır. Infyter bunları hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.';
 
   @override
   String get stepsUnavailable => 'Bu telefonda kullanılamıyor';

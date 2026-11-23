@@ -1192,6 +1192,7 @@
   "stepsEnable": "Włącz",
   "stepsDeniedTitle": "Kroki są wyłączone",
   "stepsDeniedBody": "Zezwól na Aktywność fizyczną w ustawieniach telefonu",
+  "stepsDeniedBodyIos": "Zezwól na Ruch i kondycję w ustawieniach telefonu",
   "openSettings": "Otwórz ustawienia",
   "stepsCountingSince": "Liczone od {time}",
   "stepsContinue": "Kontynuuj",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "Zmienia cel",
   "stepsShowEstimate": "Pokazuje, jak są szacowane",
   "stepsGoalReached": "Cel osiągnięty",
-  "stepsPermissionBody": "Infyter liczy twoje kroki czujnikiem telefonu, aby pokazać twój postęp i szacowane aktywne kalorie. Twoje dane zostają na telefonie.",
+  "stepsPermissionBody": "Infyter liczy twoje kroki czujnikiem telefonu, aby pokazać twój postęp i szacowane aktywne kalorie. Infyter nie wysyła twoich kroków na żaden serwer; są przenoszone tylko w kopii, którą wyeksportujesz, lub w kopiach zapasowych i transferach samego telefonu.",
   "stepGoal": "Cel dzienny",
   "stepGoalHint": "Cel, który osiągniesz w większość dni.",
   "stepsCount": "{steps, plural, one{{steps} krok} few{{steps} kroki} many{{steps} kroków} other{{steps} kroku}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "Aktywne kalorie (szacowane)",
   "countSteps": "Licz kroki",
   "stepsNeedsPermission": "Do liczenia kroków potrzebna jest zgoda.",
-  "stepsSettingsHint": "Kroki są odczytywane z czujnika telefonu i zapisywane na tym urządzeniu. Opuszczają je tylko wtedy, gdy wyeksportujesz kopię.",
+  "stepsSettingsHint": "Kroki są odczytywane z czujnika telefonu i zapisywane na tym urządzeniu. Infyter nie wysyła ich na żaden serwer; są przenoszone tylko w kopii, którą wyeksportujesz, lub w kopiach zapasowych i transferach samego telefonu.",
   "stepsUnavailable": "Niedostępne na tym telefonie",
   "stepsAllow": "Zezwól"
 }

@@ -952,6 +952,7 @@
   "stepsEnable": "Ativar",
   "stepsDeniedTitle": "Passos desativados",
   "stepsDeniedBody": "Permita Atividade física nas configurações do celular",
+  "stepsDeniedBodyIos": "Permita Movimento e Preparo Físico nas configurações do celular",
   "openSettings": "Abrir",
   "stepsCountingSince": "Contando desde as {time}",
   "stepsContinue": "Continuar",
@@ -960,7 +961,7 @@
   "stepsChangeGoal": "Altera a meta",
   "stepsShowEstimate": "Mostra como são estimadas",
   "stepsGoalReached": "Meta cumprida",
-  "stepsPermissionBody": "O Infyter conta seus passos com o sensor do celular para mostrar seu progresso e as calorias ativas estimadas. Seus dados ficam no celular.",
+  "stepsPermissionBody": "O Infyter conta seus passos com o sensor do celular para mostrar seu progresso e as calorias ativas estimadas. O Infyter não envia seus passos a nenhum servidor; eles só viajam em uma cópia que você exportar ou nos backups e nas transferências do próprio celular.",
   "stepGoal": "Meta diária",
   "stepGoalHint": "Uma meta que você consiga cumprir quase todos os dias.",
   "stepsCount": "{steps, plural, one{{steps} passo} other{{steps} passos}}",
@@ -982,7 +983,7 @@
   "kcalTitle": "Calorias ativas (estimadas)",
   "countSteps": "Contar passos",
   "stepsNeedsPermission": "É preciso permissão para contar seus passos.",
-  "stepsSettingsHint": "Os passos são lidos do sensor do celular e guardados neste aparelho. Só saem dele se você exportar uma cópia.",
+  "stepsSettingsHint": "Os passos são lidos do sensor do celular e guardados neste aparelho. O Infyter não os envia a nenhum servidor; eles só viajam em uma cópia que você exportar ou nos backups e nas transferências do próprio celular.",
   "stepsUnavailable": "Indisponível neste celular",
   "stepsAllow": "Permitir"
 }

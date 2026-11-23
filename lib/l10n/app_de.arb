@@ -1060,6 +1060,7 @@
   "stepsEnable": "Aktivieren",
   "stepsDeniedTitle": "Schritte sind aus",
   "stepsDeniedBody": "Erlaube „Körperliche Aktivität“ in den Einstellungen deines Handys",
+  "stepsDeniedBodyIos": "Erlaube „Bewegung & Fitness“ in den Einstellungen deines Handys",
   "openSettings": "Öffnen",
   "stepsCountingSince": "Gezählt seit {time}",
   "stepsContinue": "Weiter",
@@ -1068,7 +1069,7 @@
   "stepsChangeGoal": "Ändert das Ziel",
   "stepsShowEstimate": "Zeigt, wie sie geschätzt werden",
   "stepsGoalReached": "Ziel erreicht",
-  "stepsPermissionBody": "Infyter zählt deine Schritte mit dem Sensor deines Handys, um deinen Fortschritt und die geschätzten aktiven Kalorien zu zeigen. Deine Daten bleiben auf deinem Handy.",
+  "stepsPermissionBody": "Infyter zählt deine Schritte mit dem Sensor deines Handys, um deinen Fortschritt und die geschätzten aktiven Kalorien zu zeigen. Infyter sendet deine Schritte an keinen Server; sie sind nur in einer Kopie, die du exportierst, oder in den eigenen Sicherungen und Übertragungen deines Handys enthalten.",
   "stepGoal": "Tagesziel",
   "stepGoalHint": "Ein Ziel, das du an den meisten Tagen schaffst.",
   "stepsCount": "{steps, plural, one{{steps} Schritt} other{{steps} Schritte}}",
@@ -1090,7 +1091,7 @@
   "kcalTitle": "Aktive Kalorien (geschätzt)",
   "countSteps": "Schritte zählen",
   "stepsNeedsPermission": "Zum Zählen deiner Schritte fehlt die Berechtigung.",
-  "stepsSettingsHint": "Die Schritte werden vom Sensor deines Handys gelesen und auf diesem Gerät gespeichert. Sie verlassen es nur, wenn du eine Kopie exportierst.",
+  "stepsSettingsHint": "Die Schritte werden vom Sensor deines Handys gelesen und auf diesem Gerät gespeichert. Infyter sendet sie an keinen Server; sie sind nur in einer Kopie, die du exportierst, oder in den eigenen Sicherungen und Übertragungen deines Handys enthalten.",
   "stepsUnavailable": "Auf diesem Handy nicht verfügbar",
   "stepsAllow": "Erlauben"
 }

@@ -104,7 +104,7 @@ class _StepsCardState extends State<StepsCard> {
     context,
     gc,
     title: t.stepsDeniedTitle,
-    body: t.stepsDeniedBody,
+    body: defaultTargetPlatform == TargetPlatform.iOS ? t.stepsDeniedBodyIos : t.stepsDeniedBody,
     action: GhostButton(
       label: t.openSettings,
       icon: PhosphorIconsRegular.gear,

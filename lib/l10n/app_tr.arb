@@ -1192,6 +1192,7 @@
   "stepsEnable": "Aç",
   "stepsDeniedTitle": "Adımlar kapalı",
   "stepsDeniedBody": "Telefonunun ayarlarında Fiziksel aktiviteye izin ver",
+  "stepsDeniedBodyIos": "Telefonunun ayarlarında Hareket ve Fitness’a izin ver",
   "openSettings": "Ayarları aç",
   "stepsCountingSince": "{time} saatinden beri sayılıyor",
   "stepsContinue": "Devam",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "Hedefi değiştirir",
   "stepsShowEstimate": "Nasıl tahmin edildiklerini gösterir",
   "stepsGoalReached": "Hedefe ulaşıldı",
-  "stepsPermissionBody": "Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için adımlarını telefonunun sensörüyle sayar. Verilerin telefonunda kalır.",
+  "stepsPermissionBody": "Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için adımlarını telefonunun sensörüyle sayar. Infyter adımlarını hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.",
   "stepGoal": "Günlük hedef",
   "stepGoalHint": "Çoğu gün ulaşabileceğin bir hedef.",
   "stepsCount": "{steps, plural, other{{steps} adım}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "Aktif kaloriler (tahmini)",
   "countSteps": "Adımları say",
   "stepsNeedsPermission": "Adımlarını saymak için izin gerekli.",
-  "stepsSettingsHint": "Adımlar telefonunun sensöründen okunur ve bu cihazda saklanır. Cihazdan yalnızca bir kopya dışa aktarırsan çıkar.",
+  "stepsSettingsHint": "Adımlar telefonunun sensöründen okunur ve bu cihazda saklanır. Infyter bunları hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.",
   "stepsUnavailable": "Bu telefonda kullanılamıyor",
   "stepsAllow": "İzin ver"
 }

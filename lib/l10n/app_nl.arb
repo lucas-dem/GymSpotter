@@ -1192,6 +1192,7 @@
   "stepsEnable": "Aanzetten",
   "stepsDeniedTitle": "Stappen staan uit",
   "stepsDeniedBody": "Sta Fysieke activiteit toe in de instellingen van je telefoon",
+  "stepsDeniedBodyIos": "Sta Beweging en fitness toe in de instellingen van je telefoon",
   "openSettings": "Instellingen openen",
   "stepsCountingSince": "Geteld sinds {time}",
   "stepsContinue": "Doorgaan",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "Wijzigt het doel",
   "stepsShowEstimate": "Laat zien hoe ze geschat worden",
   "stepsGoalReached": "Doel gehaald",
-  "stepsPermissionBody": "Infyter telt je stappen met de sensor van je telefoon om je voortgang en geschatte actieve calorieën te tonen. Je gegevens blijven op je telefoon.",
+  "stepsPermissionBody": "Infyter telt je stappen met de sensor van je telefoon om je voortgang en geschatte actieve calorieën te tonen. Infyter stuurt je stappen naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.",
   "stepGoal": "Dagdoel",
   "stepGoalHint": "Een doel dat je op de meeste dagen haalt.",
   "stepsCount": "{steps, plural, one{{steps} stap} other{{steps} stappen}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "Actieve calorieën (geschat)",
   "countSteps": "Stappen tellen",
   "stepsNeedsPermission": "Er is toestemming nodig om je stappen te tellen.",
-  "stepsSettingsHint": "Stappen worden gelezen van de sensor van je telefoon en op dit apparaat opgeslagen. Ze verlaten het alleen als je een kopie exporteert.",
+  "stepsSettingsHint": "Stappen worden gelezen van de sensor van je telefoon en op dit apparaat opgeslagen. Infyter stuurt ze naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.",
   "stepsUnavailable": "Niet beschikbaar op deze telefoon",
   "stepsAllow": "Toestaan"
 }

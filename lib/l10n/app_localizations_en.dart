@@ -3167,6 +3167,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
 
   @override
+  String get stepsDeniedBodyIos => 'Allow Motion & Fitness in your phone\'s settings';
+
+  @override
   String get openSettings => 'Open settings';
 
   @override
@@ -3194,7 +3197,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Infyter doesn\'t send your steps to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.';
 
   @override
   String get stepGoal => 'Daily goal';
@@ -3278,7 +3281,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Steps are read from your phone\'s sensor and stored on this device. They leave it only if you export a copy.';
+      'Steps are read from your phone\'s sensor and stored on this device. Infyter doesn\'t send them to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.';
 
   @override
   String get stepsUnavailable => 'Not available on this phone';

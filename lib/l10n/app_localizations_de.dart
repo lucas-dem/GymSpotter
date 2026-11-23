@@ -3188,6 +3188,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get stepsDeniedBody => 'Erlaube „Körperliche Aktivität“ in den Einstellungen deines Handys';
 
   @override
+  String get stepsDeniedBodyIos => 'Erlaube „Bewegung & Fitness“ in den Einstellungen deines Handys';
+
+  @override
   String get openSettings => 'Öffnen';
 
   @override
@@ -3215,7 +3218,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter zählt deine Schritte mit dem Sensor deines Handys, um deinen Fortschritt und die geschätzten aktiven Kalorien zu zeigen. Deine Daten bleiben auf deinem Handy.';
+      'Infyter zählt deine Schritte mit dem Sensor deines Handys, um deinen Fortschritt und die geschätzten aktiven Kalorien zu zeigen. Infyter sendet deine Schritte an keinen Server; sie sind nur in einer Kopie, die du exportierst, oder in den eigenen Sicherungen und Übertragungen deines Handys enthalten.';
 
   @override
   String get stepGoal => 'Tagesziel';
@@ -3300,7 +3303,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Die Schritte werden vom Sensor deines Handys gelesen und auf diesem Gerät gespeichert. Sie verlassen es nur, wenn du eine Kopie exportierst.';
+      'Die Schritte werden vom Sensor deines Handys gelesen und auf diesem Gerät gespeichert. Infyter sendet sie an keinen Server; sie sind nur in einer Kopie, die du exportierst, oder in den eigenen Sicherungen und Übertragungen deines Handys enthalten.';
 
   @override
   String get stepsUnavailable => 'Auf diesem Handy nicht verfügbar';

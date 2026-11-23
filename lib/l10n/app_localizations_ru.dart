@@ -3259,6 +3259,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get stepsDeniedBody => 'Разреши «Физическая активность» в настройках телефона';
 
   @override
+  String get stepsDeniedBodyIos => 'Разреши «Движение и фитнес» в настройках телефона';
+
+  @override
   String get openSettings => 'Открыть настройки';
 
   @override
@@ -3286,7 +3289,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter считает твои шаги датчиком телефона, чтобы показать твой прогресс и оценочные активные калории. Данные остаются на твоём телефоне.';
+      'Infyter считает твои шаги датчиком телефона, чтобы показать твой прогресс и оценочные активные калории. Infyter не отправляет твои шаги ни на какой сервер; они попадают только в копию, которую ты экспортируешь, или в резервные копии и переносы данных самого телефона.';
 
   @override
   String get stepGoal => 'Цель на день';
@@ -3380,7 +3383,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Шаги считываются с датчика телефона и хранятся на этом устройстве. Покидают его, только если ты экспортируешь копию.';
+      'Шаги считываются с датчика телефона и хранятся на этом устройстве. Infyter не отправляет их ни на какой сервер; они попадают только в копию, которую ты экспортируешь, или в резервные копии и переносы данных самого телефона.';
 
   @override
   String get stepsUnavailable => 'Недоступно на этом телефоне';

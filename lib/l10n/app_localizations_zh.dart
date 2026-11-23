@@ -3036,6 +3036,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get stepsDeniedBody => '请在手机设置中允许“身体活动”';
 
   @override
+  String get stepsDeniedBodyIos => '请在手机设置中允许“运动与健身”';
+
+  @override
   String get openSettings => '打开设置';
 
   @override
@@ -3062,7 +3065,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String get stepsGoalReached => '目标已达成';
 
   @override
-  String get stepsPermissionBody => 'Infyter 通过手机传感器统计你的步数，用于显示进度和估算的活动热量。数据保存在你的手机上。';
+  String get stepsPermissionBody =>
+      'Infyter 通过手机传感器统计你的步数，用于显示进度和估算的活动热量。Infyter 不会把你的步数发送到任何服务器；它们只会随你导出的副本，或手机自身的备份与换机迁移一起转移。';
 
   @override
   String get stepGoal => '每日目标';
@@ -3139,7 +3143,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get stepsNeedsPermission => '统计步数需要权限。';
 
   @override
-  String get stepsSettingsHint => '步数从手机传感器读取，并保存在此设备上。只有导出副本时才会离开设备。';
+  String get stepsSettingsHint => '步数从手机传感器读取，并保存在此设备上。Infyter 不会将其发送到任何服务器。步数只会随你导出的副本，或手机自身的备份与换机迁移一起转移。';
 
   @override
   String get stepsUnavailable => '此手机不支持';
@@ -6203,6 +6207,9 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get stepsDeniedBody => '請在手機設定中允許「身體活動」';
 
   @override
+  String get stepsDeniedBodyIos => '請在手機設定中允許「動作與健身」';
+
+  @override
   String get openSettings => '開啟設定';
 
   @override
@@ -6229,7 +6236,8 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get stepsGoalReached => '已達成目標';
 
   @override
-  String get stepsPermissionBody => 'Infyter 透過手機感測器計算你的步數，用於顯示進度與估算的活動熱量。資料保留在你的手機上。';
+  String get stepsPermissionBody =>
+      'Infyter 透過手機感測器計算你的步數，用於顯示進度與估算的活動熱量。Infyter 不會把你的步數傳送到任何伺服器；它們只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。';
 
   @override
   String get stepGoal => '每日目標';
@@ -6306,7 +6314,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get stepsNeedsPermission => '計算步數需要權限。';
 
   @override
-  String get stepsSettingsHint => '步數從手機感測器讀取，並儲存在此裝置上。只有匯出副本時才會離開裝置。';
+  String get stepsSettingsHint => '步數從手機感測器讀取，並儲存在此裝置上。Infyter 不會將其傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。';
 
   @override
   String get stepsUnavailable => '此手機不支援';

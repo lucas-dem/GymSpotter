@@ -3176,6 +3176,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get stepsDeniedBody => 'Consenti Attività fisica nelle impostazioni del telefono';
 
   @override
+  String get stepsDeniedBodyIos => 'Consenti Movimento e fitness nelle impostazioni del telefono';
+
+  @override
   String get openSettings => 'Apri impostazioni';
 
   @override
@@ -3203,7 +3206,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter conta i tuoi passi con il sensore del telefono per mostrarti i progressi e le calorie attive stimate. I dati restano sul tuo telefono.';
+      'Infyter conta i tuoi passi con il sensore del telefono per mostrarti i progressi e le calorie attive stimate. Infyter non invia i tuoi passi a nessun server; viaggiano solo in una copia che esporti o nei backup e nei trasferimenti del telefono stesso.';
 
   @override
   String get stepGoal => 'Obiettivo giornaliero';
@@ -3293,7 +3296,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'I passi vengono letti dal sensore del telefono e salvati su questo dispositivo. Lo lasciano solo se esporti una copia.';
+      'I passi vengono letti dal sensore del telefono e salvati su questo dispositivo. Infyter non li invia a nessun server; viaggiano solo in una copia che esporti o nei backup e nei trasferimenti del telefono stesso.';
 
   @override
   String get stepsUnavailable => 'Non disponibile su questo telefono';

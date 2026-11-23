@@ -3091,6 +3091,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stepsDeniedBody => '휴대폰 설정에서 신체 활동을 허용하세요';
 
   @override
+  String get stepsDeniedBodyIos => '휴대폰 설정에서 동작 및 피트니스를 허용하세요';
+
+  @override
   String get openSettings => '설정 열기';
 
   @override
@@ -3117,7 +3120,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stepsGoalReached => '목표 달성';
 
   @override
-  String get stepsPermissionBody => 'Infyter는 휴대폰 센서로 걸음 수를 세어 진행 상황과 추정 활동 칼로리를 보여 줍니다. 데이터는 휴대폰에 보관됩니다.';
+  String get stepsPermissionBody =>
+      'Infyter는 휴대폰 센서로 걸음 수를 세어 진행 상황과 추정 활동 칼로리를 보여 줍니다. Infyter는 걸음 수를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.';
 
   @override
   String get stepGoal => '일일 목표';
@@ -3194,7 +3198,8 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stepsNeedsPermission => '걸음 수를 세려면 권한이 필요합니다.';
 
   @override
-  String get stepsSettingsHint => '걸음 수는 휴대폰 센서에서 읽어 이 기기에 저장됩니다. 사본을 내보낼 때만 기기 밖으로 나갑니다.';
+  String get stepsSettingsHint =>
+      '걸음 수는 휴대폰 센서에서 읽어 이 기기에 저장됩니다. Infyter는 이를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.';
 
   @override
   String get stepsUnavailable => '이 휴대폰에서는 사용할 수 없습니다';

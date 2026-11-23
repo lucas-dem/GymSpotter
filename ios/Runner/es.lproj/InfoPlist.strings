@@ -2,4 +2,4 @@
 "NSMicrophoneUsageDescription" = "Infyter usa el micrófono únicamente al grabar un video que decidís adjuntar.";
 "NSPhotoLibraryUsageDescription" = "Infyter accede a tus fotos únicamente cuando elegís una imagen o un video para tu perfil o registro.";
 "NSPhotoLibraryAddUsageDescription" = "Infyter guarda contenido en Fotos únicamente cuando vos lo solicitás.";
-"NSMotionUsageDescription" = "Infyter lee tus pasos de cada día para mostrarte los pasos y las calorías activas estimadas. Quedan en tu dispositivo.";
+"NSMotionUsageDescription" = "Infyter lee tus pasos de cada día para mostrarlos con las calorías activas estimadas. No los envía a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.";

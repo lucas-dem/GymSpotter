@@ -3184,6 +3184,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get stepsDeniedBody => 'Autorise « Activité physique » dans les paramètres de ton téléphone';
 
   @override
+  String get stepsDeniedBodyIos =>
+      'Autorise « Mouvements et forme physique » dans les paramètres de ton téléphone';
+
+  @override
   String get openSettings => 'Ouvrir les paramètres';
 
   @override
@@ -3211,7 +3215,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter compte tes pas avec le capteur de ton téléphone pour afficher ta progression et tes calories actives estimées. Tes données restent sur ton téléphone.';
+      'Infyter compte tes pas avec le capteur de ton téléphone pour afficher ta progression et tes calories actives estimées. Infyter n\'envoie tes pas à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.';
 
   @override
   String get stepGoal => 'Objectif quotidien';
@@ -3291,7 +3295,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Les pas sont lus depuis le capteur de ton téléphone et enregistrés sur cet appareil. Ils ne le quittent que si tu exportes une copie.';
+      'Les pas sont lus depuis le capteur de ton téléphone et enregistrés sur cet appareil. Infyter ne les envoie à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.';
 
   @override
   String get stepsUnavailable => 'Indisponible sur ce téléphone';

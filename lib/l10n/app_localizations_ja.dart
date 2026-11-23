@@ -3076,6 +3076,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get stepsDeniedBody => 'スマートフォンの設定で「身体活動」を許可してください';
 
   @override
+  String get stepsDeniedBodyIos => 'スマートフォンの設定で「モーションとフィットネス」を許可してください';
+
+  @override
   String get openSettings => '設定を開く';
 
   @override
@@ -3102,7 +3105,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get stepsGoalReached => '目標達成';
 
   @override
-  String get stepsPermissionBody => 'Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。データはスマートフォンの中に保存されます。';
+  String get stepsPermissionBody =>
+      'Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
 
   @override
   String get stepGoal => '1日の目標';
@@ -3179,7 +3183,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get stepsNeedsPermission => '歩数を数えるには許可が必要です。';
 
   @override
-  String get stepsSettingsHint => '歩数はスマートフォンのセンサーから読み取り、この端末に保存します。コピーを書き出した場合のみ端末の外に出ます。';
+  String get stepsSettingsHint =>
+      '歩数はスマートフォンのセンサーから読み取り、この端末に保存します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
 
   @override
   String get stepsUnavailable => 'このスマートフォンでは利用できません';

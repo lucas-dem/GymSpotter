@@ -952,6 +952,7 @@
   "stepsEnable": "开启",
   "stepsDeniedTitle": "步数已关闭",
   "stepsDeniedBody": "请在手机设置中允许“身体活动”",
+  "stepsDeniedBodyIos": "请在手机设置中允许“运动与健身”",
   "openSettings": "打开设置",
   "stepsCountingSince": "自 {time} 起计数",
   "stepsContinue": "继续",
@@ -960,7 +961,7 @@
   "stepsChangeGoal": "更改目标",
   "stepsShowEstimate": "显示估算方式",
   "stepsGoalReached": "目标已达成",
-  "stepsPermissionBody": "Infyter 通过手机传感器统计你的步数，用于显示进度和估算的活动热量。数据保存在你的手机上。",
+  "stepsPermissionBody": "Infyter 通过手机传感器统计你的步数，用于显示进度和估算的活动热量。Infyter 不会把你的步数发送到任何服务器；它们只会随你导出的副本，或手机自身的备份与换机迁移一起转移。",
   "stepGoal": "每日目标",
   "stepGoalHint": "一个你大多数日子都能达成的目标。",
   "stepsCount": "{steps, plural, other{{steps} 步}}",
@@ -982,7 +983,7 @@
   "kcalTitle": "活动热量（估算）",
   "countSteps": "统计步数",
   "stepsNeedsPermission": "统计步数需要权限。",
-  "stepsSettingsHint": "步数从手机传感器读取，并保存在此设备上。只有导出副本时才会离开设备。",
+  "stepsSettingsHint": "步数从手机传感器读取，并保存在此设备上。Infyter 不会将其发送到任何服务器。步数只会随你导出的副本，或手机自身的备份与换机迁移一起转移。",
   "stepsUnavailable": "此手机不支持",
   "stepsAllow": "允许"
 }

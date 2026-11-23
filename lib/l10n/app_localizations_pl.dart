@@ -3179,6 +3179,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get stepsDeniedBody => 'Zezwól na Aktywność fizyczną w ustawieniach telefonu';
 
   @override
+  String get stepsDeniedBodyIos => 'Zezwól na Ruch i kondycję w ustawieniach telefonu';
+
+  @override
   String get openSettings => 'Otwórz ustawienia';
 
   @override
@@ -3206,7 +3209,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyter liczy twoje kroki czujnikiem telefonu, aby pokazać twój postęp i szacowane aktywne kalorie. Twoje dane zostają na telefonie.';
+      'Infyter liczy twoje kroki czujnikiem telefonu, aby pokazać twój postęp i szacowane aktywne kalorie. Infyter nie wysyła twoich kroków na żaden serwer; są przenoszone tylko w kopii, którą wyeksportujesz, lub w kopiach zapasowych i transferach samego telefonu.';
 
   @override
   String get stepGoal => 'Cel dzienny';
@@ -3300,7 +3303,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'Kroki są odczytywane z czujnika telefonu i zapisywane na tym urządzeniu. Opuszczają je tylko wtedy, gdy wyeksportujesz kopię.';
+      'Kroki są odczytywane z czujnika telefonu i zapisywane na tym urządzeniu. Infyter nie wysyła ich na żaden serwer; są przenoszone tylko w kopii, którą wyeksportujesz, lub w kopiach zapasowych i transferach samego telefonu.';
 
   @override
   String get stepsUnavailable => 'Niedostępne na tym telefonie';

@@ -3161,6 +3161,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get stepsDeniedBody => 'اسمح بـ«النشاط البدني» في إعدادات هاتفك';
 
   @override
+  String get stepsDeniedBodyIos => 'اسمح بـ«الحركة واللياقة البدنية» في إعدادات هاتفك';
+
+  @override
   String get openSettings => 'فتح الإعدادات';
 
   @override
@@ -3188,7 +3191,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'يحسب Infyter خطواتك بحساس هاتفك ليعرض تقدّمك والسعرات الحرارية النشطة المقدّرة. تبقى بياناتك على هاتفك.';
+      'يحسب Infyter خطواتك بحساس هاتفك ليعرض تقدّمك والسعرات الحرارية النشطة المقدّرة. لا يرسل Infyter خطواتك إلى أي خادم؛ تنتقل فقط ضمن نسخة تصدّرها أو ضمن النسخ الاحتياطية وعمليات النقل الخاصة بهاتفك نفسه.';
 
   @override
   String get stepGoal => 'الهدف اليومي';
@@ -3283,7 +3286,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      'تُقرأ الخطوات من حساس هاتفك وتُخزَّن على هذا الجهاز. لا تغادره إلا إذا صدّرت نسخة.';
+      'تُقرأ الخطوات من حساس هاتفك وتُخزَّن على هذا الجهاز. لا يرسلها Infyter إلى أي خادم؛ تنتقل فقط ضمن نسخة تصدّرها أو ضمن النسخ الاحتياطية وعمليات النقل الخاصة بهاتفك نفسه.';
 
   @override
   String get stepsUnavailable => 'غير متاح على هذا الهاتف';

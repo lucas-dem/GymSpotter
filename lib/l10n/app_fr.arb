@@ -1192,6 +1192,7 @@
   "stepsEnable": "Activer",
   "stepsDeniedTitle": "Les pas sont désactivés",
   "stepsDeniedBody": "Autorise « Activité physique » dans les paramètres de ton téléphone",
+  "stepsDeniedBodyIos": "Autorise « Mouvements et forme physique » dans les paramètres de ton téléphone",
   "openSettings": "Ouvrir les paramètres",
   "stepsCountingSince": "Comptés depuis {time}",
   "stepsContinue": "Continuer",
@@ -1200,7 +1201,7 @@
   "stepsChangeGoal": "Modifie l’objectif",
   "stepsShowEstimate": "Montre comment elles sont estimées",
   "stepsGoalReached": "Objectif atteint",
-  "stepsPermissionBody": "Infyter compte tes pas avec le capteur de ton téléphone pour afficher ta progression et tes calories actives estimées. Tes données restent sur ton téléphone.",
+  "stepsPermissionBody": "Infyter compte tes pas avec le capteur de ton téléphone pour afficher ta progression et tes calories actives estimées. Infyter n'envoie tes pas à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.",
   "stepGoal": "Objectif quotidien",
   "stepGoalHint": "Un objectif atteignable presque tous les jours.",
   "stepsCount": "{steps, plural, other{{steps} pas}}",
@@ -1222,7 +1223,7 @@
   "kcalTitle": "Calories actives (estimées)",
   "countSteps": "Compter les pas",
   "stepsNeedsPermission": "L’autorisation est nécessaire pour compter tes pas.",
-  "stepsSettingsHint": "Les pas sont lus depuis le capteur de ton téléphone et enregistrés sur cet appareil. Ils ne le quittent que si tu exportes une copie.",
+  "stepsSettingsHint": "Les pas sont lus depuis le capteur de ton téléphone et enregistrés sur cet appareil. Infyter ne les envoie à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.",
   "stepsUnavailable": "Indisponible sur ce téléphone",
   "stepsAllow": "Autoriser"
 }

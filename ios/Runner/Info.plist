@@ -37,7 +37,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Infyter saves content to Photos only when you request it.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Infyter reads your daily step count to show your steps and estimated active calories. It stays on your device.</string>
+	<string>Infyter reads your daily steps to show them with your estimated active calories. It doesn't send them to any server; they travel only in a copy you export or in your phone's own backups and transfers.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
