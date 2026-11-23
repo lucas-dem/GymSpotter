@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 import 'step_source_android.dart';
+import 'step_source_ios.dart';
 
 const int kMaxStepsPerDay = 345600;
 
@@ -78,16 +79,19 @@ class StepChannel {
 
   /// Sin argumentos -> los mismos tres textos, despues de que la persona responde; si ya estaba decidido responde sin dialogo.
   /// Si falla lanza PlatformException y Dart lo trata como no concedido sin activar nada.
+  /// iOS no tiene un pedido propio: una consulta de hoy muestra el dialogo y se espera la respuesta hasta 60 s; si no llega, responde notDetermined.
   static const requestPermission = 'requestPermission';
 
   /// Solo Android, sin argumentos -> {counter, wallMs, elapsedMs, bootCount} (enteros; bootCount -1 si no se puede leer).
   /// Devuelve null si no llego un evento en 3 s o si falta el permiso (nunca lo pide).
   static const readCounter = 'readCounter';
 
-  /// Solo iOS, argumento {days: 1..7} -> [{day, steps}], del mas viejo al de hoy, un item por dia local con dato.
+  /// Solo iOS, argumentos {days: 1..7, fromMs: int opcional} -> [{day, steps}], del mas viejo al de hoy, un item por dia local con dato.
+  /// Cada dia va de su medianoche a la siguiente (hoy, hasta ahora); con fromMs no se cuenta nada anterior y los dias previos no se mandan.
+  /// Dart manda fromMs despues de apagar el conteo o de borrar los datos (clave infyter_steps_ios_start_v1, fuera de gymmane_v1 y del ZIP): la primera lectura con permiso fija ahora.
   /// day es AAAA-MM-DD con calendario gregoriano y Locale en_US_POSIX, en el dia local del telefono.
-  /// Un dia cuya consulta falla o no tiene datos se OMITE: nunca se manda steps 0 inventado.
-  /// fromMinute no se manda en iOS: Core Motion da el dia completo; solo lo usa la regla de ancla de Android dentro de Dart.
+  /// Un dia cuya consulta falla, no tiene datos o da 0 pasos se OMITE: Core Motion no distingue 0 de "sin dato", asi que queda hueco.
+  /// fromMinute no lo manda el Swift: Core Motion da el dia completo; Dart lo pone solo en el dia de fromMs (y Android en su regla de ancla).
   static const readDays = 'readDays';
 
   /// Solo Android, sin argumentos -> String o null: el ancla de step_anchor.dart en JSON, guardada en las preferencias nativas infyter_steps (fuera de la copia y de la transferencia a otro telefono).
@@ -102,7 +106,7 @@ class StepChannel {
   /// Solo Android, sin argumentos -> null: borra el ancla, la marca nativa permission_asked y el contador silent_denials.
   static const forget = 'forget';
 
-  /// Del lado de iOS (U5) quedan el minimo de 5 minutos entre consultas y la lectura al pasar a segundo plano.
+  /// iOS: minimo entre dos consultas de los 7 dias; entre medio, y si no cambio el dia, se consulta solo hoy.
   static const iosThrottle = Duration(minutes: 5);
 
   static StepPermission parsePermission(Object? raw) => switch (raw) {
@@ -136,10 +140,10 @@ abstract class StepSource {
   /// Los dias con dato, en el dia local del telefono; un dia sin lectura no figura.
   Future<List<StepDayReading>> readDays();
 
-  /// Borra lo que la fuente guarda en este telefono; el historial de la app no.
+  /// Borra lo que la fuente guarda en este telefono; el historial de la app no. Al volver a contar no se recupera nada anterior (en iOS, ni los 7 dias de Core Motion).
   Future<void> forget();
 
-  /// Para "Contar pasos" apagado: deja de escuchar y borra solo el ancla, asi lo caminado mientras tanto no se suma; lo del permiso queda.
+  /// Para "Contar pasos" apagado: deja de escuchar y borra solo el ancla (en iOS marca un arranque nuevo), asi lo caminado mientras tanto no se suma; lo del permiso queda.
   Future<void> stopCounting();
 
   /// Avisa que hay pasos nuevos para leer, como mucho cada 60 s y solo con la app en primer plano.
@@ -171,9 +175,13 @@ class UnavailableStepSource implements StepSource {
   Stream<void> get updates => const Stream.empty();
 }
 
-/// La fuente de la plataforma actual: el sensor en Android (el reloj responde que no esta disponible) y, hasta iOS, la no disponible.
-StepSource createStepSource() =>
-    !kIsWeb && Platform.isAndroid ? AndroidStepSource() : const UnavailableStepSource();
+/// La fuente de la plataforma actual: el sensor en Android (el reloj responde que no esta disponible), Core Motion en iOS y, en las demas, la no disponible.
+StepSource createStepSource() {
+  if (kIsWeb) return const UnavailableStepSource();
+  if (Platform.isAndroid) return AndroidStepSource();
+  if (Platform.isIOS) return IosStepSource();
+  return const UnavailableStepSource();
+}
 
 @visibleForTesting
 class FakeStepSource implements StepSource {

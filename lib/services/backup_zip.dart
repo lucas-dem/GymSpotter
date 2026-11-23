@@ -165,6 +165,7 @@ Future<bool> restoreBackupZip(Uint8List zipBytes) async {
     return false;
   }
   fit.endRescueNotice();
+  fit.confirmRestoredSteps();
   if (alarm != null) await AlarmStore.keepOnly(alarm);
   // Se borra lo que el estado restaurado no usa, aunque al backup le haya faltado
   // algún archivo: lo anterior y lo del backup que no quedó en uso. Nunca un

@@ -189,6 +189,8 @@ class FitState extends FitCore
   // saltea y se cuenta, y el resto se carga igual. Importar un backup es
   // estricto (`_strictLoad`): el primer error hace que applyBackup vuelva atrás.
   bool _strictLoad = false;
+
+  bool _stopStepsOnConfirm = false;
   int _skippedOnLoad = 0;
 
   /// Corre [body]; si falla y la carga es tolerante, lo cuenta y sigue.
@@ -581,6 +583,7 @@ class FitState extends FitCore
     final data = Store.instance.decodeRescueCopy(slot);
     if (data == null) return false;
     final before = backupSnapshot();
+    final wasCounting = stepsOn;
     Store.instance.keepCopy(before);
     try {
       // Sin el entrenamiento en curso que tuviera la copia: retomarlo
@@ -592,7 +595,12 @@ class FitState extends FitCore
     }
     Store.instance.markRescueHandled(slot);
     _rescueOffer = null;
-    persistNow();
+    // Como en una copia: la fuente deja de contar recién cuando lo restaurado quedó guardado.
+    unawaited(
+      saveNow().then((saved) {
+        if (saved && wasCounting && !stepsOn) unawaited(stepSource.stopCounting().catchError((Object _) {}));
+      }, onError: (Object _) {}),
+    );
     _refreshWidgets();
     notifyListeners();
     return true;
@@ -702,6 +710,7 @@ class FitState extends FitCore
     } catch (_) {
       return false;
     }
+    confirmRestoredSteps();
     return true;
   }
 
@@ -730,12 +739,21 @@ class FitState extends FitCore
       );
     } catch (_) {
       _strictLoad = false;
+      _stopStepsOnConfirm = false;
       _loadFrom(before);
       rethrow;
     } finally {
       _strictLoad = false;
     }
     if (endRescue) endRescueNotice();
+  }
+
+  /// Lo restaurado ya quedó: si la copia apagó el conteo, la fuente deja de contar. Antes no, porque una vuelta atrás
+  /// con [restoreSnapshot] volvería a prender el conteo con el ancla o la marca ya borradas.
+  void confirmRestoredSteps() {
+    if (!_stopStepsOnConfirm) return;
+    _stopStepsOnConfirm = false;
+    if (!stepsOn) unawaited(stepSource.stopCounting().catchError((Object _) {}));
   }
 
   /// Lo importado reemplazó lo que había: el aviso de rescate ya no se muestra.
@@ -761,6 +779,7 @@ class FitState extends FitCore
   /// Vuelve al estado [before] de [backupSnapshot] (si un backup ya aplicado no
   /// se pudo guardar) y lo vuelve a guardar.
   void restoreSnapshot(Map<String, dynamic> before) {
+    _stopStepsOnConfirm = false;
     _loadFrom(before);
     persistNow();
     _refreshWidgets();
@@ -849,7 +868,9 @@ class FitState extends FitCore
     photoIntervalDays = (map['photoEvery'] as num?)?.toInt() ?? photoIntervalDays;
     bodyTimeline = map['bodyTl'] as bool? ?? bodyTimeline;
     _loadSteps(map);
+    final wasCounting = stepsOn;
     stepsOn = _pickOrNull<bool>(map['stepsOn']) ?? stepsOn;
+    _stopStepsOnConfirm = wasCounting && !stepsOn;
     _stepsRestored();
     _seedCalculatorsFromProfile();
     _loading = false;
