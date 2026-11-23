@@ -414,14 +414,21 @@ class FitState extends FitCore
     shots.removeWhere((e) => e.isEmpty);
   }
 
-  void _loadSteps(Map<String, dynamic> data) {
-    steps
-      ..clear()
-      ..addAll(_entries(data['steps'], _stepEntry));
-    stepsFrom
-      ..clear()
-      ..addAll(_entries(data['stepsFrom'], _stepEntry));
-    stepGoal = normalizeStepGoal(_pick<num>(data['stepGoal'], kDefaultStepGoal));
+  /// Con [keepMissing], una clave que [data] no trae (una copia de 1.3.x) deja el valor de este teléfono.
+  void _loadSteps(Map<String, dynamic> data, {bool keepMissing = false}) {
+    if (!keepMissing || data.containsKey('steps')) {
+      steps
+        ..clear()
+        ..addAll(_entries(data['steps'], _stepEntry));
+    }
+    if (!keepMissing || data.containsKey('stepsFrom')) {
+      stepsFrom
+        ..clear()
+        ..addAll(_entries(data['stepsFrom'], _stepEntry));
+    }
+    if (!keepMissing || data.containsKey('stepGoal')) {
+      stepGoal = normalizeStepGoal(_pick<num>(data['stepGoal'], kDefaultStepGoal));
+    }
   }
 
   void _loadMeasures(Map<String, dynamic> data) {
@@ -585,12 +592,18 @@ class FitState extends FitCore
     final before = backupSnapshot();
     final wasCounting = stepsOn;
     Store.instance.keepCopy(before);
+    _stepsRestored();
     try {
       // Sin el entrenamiento en curso que tuviera la copia: retomarlo
       // reiniciaría timers y la ruta con un entrenamiento viejo.
-      _loadFrom(data..removeWhere((key, _) => _liveKeys.contains(key)));
+      data.removeWhere((key, _) => _liveKeys.contains(key));
+      for (final key in _stepKeys) {
+        if (!data.containsKey(key)) data[key] = before[key];
+      }
+      _loadFrom(data);
     } catch (_) {
       _loadFrom(before);
+      unawaited(refreshSteps());
       return false;
     }
     Store.instance.markRescueHandled(slot);
@@ -603,6 +616,7 @@ class FitState extends FitCore
     );
     _refreshWidgets();
     notifyListeners();
+    unawaited(refreshSteps());
     return true;
   }
 
@@ -768,6 +782,9 @@ class FitState extends FitCore
 
   static const _liveKeys = {'live', 'liveStart', 'liveElapsed', 'livePaused'};
 
+  // Una copia de rescate de 1.3.x no trae el historial ni la meta: quedan los de este teléfono.
+  static const _stepKeys = {'steps', 'stepsFrom', 'stepGoal'};
+
   /// El estado actual, para volver a él con [restoreSnapshot]. Copia profunda:
   /// toJson() comparte mapas vivos (favoritos, medios, descansos) que
   /// _applyBackup vacía. Sin el entrenamiento en curso: un backup no lo toca y
@@ -780,9 +797,11 @@ class FitState extends FitCore
   /// se pudo guardar) y lo vuelve a guardar.
   void restoreSnapshot(Map<String, dynamic> before) {
     _stopStepsOnConfirm = false;
+    _stepsRestored();
     _loadFrom(before);
     persistNow();
     _refreshWidgets();
+    unawaited(refreshSteps());
   }
 
   /// Guarda ya y dice si quedó guardado. Cancela el guardado diferido: si no,
@@ -867,7 +886,7 @@ class FitState extends FitCore
     _loadMoments(map, restored: restoredMoments);
     photoIntervalDays = (map['photoEvery'] as num?)?.toInt() ?? photoIntervalDays;
     bodyTimeline = map['bodyTl'] as bool? ?? bodyTimeline;
-    _loadSteps(map);
+    _loadSteps(map, keepMissing: true);
     final wasCounting = stepsOn;
     stepsOn = _pickOrNull<bool>(map['stepsOn']) ?? stepsOn;
     _stopStepsOnConfirm = wasCounting && !stepsOn;
@@ -1373,6 +1392,8 @@ class FitState extends FitCore
 
   @override
   void dispose() {
+    _saveDebounce?.cancel();
+    _saveDebounce = null;
     _sessionTimer?.cancel();
     _restTimer?.cancel();
     super.dispose();

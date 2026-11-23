@@ -1,4 +1,5 @@
 // Los blobs de 1.3.2 son los que la app escribió en el emulador en la sesión 32 (datos inventados).
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
@@ -10,11 +11,33 @@ import 'package:infyter/services/backup_zip.dart';
 import 'package:infyter/services/local_store.dart';
 import 'package:infyter/services/media_store.dart';
 import 'package:infyter/services/progress_reminder.dart';
+import 'package:infyter/services/step_source.dart';
 import 'package:infyter/services/store_migrations.dart';
 import 'package:infyter/state/fit_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// La interfaz de plataforma de shared_preferences (dependencia transitiva) permite simular el disco lleno.
+// ignore: depend_on_referenced_packages
+import 'package:shared_preferences_platform_interface/shared_preferences_platform_interface.dart';
 
 const kKey = 'gymmane_v1';
+
+/// Guarda todo menos el blob principal, como commit() sin espacio.
+class _DiscoLleno extends InMemorySharedPreferencesStore {
+  _DiscoLleno(super.data) : super.withData();
+
+  @override
+  Future<bool> setValue(String valueType, String key, Object value) async {
+    if (key != 'flutter.$kKey') return super.setValue(valueType, key, value);
+    return false;
+  }
+}
+
+Future<void> _llenarDisco() async {
+  SharedPreferencesStorePlatform.instance = _DiscoLleno(await SharedPreferencesStorePlatform.instance.getAll());
+}
+
+/// Una lectura de días que la fuente retiene hasta liberar [FakeStepSource.readGate].
+const _diaRetenido = StepDayReading('2026-11-21', 9999);
 
 const String kBlobInicio132 = r'''
 {"profile":{"name":"Atleta","sex":"male","age":28,"h":175.0,"w":75.0,"act":1.55,"goal":4,"badge":"blue"},"dark":true,"theme":"dark","units":"kg","language":"es","rest":90,"alarmSound":null,"alarmSoundName":null,"bg":"dynamic","gymBranch":"junin","heatTone":"ember","bgDim":0.55,"showFocus":true,"autoAdvance":true,"keepAwake":true,"countdown":false,"gamify":true,"rpe":false,"effort":"rpe","demo":"large","alarmStyle":"quiet","noSuggest":[],"exMode":{},"trainAt":null,"trainSmart":false,"trainerMode":false,"alarmAskedAt":null,"onboarded":true,"favorites":{},"notes":[],"places":[],"place":"","checkins":[],"routines":[{"id":"r1795055573049771-0","n":"Pecho y espalda pesado","ex":["EIeI8Vf","SpYC0Kp","3TZduzM","ns0SIbU"]}],"weeklyPlan":{},"athletes":[],"athleteWeeklyPlans":{},"custom":[],"media":{},"exRest":{},"progress":{},"warmup":[],"repsOnly":[],"repsOnlyOff":[],"sessions":[{"d":"2026-11-17T23:32:53.042369","dur":3725,"ex":[{"id":"EIeI8Vf","n":"Barbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"SpYC0Kp","n":"Dumbbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"3TZduzM","n":"Barbell Incline Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]}]},{"d":"2026-11-15T23:32:53.042369","dur":3725,"ex":[{"id":"EIeI8Vf","n":"Barbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"SpYC0Kp","n":"Dumbbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"3TZduzM","n":"Barbell Incline Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]}]},{"d":"2026-11-13T23:32:53.042369","dur":3725,"ex":[{"id":"EIeI8Vf","n":"Barbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"SpYC0Kp","n":"Dumbbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"3TZduzM","n":"Barbell Incline Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]}]},{"d":"2026-11-11T23:32:53.042369","dur":3725,"ex":[{"id":"EIeI8Vf","n":"Barbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"SpYC0Kp","n":"Dumbbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"3TZduzM","n":"Barbell Incline Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]}]},{"d":"2026-11-09T23:32:53.042369","dur":3725,"ex":[{"id":"EIeI8Vf","n":"Barbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"SpYC0Kp","n":"Dumbbell Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]},{"id":"3TZduzM","n":"Barbell Incline Bench Press","p":"chest","s":[{"r":10,"w":100.0},{"r":8,"w":102.5}]}]}],"bodyweight":[],"measures":[],"shots":[],"awards":{"firstStep":"2026-11-18T23:32:53.051772","firstWorkout":"2026-11-18T23:32:53.051772","firstRoutine":"2026-11-18T23:32:53.051772","firstRecord":"2026-11-18T23:32:53.052770","tonne1":"2026-11-18T23:32:53.054912","tonnes10":"2026-11-18T23:32:53.055428"},"awardsSeen":["firstStep","firstWorkout","firstRoutine","firstRecord","tonne1","tonnes10"],"moments":[],"photoEvery":30,"bodyTl":false}
@@ -281,19 +304,108 @@ void main() {
       expect(_json(prefs.getString(kKey)!)['steps'], {'2026-11-19': 6412, '2026-11-20': 1200});
     });
 
-    test('una copia de 1.3.x deja pasos vacíos y la meta en 8000, y no apaga el conteo de este teléfono', () async {
+    test('una copia de 1.3.x conserva los pasos, la meta y el conteo de este teléfono', () async {
       await abrir(kBlobInicio132);
       conPasos();
 
       expect(await restoreBackupZip(_zipCon(_json(kBlobInicio132))), isTrue);
 
-      expect(fit.steps, isEmpty);
-      expect(fit.stepsFrom, isEmpty);
-      expect(fit.stepGoal, 8000);
+      expect(fit.steps, {'2026-11-19': 6412, '2026-11-20': 1200});
+      expect(fit.stepsFrom, {'2026-11-20': 872});
+      expect(fit.stepGoal, 10000);
       expect(fit.stepsOn, isTrue);
       expect(fit.stepsAskedAt, 1763600000000);
       expect(fit.sessions, hasLength(5));
       expect(fit.routines.single.name, 'Pecho y espalda pesado');
+      expect(_json(prefs.getString(kKey)!)['steps'], {'2026-11-19': 6412, '2026-11-20': 1200});
+    });
+
+    test('un JSON de 1.3.x también conserva los pasos y la meta de este teléfono', () async {
+      await abrir(kBlobInicio132);
+      conPasos();
+
+      expect(fit.importJson(kBlobInicio132), isTrue);
+
+      expect(fit.steps, {'2026-11-19': 6412, '2026-11-20': 1200});
+      expect(fit.stepsFrom, {'2026-11-20': 872});
+      expect(fit.stepGoal, 10000);
+      expect(fit.stepsOn, isTrue);
+      expect(fit.sessions, hasLength(5));
+    });
+
+    test('una copia de 1.4.0 con los pasos vacíos manda: vacía el historial y trae su meta', () async {
+      await abrir(kBlobInicio132);
+      conPasos();
+
+      final copia = {
+        ..._json(kBlobInicio132),
+        'steps': <String, Object?>{},
+        'stepsFrom': <String, Object?>{},
+        'stepGoal': 12000,
+        'stepsOn': false,
+      };
+      expect(await restoreBackupZip(_zipCon(copia)), isTrue);
+
+      expect(fit.steps, isEmpty);
+      expect(fit.stepsFrom, isEmpty);
+      expect(fit.stepGoal, 12000);
+      expect(fit.stepsOn, isFalse);
+      expect(fit.stepsAskedAt, 1763600000000);
+    });
+
+    test('una copia que trae solo algunas claves de pasos reemplaza esas y deja las demás', () async {
+      await abrir(kBlobInicio132);
+      conPasos();
+
+      fit.applyBackup({..._json(kBlobInicio132), 'steps': <String, Object?>{}});
+
+      expect(fit.steps, isEmpty);
+      expect(fit.stepsFrom, {'2026-11-20': 872});
+      expect(fit.stepGoal, 10000);
+    });
+
+    test('una clave de pasos presente con null manda: vacía o vuelve al valor por defecto', () async {
+      await abrir(kBlobInicio132);
+      conPasos();
+
+      fit.applyBackup({..._json(kBlobInicio132), 'steps': null, 'stepGoal': null});
+
+      expect(fit.steps, isEmpty);
+      expect(fit.stepsFrom, {'2026-11-20': 872});
+      expect(fit.stepGoal, 8000);
+    });
+
+    test('una copia que no se pudo guardar corta la lectura en curso y vuelve a leer con el estado del teléfono', () async {
+      await abrir(kBlobInicio132);
+      final previa = fit.stepSource;
+      addTearDown(() => fit.stepSource = previa);
+      final fuente = FakeStepSource();
+      fit.stepSource = fuente;
+      conPasos();
+      fit.stepsOn = false;
+      await fit.refreshSteps();
+      expect(fit.stepsStatus, StepsStatus.off);
+      fuente
+        ..readGate = Completer<void>()
+        ..days = [_diaRetenido];
+      await _llenarDisco();
+
+      final copia = {
+        ..._json(kBlobInicio132),
+        'steps': {'2026-11-18': 3000},
+        'stepGoal': 12000,
+        'stepsOn': true,
+      };
+      expect(await restoreBackupZip(_zipCon(copia)), isFalse);
+      expect(fuente.reads, 1, reason: 'la lectura de la copia quedó retenida');
+      fuente.readGate!.complete();
+      await pumpEventQueue();
+
+      expect(fit.steps, {'2026-11-19': 6412, '2026-11-20': 1200});
+      expect(fit.stepGoal, 10000);
+      expect(fit.stepsOn, isFalse);
+      expect(fit.stepsStatus, StepsStatus.off);
+      expect(fuente.stopped, 0);
     });
 
     test('el JSON exportado tampoco lleva stepsAskedAt', () async {
@@ -306,7 +418,7 @@ void main() {
   });
 
   group('rescate y borrado', () {
-    test('los pasos no cuentan como registros propios: el rescate se sigue ofreciendo', () async {
+    Future<void> ofrecerRescateSinPasos() async {
       await abrir(
         jsonEncode({
           'onboarded': true,
@@ -336,11 +448,97 @@ void main() {
       await Store.instance.init();
       prefs = await SharedPreferences.getInstance();
       fit.loadFromStore();
+    }
+
+    test('los pasos no cuentan como registros propios: el rescate se sigue ofreciendo', () async {
+      await ofrecerRescateSinPasos();
       expect(fit.rescueOffer, isNotNull);
 
       conPasos();
 
       expect(fit.rescueOffer, isNotNull);
+    });
+
+    test('restaurar un rescate sin claves de pasos conserva el historial y la meta de este teléfono', () async {
+      await ofrecerRescateSinPasos();
+      final previa = fit.stepSource;
+      addTearDown(() => fit.stepSource = previa);
+      final fuente = FakeStepSource();
+      fit.stepSource = fuente;
+      conPasos();
+      await fit.refreshSteps();
+      expect(fit.stepsStatus, StepsStatus.counting);
+
+      expect(fit.restoreRescue(), isTrue);
+      await pumpEventQueue();
+
+      expect(fit.stepsStatus, StepsStatus.off);
+      expect(fuente.stopped, 1);
+
+      expect(fit.routines.single.name, 'Empuje');
+      expect(fit.steps, {'2026-11-19': 6412, '2026-11-20': 1200});
+      expect(fit.stepsFrom, {'2026-11-20': 872});
+      expect(fit.stepGoal, 10000);
+      expect(fit.stepsOn, isFalse, reason: 'el rescate es este teléfono: sin stepsOn, el conteo queda apagado');
+    });
+
+    for (final discoLleno in [false, true]) {
+      test(
+        'restaurar un rescate ${discoLleno ? 'que no se pudo guardar ' : ''}corta la lectura en curso y no queda contando',
+        () async {
+          await ofrecerRescateSinPasos();
+          final previa = fit.stepSource;
+          addTearDown(() => fit.stepSource = previa);
+          final fuente = FakeStepSource();
+          fit.stepSource = fuente;
+          conPasos();
+          await fit.refreshSteps();
+          expect(fit.stepsStatus, StepsStatus.counting);
+          fuente
+            ..readGate = Completer<void>()
+            ..days = [_diaRetenido];
+          final enCurso = fit.refreshSteps();
+          await pumpEventQueue();
+          expect(fuente.reads, 2);
+          if (discoLleno) await _llenarDisco();
+
+          expect(fit.restoreRescue(), isTrue);
+          fuente.readGate!.complete();
+          await enCurso;
+          await pumpEventQueue();
+
+          expect(fit.steps, {'2026-11-19': 6412, '2026-11-20': 1200});
+          expect(fit.stepsOn, isFalse);
+          expect(fit.stepsStatus, StepsStatus.off);
+          expect(fuente.stopped, discoLleno ? 0 : 1);
+        },
+      );
+    }
+
+    test('un refresco que termina después de descartar el estado no notifica ni escribe', () async {
+      final fuente = FakeStepSource()
+        ..readGate = Completer<void>()
+        ..days = [const StepDayReading('2026-11-20', 5000)];
+      final estado = FitState()
+        ..stepSource = fuente
+        ..stepsOn = true;
+      var avisos = 0;
+      estado.addListener(() => avisos++);
+      final antes = prefs.getString(kKey);
+
+      final refresco = estado.refreshSteps();
+      await pumpEventQueue();
+      expect(fuente.reads, 1);
+      estado.setStepGoal(12000);
+      avisos = 0;
+      estado.dispose();
+      fuente.readGate!.complete();
+      await refresco;
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+
+      expect(avisos, 0);
+      expect(estado.steps, isEmpty);
+      expect(prefs.getString(kKey), antes);
     });
 
     test('Borrar todos los datos vacía los pasos, apaga el conteo y vuelve la meta a 8000', () async {

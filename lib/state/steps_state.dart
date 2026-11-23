@@ -44,6 +44,17 @@ mixin StepsState on FitCore {
 
   Future<void>? _stepsRun;
   int _stepsEpoch = 0;
+  bool _stepsDisposed = false;
+
+  /// Lo que se leyo ya no vale: hubo una restauracion o un borrado, o el estado se descarto.
+  bool _stepsStale(int epoch) => _stepsDisposed || epoch != _stepsEpoch;
+
+  @override
+  void dispose() {
+    _stepsDisposed = true;
+    _stepsEpoch++;
+    super.dispose();
+  }
 
   /// Mira la fuente y, si se esta contando, mezcla los dias leidos con el maximo; [saveNow] guarda sin esperar.
   Future<void> refreshSteps({bool saveNow = false}) async {
@@ -67,7 +78,7 @@ mixin StepsState on FitCore {
       if (await source.isAvailable()) {
         final askedAt = DateTime.now().millisecondsSinceEpoch;
         if (await source.permission() != StepPermission.granted) await source.requestPermission();
-        if (epoch != _stepsEpoch) return;
+        if (_stepsStale(epoch)) return;
         stepsOn = true;
         stepsAskedAt = askedAt;
         unawaited(StepsCardPref.setHidden(false));
@@ -75,7 +86,7 @@ mixin StepsState on FitCore {
         notifyListeners();
       }
     } catch (_) {}
-    if (epoch != _stepsEpoch) return;
+    if (_stepsStale(epoch)) return;
     await refreshSteps();
   }
 
@@ -103,21 +114,23 @@ mixin StepsState on FitCore {
   }
 
   Future<void> _refreshStepsOnce(bool saveNow) async {
+    if (_stepsDisposed) return;
     final epoch = _stepsEpoch;
     final source = stepSource;
     var changed = false;
     var dataChanged = false;
     try {
       final status = await _stepsStatusOf(source);
-      if (epoch != _stepsEpoch) return;
+      if (_stepsStale(epoch)) return;
       changed = _setStepsStatus(status);
       if (status == StepsStatus.counting) {
         final days = await source.readDays();
-        if (epoch != _stepsEpoch) return;
+        if (_stepsStale(epoch)) return;
         dataChanged = _mergeStepDays(days);
         changed = changed || dataChanged;
       }
     } catch (_) {}
+    if (_stepsStale(epoch)) return;
     if (saveNow && (dataChanged || _saveDebounce != null)) {
       persistNow();
     } else if (dataChanged) {
