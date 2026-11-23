@@ -120,6 +120,11 @@ const _stepKeys = [
   'kcalWeightPerDay',
   'stepsRangeLabel',
   'kcalTitle',
+  'countSteps',
+  'stepsNeedsPermission',
+  'stepsSettingsHint',
+  'stepsUnavailable',
+  'stepsAllow',
 ];
 
 Map<String, dynamic> _arb(String lang) =>

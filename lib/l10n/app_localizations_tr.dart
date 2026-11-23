@@ -3265,4 +3265,20 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get kcalTitle => 'Active calories (estimated)';
+
+  @override
+  String get countSteps => 'Count steps';
+
+  @override
+  String get stepsNeedsPermission => 'Permission is needed to count your steps.';
+
+  @override
+  String get stepsSettingsHint =>
+      'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.';
+
+  @override
+  String get stepsUnavailable => 'Not available on this phone';
+
+  @override
+  String get stepsAllow => 'Allow';
 }

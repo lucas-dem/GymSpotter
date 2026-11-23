@@ -5851,6 +5851,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Active calories (estimated)'**
   String get kcalTitle;
+
+  /// No description provided for @countSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Count steps'**
+  String get countSteps;
+
+  /// No description provided for @stepsNeedsPermission.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission is needed to count your steps.'**
+  String get stepsNeedsPermission;
+
+  /// No description provided for @stepsSettingsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps come from your phone\'s sensor and are stored on this device; they leave it only if you export a copy.'**
+  String get stepsSettingsHint;
+
+  /// No description provided for @stepsUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available on this phone'**
+  String get stepsUnavailable;
+
+  /// No description provided for @stepsAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get stepsAllow;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

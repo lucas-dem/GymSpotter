@@ -1046,5 +1046,10 @@
   "kcalWeightPerDay": "Estimadas con tu peso de cada día (hoy {weight})",
   "stepsRangeLabel": "Período",
   "months12": "12M",
-  "kcalTitle": "Calorías activas (estimadas)"
+  "kcalTitle": "Calorías activas (estimadas)",
+  "countSteps": "Contar pasos",
+  "stepsNeedsPermission": "Falta el permiso para contar tus pasos.",
+  "stepsSettingsHint": "Los pasos salen del sensor del teléfono y se guardan en este dispositivo; salen de él solo si exportás una copia.",
+  "stepsUnavailable": "No disponible en este teléfono",
+  "stepsAllow": "Dar permiso"
 }

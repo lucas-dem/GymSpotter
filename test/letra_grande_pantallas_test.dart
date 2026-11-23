@@ -74,6 +74,11 @@ void _progresoPasos({bool activado = true, bool parcial = false, bool datos = tr
   if (parcial) fit.stepsFrom[_clave(0)] = 14 * 60 + 32;
 }
 
+void _ajustesPasos({bool disponible = true, bool activado = true, StepPermission permiso = StepPermission.granted}) {
+  _pasos(disponible: disponible, activado: activado, permiso: permiso, pasos: 6412, meta: 30000);
+  fit.route = 'preferences';
+}
+
 void _sinPasos() {
   fit.stepSource = const UnavailableStepSource();
   fit.stepsStatus = StepsStatus.off;
@@ -218,6 +223,11 @@ void main() {
     'progress-pasos-meta-ancha': () => _progresoPasos(meta: 30000),
     'progress-pasos-vacio': () => _progresoPasos(datos: false),
     'progress-pasos-apagado': () => _progresoPasos(activado: false),
+    'preferences-pasos-apagado': () => _ajustesPasos(activado: false),
+    'preferences-pasos-contando': _ajustesPasos,
+    'preferences-pasos-necesita-permiso': () => _ajustesPasos(permiso: StepPermission.notDetermined),
+    'preferences-pasos-negado': () => _ajustesPasos(permiso: StepPermission.denied),
+    'preferences-pasos-no-disponible': () => _ajustesPasos(disponible: false),
     for (final id in const ['rm', 'bmi', 'cal', 'bf', 'plate', 'warmup'])
       'tools-detail-$id': () {
         fit.activeToolId = id;
@@ -305,6 +315,32 @@ void main() {
         }
         expect(fallas, isEmpty);
       });
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final escala in _escalas) {
+      for (final nombre in const [
+        'preferences',
+        'preferences-pasos-apagado',
+        'preferences-pasos-contando',
+        'preferences-pasos-necesita-permiso',
+        'preferences-pasos-negado',
+        'preferences-pasos-no-disponible',
+      ]) {
+        testWidgets('$nombre fits at 320 dp with text scale $escala in $idioma', (tester) async {
+          final (ancho, alto) = _estrecha;
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          casos[nombre]!();
+          final fallas = await _revisar(tester, const InfyterApp(), nombre, idioma: idioma);
+          await _cerrar(tester);
+          for (final f in fallas) {
+            debugPrint('FALLA $idioma 320dp x$escala $f');
+          }
+          expect(fallas, isEmpty);
+        });
+      }
     }
   }
 

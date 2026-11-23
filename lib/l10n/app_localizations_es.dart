@@ -3264,4 +3264,20 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get kcalTitle => 'Calorías activas (estimadas)';
+
+  @override
+  String get countSteps => 'Contar pasos';
+
+  @override
+  String get stepsNeedsPermission => 'Falta el permiso para contar tus pasos.';
+
+  @override
+  String get stepsSettingsHint =>
+      'Los pasos salen del sensor del teléfono y se guardan en este dispositivo; salen de él solo si exportás una copia.';
+
+  @override
+  String get stepsUnavailable => 'No disponible en este teléfono';
+
+  @override
+  String get stepsAllow => 'Dar permiso';
 }

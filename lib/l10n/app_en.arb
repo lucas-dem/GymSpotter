@@ -1128,5 +1128,10 @@
   "@kcalWeightPerDay": {"placeholders": {"weight": {"type": "String"}}},
   "stepsRangeLabel": "Period",
   "months12": "12M",
-  "kcalTitle": "Active calories (estimated)"
+  "kcalTitle": "Active calories (estimated)",
+  "countSteps": "Count steps",
+  "stepsNeedsPermission": "Permission is needed to count your steps.",
+  "stepsSettingsHint": "Steps come from your phone's sensor and are stored on this device; they leave it only if you export a copy.",
+  "stepsUnavailable": "Not available on this phone",
+  "stepsAllow": "Allow"
 }

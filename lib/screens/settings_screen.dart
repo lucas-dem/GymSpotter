@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:share_plus/share_plus.dart';
@@ -32,6 +34,7 @@ import '../widgets/liquid_notch.dart';
 import '../widgets/photo_source_sheet.dart';
 import '../widgets/profile_avatar.dart';
 import '../widgets/ruler_picker.dart';
+import '../widgets/steps_card.dart';
 import '../widgets/timer_panel.dart';
 import 'profile_screen.dart';
 import 'legal_screen.dart';
@@ -377,6 +380,10 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
                 ),
               ),
               const SizedBox(height: 18),
+              _sectionLabel(gc, t.stepsTitle),
+              const SizedBox(height: 8),
+              _stepsGroup(context, gc),
+              const SizedBox(height: 18),
               if (Platform.isAndroid) ...[
                 _sectionLabel(gc, t.homeWidgets),
                 const SizedBox(height: 8),
@@ -409,6 +416,133 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
             ]),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _stepsGroup(BuildContext context, GymColors gc) {
+    final status = fit.stepsStatus;
+    final available = status != StepsStatus.unavailable;
+    final on = fit.stepsOn;
+    final note = AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary, height: 1.4);
+    final canToggle = available || on;
+    final switchRow = _prefRow(
+      gc,
+      PhosphorIconsRegular.footprints,
+      t.countSteps,
+      canToggle ? TinySwitch(on: on) : const SizedBox.shrink(),
+    );
+    return SoftCard(
+      radius: 20,
+      borderColor: Colors.transparent,
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (canToggle)
+            Semantics(
+              container: true,
+              toggled: on,
+              label: t.countSteps,
+              value: available ? null : t.stepsUnavailable,
+              onTap: () => _toggleSteps(context),
+              excludeSemantics: true,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _toggleSteps(context),
+                child: switchRow,
+              ),
+            )
+          else
+            Semantics(
+              container: true,
+              label: t.countSteps,
+              value: t.stepsUnavailable,
+              excludeSemantics: true,
+              child: switchRow,
+            ),
+          if (available && on && status == StepsStatus.denied)
+            _stepsPermissionNote(
+              gc,
+              t.stepsDeniedBody,
+              t.openSettings,
+              PhosphorIconsRegular.gear,
+              () => AppSettings.openAppSettings(),
+            ),
+          if (available && on && status == StepsStatus.needsPermission)
+            _stepsPermissionNote(
+              gc,
+              t.stepsNeedsPermission,
+              t.stepsAllow,
+              PhosphorIconsRegular.footprints,
+              () => activateSteps(context),
+            ),
+          if (available && on) _stepGoalRow(context, gc),
+          const SizedBox(height: 4),
+          Text(available ? t.stepsSettingsHint : t.stepsUnavailable, style: note),
+        ],
+      ),
+    );
+  }
+
+  void _toggleSteps(BuildContext context) {
+    if (fit.stepsOn) {
+      fit.disableSteps();
+    } else if (fit.stepsStatus != StepsStatus.unavailable) {
+      unawaited(activateSteps(context));
+    }
+  }
+
+  Widget _stepGoalRow(BuildContext context, GymColors gc) {
+    final goal = t.stepsCount(NumberFormat.decimalPattern(intlLocale).format(fit.stepGoal));
+    return Semantics(
+      container: true,
+      button: true,
+      label: t.stepGoal,
+      value: goal,
+      hint: t.stepsChangeGoal,
+      onTap: () => showStepGoalSheet(context),
+      excludeSemantics: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => showStepGoalSheet(context),
+        child: _prefRow(
+          gc,
+          PhosphorIconsRegular.flag,
+          t.stepGoal,
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(goal, style: AppTheme.f(13, weight: FontWeight.w600, color: gc.textSecondary)),
+              const SizedBox(width: 6),
+              Icon(PhosphorIconsRegular.caretRight, size: 15, color: gc.textTertiary),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _stepsPermissionNote(GymColors gc, String body, String action, IconData icon, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 36, bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(body, style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary)),
+          const SizedBox(height: 10),
+          Semantics(
+            container: true,
+            button: true,
+            label: action,
+            onTap: onTap,
+            excludeSemantics: true,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 48),
+              child: GhostButton(label: action, icon: icon, onTap: onTap),
+            ),
+          ),
+        ],
       ),
     );
   }

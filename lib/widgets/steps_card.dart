@@ -121,7 +121,7 @@ class _StepsCardState extends State<StepsCard> {
     action: GhostButton(
       label: t.stepsEnable,
       icon: PhosphorIconsRegular.footprints,
-      onTap: () => _activate(context),
+      onTap: () => activateSteps(context),
     ),
     onHide: onHide,
   );
@@ -184,11 +184,6 @@ class _StepsCardState extends State<StepsCard> {
         ],
       ),
     );
-  }
-
-  Future<void> _activate(BuildContext context) async {
-    final go = await showStepsExplanation(context);
-    if (go == true) await fit.enableSteps();
   }
 
   Widget _counting(BuildContext context, GymColors gc) {
@@ -343,6 +338,12 @@ DayKcal _todayKcal(DateTime now) => dayKcal(
   bodyweight: fit.bodyweight,
   profileWeightKg: fit.profile.weightKg,
 );
+
+/// Muestra la explicación y, si la persona sigue, activa el conteo y pide el permiso.
+Future<void> activateSteps(BuildContext context) async {
+  final go = await showStepsExplanation(context);
+  if (go == true) await fit.enableSteps();
+}
 
 Future<bool?> showStepsExplanation(BuildContext context) {
   final gc = context.gc;
