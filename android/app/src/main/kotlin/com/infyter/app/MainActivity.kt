@@ -26,11 +26,13 @@ import java.io.FileOutputStream
 class MainActivity : FlutterActivity() {
     private var incomingChannel: MethodChannel? = null
     private var rotaryChannel: MethodChannel? = null
+    private var stepCounter: StepCounter? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val messenger = flutterEngine.dartExecutor.binaryMessenger
         StoreUpdate.register(this, messenger)
+        stepCounter = StepCounter(this, messenger)
 
         MethodChannel(messenger, "infyter/haptics").setMethodCallHandler { call, result ->
             if (call.method != "buzz") {
@@ -175,9 +177,20 @@ class MainActivity : FlutterActivity() {
 
     override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
         rotaryChannel = null
+        stepCounter?.dispose()
+        stepCounter = null
         LiveNotifier.dart = null
         if (isFinishing) LiveNotifier.cancel(this)
         super.cleanUpFlutterEngine(flutterEngine)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        stepCounter?.onPermissionResult(requestCode, grantResults)
     }
 
     override fun onNewIntent(intent: Intent) {

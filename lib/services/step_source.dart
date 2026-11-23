@@ -1,6 +1,9 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+
+import 'step_source_android.dart';
 
 const int kMaxStepsPerDay = 345600;
 
@@ -64,12 +67,12 @@ class StepChannel {
   /// EventChannel solo de Android: eventos con el mapa de readCounter, sin permiso no emite; Dart hace listen en primer plano y cancel en segundo.
   static const eventsName = 'infyter/steps/events';
 
-  /// Sin argumentos -> bool: Android hay TYPE_STEP_COUNTER; iOS CMPedometer.isStepCountingAvailable().
+  /// Sin argumentos -> bool: Android true si hay TYPE_STEP_COUNTER o FEATURE_SENSOR_STEP_COUNTER (sin permiso el sensor puede no figurar) y false en el reloj (FEATURE_WATCH); iOS CMPedometer.isStepCountingAvailable().
   static const isAvailable = 'isAvailable';
 
   /// Sin argumentos -> 'granted' | 'denied' | 'notDetermined', sin mostrar ningun dialogo.
-  /// Android: concedido o Android 9 o anterior (no hay permiso) -> granted; negado y el nativo ya lo pidio alguna vez -> denied; nunca pedido -> notDetermined.
-  /// Android sabe si ya lo pidio por una marca propia en SharedPreferences nativas que escribe requestPermission, no por stepsAskedAt (que es de Dart y no ve el nativo).
+  /// Android: concedido o Android 9 o anterior (no hay permiso) -> granted; nunca pedido, o negado una vez y el sistema todavia muestra el dialogo (shouldShowRequestPermissionRationale) -> notDetermined; negado y el sistema ya no lo muestra -> denied.
+  /// Android sabe si ya lo negaron por una marca propia en SharedPreferences nativas que escribe el resultado del pedido ante una negativa real o dos seguidas sin explicacion del sistema (un toque afuera del dialogo se tolera una vez) y que se borra al estar concedido, no por stepsAskedAt (que es de Dart y no ve el nativo).
   /// iOS CMAuthorizationStatus: authorized -> granted, notDetermined -> notDetermined, denied y restricted -> denied.
   static const permissionStatus = 'permissionStatus';
 
@@ -86,6 +89,18 @@ class StepChannel {
   /// Un dia cuya consulta falla o no tiene datos se OMITE: nunca se manda steps 0 inventado.
   /// fromMinute no se manda en iOS: Core Motion da el dia completo; solo lo usa la regla de ancla de Android dentro de Dart.
   static const readDays = 'readDays';
+
+  /// Solo Android, sin argumentos -> String o null: el ancla de step_anchor.dart en JSON, guardada en las preferencias nativas infyter_steps (fuera de la copia y de la transferencia a otro telefono).
+  static const loadAnchor = 'loadAnchor';
+
+  /// Solo Android, argumento {anchor: String} -> null: guarda el ancla en JSON.
+  static const saveAnchor = 'saveAnchor';
+
+  /// Solo Android, sin argumentos -> null: borra solo el ancla; la marca de que el permiso ya se pidio queda.
+  static const clearAnchor = 'clearAnchor';
+
+  /// Solo Android, sin argumentos -> null: borra el ancla, la marca nativa permission_asked y el contador silent_denials.
+  static const forget = 'forget';
 
   /// Del lado de iOS (U5) quedan el minimo de 5 minutos entre consultas y la lectura al pasar a segundo plano.
   static const iosThrottle = Duration(minutes: 5);
@@ -123,6 +138,12 @@ abstract class StepSource {
 
   /// Borra lo que la fuente guarda en este telefono; el historial de la app no.
   Future<void> forget();
+
+  /// Para "Contar pasos" apagado: deja de escuchar y borra solo el ancla, asi lo caminado mientras tanto no se suma; lo del permiso queda.
+  Future<void> stopCounting();
+
+  /// Avisa que hay pasos nuevos para leer, como mucho cada 60 s y solo con la app en primer plano.
+  Stream<void> get updates;
 }
 
 class UnavailableStepSource implements StepSource {
@@ -142,10 +163,17 @@ class UnavailableStepSource implements StepSource {
 
   @override
   Future<void> forget() async {}
+
+  @override
+  Future<void> stopCounting() async {}
+
+  @override
+  Stream<void> get updates => const Stream.empty();
 }
 
-/// La fuente de la plataforma actual; hasta que existan Android e iOS es la no disponible.
-StepSource createStepSource() => const UnavailableStepSource();
+/// La fuente de la plataforma actual: el sensor en Android (el reloj responde que no esta disponible) y, hasta iOS, la no disponible.
+StepSource createStepSource() =>
+    !kIsWeb && Platform.isAndroid ? AndroidStepSource() : const UnavailableStepSource();
 
 @visibleForTesting
 class FakeStepSource implements StepSource {
@@ -158,6 +186,11 @@ class FakeStepSource implements StepSource {
   Completer<void>? requestGate;
   int reads = 0;
   int forgotten = 0;
+  int stopped = 0;
+  final StreamController<void> updatesController = StreamController<void>.broadcast();
+
+  @override
+  Stream<void> get updates => updatesController.stream;
 
   @override
   Future<bool> isAvailable() async => available;
@@ -182,4 +215,7 @@ class FakeStepSource implements StepSource {
 
   @override
   Future<void> forget() async => forgotten++;
+
+  @override
+  Future<void> stopCounting() async => stopped++;
 }

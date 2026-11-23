@@ -81,6 +81,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   String? _incoming;
   bool _scrolled = false;
   int _restTick = fit.restDoneTick;
+  StreamSubscription<void>? _stepUpdates;
   // The version check can cover the app at any moment (it waits for an open workout to end).
   late final Listenable _shell = Listenable.merge([fit, updateGate]);
 
@@ -101,6 +102,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     // After the first frame, so the app opens at once; the answer may cover it a moment later.
     WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(updateGate.checkNow()));
     WidgetsBinding.instance.addPostFrameCallback((_) => unawaited(fit.refreshSteps()));
+    _stepUpdates = fit.stepSource.updates.listen((_) => unawaited(fit.refreshSteps()));
   }
 
   void _receive(String text) {
@@ -147,6 +149,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     fit.removeListener(_offerIncoming);
     fit.removeListener(_queueCelebration);
     _awardWait?.cancel();
+    unawaited(_stepUpdates?.cancel());
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
