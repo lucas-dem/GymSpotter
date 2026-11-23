@@ -27,6 +27,21 @@ mixin StepsState on FitCore {
 
   StepsStatus stepsStatus = StepsStatus.unread;
 
+  DateTime? _focusStepsAt;
+
+  /// Opens Progress and asks its steps block to scroll into view when it is built.
+  void openProgressOnSteps() {
+    if (route != 'progress') _focusStepsAt = DateTime.now();
+    goProgress();
+  }
+
+  /// True once for a request made in the last few seconds; later requests are stale.
+  bool takeFocusSteps() {
+    final at = _focusStepsAt;
+    _focusStepsAt = null;
+    return at != null && DateTime.now().difference(at) < const Duration(seconds: 3);
+  }
+
   Future<void>? _stepsRun;
   int _stepsEpoch = 0;
 

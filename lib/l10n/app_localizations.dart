@@ -5791,6 +5791,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Adds the steps your phone counted between two readings on the same day.'**
   String get stepsAndroidHint;
+
+  /// No description provided for @stepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get stepsTitle;
+
+  /// No description provided for @stepsAvgUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'per day'**
+  String get stepsAvgUnit;
+
+  /// No description provided for @stepsGoalDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal {goal} · reached {done} of {days, plural, one{{days} day} other{{days} days}}'**
+  String stepsGoalDays(String goal, int done, int days);
+
+  /// No description provided for @stepsPeriodEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No steps counted in this period'**
+  String get stepsPeriodEmpty;
+
+  /// No description provided for @stepsLegendGaps.
+  ///
+  /// In en, this message translates to:
+  /// **'Gaps are periods without data.'**
+  String get stepsLegendGaps;
+
+  /// No description provided for @stepsLegendPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Lighter bars are partial days.'**
+  String get stepsLegendPartial;
+
+  /// No description provided for @kcalWeightPerDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated with your weight on each day (today {weight})'**
+  String kcalWeightPerDay(String weight);
+
+  /// No description provided for @stepsRangeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get stepsRangeLabel;
+
+  /// No description provided for @months12.
+  ///
+  /// In en, this message translates to:
+  /// **'12M'**
+  String get months12;
+
+  /// No description provided for @kcalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Active calories (estimated)'**
+  String get kcalTitle;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

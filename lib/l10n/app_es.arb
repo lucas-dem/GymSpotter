@@ -1036,5 +1036,15 @@
   "stepsByWalking": "Por pasos",
   "kcalByWorkouts": "Por entrenamientos",
   "stepsOverlapHint": "Los pasos durante un entrenamiento se cuentan en los dos.",
-  "stepsAndroidHint": "Se suman los pasos que el teléfono contó entre dos lecturas del mismo día."
+  "stepsAndroidHint": "Se suman los pasos que el teléfono contó entre dos lecturas del mismo día.",
+  "stepsTitle": "Pasos",
+  "stepsAvgUnit": "por día",
+  "stepsGoalDays": "Meta {goal} · cumplida {done} de {days, plural, one{{days} día} other{{days} días}}",
+  "stepsPeriodEmpty": "Sin pasos contados en este período",
+  "stepsLegendGaps": "Los huecos son períodos sin datos.",
+  "stepsLegendPartial": "Las barras claras son días parciales.",
+  "kcalWeightPerDay": "Estimadas con tu peso de cada día (hoy {weight})",
+  "stepsRangeLabel": "Período",
+  "months12": "12M",
+  "kcalTitle": "Calorías activas (estimadas)"
 }

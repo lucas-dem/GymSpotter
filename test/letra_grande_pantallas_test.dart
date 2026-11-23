@@ -17,6 +17,7 @@ import 'package:infyter/widgets/dialogs.dart';
 import 'package:infyter/widgets/medal_shelf.dart';
 import 'package:infyter/widgets/routine_folder.dart';
 import 'package:infyter/widgets/steps_card.dart';
+import 'package:infyter/widgets/steps_progress.dart';
 import 'package:infyter/widgets/ruler_picker.dart';
 import 'package:infyter/widgets/ui_kit.dart';
 
@@ -51,6 +52,26 @@ void _pasos({
   fit.stepGoal = meta;
   StepsCardPref.hidden.value = oculta;
   fit.route = 'home';
+}
+
+String _clave(int atras) {
+  final h = DateTime.now();
+  final d = DateTime(h.year, h.month, h.day - atras);
+  return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+}
+
+void _progresoPasos({bool activado = true, bool parcial = false, bool datos = true, int meta = kDefaultStepGoal}) {
+  _pasos(activado: activado, meta: meta);
+  fit.route = 'progress';
+  if (!datos) return;
+  fit.steps
+    ..[_clave(0)] = parcial ? 1234 : 6412
+    ..[_clave(1)] = 9876
+    ..[_clave(2)] = 45678
+    ..[_clave(5)] = 4000
+    ..[_clave(12)] = 8000
+    ..[_clave(40)] = 7000;
+  if (parcial) fit.stepsFrom[_clave(0)] = 14 * 60 + 32;
 }
 
 void _sinPasos() {
@@ -119,7 +140,13 @@ Future<List<String>> _revisar(
       debugPrint('PUNTOS $que: $p');
     }
   }
-  return [for (final e in errores) '$que: $e', for (final c in problemasDeTexto(tester, idioma)) '$que: $c'];
+  return [
+    for (final e in errores) '$que: $e',
+    for (final c in problemasDeTexto(tester, idioma)) '$que: $c',
+    if (que.startsWith('progress-pasos'))
+      for (final c in lineasExcedidas(tester, [find.byType(StepsProgressCard), find.byType(KcalProgressCard)]))
+        '$que: $c',
+  ];
 }
 
 Future<void> _cerrar(WidgetTester tester) async {
@@ -186,6 +213,11 @@ void main() {
     'home-pasos-meta': () => _pasos(pasos: 9876),
     'home-pasos-ancho': () => _pasos(pasos: 45678, meta: 30000),
     'home-pasos-sin-datos': () => _pasos(),
+    'progress-pasos': _progresoPasos,
+    'progress-pasos-parcial': () => _progresoPasos(parcial: true),
+    'progress-pasos-meta-ancha': () => _progresoPasos(meta: 30000),
+    'progress-pasos-vacio': () => _progresoPasos(datos: false),
+    'progress-pasos-apagado': () => _progresoPasos(activado: false),
     for (final id in const ['rm', 'bmi', 'cal', 'bf', 'plate', 'warmup'])
       'tools-detail-$id': () {
         fit.activeToolId = id;
@@ -204,6 +236,10 @@ void main() {
     'pasos-explicacion': (() => _pasos(activado: false), (c) => showStepsExplanation(c)),
     'pasos-meta': (() => _pasos(pasos: 6412), showStepGoalSheet),
     'pasos-ayuda': (() => _pasos(pasos: 6412), showStepsHelp),
+    'dia-pasos': (
+      () => _progresoPasos(parcial: true),
+      (c) => showDaySheet(c, DateTime.now()),
+    ),
     'pasos-meta-ancha': (() => _pasos(pasos: 45678, meta: 30000), showStepGoalSheet),
     'confirmar': (
       () => fit.route = 'home',
@@ -251,6 +287,12 @@ void main() {
       'home-pasos-parcial',
       'home-pasos-meta',
       'home-pasos-ancho',
+      'progress',
+      'progress-pasos',
+      'progress-pasos-parcial',
+      'progress-pasos-meta-ancha',
+      'progress-pasos-vacio',
+      'progress-pasos-apagado',
     ]) {
       testWidgets('$nombre fits at 320 dp with text scale $escala in es', (tester) async {
         final (ancho, alto) = _estrecha;

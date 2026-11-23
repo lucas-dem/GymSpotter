@@ -583,3 +583,11 @@ void usarPantalla(WidgetTester tester, {required double ancho, required double a
   addTearDown(tester.view.reset);
   addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 }
+
+/// Texts inside [zonas] that lose lines to `maxLines` without an ellipsis.
+List<String> lineasExcedidas(WidgetTester tester, Iterable<Finder> zonas) => [
+  for (final zona in zonas)
+    for (final texto in find.descendant(of: zona, matching: find.byType(RichText)).evaluate())
+      if ((texto.renderObject as RenderParagraph).didExceedMaxLines)
+        'cortado por maxLines: "${(texto.renderObject as RenderParagraph).text.toPlainText()}"',
+];

@@ -239,12 +239,12 @@ class _StepsCardState extends State<StepsCard> {
       label: t.stepsToday,
       hint: t.stepsOpenProgress,
       value: '${_count(steps)}, ≈ ${_count(kcal.total)} kcal',
-      onTap: fit.goProgress,
+      onTap: _openProgress,
       container: true,
       child: GestureDetector(
         excludeFromSemantics: true,
         behavior: HitTestBehavior.opaque,
-        onTap: fit.goProgress,
+        onTap: _openProgress,
         child: SoftCard(
           radius: 22,
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
@@ -333,6 +333,8 @@ class _StepsCardState extends State<StepsCard> {
     );
   }
 }
+
+void _openProgress() => fit.openProgressOnSteps();
 
 DayKcal _todayKcal(DateTime now) => dayKcal(
   day: now,

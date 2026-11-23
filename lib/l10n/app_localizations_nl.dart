@@ -3236,4 +3236,39 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
+
+  @override
+  String get stepsTitle => 'Steps';
+
+  @override
+  String get stepsAvgUnit => 'per day';
+
+  @override
+  String stepsGoalDays(String goal, int done, int days) {
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days', one: '$days day');
+    return 'Goal $goal · reached $done of $_temp0';
+  }
+
+  @override
+  String get stepsPeriodEmpty => 'No steps counted in this period';
+
+  @override
+  String get stepsLegendGaps => 'Gaps are periods without data.';
+
+  @override
+  String get stepsLegendPartial => 'Lighter bars are partial days.';
+
+  @override
+  String kcalWeightPerDay(String weight) {
+    return 'Estimated with your weight on each day (today $weight)';
+  }
+
+  @override
+  String get stepsRangeLabel => 'Period';
+
+  @override
+  String get months12 => '12M';
+
+  @override
+  String get kcalTitle => 'Active calories (estimated)';
 }

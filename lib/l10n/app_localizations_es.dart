@@ -3229,4 +3229,39 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stepsAndroidHint => 'Se suman los pasos que el teléfono contó entre dos lecturas del mismo día.';
+
+  @override
+  String get stepsTitle => 'Pasos';
+
+  @override
+  String get stepsAvgUnit => 'por día';
+
+  @override
+  String stepsGoalDays(String goal, int done, int days) {
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days días', one: '$days día');
+    return 'Meta $goal · cumplida $done de $_temp0';
+  }
+
+  @override
+  String get stepsPeriodEmpty => 'Sin pasos contados en este período';
+
+  @override
+  String get stepsLegendGaps => 'Los huecos son períodos sin datos.';
+
+  @override
+  String get stepsLegendPartial => 'Las barras claras son días parciales.';
+
+  @override
+  String kcalWeightPerDay(String weight) {
+    return 'Estimadas con tu peso de cada día (hoy $weight)';
+  }
+
+  @override
+  String get stepsRangeLabel => 'Período';
+
+  @override
+  String get months12 => '12M';
+
+  @override
+  String get kcalTitle => 'Calorías activas (estimadas)';
 }

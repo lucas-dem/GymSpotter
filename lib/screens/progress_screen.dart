@@ -2,13 +2,16 @@ import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../l10n/l10n.dart';
 import '../models/progress_shot.dart';
 import '../models/workout.dart';
 import '../services/media_store.dart';
+import '../state/energy.dart';
 import '../state/fit_state.dart';
+import '../state/steps_range.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/body_map.dart';
@@ -21,6 +24,7 @@ import '../widgets/glass.dart';
 import '../widgets/muscle_radar.dart';
 import '../widgets/rolling_text.dart';
 import '../widgets/ruler_picker.dart';
+import '../widgets/steps_progress.dart';
 import '../widgets/ui_kit.dart';
 import 'share_sheet.dart';
 import 'start_sheet.dart';
@@ -482,6 +486,7 @@ class ProgressScreen extends StatelessWidget {
   ) {
     return [
       if (fit.sessions.isNotEmpty) _thisWeek(gc),
+      if (showStepsProgress()) ...[const StepsProgressCard(), const KcalProgressCard()],
       if (fit.trackedExercises.isNotEmpty) _StrengthCard(),
       if (prs.isNotEmpty) _PrCard(prs),
       if (fit.shotCount > 0) _timelineCard(gc),
@@ -1221,7 +1226,7 @@ class _PrCardState extends State<_PrCard> {
             alignment: Alignment.topCenter,
             child: Column(
               children: [
-                for (var i = 0; i < rows.length; i++) _row(gc, rows[i], i, i < rows.length - 1 || hidden > 0),
+                for (var i = 0; i < rows.length; i++) _row(context, gc, rows[i], i, i < rows.length - 1 || hidden > 0),
               ],
             ),
           ),
@@ -1252,8 +1257,10 @@ class _PrCardState extends State<_PrCard> {
     );
   }
 
-  Widget _row(GymColors gc, ({String id, String name, double topWeight, double oneRm}) pr, int rank, bool border) {
+  Widget _row(BuildContext context, GymColors gc, ({String id, String name, double topWeight, double oneRm}) pr, int rank, bool border) {
     final medal = rank < 3 ? [gc.brass, gc.textSecondary, gc.accent][rank] : null;
+    final stacked = MediaQuery.textScalerOf(context).scale(10) / 10 > 1.5;
+    final top = Text(fit.weightLabel(pr.topWeight), style: AppTheme.d(19, weight: FontWeight.w800, color: gc.text));
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 11),
       decoration: BoxDecoration(
@@ -1302,11 +1309,11 @@ class _PrCardState extends State<_PrCard> {
                 const SizedBox(height: 3),
                 Text(t.oneRmEst(fit.weightLabel(pr.oneRm)),
                     style: AppTheme.s(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
+                if (stacked) ...[const SizedBox(height: 3), top],
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          Text(fit.weightLabel(pr.topWeight), style: AppTheme.d(19, weight: FontWeight.w800, color: gc.text)),
+          if (!stacked) ...[const SizedBox(width: 12), top],
         ],
       ),
     );
@@ -1350,6 +1357,7 @@ class _DaySheet extends StatelessWidget {
             Text(t.longDate(date),
                 style: AppTheme.d(20, weight: FontWeight.w700, color: gc.text)),
             const SizedBox(height: 14),
+            ..._stepsRow(gc),
             if (s == null)
               Text(t.restDay, style: AppTheme.s(14, color: gc.textSecondary))
             else ...[
@@ -1388,6 +1396,36 @@ class _DaySheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _stepsRow(GymColors gc) {
+    final count = fit.steps[stepsDayKey(date)];
+    if (count == null) return const [];
+    final kcal = dayKcal(
+      day: date,
+      steps: count,
+      sessions: fit.sessions,
+      bodyweight: fit.bodyweight,
+      profileWeightKg: fit.profile.weightKg,
+    );
+    final from = fit.stepsFrom[stepsDayKey(date)];
+    final clock = from == null
+        ? null
+        : '${(from ~/ 60).toString().padLeft(2, '0')}:${(from % 60).toString().padLeft(2, '0')}';
+    return [
+      Text(
+        '${t.stepsCount(NumberFormat.decimalPattern(intlLocale).format(count))} · ≈ ${NumberFormat.decimalPattern(intlLocale).format(kcal.total)} kcal',
+        style: AppTheme.f(14, weight: FontWeight.w700, color: gc.text),
+      ),
+      if (clock != null) ...[
+        const SizedBox(height: 3),
+        Text(
+          t.stepsCountingSince(clock),
+          style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary),
+        ),
+      ],
+      const SizedBox(height: 14),
+    ];
   }
 
   bool get _isFuture {

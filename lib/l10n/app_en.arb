@@ -1116,5 +1116,17 @@
   "stepsByWalking": "From steps",
   "kcalByWorkouts": "From workouts",
   "stepsOverlapHint": "Steps during a workout are counted in both.",
-  "stepsAndroidHint": "Adds the steps your phone counted between two readings on the same day."
+  "stepsAndroidHint": "Adds the steps your phone counted between two readings on the same day.",
+  "stepsTitle": "Steps",
+  "stepsAvgUnit": "per day",
+  "stepsGoalDays": "Goal {goal} · reached {done} of {days, plural, one{{days} day} other{{days} days}}",
+  "@stepsGoalDays": {"placeholders": {"goal": {"type": "String"}, "done": {"type": "int"}, "days": {"type": "int"}}},
+  "stepsPeriodEmpty": "No steps counted in this period",
+  "stepsLegendGaps": "Gaps are periods without data.",
+  "stepsLegendPartial": "Lighter bars are partial days.",
+  "kcalWeightPerDay": "Estimated with your weight on each day (today {weight})",
+  "@kcalWeightPerDay": {"placeholders": {"weight": {"type": "String"}}},
+  "stepsRangeLabel": "Period",
+  "months12": "12M",
+  "kcalTitle": "Active calories (estimated)"
 }
