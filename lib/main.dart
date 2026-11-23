@@ -12,6 +12,7 @@ import 'services/media_store.dart';
 import 'services/rest_alarm.dart';
 import 'services/screen_awake.dart';
 import 'state/fit_state.dart';
+import 'state/steps_card_pref.dart';
 import 'wear/wear_app.dart';
 
 Future<void> main() async {
@@ -30,6 +31,7 @@ Future<void> main() async {
   await MediaStore.init();
   await AlarmStore.init();
   fit.loadFromStore();
+  await StepsCardPref.load();
   await RestAlarm.instance.init();
   fit.syncPhotoReminder();
   fit.syncTrainReminder();

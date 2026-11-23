@@ -3137,4 +3137,96 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get qrLabel => 'QR';
+
+  @override
+  String get stepsToday => 'Pasos hoy';
+
+  @override
+  String get activeKcal => 'Kcal activas';
+
+  @override
+  String stepsGoalUnit(String goal) {
+    return '/ $goal';
+  }
+
+  @override
+  String estimatedWithWeight(String weight) {
+    return 'Estimadas con tu peso ($weight)';
+  }
+
+  @override
+  String get stepsEnableTitle => 'Contá tus pasos';
+
+  @override
+  String get stepsEnableBody =>
+      'Usá el sensor del teléfono para ver tus pasos y las calorías activas estimadas.';
+
+  @override
+  String get stepsEnable => 'Activar';
+
+  @override
+  String get stepsDeniedTitle => 'Pasos desactivados';
+
+  @override
+  String get stepsDeniedBody => 'Permití Actividad física en los ajustes del teléfono';
+
+  @override
+  String get openSettings => 'Abrir ajustes';
+
+  @override
+  String stepsCountingSince(String time) {
+    return 'Contando desde las $time';
+  }
+
+  @override
+  String get stepsContinue => 'Continuar';
+
+  @override
+  String get stepsHide => 'Ocultar la tarjeta de pasos';
+
+  @override
+  String get stepsOpenProgress => 'Abre Progreso';
+
+  @override
+  String get stepsChangeGoal => 'Cambia la meta';
+
+  @override
+  String get stepsShowEstimate => 'Muestra cómo se estiman';
+
+  @override
+  String get stepsGoalReached => 'Meta cumplida';
+
+  @override
+  String get stepsPermissionBody =>
+      'Infyter cuenta tus pasos con el sensor del teléfono para mostrarte tu avance y las calorías activas estimadas. Los datos quedan en tu teléfono.';
+
+  @override
+  String get stepGoal => 'Meta diaria';
+
+  @override
+  String get stepGoalHint => 'Una meta que puedas cumplir casi todos los días.';
+
+  @override
+  String stepsCount(String steps) {
+    return '$steps pasos';
+  }
+
+  @override
+  String get stepsHelpTitle => 'Calorías activas estimadas';
+
+  @override
+  String get stepsHelpBody =>
+      'Es una estimación de lo que gastás por encima del reposo, con tus pasos y tus entrenamientos de hoy. No es un dato médico.';
+
+  @override
+  String get stepsByWalking => 'Por pasos';
+
+  @override
+  String get kcalByWorkouts => 'Por entrenamientos';
+
+  @override
+  String get stepsOverlapHint => 'Los pasos durante un entrenamiento se cuentan en los dos.';
+
+  @override
+  String get stepsAndroidHint => 'Se suman los pasos que el teléfono contó entre dos lecturas del mismo día.';
 }

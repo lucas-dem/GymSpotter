@@ -3142,4 +3142,95 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get qrLabel => 'QR';
+
+  @override
+  String get stepsToday => 'Steps today';
+
+  @override
+  String get activeKcal => 'Active kcal';
+
+  @override
+  String stepsGoalUnit(String goal) {
+    return '/ $goal';
+  }
+
+  @override
+  String estimatedWithWeight(String weight) {
+    return 'Estimated with your weight ($weight)';
+  }
+
+  @override
+  String get stepsEnableTitle => 'Count your steps';
+
+  @override
+  String get stepsEnableBody => 'Use your phone\'s sensor to see your steps and estimated active calories.';
+
+  @override
+  String get stepsEnable => 'Turn on';
+
+  @override
+  String get stepsDeniedTitle => 'Steps are off';
+
+  @override
+  String get stepsDeniedBody => 'Allow Physical activity in your phone\'s settings';
+
+  @override
+  String get openSettings => 'Open settings';
+
+  @override
+  String stepsCountingSince(String time) {
+    return 'Counting since $time';
+  }
+
+  @override
+  String get stepsContinue => 'Continue';
+
+  @override
+  String get stepsHide => 'Hide the steps card';
+
+  @override
+  String get stepsOpenProgress => 'Opens Progress';
+
+  @override
+  String get stepsChangeGoal => 'Changes the goal';
+
+  @override
+  String get stepsShowEstimate => 'Shows how they are estimated';
+
+  @override
+  String get stepsGoalReached => 'Goal reached';
+
+  @override
+  String get stepsPermissionBody =>
+      'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.';
+
+  @override
+  String get stepGoal => 'Daily goal';
+
+  @override
+  String get stepGoalHint => 'A goal you can reach on most days.';
+
+  @override
+  String stepsCount(String steps) {
+    return '$steps steps';
+  }
+
+  @override
+  String get stepsHelpTitle => 'Estimated active calories';
+
+  @override
+  String get stepsHelpBody =>
+      'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.';
+
+  @override
+  String get stepsByWalking => 'From steps';
+
+  @override
+  String get kcalByWorkouts => 'From workouts';
+
+  @override
+  String get stepsOverlapHint => 'Steps during a workout are counted in both.';
+
+  @override
+  String get stepsAndroidHint => 'Adds the steps your phone counted between two readings on the same day.';
 }

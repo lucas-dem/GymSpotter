@@ -8,16 +8,21 @@ import 'body_map.dart';
 import 'svg_icon.dart';
 
 class GoalRing extends StatelessWidget {
-  const GoalRing({super.key, required this.pct, this.size = 40});
+  const GoalRing({super.key, required this.pct, this.size = 40, this.color, this.child});
   final double pct;
   final double size;
+  final Color? color;
+  final Widget? child;
   @override
   Widget build(BuildContext context) {
     final gc = context.gc;
     return SizedBox(
       width: size,
       height: size,
-      child: CustomPaint(painter: _RingPainter(pct, gc.bgRaised2, gc.accent)),
+      child: CustomPaint(
+        painter: _RingPainter(pct, gc.bgRaised2, color ?? gc.accent),
+        child: child == null ? null : Center(child: child),
+      ),
     );
   }
 }

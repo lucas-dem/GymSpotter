@@ -30,6 +30,7 @@ import '../services/rest_alarm.dart';
 import '../services/step_source.dart';
 import '../services/train_reminder.dart';
 import '../services/workout_import.dart';
+import 'steps_card_pref.dart';
 
 part 'awards_state.dart';
 part 'fit_core.dart';
@@ -681,6 +682,7 @@ class FitState extends FitCore
     persistNow();
     _refreshWidgets();
     notifyListeners();
+    unawaited(refreshSteps());
   }
 
   // Lo que es de este teléfono y no viaja en una copia.

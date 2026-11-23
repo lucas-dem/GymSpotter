@@ -5,7 +5,7 @@ const int kMinStepGoal = 1000;
 const int kMaxStepGoal = 30000;
 const int kStepGoalStep = 500;
 
-enum StepsStatus { off, unavailable, needsPermission, denied, counting }
+enum StepsStatus { unread, off, unavailable, needsPermission, denied, counting }
 
 final RegExp _stepDayKey = RegExp(r'^\d{4}-\d{2}-\d{2}$');
 
@@ -25,7 +25,7 @@ mixin StepsState on FitCore {
 
   StepSource stepSource = createStepSource();
 
-  StepsStatus stepsStatus = StepsStatus.off;
+  StepsStatus stepsStatus = StepsStatus.unread;
 
   Future<void>? _stepsRun;
   int _stepsEpoch = 0;
@@ -55,6 +55,7 @@ mixin StepsState on FitCore {
         if (epoch != _stepsEpoch) return;
         stepsOn = true;
         stepsAskedAt = askedAt;
+        unawaited(StepsCardPref.setHidden(false));
         _persist();
         notifyListeners();
       }
@@ -63,9 +64,27 @@ mixin StepsState on FitCore {
     await refreshSteps();
   }
 
+  void setStepGoal(int goal) {
+    final next = normalizeStepGoal(goal);
+    if (next == stepGoal) return;
+    stepGoal = next;
+    _persist();
+    notifyListeners();
+  }
+
+  /// Deja de contar sin tocar el historial ni pedir nada al sistema.
+  void disableSteps() {
+    if (!stepsOn) return;
+    stepsOn = false;
+    _persist();
+    notifyListeners();
+    unawaited(stepSource.stopCounting().catchError((Object _) {}));
+    unawaited(refreshSteps());
+  }
+
   void _stepsRestored() {
     _stepsEpoch++;
-    stepsStatus = StepsStatus.off;
+    stepsStatus = StepsStatus.unread;
   }
 
   Future<void> _refreshStepsOnce(bool saveNow) async {
@@ -128,13 +147,14 @@ mixin StepsState on FitCore {
 
   void _clearSteps() {
     _stepsEpoch++;
-    stepsStatus = StepsStatus.off;
+    stepsStatus = StepsStatus.unread;
     unawaited(stepSource.forget().catchError((Object _) {}));
     steps.clear();
     stepsFrom.clear();
     stepGoal = kDefaultStepGoal;
     stepsOn = false;
     stepsAskedAt = null;
+    unawaited(StepsCardPref.setHidden(false));
   }
 }
 

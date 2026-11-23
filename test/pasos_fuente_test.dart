@@ -28,7 +28,9 @@ void main() {
     source = FakeStepSource();
     fit.stepSource = source;
     fit.resetAllData();
+    await fit.refreshSteps();
     source.forgotten = 0;
+    source.reads = 0;
   });
 
   tearDown(() async {
@@ -192,10 +194,7 @@ void main() {
     });
 
     test('los dias que la fuente no devuelve quedan sin clave: hueco, no cero', () async {
-      source.days = [
-        const StepDayReading('2026-11-18', 4000),
-        const StepDayReading('2026-11-20', 800),
-      ];
+      source.days = [const StepDayReading('2026-11-18', 4000), const StepDayReading('2026-11-20', 800)];
       await fit.refreshSteps();
       expect(fit.steps.containsKey('2026-11-19'), isFalse);
       expect(fit.steps.keys, ['2026-11-18', '2026-11-20']);
@@ -262,6 +261,7 @@ void main() {
       fit.resetAllData();
       source.readGate!.complete();
       await run;
+      await fit.refreshSteps();
       expect(fit.steps, isEmpty);
       expect(fit.stepsStatus, StepsStatus.off);
     });
@@ -302,7 +302,7 @@ void main() {
         ..['steps'] = {'2026-11-19': 7}
         ..['stepsOn'] = true;
       expect(fit.importJson(jsonEncode(backup)), isTrue);
-      expect(fit.stepsStatus, StepsStatus.off);
+      expect(fit.stepsStatus, StepsStatus.unread);
       source.readGate!.complete();
       await run;
       await Future<void>.delayed(const Duration(milliseconds: 20));
@@ -367,6 +367,8 @@ void main() {
       fit.resetAllData();
       expect(source.forgotten, 1);
       expect(fit.steps, isEmpty);
+      expect(fit.stepsStatus, StepsStatus.unread);
+      await fit.refreshSteps();
       expect(fit.stepsStatus, StepsStatus.off);
     });
   });
@@ -413,7 +415,12 @@ void main() {
       expect(days.last.fromMinute, 872);
       expect(days.first.fromMinute, isNull);
       expect(StepChannel.parseDays(null), isEmpty);
-      expect(StepChannel.parseDays([{'day': '1999-12-31', 'steps': 1}]), isEmpty);
+      expect(
+        StepChannel.parseDays([
+          {'day': '1999-12-31', 'steps': 1},
+        ]),
+        isEmpty,
+      );
     });
 
     test('lectura cruda del sensor', () {

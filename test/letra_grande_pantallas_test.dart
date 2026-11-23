@@ -10,11 +10,13 @@ import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/workout.dart';
 import 'package:infyter/screens/progress_screen.dart';
 import 'package:infyter/screens/session_screen.dart';
+import 'package:infyter/services/step_source.dart';
 import 'package:infyter/state/fit_state.dart';
 import 'package:infyter/wear/wear_app.dart';
 import 'package:infyter/widgets/dialogs.dart';
 import 'package:infyter/widgets/medal_shelf.dart';
 import 'package:infyter/widgets/routine_folder.dart';
+import 'package:infyter/widgets/steps_card.dart';
 import 'package:infyter/widgets/ruler_picker.dart';
 import 'package:infyter/widgets/ui_kit.dart';
 
@@ -26,7 +28,43 @@ const _escalas = [1.0, 1.3, 1.5, 2.0];
 const _idiomas = String.fromEnvironment('IDIOMAS', defaultValue: 'es,en');
 const _listarPuntos = bool.fromEnvironment('LISTAR_PUNTOS');
 
+String _hoy() {
+  final d = DateTime.now();
+  return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+}
+
+void _pasos({
+  bool disponible = true,
+  bool activado = true,
+  StepPermission permiso = StepPermission.granted,
+  int? pasos,
+  int? desde,
+  int meta = kDefaultStepGoal,
+  bool oculta = false,
+}) {
+  final fuente = FakeStepSource()
+    ..available = disponible
+    ..permissionValue = permiso
+    ..days = [if (pasos != null) StepDayReading(_hoy(), pasos, fromMinute: desde)];
+  fit.stepSource = fuente;
+  fit.stepsOn = activado;
+  fit.stepGoal = meta;
+  StepsCardPref.hidden.value = oculta;
+  fit.route = 'home';
+}
+
+void _sinPasos() {
+  fit.stepSource = const UnavailableStepSource();
+  fit.stepsStatus = StepsStatus.off;
+  fit.stepsOn = false;
+  fit.stepGoal = kDefaultStepGoal;
+  fit.steps.clear();
+  fit.stepsFrom.clear();
+  StepsCardPref.hidden.value = false;
+}
+
 void _datos() {
+  _sinPasos();
   fit.saveAndExit();
   fit.onboarded = true;
   fit.startCountdown = false;
@@ -98,6 +136,7 @@ void main() {
     fit.routines.clear();
     fit.startCountdown = true;
     fit.setLanguage('es');
+    _sinPasos();
   });
 
   final casos = <String, void Function()>{
@@ -138,6 +177,15 @@ void main() {
       fit.finishSession();
     },
     'compare': () => fit.route = 'compare',
+    'home-pasos-sin-activar': () => _pasos(activado: false),
+    'home-pasos-necesita-permiso': () => _pasos(permiso: StepPermission.notDetermined),
+    'home-pasos-negado': () => _pasos(permiso: StepPermission.denied),
+    'home-pasos-no-disponible': () => _pasos(disponible: false),
+    'home-pasos-contando': () => _pasos(pasos: 6412),
+    'home-pasos-parcial': () => _pasos(pasos: 1234, desde: 14 * 60 + 32),
+    'home-pasos-meta': () => _pasos(pasos: 9876),
+    'home-pasos-ancho': () => _pasos(pasos: 45678, meta: 30000),
+    'home-pasos-sin-datos': () => _pasos(),
     for (final id in const ['rm', 'bmi', 'cal', 'bf', 'plate', 'warmup'])
       'tools-detail-$id': () {
         fit.activeToolId = id;
@@ -153,6 +201,10 @@ void main() {
     'agregar-al-entreno': (_entreno, showAddToSessionSheet),
     'medalla': (() => fit.route = 'awards', (c) => showMedalSheet(c, AwardId.values.first)),
     'dia': (() => fit.route = 'progress', (c) => showDaySheet(c, fit.sessions.first.date)),
+    'pasos-explicacion': (() => _pasos(activado: false), (c) => showStepsExplanation(c)),
+    'pasos-meta': (() => _pasos(pasos: 6412), showStepGoalSheet),
+    'pasos-ayuda': (() => _pasos(pasos: 6412), showStepsHelp),
+    'pasos-meta-ancha': (() => _pasos(pasos: 45678, meta: 30000), showStepGoalSheet),
     'confirmar': (
       () => fit.route = 'home',
       (c) => askConfirm(
@@ -187,7 +239,19 @@ void main() {
   }
 
   for (final escala in _escalas) {
-    for (final nombre in const ['home', 'session', 'session-descanso']) {
+    for (final nombre in const [
+      'home',
+      'session',
+      'session-descanso',
+      'home-pasos-sin-activar',
+      'home-pasos-necesita-permiso',
+      'home-pasos-sin-datos',
+      'home-pasos-negado',
+      'home-pasos-contando',
+      'home-pasos-parcial',
+      'home-pasos-meta',
+      'home-pasos-ancho',
+    ]) {
       testWidgets('$nombre fits at 320 dp with text scale $escala in es', (tester) async {
         final (ancho, alto) = _estrecha;
         usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
@@ -350,6 +414,58 @@ void main() {
           }
         });
       }
+    }
+  }
+
+  final medidasSinTarjeta = <double, (double, double)>{
+    320: (442, 630.5),
+    360: (427, 569.8333),
+    411: (394, 566.5833),
+  };
+  final escenariosSinTarjeta = <String, void Function()>{
+    'fuente no disponible': () => _pasos(disponible: false),
+    'sin fuente': () => _sinPasos(),
+    'oculta con la x': () => _pasos(activado: false, oculta: true),
+  };
+  final estados = <String, (void Function(), bool, String Function())>{
+    'sin activar': (() => _pasos(activado: false), true, () => t.stepsEnableTitle),
+    'necesita permiso': (() => _pasos(permiso: StepPermission.notDetermined), true, () => t.stepsEnableTitle),
+    'negado': (() => _pasos(permiso: StepPermission.denied), true, () => t.stepsDeniedTitle),
+    'no disponible': (() => _pasos(disponible: false), false, () => t.stepsEnableTitle),
+    'contando': (() => _pasos(pasos: 6412), true, () => t.stepsToday.toUpperCase()),
+    'meta cumplida': (() => _pasos(pasos: 9876), true, () => t.stepsToday.toUpperCase()),
+    'parcial': (() => _pasos(pasos: 1234, desde: 872), true, () => t.stepsCountingSince('14:32')),
+  };
+  for (final MapEntry(key: estado, value: (preparar, aparece, texto)) in estados.entries) {
+    testWidgets('the steps card shows the right state: $estado', (tester) async {
+      usarPantalla(tester, ancho: 360, alto: 780);
+      fit.setLanguage('es');
+      preparar();
+      await _revisar(tester, const InfyterApp(), 'pasos $estado');
+      final visible = find.text(texto()).evaluate().isNotEmpty;
+      await _cerrar(tester);
+      expect(visible, aparece);
+    });
+  }
+
+  for (final ancho in const [320.0, 360.0, 411.0]) {
+    for (final MapEntry(key: escenario, value: preparar) in escenariosSinTarjeta.entries) {
+      testWidgets('at normal text size home keeps its measures without the steps card ($escenario) at ${ancho.toInt()} dp', (
+        tester,
+      ) async {
+        usarPantalla(tester, ancho: ancho, alto: ancho == 320 ? 711 : 780);
+        fit.setLanguage('es');
+        preparar();
+        await _revisar(tester, const InfyterApp(), 'home sin tarjeta');
+        final titulo = tester.getTopLeft(find.text(titleCase(t.thisWeek))).dy;
+        final recorrido = tester.state<ScrollableState>(find.byType(Scrollable).first).position.maxScrollExtent;
+        final tarjeta = find.descendant(of: find.byType(StepsCard), matching: find.byType(SoftCard));
+        final sinTarjeta = tarjeta.evaluate().isEmpty;
+        await _cerrar(tester);
+        expect(sinTarjeta, isTrue);
+        expect(titulo, closeTo(medidasSinTarjeta[ancho]!.$1, 0.01));
+        expect(recorrido, closeTo(medidasSinTarjeta[ancho]!.$2, 0.01));
+      });
     }
   }
 

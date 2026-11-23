@@ -5629,6 +5629,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'QR'**
   String get qrLabel;
+
+  /// No description provided for @stepsToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps today'**
+  String get stepsToday;
+
+  /// No description provided for @activeKcal.
+  ///
+  /// In en, this message translates to:
+  /// **'Active kcal'**
+  String get activeKcal;
+
+  /// No description provided for @stepsGoalUnit.
+  ///
+  /// In en, this message translates to:
+  /// **'/ {goal}'**
+  String stepsGoalUnit(String goal);
+
+  /// No description provided for @estimatedWithWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated with your weight ({weight})'**
+  String estimatedWithWeight(String weight);
+
+  /// No description provided for @stepsEnableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Count your steps'**
+  String get stepsEnableTitle;
+
+  /// No description provided for @stepsEnableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use your phone\'s sensor to see your steps and estimated active calories.'**
+  String get stepsEnableBody;
+
+  /// No description provided for @stepsEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get stepsEnable;
+
+  /// No description provided for @stepsDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps are off'**
+  String get stepsDeniedTitle;
+
+  /// No description provided for @stepsDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Physical activity in your phone\'s settings'**
+  String get stepsDeniedBody;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get openSettings;
+
+  /// No description provided for @stepsCountingSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Counting since {time}'**
+  String stepsCountingSince(String time);
+
+  /// No description provided for @stepsContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get stepsContinue;
+
+  /// No description provided for @stepsHide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the steps card'**
+  String get stepsHide;
+
+  /// No description provided for @stepsOpenProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Opens Progress'**
+  String get stepsOpenProgress;
+
+  /// No description provided for @stepsChangeGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes the goal'**
+  String get stepsChangeGoal;
+
+  /// No description provided for @stepsShowEstimate.
+  ///
+  /// In en, this message translates to:
+  /// **'Shows how they are estimated'**
+  String get stepsShowEstimate;
+
+  /// No description provided for @stepsGoalReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal reached'**
+  String get stepsGoalReached;
+
+  /// No description provided for @stepsPermissionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter counts your steps with your phone\'s sensor to show your progress and estimated active calories. Your data stays on your phone.'**
+  String get stepsPermissionBody;
+
+  /// No description provided for @stepGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal'**
+  String get stepGoal;
+
+  /// No description provided for @stepGoalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A goal you can reach on most days.'**
+  String get stepGoalHint;
+
+  /// No description provided for @stepsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{steps} steps'**
+  String stepsCount(String steps);
+
+  /// No description provided for @stepsHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated active calories'**
+  String get stepsHelpTitle;
+
+  /// No description provided for @stepsHelpBody.
+  ///
+  /// In en, this message translates to:
+  /// **'An estimate of what you burn above rest, from today\'s steps and workouts. It is not medical data.'**
+  String get stepsHelpBody;
+
+  /// No description provided for @stepsByWalking.
+  ///
+  /// In en, this message translates to:
+  /// **'From steps'**
+  String get stepsByWalking;
+
+  /// No description provided for @kcalByWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'From workouts'**
+  String get kcalByWorkouts;
+
+  /// No description provided for @stepsOverlapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps during a workout are counted in both.'**
+  String get stepsOverlapHint;
+
+  /// No description provided for @stepsAndroidHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Adds the steps your phone counted between two readings on the same day.'**
+  String get stepsAndroidHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

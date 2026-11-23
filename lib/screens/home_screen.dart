@@ -15,6 +15,7 @@ import '../widgets/fit_text.dart';
 import '../widgets/glass.dart';
 import '../widgets/home_folder.dart';
 import '../widgets/liquid_notch.dart';
+import '../widgets/steps_card.dart';
 import '../widgets/svg_icon.dart';
 import '../widgets/ui_kit.dart';
 import 'progress_screen.dart';
@@ -46,6 +47,7 @@ class HomeScreen extends StatelessWidget {
             _hero(context, gc),
             const SizedBox(height: 14),
             _weekCard(context, gc),
+            const StepsCard(),
             if (fit.photoDue) ...[
               const SizedBox(height: 14),
               _photoNudge(gc),
