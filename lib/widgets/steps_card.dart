@@ -218,17 +218,8 @@ class _StepsCardState extends State<StepsCard> {
       ),
     );
     final scale = MediaQuery.textScalerOf(context).scale(10) / 10;
-    final stats = ExcludeSemantics(
-      child: FitTextGroup(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(child: _stat(gc, t.stepsToday, _count(steps), unit: t.stepsGoalUnit(_count(goal)))),
-            Expanded(child: _stat(gc, t.activeKcal, '≈ ${_count(kcal.total)}')),
-          ],
-        ),
-      ),
-    );
+    final stepsStat = _stat(gc, t.stepsToday, _count(steps), unit: t.stepsGoalUnit(_count(goal)));
+    final kcalStat = _stat(gc, t.activeKcal, '≈ ${_count(kcal.total)}');
     return Semantics(
       button: true,
       label: t.stepsToday,
@@ -242,30 +233,37 @@ class _StepsCardState extends State<StepsCard> {
         onTap: _openProgress,
         child: SoftCard(
           radius: 22,
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
+          padding: const EdgeInsets.fromLTRB(18, 18, 18, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LayoutBuilder(
                 builder: (context, c) {
-                  final fitsInARow = c.maxWidth >= 56 + 14 + 2 * 84 * scale;
-                  if (!fitsInARow) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [ring, const SizedBox(height: 14), stats],
-                    );
-                  }
+                  final twoColumns = c.maxWidth >= 56 + 14 + 2 * 84 * scale;
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       ring,
                       const SizedBox(width: 14),
-                      Expanded(child: stats),
+                      Expanded(
+                        child: ExcludeSemantics(
+                          child: FitTextGroup(
+                            child: twoColumns
+                                ? Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [Expanded(child: stepsStat), Expanded(child: kcalStat)],
+                                  )
+                                : Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [stepsStat, const SizedBox(height: 10), kcalStat],
+                                  ),
+                          ),
+                        ),
+                      ),
                     ],
                   );
                 },
               ),
-              const SizedBox(height: 12),
               Semantics(
                 button: true,
                 label: note,
@@ -279,9 +277,12 @@ class _StepsCardState extends State<StepsCard> {
                     constraints: const BoxConstraints(minHeight: 48),
                     child: Align(
                       alignment: AlignmentDirectional.centerStart,
-                      child: Text(
-                        note,
-                        style: AppTheme.f(11, weight: FontWeight.w500, color: gc.textTertiary),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 14),
+                        child: Text(
+                          note,
+                          style: AppTheme.f(11, weight: FontWeight.w500, color: gc.textTertiary),
+                        ),
                       ),
                     ),
                   ),

@@ -412,4 +412,33 @@ void main() {
     expect(meta, isTrue);
     expect(ayuda, isTrue);
   });
+
+  for (final (ancho, escala) in const [(360.0, 1.0), (360.0, 1.5), (360.0, 2.0), (320.0, 1.3), (320.0, 2.0)]) {
+    for (final pasos in const [6412, 9876]) {
+      testWidgets('la tarjeta $pasos se ajusta a su contenido y el aro no queda solo a ${ancho.toInt()} dp x$escala', (
+        tester,
+      ) async {
+        usarPantalla(tester, ancho: ancho, alto: 780, escala: escala);
+        _preparar(pasos: pasos);
+        await _abrir(tester);
+        Finder enTarjeta(Finder f) => find.descendant(of: find.byType(StepsCard), matching: f);
+        final tarjeta = tester.getRect(enTarjeta(find.byType(SoftCard)));
+        final aro = tester.getRect(enTarjeta(find.byType(GoalRing)));
+        expect(enTarjeta(find.text(t.stepsGoalUnit('8.000'))), findsOneWidget);
+        final nota = tester.getRect(enTarjeta(find.textContaining('75 kg')));
+        final textos = enTarjeta(find.byType(RichText)).evaluate().map((e) {
+          final caja = e.renderObject! as RenderBox;
+          return caja.localToGlobal(Offset.zero) & caja.size;
+        }).toList();
+        final alLado = textos.any((r) => r.left >= aro.right && r.top < aro.bottom && r.bottom > aro.top);
+        final arriba = textos
+            .where((r) => r.bottom <= nota.top)
+            .fold(aro.bottom, (double fondo, r) => r.bottom > fondo ? r.bottom : fondo);
+        await _cerrar(tester);
+        expect(alLado, isTrue, reason: 'el aro queda solo en su renglon');
+        expect(nota.top - arriba, lessThanOrEqualTo(16), reason: 'hueco entre los numeros y la nota');
+        expect(tarjeta.bottom - nota.bottom, lessThanOrEqualTo(22), reason: 'hueco debajo de la nota');
+      });
+    }
+  }
 }
