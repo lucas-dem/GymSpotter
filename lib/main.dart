@@ -11,6 +11,7 @@ import 'services/local_store.dart';
 import 'services/media_store.dart';
 import 'services/rest_alarm.dart';
 import 'services/screen_awake.dart';
+import 'services/step_source.dart';
 import 'state/fit_state.dart';
 import 'state/steps_card_pref.dart';
 import 'wear/wear_app.dart';
@@ -45,6 +46,8 @@ Future<void> main() async {
     runApp(const WearApp());
     return;
   }
+
+  fit.stepSource = await chooseStepSource();
 
   fit.onWidgetsShouldUpdate = HomeWidgetBridge.update;
   runApp(const InfyterApp());

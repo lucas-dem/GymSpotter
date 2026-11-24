@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 import 'step_source_android.dart';
+import 'step_source_health.dart';
 import 'step_source_ios.dart';
 
 const int kMaxStepsPerDay = 345600;
@@ -175,12 +177,39 @@ class UnavailableStepSource implements StepSource {
   Stream<void> get updates => const Stream.empty();
 }
 
-/// La fuente de la plataforma actual: el sensor en Android (el reloj responde que no esta disponible), Core Motion en iOS y, en las demas, la no disponible.
+/// Una fuente que lee de Health Connect: la interfaz muestra sus textos y abre Health Connect para dar el permiso.
+abstract interface class HealthConnectSteps {
+  /// Abre la pantalla de permisos de Health Connect de esta app; false si el telefono no la abrio.
+  Future<bool> openHealthConnect();
+}
+
+bool readsHealthConnect(StepSource source) => source is HealthConnectSteps;
+
+/// La fuente mientras no se eligio otra: el sensor en Android (el reloj responde que no esta disponible), Core Motion en iOS y, en las demas, la no disponible.
 StepSource createStepSource() {
   if (kIsWeb) return const UnavailableStepSource();
   if (Platform.isAndroid) return AndroidStepSource();
   if (Platform.isIOS) return IosStepSource();
   return const UnavailableStepSource();
+}
+
+const Duration kStepSourceChoiceTimeout = Duration(seconds: 2);
+
+/// La fuente segun el telefono: en Android 14 o superior con conteo propio de Health Connect, Health Connect; en el resto de
+/// Android, el sensor (tambien si la consulta falla o tarda). Las demas plataformas, como [createStepSource].
+Future<StepSource> chooseStepSource({
+  bool? android,
+  MethodChannel channel = const MethodChannel(kHealthStepsChannel),
+  Duration timeout = kStepSourceChoiceTimeout,
+}) async {
+  if (!(android ?? (!kIsWeb && Platform.isAndroid))) return createStepSource();
+  bool supported;
+  try {
+    supported = await channel.invokeMethod<bool>('supported').timeout(timeout, onTimeout: () => false) ?? false;
+  } catch (_) {
+    supported = false;
+  }
+  return supported ? HealthConnectStepSource(channel: channel) : AndroidStepSource();
 }
 
 @visibleForTesting
@@ -226,4 +255,16 @@ class FakeStepSource implements StepSource {
 
   @override
   Future<void> stopCounting() async => stopped++;
+}
+
+@visibleForTesting
+class FakeHealthConnectStepSource extends FakeStepSource implements HealthConnectSteps {
+  bool opens = true;
+  int opened = 0;
+
+  @override
+  Future<bool> openHealthConnect() async {
+    opened++;
+    return opens;
+  }
 }
