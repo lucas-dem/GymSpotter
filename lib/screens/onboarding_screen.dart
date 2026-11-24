@@ -66,6 +66,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Positioned.fill(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 420),
+              transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
               child: AppBackground(
                 key: ValueKey(_index >= 5 ? fit.backgroundForRoute('home') : 'dots'),
                 pattern: _index >= 5 ? fit.backgroundForRoute('home') : 'dots',

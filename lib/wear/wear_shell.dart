@@ -175,6 +175,7 @@ class _WearShellState extends State<WearShell> with WidgetsBindingObserver {
                   Positioned.fill(
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 220),
+                      transitionBuilder: (child, animation) => FadeTransition(opacity: animation, child: child),
                       child: KeyedSubtree(key: ValueKey(fit.route), child: _screen()),
                     ),
                   ),
