@@ -367,6 +367,26 @@ void main() {
       expect(fit.steps, {'2026-11-22': 8000, '2026-11-23': 9000, '2026-11-24': 100});
     });
 
+    test('quien contaba con el sensor y todavia no dio el permiso de Health Connect conserva su activacion', () async {
+      final since = DateTime(2026, 11, 22, 8).millisecondsSinceEpoch;
+      fit.stepsOn = true;
+      fit.stepsAskedAt = since;
+      fit.steps['2026-11-22'] = 3000;
+      status = 'notDetermined';
+      await fit.useStepSource(source());
+      await fit.refreshSteps();
+      expect(fit.stepsStatus, StepsStatus.needsPermission);
+      expect(await storedStart(), since);
+      status = 'granted';
+      dayAnswers.add(week([4000, 5000, 6000, 7000, 8000, 9000, 100]));
+      await fit.refreshSteps();
+      expect(reads().last['fromMs'], since);
+      expect(fit.steps, {'2026-11-22': 8000, '2026-11-23': 9000, '2026-11-24': 100});
+      status = 'notDetermined';
+      await fit.refreshSteps();
+      expect(await storedStart(), -1, reason: 'revocar despues de leer deja arranque nuevo');
+    });
+
     test('quien habia apagado el conteo con el sensor: al reactivar con Health Connect no entra lo apagado', () async {
       fit.stepsOn = false;
       fit.stepsAskedAt = DateTime(2026, 11, 10).millisecondsSinceEpoch;

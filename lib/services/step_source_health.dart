@@ -22,6 +22,10 @@ const Duration kHealthReadTimeout = Duration(seconds: 15);
 /// conto, 0 = contando sin limite, -1 = arranque nuevo pendiente, si no, ms desde el que se cuenta.
 const String kHealthStepStartKey = 'infyter_steps_hc_start_v1';
 
+/// Marca, junto a la de arranque, de que ya se leyo de Health Connect con permiso: hasta entonces la marca de arranque es
+/// la adoptada del sensor y un permiso que todavia no se dio no la pisa.
+const String kHealthStepReadKey = 'infyter_steps_hc_read_v1';
+
 const int _noLimit = 0;
 
 const int _pendingStart = -1;
@@ -133,6 +137,7 @@ class HealthConnectStepSource implements StepSource, HealthConnectSteps {
   Future<int?> _countingStart(int generation, DateTime now) async {
     final prefs = await SharedPreferences.getInstance();
     if (generation != _generation) return null;
+    if (prefs.getBool(kHealthStepReadKey) != true) await prefs.setBool(kHealthStepReadKey, true);
     final stored = prefs.getInt(kHealthStepStartKey);
     if (stored == null) {
       await prefs.setInt(kHealthStepStartKey, _noLimit);
@@ -163,7 +168,7 @@ class HealthConnectStepSource implements StepSource, HealthConnectSteps {
   Future<void> _markFreshStart({bool onlyIfCounted = false}) async {
     final prefs = await SharedPreferences.getInstance();
     final stored = prefs.getInt(kHealthStepStartKey);
-    if (stored == _pendingStart || (onlyIfCounted && stored == null)) return;
+    if (stored == _pendingStart || (onlyIfCounted && (stored == null || prefs.getBool(kHealthStepReadKey) != true))) return;
     await prefs.setInt(kHealthStepStartKey, _pendingStart);
   }
 
