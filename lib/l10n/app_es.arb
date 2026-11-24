@@ -1052,5 +1052,11 @@
   "stepsNeedsPermission": "Falta el permiso para contar tus pasos.",
   "stepsSettingsHint": "Los pasos se leen del sensor del teléfono y se guardan en este dispositivo. Infyter no los envía a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.",
   "stepsUnavailable": "No disponible en este teléfono",
-  "stepsAllow": "Dar permiso"
+  "stepsAllow": "Dar permiso",
+  "stepsEnableBodyHc": "Health Connect cuenta tus pasos todo el día, aunque Infyter esté cerrada.",
+  "stepsPermissionBodyHc": "Infyter lee de Health Connect tus pasos de cada día (los que cuenta el teléfono, aunque la app esté cerrada, y los que otras apps guardan ahí) para mostrarte tu avance y las calorías activas estimadas. Solo pide leer los pasos. Infyter no envía tus pasos a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.",
+  "stepsDeniedBodyHc": "Permite que Infyter lea los pasos en Health Connect",
+  "openHealthConnect": "Abrir Health Connect",
+  "stepsSettingsHintHc": "Los pasos se leen de Health Connect y se guardan en este dispositivo. Infyter no los envía a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.",
+  "stepsHcHint": "Health Connect cuenta los pasos aunque Infyter esté cerrada; al abrirla se ven los últimos 7 días."
 }

@@ -1134,5 +1134,11 @@
   "stepsNeedsPermission": "Permission is needed to count your steps.",
   "stepsSettingsHint": "Steps are read from your phone's sensor and stored on this device. Infyter doesn't send them to any server; they travel only in a copy you export or in your phone's own backups and transfers.",
   "stepsUnavailable": "Not available on this phone",
-  "stepsAllow": "Allow"
+  "stepsAllow": "Allow",
+  "stepsEnableBodyHc": "Health Connect counts your steps all day, even when Infyter is closed.",
+  "stepsPermissionBodyHc": "Infyter reads your daily steps from Health Connect (the ones your phone counts, even with the app closed, and those other apps save there) to show your progress and estimated active calories. It only asks to read steps. Infyter doesn't send your steps to any server; they travel only in a copy you export or in your phone's own backups and transfers.",
+  "stepsDeniedBodyHc": "Allow Infyter to read steps in Health Connect",
+  "openHealthConnect": "Open Health Connect",
+  "stepsSettingsHintHc": "Steps are read from Health Connect and stored on this device. Infyter doesn't send them to any server; they travel only in a copy you export or in your phone's own backups and transfers.",
+  "stepsHcHint": "Health Connect counts steps even when Infyter is closed; opening it shows the last 7 days."
 }

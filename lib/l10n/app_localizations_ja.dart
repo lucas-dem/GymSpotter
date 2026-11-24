@@ -3191,4 +3191,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stepsAllow => '許可';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connectは、Infyterを閉じていても一日中歩数を数えます。';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyterは、進み具合と推定アクティブカロリーを表示するため、Health Connectから毎日の歩数（アプリを閉じていてもスマートフォンが数えた歩数と、他のアプリがそこに保存した歩数）を読み取ります。求めるのは歩数の読み取りだけです。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
+
+  @override
+  String get stepsDeniedBodyHc => 'Health ConnectでInfyterに歩数の読み取りを許可してください';
+
+  @override
+  String get openHealthConnect => 'Health Connectを開く';
+
+  @override
+  String get stepsSettingsHintHc =>
+      '歩数はHealth Connectから読み取り、この端末に保存します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
+
+  @override
+  String get stepsHcHint => 'Health ConnectはInfyterを閉じていても歩数を数えます。開くと過去7日分が表示されます。';
 }

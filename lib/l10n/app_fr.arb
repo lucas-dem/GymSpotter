@@ -1225,5 +1225,11 @@
   "stepsNeedsPermission": "L’autorisation est nécessaire pour compter tes pas.",
   "stepsSettingsHint": "Les pas sont lus depuis le capteur de ton téléphone et enregistrés sur cet appareil. Infyter ne les envoie à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.",
   "stepsUnavailable": "Indisponible sur ce téléphone",
-  "stepsAllow": "Autoriser"
+  "stepsAllow": "Autoriser",
+  "stepsEnableBodyHc": "Health Connect compte tes pas toute la journée, même quand Infyter est fermé.",
+  "stepsPermissionBodyHc": "Infyter lit tes pas de chaque jour dans Health Connect (ceux que compte ton téléphone, même app fermée, et ceux que d'autres apps y enregistrent) pour afficher ta progression et tes calories actives estimées. Il demande seulement à lire les pas. Infyter n'envoie tes pas à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.",
+  "stepsDeniedBodyHc": "Autorise Infyter à lire les pas dans Health Connect",
+  "openHealthConnect": "Ouvrir Health Connect",
+  "stepsSettingsHintHc": "Les pas sont lus depuis Health Connect et enregistrés sur cet appareil. Infyter ne les envoie à aucun serveur ; ils ne se trouvent que dans une copie que tu exportes ou dans les sauvegardes et transferts de ton téléphone.",
+  "stepsHcHint": "Health Connect compte les pas même quand Infyter est fermé ; à l'ouverture, tu vois les 7 derniers jours."
 }

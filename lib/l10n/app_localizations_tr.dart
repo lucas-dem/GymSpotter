@@ -3289,4 +3289,25 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get stepsAllow => 'İzin ver';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect, Infyter kapalıyken bile adımlarını gün boyu sayar.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için günlük adımlarını Health Connect\'ten okur (uygulama kapalıyken bile telefonunun saydıkları ve diğer uygulamaların oraya kaydettikleri). Yalnızca adımları okumak için izin ister. Infyter adımlarını hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Health Connect\'te Infyter\'ın adımları okumasına izin ver';
+
+  @override
+  String get openHealthConnect => 'Health Connect\'i aç';
+
+  @override
+  String get stepsSettingsHintHc =>
+      'Adımlar Health Connect\'ten okunur ve bu cihazda saklanır. Infyter bunları hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.';
+
+  @override
+  String get stepsHcHint =>
+      'Health Connect, Infyter kapalıyken bile adımları sayar; açtığında son 7 günü görürsün.';
 }

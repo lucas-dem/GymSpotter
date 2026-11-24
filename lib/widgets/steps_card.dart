@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 
 import '../l10n/l10n.dart';
+import '../services/step_source.dart';
 import '../state/energy.dart';
 import '../state/fit_state.dart';
 import '../state/steps_card_pref.dart';
@@ -104,11 +105,11 @@ class _StepsCardState extends State<StepsCard> {
     context,
     gc,
     title: t.stepsDeniedTitle,
-    body: defaultTargetPlatform == TargetPlatform.iOS ? t.stepsDeniedBodyIos : t.stepsDeniedBody,
+    body: stepsDeniedText(),
     action: GhostButton(
-      label: t.openSettings,
+      label: stepsOpenPermissionLabel(),
       icon: PhosphorIconsRegular.gear,
-      onTap: () => AppSettings.openAppSettings(),
+      onTap: () => unawaited(openStepsPermissionScreen()),
     ),
     onHide: _hideAndStop,
   );
@@ -117,7 +118,7 @@ class _StepsCardState extends State<StepsCard> {
     context,
     gc,
     title: t.stepsEnableTitle,
-    body: t.stepsEnableBody,
+    body: readsHealthConnect(fit.stepSource) ? t.stepsEnableBodyHc : t.stepsEnableBody,
     action: GhostButton(
       label: t.stepsEnable,
       icon: PhosphorIconsRegular.footprints,
@@ -193,7 +194,7 @@ class _StepsCardState extends State<StepsCard> {
     final goal = fit.stepGoal;
     final done = steps >= goal;
     final kcal = _todayKcal(now);
-    final from = fit.stepsFrom[key];
+    final from = showStepsFrom() ? fit.stepsFrom[key] : null;
     final note = from != null
         ? t.stepsCountingSince(_clock(from))
         : t.estimatedWithWeight(fit.weightLabel(kcal.weightKg));
@@ -340,6 +341,29 @@ DayKcal _todayKcal(DateTime now) => dayKcal(
   profileWeightKg: fit.profile.weightKg,
 );
 
+/// "Desde las HH:MM" es del sensor (y de iOS); con Health Connect no se muestra.
+bool showStepsFrom() => !readsHealthConnect(fit.stepSource);
+
+/// Qué permiso falta, según la fuente.
+String stepsDeniedText() {
+  if (readsHealthConnect(fit.stepSource)) return t.stepsDeniedBodyHc;
+  return defaultTargetPlatform == TargetPlatform.iOS ? t.stepsDeniedBodyIos : t.stepsDeniedBody;
+}
+
+String stepsOpenPermissionLabel() => readsHealthConnect(fit.stepSource) ? t.openHealthConnect : t.openSettings;
+
+/// Con Health Connect abre su pantalla de permisos; si no se puede, o con otra fuente, los ajustes de la app.
+Future<void> openStepsPermissionScreen() async {
+  if (fit.stepSource case final HealthConnectSteps source) {
+    var opened = false;
+    try {
+      opened = await source.openHealthConnect();
+    } catch (_) {}
+    if (opened) return;
+  }
+  await AppSettings.openAppSettings();
+}
+
 /// Muestra la explicación y, si la persona sigue, activa el conteo y pide el permiso.
 Future<void> activateSteps(BuildContext context) async {
   final go = await showStepsExplanation(context);
@@ -374,7 +398,7 @@ Future<bool?> showStepsExplanation(BuildContext context) {
             ),
             const SizedBox(height: 10),
             Text(
-              t.stepsPermissionBody,
+              readsHealthConnect(fit.stepSource) ? t.stepsPermissionBodyHc : t.stepsPermissionBody,
               textAlign: TextAlign.center,
               style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary, height: 1.45),
             ),
@@ -498,7 +522,10 @@ void showStepsHelp(BuildContext context) {
             ),
             const SizedBox(height: 6),
             Text(t.stepsOverlapHint, textAlign: TextAlign.center, style: hint),
-            if (defaultTargetPlatform == TargetPlatform.android) ...[
+            if (readsHealthConnect(fit.stepSource)) ...[
+              const SizedBox(height: 6),
+              Text(t.stepsHcHint, textAlign: TextAlign.center, style: hint),
+            ] else if (defaultTargetPlatform == TargetPlatform.android) ...[
               const SizedBox(height: 6),
               Text(t.stepsAndroidHint, textAlign: TextAlign.center, style: hint),
             ],

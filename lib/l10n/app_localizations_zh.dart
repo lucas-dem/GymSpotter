@@ -3150,6 +3150,26 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get stepsAllow => '允许';
+
+  @override
+  String get stepsEnableBodyHc => '即使关闭 Infyter，Health Connect 也会全天计算你的步数。';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter 从 Health Connect 读取你每天的步数（包括关闭应用时手机计算的步数，以及其他应用保存在那里的步数），用于显示你的进度和估算的活动热量。它只请求读取步数。Infyter 不会将你的步数发送到任何服务器。步数只会随你导出的副本，或手机自身的备份与换机迁移一起转移。';
+
+  @override
+  String get stepsDeniedBodyHc => '请在 Health Connect 中允许 Infyter 读取步数';
+
+  @override
+  String get openHealthConnect => '打开 Health Connect';
+
+  @override
+  String get stepsSettingsHintHc =>
+      '步数从 Health Connect 读取，并保存在此设备上。Infyter 不会将其发送到任何服务器。步数只会随你导出的副本，或手机自身的备份与换机迁移一起转移。';
+
+  @override
+  String get stepsHcHint => '即使关闭 Infyter，Health Connect 也会计算步数；打开后可看到最近 7 天。';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -6321,4 +6341,24 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get stepsAllow => '允許';
+
+  @override
+  String get stepsEnableBodyHc => '即使關閉 Infyter，Health Connect 也會全天計算你的步數。';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter 從 Health Connect 讀取你每天的步數（包括關閉 App 時手機計算的步數，以及其他 App 儲存在那裡的步數），用於顯示你的進度和估算的活動熱量。它只要求讀取步數。Infyter 不會將你的步數傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。';
+
+  @override
+  String get stepsDeniedBodyHc => '請在 Health Connect 中允許 Infyter 讀取步數';
+
+  @override
+  String get openHealthConnect => '開啟 Health Connect';
+
+  @override
+  String get stepsSettingsHintHc =>
+      '步數從 Health Connect 讀取，並儲存在此裝置上。Infyter 不會將其傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。';
+
+  @override
+  String get stepsHcHint => '即使關閉 Infyter，Health Connect 也會計算步數；開啟後可看到最近 7 天。';
 }

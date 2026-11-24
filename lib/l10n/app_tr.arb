@@ -1225,5 +1225,11 @@
   "stepsNeedsPermission": "Adımlarını saymak için izin gerekli.",
   "stepsSettingsHint": "Adımlar telefonunun sensöründen okunur ve bu cihazda saklanır. Infyter bunları hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.",
   "stepsUnavailable": "Bu telefonda kullanılamıyor",
-  "stepsAllow": "İzin ver"
+  "stepsAllow": "İzin ver",
+  "stepsEnableBodyHc": "Health Connect, Infyter kapalıyken bile adımlarını gün boyu sayar.",
+  "stepsPermissionBodyHc": "Infyter, ilerlemeni ve tahmini aktif kalorilerini göstermek için günlük adımlarını Health Connect'ten okur (uygulama kapalıyken bile telefonunun saydıkları ve diğer uygulamaların oraya kaydettikleri). Yalnızca adımları okumak için izin ister. Infyter adımlarını hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.",
+  "stepsDeniedBodyHc": "Health Connect'te Infyter'ın adımları okumasına izin ver",
+  "openHealthConnect": "Health Connect'i aç",
+  "stepsSettingsHintHc": "Adımlar Health Connect'ten okunur ve bu cihazda saklanır. Infyter bunları hiçbir sunucuya göndermez; yalnızca dışa aktardığın bir kopyayla ya da telefonunun kendi yedeklemeleri ve aktarımlarıyla taşınır.",
+  "stepsHcHint": "Health Connect, Infyter kapalıyken bile adımları sayar; açtığında son 7 günü görürsün."
 }

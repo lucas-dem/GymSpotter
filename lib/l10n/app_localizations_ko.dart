@@ -3206,4 +3206,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get stepsAllow => '허용';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect는 Infyter를 닫아 두어도 하루 종일 걸음 수를 셉니다.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter는 진행 상황과 추정 활동 칼로리를 보여 주기 위해 Health Connect에서 매일의 걸음 수(앱을 닫아 두어도 휴대폰이 센 걸음 수와 다른 앱이 저장한 걸음 수)를 읽습니다. 걸음 수 읽기만 요청합니다. Infyter는 걸음 수를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Health Connect에서 Infyter의 걸음 수 읽기를 허용하세요';
+
+  @override
+  String get openHealthConnect => 'Health Connect 열기';
+
+  @override
+  String get stepsSettingsHintHc =>
+      '걸음 수는 Health Connect에서 읽어 이 기기에 저장됩니다. Infyter는 이를 어떤 서버로도 보내지 않습니다. 걸음 수는 직접 내보낸 사본이나 휴대폰 자체의 백업과 데이터 이전에만 함께 담깁니다.';
+
+  @override
+  String get stepsHcHint => 'Health Connect는 Infyter를 닫아 두어도 걸음 수를 셉니다. 열면 최근 7일이 표시됩니다.';
 }

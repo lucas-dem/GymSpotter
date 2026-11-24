@@ -5887,6 +5887,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow'**
   String get stepsAllow;
+
+  /// No description provided for @stepsEnableBodyHc.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect counts your steps all day, even when Infyter is closed.'**
+  String get stepsEnableBodyHc;
+
+  /// No description provided for @stepsPermissionBodyHc.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter reads your daily steps from Health Connect (the ones your phone counts, even with the app closed, and those other apps save there) to show your progress and estimated active calories. It only asks to read steps. Infyter doesn\'t send your steps to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.'**
+  String get stepsPermissionBodyHc;
+
+  /// No description provided for @stepsDeniedBodyHc.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Infyter to read steps in Health Connect'**
+  String get stepsDeniedBodyHc;
+
+  /// No description provided for @openHealthConnect.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Health Connect'**
+  String get openHealthConnect;
+
+  /// No description provided for @stepsSettingsHintHc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps are read from Health Connect and stored on this device. Infyter doesn\'t send them to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.'**
+  String get stepsSettingsHintHc;
+
+  /// No description provided for @stepsHcHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Health Connect counts steps even when Infyter is closed; opening it shows the last 7 days.'**
+  String get stepsHcHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

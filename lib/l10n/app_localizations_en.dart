@@ -3288,4 +3288,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stepsAllow => 'Allow';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect counts your steps all day, even when Infyter is closed.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter reads your daily steps from Health Connect (the ones your phone counts, even with the app closed, and those other apps save there) to show your progress and estimated active calories. It only asks to read steps. Infyter doesn\'t send your steps to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Allow Infyter to read steps in Health Connect';
+
+  @override
+  String get openHealthConnect => 'Open Health Connect';
+
+  @override
+  String get stepsSettingsHintHc =>
+      'Steps are read from Health Connect and stored on this device. Infyter doesn\'t send them to any server; they travel only in a copy you export or in your phone\'s own backups and transfers.';
+
+  @override
+  String get stepsHcHint =>
+      'Health Connect counts steps even when Infyter is closed; opening it shows the last 7 days.';
 }

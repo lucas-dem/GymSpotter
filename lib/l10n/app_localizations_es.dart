@@ -3292,4 +3292,25 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stepsAllow => 'Dar permiso';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect cuenta tus pasos todo el día, aunque Infyter esté cerrada.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter lee de Health Connect tus pasos de cada día (los que cuenta el teléfono, aunque la app esté cerrada, y los que otras apps guardan ahí) para mostrarte tu avance y las calorías activas estimadas. Solo pide leer los pasos. Infyter no envía tus pasos a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Permite que Infyter lea los pasos en Health Connect';
+
+  @override
+  String get openHealthConnect => 'Abrir Health Connect';
+
+  @override
+  String get stepsSettingsHintHc =>
+      'Los pasos se leen de Health Connect y se guardan en este dispositivo. Infyter no los envía a ningún servidor; solo viajan en una copia que exportes o en las copias de seguridad y transferencias del propio teléfono.';
+
+  @override
+  String get stepsHcHint =>
+      'Health Connect cuenta los pasos aunque Infyter esté cerrada; al abrirla se ven los últimos 7 días.';
 }

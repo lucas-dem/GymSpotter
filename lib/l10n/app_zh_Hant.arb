@@ -1225,5 +1225,11 @@
   "stepsNeedsPermission": "計算步數需要權限。",
   "stepsSettingsHint": "步數從手機感測器讀取，並儲存在此裝置上。Infyter 不會將其傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。",
   "stepsUnavailable": "此手機不支援",
-  "stepsAllow": "允許"
+  "stepsAllow": "允許",
+  "stepsEnableBodyHc": "即使關閉 Infyter，Health Connect 也會全天計算你的步數。",
+  "stepsPermissionBodyHc": "Infyter 從 Health Connect 讀取你每天的步數（包括關閉 App 時手機計算的步數，以及其他 App 儲存在那裡的步數），用於顯示你的進度和估算的活動熱量。它只要求讀取步數。Infyter 不會將你的步數傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。",
+  "stepsDeniedBodyHc": "請在 Health Connect 中允許 Infyter 讀取步數",
+  "openHealthConnect": "開啟 Health Connect",
+  "stepsSettingsHintHc": "步數從 Health Connect 讀取，並儲存在此裝置上。Infyter 不會將其傳送到任何伺服器。步數只會隨你匯出的副本，或手機本身的備份與換機轉移一起帶走。",
+  "stepsHcHint": "即使關閉 Infyter，Health Connect 也會計算步數；開啟後可看到最近 7 天。"
 }

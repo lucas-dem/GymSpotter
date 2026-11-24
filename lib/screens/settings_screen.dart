@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app_settings/app_settings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ import '../services/fitnotes_backup.dart';
 import '../services/home_widget_bridge.dart';
 import '../services/rest_alarm.dart';
 import '../services/sqlite_reader.dart';
+import '../services/step_source.dart' show readsHealthConnect;
 import '../services/workout_import.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
@@ -463,10 +463,10 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
           if (available && on && status == StepsStatus.denied)
             _stepsPermissionNote(
               gc,
-              defaultTargetPlatform == TargetPlatform.iOS ? t.stepsDeniedBodyIos : t.stepsDeniedBody,
-              t.openSettings,
+              stepsDeniedText(),
+              stepsOpenPermissionLabel(),
               PhosphorIconsRegular.gear,
-              () => AppSettings.openAppSettings(),
+              () => unawaited(openStepsPermissionScreen()),
             ),
           if (available && on && status == StepsStatus.needsPermission)
             _stepsPermissionNote(
@@ -478,7 +478,14 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
             ),
           if (available && on) _stepGoalRow(context, gc),
           const SizedBox(height: 4),
-          Text(available ? t.stepsSettingsHint : t.stepsUnavailable, style: note),
+          Text(
+            !available
+                ? t.stepsUnavailable
+                : readsHealthConnect(fit.stepSource)
+                ? t.stepsSettingsHintHc
+                : t.stepsSettingsHint,
+            style: note,
+          ),
         ],
       ),
     );

@@ -126,6 +126,12 @@ const _stepKeys = [
   'stepsSettingsHint',
   'stepsUnavailable',
   'stepsAllow',
+  'stepsEnableBodyHc',
+  'stepsPermissionBodyHc',
+  'stepsDeniedBodyHc',
+  'openHealthConnect',
+  'stepsSettingsHintHc',
+  'stepsHcHint',
 ];
 
 Map<String, dynamic> _arb(String lang) =>

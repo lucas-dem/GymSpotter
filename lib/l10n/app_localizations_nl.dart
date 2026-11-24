@@ -3301,4 +3301,25 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get stepsAllow => 'Toestaan';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect telt je stappen de hele dag, ook als Infyter dicht is.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter leest je dagelijkse stappen uit Health Connect (die je telefoon telt, ook als de app dicht is, en die andere apps daar opslaan) om je voortgang en geschatte actieve calorieën te tonen. Het vraagt alleen om stappen te lezen. Infyter stuurt je stappen naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Sta Infyter toe stappen te lezen in Health Connect';
+
+  @override
+  String get openHealthConnect => 'Health Connect openen';
+
+  @override
+  String get stepsSettingsHintHc =>
+      'Stappen worden gelezen uit Health Connect en op dit apparaat opgeslagen. Infyter stuurt ze naar geen enkele server; ze gaan alleen mee in een kopie die je exporteert of in de eigen back-ups en overdrachten van je telefoon.';
+
+  @override
+  String get stepsHcHint =>
+      'Health Connect telt stappen ook als Infyter dicht is; bij het openen zie je de laatste 7 dagen.';
 }

@@ -3390,4 +3390,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get stepsAllow => 'Разрешить';
+
+  @override
+  String get stepsEnableBodyHc => 'Health Connect считает твои шаги весь день, даже когда Infyter закрыт.';
+
+  @override
+  String get stepsPermissionBodyHc =>
+      'Infyter читает из Health Connect твои шаги за каждый день (те, что считает телефон, даже когда приложение закрыто, и те, что туда сохраняют другие приложения), чтобы показать твой прогресс и оценочные активные калории. Он просит только чтение шагов. Infyter не отправляет твои шаги ни на какой сервер; они попадают только в копию, которую ты экспортируешь, или в резервные копии и переносы данных самого телефона.';
+
+  @override
+  String get stepsDeniedBodyHc => 'Разреши Infyter читать шаги в Health Connect';
+
+  @override
+  String get openHealthConnect => 'Открыть Health Connect';
+
+  @override
+  String get stepsSettingsHintHc =>
+      'Шаги считываются из Health Connect и хранятся на этом устройстве. Infyter не отправляет их ни на какой сервер; они попадают только в копию, которую ты экспортируешь, или в резервные копии и переносы данных самого телефона.';
+
+  @override
+  String get stepsHcHint =>
+      'Health Connect считает шаги, даже когда Infyter закрыт; при открытии видны последние 7 дней.';
 }

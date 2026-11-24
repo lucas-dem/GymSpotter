@@ -24,6 +24,7 @@ import '../widgets/glass.dart';
 import '../widgets/muscle_radar.dart';
 import '../widgets/rolling_text.dart';
 import '../widgets/ruler_picker.dart';
+import '../widgets/steps_card.dart' show showStepsFrom;
 import '../widgets/steps_progress.dart';
 import '../widgets/ui_kit.dart';
 import 'share_sheet.dart';
@@ -1408,7 +1409,7 @@ class _DaySheet extends StatelessWidget {
       bodyweight: fit.bodyweight,
       profileWeightKg: fit.profile.weightKg,
     );
-    final from = fit.stepsFrom[stepsDayKey(date)];
+    final from = showStepsFrom() ? fit.stepsFrom[stepsDayKey(date)] : null;
     final clock = from == null
         ? null
         : '${(from ~/ 60).toString().padLeft(2, '0')}:${(from % 60).toString().padLeft(2, '0')}';
