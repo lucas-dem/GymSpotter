@@ -37,7 +37,9 @@ Connect. Re-check it against the final signed binaries before submission.
   a server.
 - Data deletion: the app has a delete-all-data action; uninstalling also
   removes app-private data when the operating system performs its normal
-  cleanup. Android backup is disabled.
+  cleanup. Android cloud backup is excluded; a device-to-device transfer can
+  still carry app data, except the step anchor file. On iPhone, iCloud and
+  computer backups include app data.
 
 For Google Play Data safety, data processed only on-device and never sent off
 the device is not declared as collected. Answer **No** to collection and
