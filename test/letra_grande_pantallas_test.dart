@@ -627,6 +627,41 @@ void main() {
   }
 
   for (final idioma in _idiomas.split(',')) {
+    for (final (ancho, alto) in _pantallas) {
+      for (final escala in _escalas) {
+        testWidgets('the collapsed profile header fits at ${ancho.toInt()} dp, scale $escala, $idioma', (
+          tester,
+        ) async {
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          fit.route = 'settings';
+          final fallas = await _revisar(tester, const InfyterApp(), 'perfil', idioma: idioma);
+          fallas.addAll(
+            await conErrores(() async {
+              await tester.drag(find.byType(CustomScrollView).first, const Offset(0, -1500));
+              for (var i = 0; i < 8; i++) {
+                await tester.pump(const Duration(milliseconds: 200));
+              }
+            }),
+          );
+          final compacto = find.ancestor(
+            of: find.text('@${fit.profileHandle}'),
+            matching: find.byWidgetPredicate((w) => w is Opacity && w.opacity == 1),
+          );
+          final visible = compacto.evaluate().isNotEmpty;
+          fallas.addAll([...textoCortado(tester), ...palabrasPartidas(tester)]);
+          await _cerrar(tester);
+          for (final f in fallas) {
+            debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala perfil plegado: $f');
+          }
+          expect(visible, isTrue, reason: 'el encabezado compacto tiene que quedar a la vista');
+          expect(fallas, isEmpty);
+        });
+      }
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
     for (final escala in _escalas) {
     testWidgets('the watch home and workout fit with text scale $escala in $idioma', (tester) async {
       tester.view.physicalSize = const Size(454, 454);

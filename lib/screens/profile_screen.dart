@@ -97,6 +97,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             delegate: _ProfileHeader(
               gc: gc,
               top: MediaQuery.paddingOf(context).top,
+              scaler: MediaQuery.textScalerOf(context),
               onBanner: _pickBanner,
               onEdit: () => showProfileSheet(context),
               onShare: () => showShareSheet(context),
@@ -481,6 +482,7 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
   _ProfileHeader({
     required this.gc,
     required this.top,
+    required this.scaler,
     required this.onBanner,
     required this.onEdit,
     required this.onShare,
@@ -488,13 +490,18 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
 
   final GymColors gc;
   final double top;
+  final TextScaler scaler;
   final VoidCallback onBanner;
   final VoidCallback onEdit;
   final VoidCallback onShare;
 
   static const _banner = 176.0;
-  static const _bar = 60.0;
   static const _levelRow = 34.0;
+
+  // The collapsed bar grows with the text so the name and handle of the compact row always fit.
+  double get _compactRow =>
+      math.max(44.0, ((scaler.scale(15.5) + scaler.scale(11.5)) * 1.15).ceilToDouble() + 1);
+  double get _bar => _compactRow + 16;
 
   double get _cut => fit.gamification ? 0 : _levelRow;
   double get _identity => 128.0 - _cut;
@@ -563,7 +570,7 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
             ),
           ),
           Positioned(
-            top: top + 9,
+            top: top + _bar / 2 - 21,
             right: 16,
             child: Row(
               children: [
@@ -582,7 +589,7 @@ class _ProfileHeader extends SliverPersistentHeaderDelegate {
           Positioned(
             left: 20,
             top: top + 6,
-            height: 44,
+            height: _compactRow,
             child: Opacity(opacity: ((shrunk - 0.62) / 0.38).clamp(0.0, 1.0), child: _compact(p)),
           ),
         ],
