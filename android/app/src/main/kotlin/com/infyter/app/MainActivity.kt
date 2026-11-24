@@ -27,12 +27,14 @@ class MainActivity : FlutterActivity() {
     private var incomingChannel: MethodChannel? = null
     private var rotaryChannel: MethodChannel? = null
     private var stepCounter: StepCounter? = null
+    private var healthSteps: HealthSteps? = null
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         val messenger = flutterEngine.dartExecutor.binaryMessenger
         StoreUpdate.register(this, messenger)
         stepCounter = StepCounter(this, messenger)
+        healthSteps = HealthSteps(this, messenger)
 
         MethodChannel(messenger, "infyter/haptics").setMethodCallHandler { call, result ->
             if (call.method != "buzz") {
@@ -179,6 +181,8 @@ class MainActivity : FlutterActivity() {
         rotaryChannel = null
         stepCounter?.dispose()
         stepCounter = null
+        healthSteps?.dispose()
+        healthSteps = null
         LiveNotifier.dart = null
         if (isFinishing) LiveNotifier.cancel(this)
         super.cleanUpFlutterEngine(flutterEngine)
@@ -191,6 +195,7 @@ class MainActivity : FlutterActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         stepCounter?.onPermissionResult(requestCode, grantResults)
+        healthSteps?.onPermissionResult(requestCode, grantResults)
     }
 
     override fun onNewIntent(intent: Intent) {

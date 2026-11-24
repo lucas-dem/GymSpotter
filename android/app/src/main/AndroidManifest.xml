@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+    <!-- Android 14+: daily steps that Health Connect counts on the phone. Read only, in the foreground. -->
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
@@ -53,6 +55,25 @@
                 <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        <!-- Health Connect opens this from "Privacy policy" on its permission screen; it shows PRIVACY.md. -->
+        <activity
+            android:name=".HealthPermissionsActivity"
+            android:exported="true"
+            android:theme="@android:style/Theme.Material.Light">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+        </activity>
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".HealthPermissionsActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity-alias>
         <receiver
             android:name=".HeatmapWidgetProvider"
             android:exported="true">
