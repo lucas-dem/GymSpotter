@@ -47,7 +47,7 @@ Future<void> main() async {
     return;
   }
 
-  fit.stepSource = await chooseStepSource();
+  await fit.useStepSource(await chooseStepSource());
 
   fit.onWidgetsShouldUpdate = HomeWidgetBridge.update;
   runApp(const InfyterApp());

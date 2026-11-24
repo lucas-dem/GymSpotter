@@ -65,12 +65,25 @@ class HealthConnectStepSource implements StepSource, HealthConnectSteps {
   @override
   Future<bool> isAvailable() async => await _channel.invokeMethod<bool>('supported') ?? false;
 
-  /// Un permiso negado despues de haber contado deja la marca de arranque nuevo, como en iOS.
+  /// Un permiso que falta despues de haber contado deja la marca de arranque nuevo, como en iOS. Revocado desde Health
+  /// Connect llega como notDetermined (la marca nativa de negado se borra mientras esta concedido), asi que cuenta igual.
   @override
   Future<StepPermission> permission() async {
     final answer = StepChannel.parsePermission(await _channel.invokeMethod<String>('permissionStatus'));
-    if (answer == StepPermission.denied) await _markFreshStart(onlyIfCounted: true);
+    if (answer != StepPermission.granted) await _markFreshStart(onlyIfCounted: true);
     return answer;
+  }
+
+  /// La primera vez con Health Connect en un telefono que ya contaba con el sensor: si el conteo estaba prendido, se lee
+  /// desde la ultima activacion ([since]); si estaba apagado o no se sabe desde cuando, desde la proxima lectura. Asi no
+  /// entran dias apagados ni anteriores a un borrado. Sin historia es la primera activacion y trae los 7 dias.
+  @override
+  Future<void> adoptHistory({required bool counting, required bool hasHistory, int? since}) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getInt(kHealthStepStartKey) != null || !hasHistory) return;
+    final nowMs = _clock().millisecondsSinceEpoch;
+    final start = counting && since != null && since > 0 && since <= nowMs ? since : _pendingStart;
+    await prefs.setInt(kHealthStepStartKey, start);
   }
 
   @override
@@ -94,7 +107,8 @@ class HealthConnectStepSource implements StepSource, HealthConnectSteps {
     final startDay = startMs == null ? null : _dayKey(DateTime.fromMillisecondsSinceEpoch(startMs));
     return [
       for (final day in StepChannel.parseDays(raw))
-        if (startDay == null || day.day.compareTo(startDay) >= 0) StepDayReading(day.day, day.steps),
+        if (day.steps > 0 && (startDay == null || day.day.compareTo(startDay) >= 0))
+          StepDayReading(day.day, day.steps),
     ];
   }
 

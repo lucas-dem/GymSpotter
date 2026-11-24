@@ -467,18 +467,17 @@ void showStepGoalSheet(BuildContext context) {
 void showStepsHelp(BuildContext context) {
   final gc = context.gc;
   final kcal = _todayKcal(DateTime.now());
+  // Wrap: with very large text the value drops below the label instead of splitting a word.
   Widget row(String label, int value) => Padding(
     padding: const EdgeInsets.only(top: 8),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    child: Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      spacing: 12,
       children: [
-        Expanded(
-          child: Text(
-            label,
-            style: AppTheme.f(13, weight: FontWeight.w600, color: gc.text),
-          ),
+        Text(
+          label,
+          style: AppTheme.f(13, weight: FontWeight.w600, color: gc.text),
         ),
-        const SizedBox(width: 12),
         Text(
           '≈ ${_count(value)} kcal',
           style: AppTheme.f(13, weight: FontWeight.w700, color: gc.text),

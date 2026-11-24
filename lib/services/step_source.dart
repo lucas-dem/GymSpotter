@@ -181,6 +181,9 @@ class UnavailableStepSource implements StepSource {
 abstract interface class HealthConnectSteps {
   /// Abre la pantalla de permisos de Health Connect de esta app; false si el telefono no la abrio.
   Future<bool> openHealthConnect();
+
+  /// Ajusta desde cuando leer la primera vez que se usa en un telefono con historia del sensor.
+  Future<void> adoptHistory({required bool counting, required bool hasHistory, int? since});
 }
 
 bool readsHealthConnect(StepSource source) => source is HealthConnectSteps;
@@ -261,6 +264,11 @@ class FakeStepSource implements StepSource {
 class FakeHealthConnectStepSource extends FakeStepSource implements HealthConnectSteps {
   bool opens = true;
   int opened = 0;
+  List<(bool, bool, int?)> adopted = [];
+
+  @override
+  Future<void> adoptHistory({required bool counting, required bool hasHistory, int? since}) async =>
+      adopted.add((counting, hasHistory, since));
 
   @override
   Future<bool> openHealthConnect() async {

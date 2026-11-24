@@ -43,8 +43,9 @@ void _pasos({
   int? desde,
   int meta = kDefaultStepGoal,
   bool oculta = false,
+  bool salud = false,
 }) {
-  final fuente = FakeStepSource()
+  final fuente = (salud ? FakeHealthConnectStepSource() : FakeStepSource())
     ..available = disponible
     ..permissionValue = permiso
     ..days = [if (pasos != null) StepDayReading(_hoy(), pasos, fromMinute: desde)];
@@ -75,8 +76,13 @@ void _progresoPasos({bool activado = true, bool parcial = false, bool datos = tr
   if (parcial) fit.stepsFrom[_clave(0)] = 14 * 60 + 32;
 }
 
-void _ajustesPasos({bool disponible = true, bool activado = true, StepPermission permiso = StepPermission.granted}) {
-  _pasos(disponible: disponible, activado: activado, permiso: permiso, pasos: 6412, meta: 30000);
+void _ajustesPasos({
+  bool disponible = true,
+  bool activado = true,
+  StepPermission permiso = StepPermission.granted,
+  bool salud = false,
+}) {
+  _pasos(disponible: disponible, activado: activado, permiso: permiso, pasos: 6412, meta: 30000, salud: salud);
   fit.route = 'preferences';
 }
 
@@ -219,6 +225,15 @@ void main() {
     'home-pasos-meta': () => _pasos(pasos: 9876),
     'home-pasos-ancho': () => _pasos(pasos: 45678, meta: 30000),
     'home-pasos-sin-datos': () => _pasos(),
+    'home-hc-sin-activar': () => _pasos(activado: false, salud: true),
+    'home-hc-necesita-permiso': () => _pasos(permiso: StepPermission.notDetermined, salud: true),
+    'home-hc-negado': () => _pasos(permiso: StepPermission.denied, salud: true),
+    'home-hc-contando': () => _pasos(pasos: 6412, salud: true),
+    'home-hc-dia-del-cambio': () {
+      _pasos(pasos: 900, salud: true);
+      fit.steps[_hoy()] = 1234;
+      fit.stepsFrom[_hoy()] = 14 * 60 + 32;
+    },
     'progress-pasos': _progresoPasos,
     'progress-pasos-parcial': () => _progresoPasos(parcial: true),
     'progress-pasos-meta-ancha': () => _progresoPasos(meta: 30000),
@@ -229,6 +244,9 @@ void main() {
     'preferences-pasos-necesita-permiso': () => _ajustesPasos(permiso: StepPermission.notDetermined),
     'preferences-pasos-negado': () => _ajustesPasos(permiso: StepPermission.denied),
     'preferences-pasos-no-disponible': () => _ajustesPasos(disponible: false),
+    'preferences-hc-contando': () => _ajustesPasos(salud: true),
+    'preferences-hc-necesita-permiso': () => _ajustesPasos(permiso: StepPermission.notDetermined, salud: true),
+    'preferences-hc-negado': () => _ajustesPasos(permiso: StepPermission.denied, salud: true),
     for (final id in const ['rm', 'bmi', 'cal', 'bf', 'plate', 'warmup'])
       'tools-detail-$id': () {
         fit.activeToolId = id;
@@ -245,6 +263,8 @@ void main() {
     'medalla': (() => fit.route = 'awards', (c) => showMedalSheet(c, AwardId.values.first)),
     'dia': (() => fit.route = 'progress', (c) => showDaySheet(c, fit.sessions.first.date)),
     'pasos-explicacion': (() => _pasos(activado: false), (c) => showStepsExplanation(c)),
+    'pasos-explicacion-hc': (() => _pasos(activado: false, salud: true), (c) => showStepsExplanation(c)),
+    'pasos-ayuda-hc': (() => _pasos(pasos: 6412, salud: true), showStepsHelp),
     'pasos-meta': (() => _pasos(pasos: 6412), showStepGoalSheet),
     'pasos-ayuda': (() => _pasos(pasos: 6412), showStepsHelp),
     'dia-pasos': (
@@ -299,6 +319,11 @@ void main() {
         'home-pasos-parcial',
         'home-pasos-meta',
         'home-pasos-ancho',
+        'home-hc-sin-activar',
+        'home-hc-necesita-permiso',
+        'home-hc-negado',
+        'home-hc-contando',
+        'home-hc-dia-del-cambio',
         'progress',
         'progress-pasos',
         'progress-pasos-parcial',
@@ -331,6 +356,9 @@ void main() {
         'preferences-pasos-necesita-permiso',
         'preferences-pasos-negado',
         'preferences-pasos-no-disponible',
+        'preferences-hc-contando',
+        'preferences-hc-necesita-permiso',
+        'preferences-hc-negado',
       ]) {
         testWidgets('$nombre fits at 320 dp with text scale $escala in $idioma', (tester) async {
           final (ancho, alto) = _estrecha;
@@ -338,6 +366,26 @@ void main() {
           fit.setLanguage(idioma);
           casos[nombre]!();
           final fallas = await _revisar(tester, const InfyterApp(), nombre, idioma: idioma);
+          await _cerrar(tester);
+          for (final f in fallas) {
+            debugPrint('FALLA $idioma 320dp x$escala $f');
+          }
+          expect(fallas, isEmpty);
+        });
+      }
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final escala in _escalas) {
+      for (final nombre in const ['pasos-explicacion', 'pasos-explicacion-hc', 'pasos-ayuda', 'pasos-ayuda-hc']) {
+        testWidgets('the $nombre sheet fits at 320 dp with text scale $escala in $idioma', (tester) async {
+          final (ancho, alto) = _estrecha;
+          final (preparar, abrir) = hojas[nombre]!;
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          preparar();
+          final fallas = await _revisar(tester, const InfyterApp(), 'hoja $nombre', idioma: idioma, abrir: abrir);
           await _cerrar(tester);
           for (final f in fallas) {
             debugPrint('FALLA $idioma 320dp x$escala $f');

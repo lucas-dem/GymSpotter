@@ -90,6 +90,20 @@ mixin StepsState on FitCore {
     await refreshSteps();
   }
 
+  /// Usa [source] y, si es Health Connect, le pasa lo que ya se contaba con el sensor antes de la primera lectura.
+  Future<void> useStepSource(StepSource source) async {
+    stepSource = source;
+    if (source case final HealthConnectSteps health) {
+      try {
+        await health.adoptHistory(
+          counting: stepsOn,
+          hasHistory: steps.isNotEmpty || stepsAskedAt != null,
+          since: stepsAskedAt,
+        );
+      } catch (_) {}
+    }
+  }
+
   void setStepGoal(int goal) {
     final next = normalizeStepGoal(goal);
     if (next == stepGoal) return;
