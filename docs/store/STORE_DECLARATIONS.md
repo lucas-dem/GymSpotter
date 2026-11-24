@@ -12,7 +12,7 @@ Connect. Re-check it against the final signed binaries before submission.
 - Ads: no
 - Account or login: no
 - Paid subscription or in-app purchase: no
-- Health Connect / HealthKit: not used
+- Health Connect: read only, Steps (`android.permission.health.READ_STEPS`), Android 14+, foreground only. HealthKit: not used
 - Step counting: on-device (Android step counter sensor / Core Motion)
 
 ## Privacy and data safety
@@ -76,8 +76,9 @@ The step feature does not add `INTERNET`. The app does not request `INTERNET`, `
 ## Content and review notes
 
 - Play Console, App content: mark the health apps declaration "Activity and
-  fitness / activity tracking". There is no Health Connect form, because
-  Health Connect is not used.
+  fitness / activity tracking". Complete the Health Connect declaration:
+  Steps, read only, foreground, to show daily steps and estimated active
+  calories.
 - App Store review note: "Step count is read with Core Motion only after the
   user enables it; it stays on the device; calories are labelled as
   estimates."

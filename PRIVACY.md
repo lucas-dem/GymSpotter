@@ -32,14 +32,18 @@ esos permisos desde sus ajustes.
 
 Si activás el conteo de pasos, Infyter lee del teléfono la cantidad de pasos
 de cada día (en iPhone, con el sensor de movimiento del sistema (Core Motion);
-en Android, con el sensor de pasos del teléfono) y la guarda en el dispositivo
-junto con tu meta diaria. Con esa cantidad y el último peso que registraste (o
-el de tu perfil) estima las calorías activas; es una estimación y no un dato
-médico. Infyter no envía tus pasos a ningún servidor ni al desarrollador; solo
-viajan en una copia que exportes o en las copias de seguridad y transferencias
-del propio teléfono (por ejemplo, las de iCloud o de la computadora en iPhone,
-o al pasar tus datos a un teléfono nuevo). Podés apagar el conteo en Ajustes o
-quitar el permiso en los ajustes del sistema; "Borrar todos mis datos" borra
+en Android 14 o superior, desde Health Connect, que cuenta los pasos del
+teléfono aunque la app esté cerrada e incluye los que otras apps guardan ahí;
+en las demás versiones de Android, con el sensor de pasos del teléfono) y la
+guarda en el dispositivo junto con tu meta diaria. Infyter solo pide leer los
+pasos de Health Connect: no escribe ahí ni lee otros datos. Con esa cantidad y
+el último peso que registraste (o el de tu perfil) estima las calorías
+activas; es una estimación y no un dato médico. Infyter no envía tus pasos a
+ningún servidor ni al desarrollador; solo viajan en una copia que exportes o
+en las copias de seguridad y transferencias del propio teléfono (por ejemplo,
+las de iCloud o de la computadora en iPhone, o al pasar tus datos a un
+teléfono nuevo). Podés apagar el conteo en Ajustes o quitar el permiso en los
+ajustes del sistema o en Health Connect; "Borrar todos mis datos" borra
 también los pasos guardados.
 
 Desinstalar la aplicación o usar la función correspondiente del sistema puede
