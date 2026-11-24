@@ -11,6 +11,7 @@ import '../services/plan_share.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../widgets/fit_text.dart';
 import '../widgets/liquid_notch.dart';
 import '../widgets/ui_kit.dart';
 import 'plan_import_sheet.dart';
@@ -126,7 +127,7 @@ class _AiPlanScreenState extends State<AiPlanScreen> {
                       onTap: () => setState(() => _format = !_format),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-                        child: Text(
+                        child: FitText(
                           t.showFormat,
                           textAlign: TextAlign.end,
                           style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.accent),

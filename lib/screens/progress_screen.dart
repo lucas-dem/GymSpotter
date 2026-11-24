@@ -1260,7 +1260,8 @@ class _PrCardState extends State<_PrCard> {
 
   Widget _row(BuildContext context, GymColors gc, ({String id, String name, double topWeight, double oneRm}) pr, int rank, bool border) {
     final medal = rank < 3 ? [gc.brass, gc.textSecondary, gc.accent][rank] : null;
-    final stacked = MediaQuery.textScalerOf(context).scale(10) / 10 > 1.5;
+    final escala = MediaQuery.textScalerOf(context).scale(10) / 10;
+    final stacked = escala > 1.5 || (escala >= 1.5 && MediaQuery.sizeOf(context).width < 360);
     final top = Text(fit.weightLabel(pr.topWeight), style: AppTheme.d(19, weight: FontWeight.w800, color: gc.text));
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 11),
@@ -1437,45 +1438,48 @@ class _DaySheet extends StatelessWidget {
   Widget _sessionHeader(BuildContext context, GymColors gc, LoggedSession s) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
+      // Wrap: with very large text the buttons drop below the summary instead of squeezing it to a sliver.
+      child: Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Expanded(
-            child: Text(
-              '${t.setCount(s.setCount)} · ${fit.volumeLabel(s.volume)}',
-              style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 1),
-            ),
+          Text(
+            '${t.setCount(s.setCount)} · ${fit.volumeLabel(s.volume)}',
+            style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary, letterSpacing: 1),
           ),
-          Semantics(
-            button: true,
-            label: t.deleteWorkout,
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _confirmDeleteWorkout(context, s),
-              child: SizedBox(
-                width: 40,
-                height: 36,
-                child: Icon(PhosphorIconsRegular.trash, size: 16, color: gc.textTertiary),
-              ),
-            ),
-          ),
-          if (!fit.isSessionActive)
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _confirmResume(context, s),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                decoration: BoxDecoration(
-                  color: gc.emberSoft,
-                  borderRadius: BorderRadius.circular(100),
+          Row(mainAxisSize: MainAxisSize.min, children: [
+            Semantics(
+              button: true,
+              label: t.deleteWorkout,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _confirmDeleteWorkout(context, s),
+                child: SizedBox(
+                  width: 40,
+                  height: 36,
+                  child: Icon(PhosphorIconsRegular.trash, size: 16, color: gc.textTertiary),
                 ),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Icon(PhosphorIconsFill.play, size: 11, color: gc.ember),
-                  const SizedBox(width: 6),
-                  Text(t.continueWorkout,
-                      style: AppTheme.d(11, weight: FontWeight.w700, color: gc.ember, letterSpacing: 1)),
-                ]),
               ),
             ),
+            if (!fit.isSessionActive)
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => _confirmResume(context, s),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: gc.emberSoft,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Icon(PhosphorIconsFill.play, size: 11, color: gc.ember),
+                    const SizedBox(width: 6),
+                    Text(t.continueWorkout,
+                        style: AppTheme.d(11, weight: FontWeight.w700, color: gc.ember, letterSpacing: 1)),
+                  ]),
+                ),
+              ),
+          ]),
         ],
       ),
     );

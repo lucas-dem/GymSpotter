@@ -135,6 +135,9 @@ class _StepsCardState extends State<StepsCard> {
     required Widget action,
     VoidCallback? onHide,
   }) {
+    // With very large text the body takes the card's full width, so long words are not squeezed beside the icon.
+    final ancho = MediaQuery.textScalerOf(context).scale(10) > 15;
+    final cuerpo = Text(body, style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary));
     return SoftCard(
       radius: 22,
       padding: const EdgeInsets.fromLTRB(14, 16, 2, 16),
@@ -154,11 +157,7 @@ class _StepsCardState extends State<StepsCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(title, style: AppTheme.f(14.5, color: gc.text)),
-                    const SizedBox(height: 4),
-                    Text(
-                      body,
-                      style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary),
-                    ),
+                    if (!ancho) ...[const SizedBox(height: 4), cuerpo],
                   ],
                 ),
               ),
@@ -180,6 +179,10 @@ class _StepsCardState extends State<StepsCard> {
                 const SizedBox(width: 10),
             ],
           ),
+          if (ancho) ...[
+            const SizedBox(height: 4),
+            Padding(padding: const EdgeInsetsDirectional.only(end: 12), child: cuerpo),
+          ],
           const SizedBox(height: 14),
           Padding(padding: const EdgeInsetsDirectional.only(end: 12), child: action),
         ],
@@ -416,6 +419,7 @@ void showStepGoalSheet(BuildContext context) {
   showAppSheet<void>(
     context: context,
     backgroundColor: Colors.transparent,
+    isScrollControlled: true,
     builder: (sheet) => StatefulBuilder(
       builder: (sheet, setSheet) => Container(
         padding: sheetPad(sheet),
@@ -423,42 +427,44 @@ void showStepGoalSheet(BuildContext context) {
           color: gc.bgRaised,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SheetHandle(),
-            const SizedBox(height: 20),
-            Text(
-              t.stepGoal.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: AppTheme.f(19, color: gc.text),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              t.stepsCount(fit.steps[_dayKey(DateTime.now())] ?? 0),
-              textAlign: TextAlign.center,
-              style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary),
-            ),
-            const SizedBox(height: 20),
-            Center(
-              child: StepperControl(
-                value: t.stepsCount(fit.stepGoal),
-                minWidth: 148,
-                onDec: () => setSheet(() => fit.setStepGoal(fit.stepGoal - kStepGoalStep)),
-                onInc: () => setSheet(() => fit.setStepGoal(fit.stepGoal + kStepGoalStep)),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SheetHandle(),
+              const SizedBox(height: 20),
+              Text(
+                t.stepGoal.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: AppTheme.f(19, color: gc.text),
               ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              t.stepGoalHint,
-              textAlign: TextAlign.center,
-              style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary, height: 1.45),
-            ),
-            const SizedBox(height: 22),
-            PrimaryButton(label: t.done, onTap: () => Navigator.of(sheet).pop()),
-          ],
-        ),
+              const SizedBox(height: 6),
+              Text(
+                t.stepsCount(fit.steps[_dayKey(DateTime.now())] ?? 0),
+                textAlign: TextAlign.center,
+                style: AppTheme.f(12.5, weight: FontWeight.w500, color: gc.textSecondary),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: StepperControl(
+                  value: t.stepsCount(fit.stepGoal),
+                  minWidth: 148,
+                  onDec: () => setSheet(() => fit.setStepGoal(fit.stepGoal - kStepGoalStep)),
+                  onInc: () => setSheet(() => fit.setStepGoal(fit.stepGoal + kStepGoalStep)),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                t.stepGoalHint,
+                textAlign: TextAlign.center,
+                style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textSecondary, height: 1.45),
+              ),
+              const SizedBox(height: 22),
+              PrimaryButton(label: t.done, onTap: () => Navigator.of(sheet).pop()),
+            ],
+          ),
+          ),
       ),
     ),
   );

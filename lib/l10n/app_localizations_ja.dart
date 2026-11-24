@@ -432,7 +432,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get heatLow => '未トレーニング';
 
   @override
-  String get heatHigh => '最大ボリューム';
+  String get heatHigh => '最大ボリュ⁠ーム';
 
   @override
   String get muscleMapEmpty => 'ワークアウトを記録すると、ここで体が色づき始めます。';
@@ -1710,7 +1710,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get exercisesInsideWhy => 'すべてにアニメーションと手順説明があります。';
 
   @override
-  String get calculatorsInside => '6個の計算ツール';
+  String get calculatorsInside => '6個の計算ツ⁠ール';
 
   @override
   String get calculatorsInsideWhy => '1RM、プレート、BMI、カロリー、体脂肪、ウォームアップ — すべて公開済みの式に基づきます。';
@@ -1754,7 +1754,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get welcomeKicker => 'ようこそ';
 
   @override
-  String get welcomeBlurb => 'すべて端末内に保存。アカウント不要、インターネット不要、支払いなし。';
+  String get welcomeBlurb => 'すべて端末内に保存。アカウント不要、インタ⁠ーネット不要、支払いなし。';
 
   @override
   String get welcomeStart => '始める';
@@ -2754,7 +2754,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String routineCount(int n) {
-    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 件のルーティン');
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 件のル⁠ーティン');
     return '$_temp0';
   }
 
@@ -2769,7 +2769,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String routinesAdded(int n) {
-    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 件のルーティンを追加しました');
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n 件のル⁠ーティンを追加しました');
     return '$_temp0';
   }
 
@@ -3106,7 +3106,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stepsPermissionBody =>
-      'Infyterはスマートフォンのセンサーで歩数を数え、進捗と推定アクティブカロリーを表示します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
+      'Infyterはスマ⁠ートフォンのセンサ⁠ーで歩数を数え、進捗と推定アクティブカロリ⁠ーを表示します。Infyterは歩数をどのサ⁠ーバ⁠ーにも送信しません。歩数は書き出したコピ⁠ーや、スマ⁠ートフォン自身のバックアップ・デ⁠ータ移行にのみ含まれます。';
 
   @override
   String get stepGoal => '1日の目標';
@@ -3127,7 +3127,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get stepsHelpTitle => '推定アクティブカロリー';
 
   @override
-  String get stepsHelpBody => '安静時を上回る消費量の推定値で、今日の歩数とトレーニングから算出します。医療データではありません。';
+  String get stepsHelpBody => '安静時を上回る消費量の推定値で、今日の歩数とトレ⁠ーニングから算出します。医療デ⁠ータではありません。';
 
   @override
   String get stepsByWalking => '歩数から';
@@ -3184,7 +3184,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get stepsSettingsHint =>
-      '歩数はスマートフォンのセンサーから読み取り、この端末に保存します。Infyterは歩数をどのサーバーにも送信しません。歩数は書き出したコピーや、スマートフォン自身のバックアップ・データ移行にのみ含まれます。';
+      '歩数はスマ⁠ートフォンのセンサ⁠ーから読み取り、この端末に保存します。Infyterは歩数をどのサ⁠ーバ⁠ーにも送信しません。歩数は書き出したコピ⁠ーや、スマ⁠ートフォン自身のバックアップ・デ⁠ータ移行にのみ含まれます。';
 
   @override
   String get stepsUnavailable => 'このスマートフォンでは利用できません';

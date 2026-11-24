@@ -168,7 +168,7 @@ class HomeScreen extends StatelessWidget {
       onTap: onMore,
       child: Row(
         children: [
-          Expanded(child: FitText(_tc(title), style: AppTheme.f(19, color: gc.text), maxLines: 1)),
+          Expanded(child: FitText(_tc(title), style: AppTheme.f(19, color: gc.text))),
           if (onMore != null)
             Icon(PhosphorIconsBold.caretRight, size: 14, color: gc.textTertiary),
         ],
