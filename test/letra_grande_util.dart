@@ -642,8 +642,9 @@ List<String> chipsPegados(WidgetTester tester, {double minimo = 4}) {
     for (var j = i + 1; j < chips.length; j++) {
       final (ca, a, ta) = chips[i];
       final (cb, b, tb) = chips[j];
-      if (_desciende(ca, cb) || _desciende(cb, ca) || !_ladoALado(ca, cb) || _capasDistintas(ca, cb))
+      if (_desciende(ca, cb) || _desciende(cb, ca) || !_ladoALado(ca, cb) || _capasDistintas(ca, cb)) {
         continue;
+      }
       final solape = math.min(a.bottom, b.bottom) - math.max(a.top, b.top);
       if (solape < 0.5 * math.min(a.height, b.height)) continue;
       final hueco = math.max(b.left - a.right, a.left - b.right);
