@@ -51,7 +51,11 @@ class StepCounter(private val activity: Activity, messenger: BinaryMessenger) : 
                     result.success(null)
                 }
                 "forget" -> {
-                    prefs.edit().remove(ANCHOR).remove(ASKED).remove(SILENT).apply()
+                    // A "deny for good" lives on in Android; forgetting it would make the next "Activar" ask silently.
+                    val keepAsked = permissionStatus() == "denied"
+                    val edit = prefs.edit().remove(ANCHOR).remove(SILENT)
+                    if (!keepAsked) edit.remove(ASKED)
+                    edit.apply()
                     result.success(null)
                 }
                 else -> result.notImplemented()
