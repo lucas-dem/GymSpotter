@@ -8,6 +8,7 @@ import 'package:infyter/app/app_shell.dart';
 import 'package:infyter/app/infyter_app.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/workout.dart';
+import 'package:infyter/screens/home_screen.dart';
 import 'package:infyter/screens/progress_screen.dart';
 import 'package:infyter/screens/session_screen.dart';
 import 'package:infyter/services/step_source.dart';
@@ -656,6 +657,30 @@ void main() {
           }
           expect(visible, isTrue, reason: 'el encabezado compacto tiene que quedar a la vista');
           expect(fallas, isEmpty);
+        });
+      }
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final (ancho, alto) in _pantallas) {
+      for (final nombre in const ['home', 'home-pasos-contando', 'home-pasos-negado']) {
+        testWidgets('$nombre scrolled to the end keeps its last content above the tab bar at ${ancho.toInt()} dp, '
+            'scale 1.5, $idioma', (tester) async {
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: 1.5);
+          fit.setLanguage(idioma);
+          casos[nombre]!();
+          final fallas = await _revisar(tester, const InfyterApp(), nombre, idioma: idioma);
+          final lista = find.descendant(of: find.byType(HomeScreen), matching: find.byType(SingleChildScrollView));
+          final posicion = tester.state<ScrollableState>(find.descendant(of: lista, matching: find.byType(Scrollable)).first).position;
+          posicion.jumpTo(posicion.maxScrollExtent);
+          await tester.pump(const Duration(milliseconds: 400));
+          final contenido = tester.getRect(find.descendant(of: lista, matching: find.byType(Column)).first);
+          final barra = tester.getRect(find.byWidgetPredicate((w) => '${w.runtimeType}' == '_NavBar'));
+          await _cerrar(tester);
+          expect(posicion.maxScrollExtent, greaterThan(0));
+          expect(fallas, isEmpty);
+          expect(contenido.bottom, lessThanOrEqualTo(barra.top), reason: 'contenido $contenido, barra $barra');
         });
       }
     }
