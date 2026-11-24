@@ -30,9 +30,11 @@ bool _oculto(RenderObject r) {
   return false;
 }
 
-Iterable<RenderParagraph> _visibles(WidgetTester tester) => tester.allRenderObjects
-    .whereType<RenderParagraph>()
-    .where((r) => r.attached && r.hasSize && !r.size.isEmpty && !_oculto(r) && r.text.toPlainText().trim().isNotEmpty);
+Iterable<RenderParagraph> _visibles(WidgetTester tester) =>
+    tester.allRenderObjects.whereType<RenderParagraph>().where(
+      (r) =>
+          r.attached && r.hasSize && !r.size.isEmpty && !_oculto(r) && r.text.toPlainText().trim().isNotEmpty,
+    );
 
 String _origen(RenderObject r) {
   final c = r.debugCreator;
@@ -203,7 +205,11 @@ List<String> textoCortado(WidgetTester tester) {
           rect.left >= caja.right;
       if (fuera) break;
       final vertical = arriba > tol || abajo > tol, horizontal = izq > tol || der > tol;
-      if (lista == Axis.vertical ? horizontal : lista == Axis.horizontal ? vertical : vertical || horizontal) {
+      if (lista == Axis.vertical
+          ? horizontal
+          : lista == Axis.horizontal
+          ? vertical
+          : vertical || horizontal) {
         out.add(
           'recorte ${a.runtimeType} "$txt": sobra arriba ${arriba.toStringAsFixed(1)}, abajo '
           '${abajo.toStringAsFixed(1)}, izq ${izq.toStringAsFixed(1)}, der ${der.toStringAsFixed(1)} [$donde]',
@@ -369,7 +375,9 @@ List<Rect> _lineasVisibles(RenderParagraph r) {
   final m = r.getTransformTo(null);
   final visible = _zonaVisible(r).intersect(MatrixUtils.transformRect(m, Offset.zero & r.size).inflate(0.5));
   final propias = <Rect>[];
-  for (final b in r.getBoxesForSelection(TextSelection(baseOffset: 0, extentOffset: txt.trimRight().length))) {
+  for (final b in r.getBoxesForSelection(
+    TextSelection(baseOffset: 0, extentOffset: txt.trimRight().length),
+  )) {
     final rect = MatrixUtils.transformRect(m, b.toRect());
     final k = propias.indexWhere((p) => (p.top - rect.top).abs() < 1);
     if (k < 0) {
@@ -548,14 +556,115 @@ List<String> gruposDesparejos(WidgetTester tester, {double tolerancia = 0.01}) {
   ];
 }
 
-/// Everything the large-text checks flag: clipped, split, shortened, touching and overlapping text, and labels
-/// of one group drawn at different sizes.
+final _letraOCifra = RegExp(r'[\p{L}\p{N}]', unicode: true);
+
+/// A text right under a row of three or more short, spread-out labels no bigger than it (axis letters, dates) with
+/// less than [minimo] dp between them: a note needs its own spacing, not the row's.
+List<String> notasPegadas(WidgetTester tester, {double minimo = 8}) {
+  final lineas = <(RenderParagraph, Rect)>[
+    for (final r in _visibles(tester))
+      for (final p in _lineasVisibles(r)) (r, p),
+  ];
+  bool mismaLinea(Rect a, Rect b) =>
+      math.min(a.bottom, b.bottom) - math.max(a.top, b.top) >= 0.5 * math.min(a.height, b.height);
+  bool mismoLugar(Rect a, Rect b) => (a.left - b.left).abs() < 1 && (a.right - b.right).abs() < 1;
+  final out = <String>{};
+  for (final (ra, a) in lineas) {
+    final fila = [
+      for (final (rb, b) in lineas)
+        if (identical(ra, rb) || (mismaLinea(a, b) && _ladoALado(ra, rb) && !_capasDistintas(ra, rb)))
+          (rb, b),
+    ];
+    final palabras = [
+      for (final (r, _) in fila)
+        if (_letraOCifra.hasMatch(r.text.toPlainText())) r.text.toPlainText().trim(),
+    ];
+    if (palabras.any((w) => w.length > 5)) continue;
+    final orden = <Rect>[];
+    for (final r in [
+      for (final (r, l) in fila)
+        if (_letraOCifra.hasMatch(r.text.toPlainText())) l,
+    ]..sort((x, y) => x.left.compareTo(y.left))) {
+      if (orden.isEmpty || !mismoLugar(orden.last, r)) orden.add(r);
+    }
+    if (orden.length < 3) continue;
+    var separados = true;
+    for (var k = 1; k < orden.length; k++) {
+      if (orden[k].left - orden[k - 1].right < 4) separados = false;
+    }
+    if (!separados) continue;
+    final abajo = fila.map((x) => x.$2.bottom).reduce(math.max);
+    final izq = fila.map((x) => x.$2.left).reduce(math.min),
+        der = fila.map((x) => x.$2.right).reduce(math.max);
+    for (final (rn, n) in lineas) {
+      if (fila.any((x) => identical(x.$1, rn)) || _capasDistintas(ra, rn)) continue;
+      if (n.right <= izq || n.left >= der || orden.any((r) => r.height > 1.25 * n.height)) continue;
+      final hueco = n.top - abajo;
+      if (hueco < -0.5 || hueco >= minimo) continue;
+      if (lineas.any(
+        (x) => !identical(x.$1, rn) && mismaLinea(x.$2, n) && !mismoLugar(x.$2, n) && _ladoALado(x.$1, rn),
+      )) {
+        continue;
+      }
+      if (_lineasVisibles(rn).any((l) => l.top < n.top - 0.5)) continue;
+      out.add(
+        'nota pegada "${rn.text.toPlainText().replaceAll('\n', ' ')}" a ${hueco.toStringAsFixed(1)} dp de la fila de '
+        '"${ra.text.toPlainText()}" [${_origen(rn)}]',
+      );
+    }
+  }
+  return out.toList();
+}
+
+/// Rounded, filled backgrounds around a single short text (chips, pills) drawn next to each other with less than
+/// [minimo] dp between them (layered copies of one chip overlap by far more and are not flagged).
+List<String> chipsPegados(WidgetTester tester, {double minimo = 4}) {
+  final textos = _visibles(tester).toList();
+  final chips = <(RenderDecoratedBox, Rect, String)>[];
+  for (final r in tester.allRenderObjects.whereType<RenderDecoratedBox>()) {
+    if (!r.attached || !r.hasSize || r.size.isEmpty || _oculto(r)) continue;
+    final d = r.decoration;
+    if (d is! BoxDecoration || d.color == null || d.color!.a == 0 || d.borderRadius == null) continue;
+    final dentro = {
+      for (final p in textos)
+        if (_desciende(p, r)) p.text.toPlainText(),
+    };
+    if (dentro.length != 1 || r.size.height > 72) continue;
+    final rect = MatrixUtils.transformRect(
+      r.getTransformTo(null),
+      Offset.zero & r.size,
+    ).intersect(_zonaVisible(r));
+    if (rect.width <= 0 || rect.height <= 0) continue;
+    chips.add((r, rect, dentro.single));
+  }
+  final out = <String>{};
+  for (var i = 0; i < chips.length; i++) {
+    for (var j = i + 1; j < chips.length; j++) {
+      final (ca, a, ta) = chips[i];
+      final (cb, b, tb) = chips[j];
+      if (_desciende(ca, cb) || _desciende(cb, ca) || !_ladoALado(ca, cb) || _capasDistintas(ca, cb))
+        continue;
+      final solape = math.min(a.bottom, b.bottom) - math.max(a.top, b.top);
+      if (solape < 0.5 * math.min(a.height, b.height)) continue;
+      final hueco = math.max(b.left - a.right, a.left - b.right);
+      if (hueco > -1 && hueco < minimo) {
+        out.add('chips pegados "$ta" y "$tb": separacion ${hueco.toStringAsFixed(1)} [${_origen(ca)}]');
+      }
+    }
+  }
+  return out.toList();
+}
+
+/// Everything the large-text checks flag: clipped, split, shortened, touching and overlapping text, notes pressed
+/// under a row of labels, touching chips, and labels of one group drawn at different sizes.
 List<String> problemasDeTexto(WidgetTester tester, String idioma) => [
   ...textoCortado(tester),
   ...palabrasPartidas(tester),
   ...rotulosAcortados(tester, idioma),
   ...rotulosPegados(tester, idioma),
   ...encimados(tester),
+  ...notasPegadas(tester),
+  ...chipsPegados(tester),
   ...gruposDesparejos(tester),
 ];
 

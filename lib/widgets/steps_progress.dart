@@ -113,6 +113,7 @@ class _SpanToggle extends StatelessWidget {
                   constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   child: Center(
                     child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: s == span ? gc.ember : gc.bgRaised2,
@@ -159,8 +160,8 @@ Widget _value(GymColors gc, String value, String unit) => FittedBox(
   ),
 );
 
-Widget _note(GymColors gc, String text) => Padding(
-  padding: const EdgeInsets.only(top: 4),
+Widget _note(GymColors gc, String text, {double top = 4}) => Padding(
+  padding: EdgeInsets.only(top: top),
   child: Text(
     text,
     style: AppTheme.f(11.5, weight: FontWeight.w500, color: gc.textTertiary),
@@ -219,7 +220,11 @@ class _StepsProgressCardState extends State<StepsProgressCard> {
             child: StepsBarChart(period: p, span: _span, goal: fit.stepGoal),
           ),
           if (gaps || p.hasPartial)
-            _note(gc, [if (gaps) t.stepsLegendGaps, if (p.hasPartial) t.stepsLegendPartial].join(' ')),
+            _note(
+              gc,
+              [if (gaps) t.stepsLegendGaps, if (p.hasPartial) t.stepsLegendPartial].join(' '),
+              top: 12,
+            ),
         ],
       );
     },
