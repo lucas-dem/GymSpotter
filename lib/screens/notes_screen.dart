@@ -98,32 +98,38 @@ class NotesScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 22),
-        LayoutBuilder(builder: (context, box) => Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(noteDayLabel(day).toUpperCase(),
-                      style: AppTheme.f(10.5,
-                          weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
-                  const SizedBox(height: 3),
-                  Text(t.fullDate(day), style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary)),
-                ],
-              ),
-            ),
-            ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: box.maxWidth * 0.45),
-              child: Pill(
-                label: t.noteAddOnDay,
-                bg: gc.bgRaised,
-                fg: gc.text,
-                fontSize: 12,
-                onTap: () => fit.openNoteEditor(exerciseId: fit.noteScope, date: day),
-              ),
-            ),
-          ],
-        )),
+        LayoutBuilder(builder: (context, box) {
+          final fecha = Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(noteDayLabel(day).toUpperCase(),
+                  style: AppTheme.f(10.5,
+                      weight: FontWeight.w700, color: gc.textTertiary, letterSpacing: 1.5)),
+              const SizedBox(height: 3),
+              Text(t.fullDate(day), style: AppTheme.f(12, weight: FontWeight.w500, color: gc.textTertiary)),
+            ],
+          );
+          final agregar = Pill(
+            label: t.noteAddOnDay,
+            bg: gc.bgRaised,
+            fg: gc.text,
+            fontSize: 12,
+            onTap: () => fit.openNoteEditor(exerciseId: fit.noteScope, date: day),
+          );
+          // With very large text the button goes below the date and gets the full width.
+          if (MediaQuery.textScalerOf(context).scale(10) > 15) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [fecha, const SizedBox(height: 10), agregar],
+            );
+          }
+          return Row(
+            children: [
+              Expanded(child: fecha),
+              ConstrainedBox(constraints: BoxConstraints(maxWidth: box.maxWidth * 0.45), child: agregar),
+            ],
+          );
+        }),
         const SizedBox(height: 14),
         if (notes.isEmpty)
           Container(

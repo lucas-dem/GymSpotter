@@ -96,8 +96,7 @@ class _SpanToggle extends StatelessWidget {
     return Semantics(
       container: true,
       label: t.stepsRangeLabel,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
         children: [
           for (final s in StepsSpan.values)
             Semantics(
@@ -112,6 +111,8 @@ class _SpanToggle extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                   child: Center(
+                    widthFactor: 1,
+                    heightFactor: 1,
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

@@ -12,6 +12,7 @@ import '../services/gallery.dart';
 import '../state/fit_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import 'fit_text.dart';
 import 'medal.dart';
 import 'profile_avatar.dart';
 import 'ui_kit.dart';
@@ -191,10 +192,13 @@ class _AwardCelebrationState extends State<AwardCelebration> with TickerProvider
                               _fade(
                                 0.38,
                                 0.75,
-                                Text(
-                                  awardName(widget.id),
-                                  textAlign: TextAlign.center,
-                                  style: AppTheme.f(32, weight: FontWeight.w800, color: gc.text),
+                                // In a group so the scroll view can measure its height before laying it out.
+                                FitTextGroup(
+                                  child: FitText(
+                                    awardName(widget.id),
+                                    textAlign: TextAlign.center,
+                                    style: AppTheme.f(32, weight: FontWeight.w800, color: gc.text),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 12),
