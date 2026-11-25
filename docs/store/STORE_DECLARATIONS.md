@@ -61,6 +61,9 @@ guidance for the Play In-App Updates library when filling the form.
   `NSMotionUsageDescription`): daily step count and estimated active calories,
   only after the user enables step counting. Read and stored on the device;
   nothing is sent anywhere. No Google Play services and no foreground service.
+- Health Connect steps (Android 14+, `android.permission.health.READ_STEPS`):
+  reads daily steps from Health Connect, only after the user enables step
+  counting. Read only; nothing is written to Health Connect or sent anywhere.
 - Notifications: rest-timer and training reminders.
 - Schedule exact alarms (Android): optional precision for short rest timers;
   the app falls back to an inexact notification if access is unavailable.
