@@ -97,22 +97,61 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
   String? _fileName;
   String? _notice;
   late final Future<void> _sweep;
+  // Length of the text built for [_textOf], so the button can say Copy or Export before it is tapped.
+  ProgressReport? _textOf;
+  int? _textLength;
+  int _textRun = 0;
 
   bool get _wholeActive => _whole && _span != null;
+
+  bool _tooLongFor(ProgressReport report) => identical(_textOf, report) && (_textLength ?? 0) > kExportTextLimit;
+
+  /// With Text the button copies to the clipboard, unless the text does not fit there: then it exports a .txt.
+  bool get _copies => _kind == ExportKind.text && !_tooLongFor(_report);
 
   ProgressReport _buildReport() => _wholeActive
       ? progressReportFromFit(from: _span!.from, to: _span.to, wholeHistory: true)
       : progressReportFromFit(from: _from, to: _to, wholeHistory: false);
 
-  void _update(VoidCallback change) => setState(() {
-        change();
-        _report = _buildReport();
+  void _update(VoidCallback change) {
+    setState(() {
+      change();
+      _report = _buildReport();
+      _notice = null;
+    });
+    _measureText();
+  }
+
+  void _setKind(ExportKind kind) {
+    if (_busy || kind == _kind) return;
+    setState(() {
+      _kind = kind;
+      _notice = null;
+    });
+    _measureText();
+  }
+
+  /// Builds the text in the background only to know its length; nothing is copied or shared.
+  void _measureText() {
+    final report = _report;
+    if (_kind != ExportKind.text || report.isEmpty || identical(_textOf, report)) return;
+    final run = ++_textRun;
+    _build(ExportKind.text, report).then((result) {
+      if (!mounted || run != _textRun) return;
+      _remember(report, result.text?.length);
+    }, onError: (Object _) {});
+  }
+
+  void _remember(ProgressReport report, int? length) => setState(() {
+        _textOf = report;
+        _textLength = length;
       });
 
   @override
   void initState() {
     super.initState();
     _sweep = sweepExportLeftovers();
+    _measureText();
   }
 
   @override
@@ -165,26 +204,6 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
     return compute(runExportJob, ExportJob(report: report, kind: kind, fonts: fonts));
   }
 
-  Future<void> _copy() async {
-    if (_busy || _report.isEmpty) return;
-    setState(() => _busy = true);
-    try {
-      final result = await _build(ExportKind.text, _report);
-      final text = result.text!;
-      if (!mounted) return;
-      if (text.length > kExportTextLimit) {
-        showNotchToast(context, t.exportTextTooLong);
-        return;
-      }
-      await copyExportText(text);
-      if (mounted) showNotchToast(context, t.copiedDone);
-    } catch (_) {
-      _failed();
-    } finally {
-      if (mounted) setState(() => _busy = false);
-    }
-  }
-
   Future<void> _export() async {
     if (_busy) return;
     if (_report.isEmpty) {
@@ -192,21 +211,29 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
       return;
     }
     final kind = _kind;
+    final report = _report;
+    final copies = _copies;
     setState(() {
       _busy = true;
       _notice = null;
     });
     String? written;
     try {
-      final result = await _build(kind, _report);
+      final result = await _build(kind, report);
       if (!mounted) return;
       final text = result.text;
-      if (text != null && text.length <= kExportTextLimit) {
+      if (text != null) _remember(report, text.length);
+      if (copies) {
+        // The button said Copy: a text that turns out too long only turns it into Export, it is not shared yet.
+        if (text!.length > kExportTextLimit) {
+          setState(() => _notice = t.exportTextTooLong);
+          return;
+        }
         await copyExportText(text);
         if (!mounted) return;
         setState(() => _notice = t.exportCopiedClipboard);
-        showNotchToast(context, t.exportCopiedClipboard);
-        await shareExportText(text, result.title, _origin());
+        // The notch is narrow: it says "Copied" and the sheet says where.
+        showNotchToast(context, t.copiedDone, icon: PhosphorIconsFill.checkCircle, accent: context.gc.sage);
         return;
       }
       // The cleanup started on opening must not delete the file this export is about to share.
@@ -258,6 +285,7 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
     final shownTo = _wholeActive ? span!.to : _to;
     final nothingAtAll = span == null;
     final empty = _report.isEmpty;
+    final notice = _notice ?? (_kind == ExportKind.text && _tooLongFor(_report) ? t.exportTextTooLong : null);
     final status = nothingAtAll
         ? t.exportNothingAtAll
         : empty
@@ -330,19 +358,17 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
                       bg: k == _kind ? gc.emberSoft : gc.bgRaised,
                       fg: k == _kind ? gc.text : gc.textSecondary,
                       fontSize: 12.5,
-                      onTap: () {
-                        if (!_busy) setState(() => _kind = k);
-                      },
+                      onTap: () => _setKind(k),
                     ),
                 ],
               ),
               const SizedBox(height: 20),
-              if (_notice != null)
+              if (notice != null)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10, left: 4),
                   child: Text(
-                    _notice!,
-                    style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary),
+                    notice,
+                    style: AppTheme.f(12.5, weight: FontWeight.w600, color: gc.textSecondary, height: 1.35),
                   ),
                 ),
               Semantics(
@@ -357,15 +383,11 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
                         KeyedSubtree(
                           key: _exportButton,
                           child: PrimaryButton(
-                            label: _busy ? t.exportBusy : t.exportAction,
+                            label: _busy ? t.exportBusy : (_copies ? t.exportCopy : t.exportAction),
                             height: 54,
                             onTap: _export,
                           ),
                         ),
-                        if (_kind == ExportKind.text) ...[
-                          const SizedBox(height: 10),
-                          GhostButton(label: t.exportCopy, icon: PhosphorIconsRegular.copy, onTap: _copy),
-                        ],
                       ],
                     ),
                   ),

@@ -3352,11 +3352,12 @@ class AppLocalizationsUk extends AppLocalizations {
   String get shareChooserProgress => 'Поділитися прогресом';
 
   @override
-  String get shareChooserProgressHint => 'Тренування, кроки, калорії, вага та виміри за днями, як файл';
+  String get shareChooserProgressHint =>
+      'Тренування, кроки, калорії, вага та виміри за днями, текстом або файлом';
 
   @override
   String get exportSheetHint =>
-      'Файл створюється на твоєму телефоні. Нічого не йде, доки ти не обереш, куди його надіслати. З форматом «Текст» він ще й копіюється у буфер обміну, якщо він не надто довгий.';
+      'Створюється на твоєму телефоні, і нічого не йде, доки ти не попросиш: з форматом «Текст» кнопка «Копіювати» кладе його в буфер обміну; інші формати надсилаються кнопкою «Експорт».';
 
   @override
   String get exportFrom => 'Від';
@@ -3382,7 +3383,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get exportAction => 'Експорт';
 
   @override
-  String get exportCopy => 'Копіювати текст';
+  String get exportCopy => 'Копіювати';
 
   @override
   String get exportBusy => 'Підготовка…';
@@ -3413,8 +3414,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get exportFailed => 'Не вдалося підготувати файл';
 
   @override
-  String get exportTextTooLong =>
-      'Текст надто довгий, щоб його скопіювати. Натисни «Експорт», щоб надіслати його файлом.';
+  String get exportTextTooLong => 'Задовгий для буфера обміну: піде файлом .txt.';
 
   @override
   String get exportDocTitle => 'Infyter · Прогрес';

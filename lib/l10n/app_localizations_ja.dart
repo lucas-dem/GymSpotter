@@ -1315,7 +1315,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get importBackup => 'バックアップを読み込む';
 
   @override
-  String get importHint => 'Infyterから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデータが置き換わります。';
+  String get importHint => 'Infyterから書き出した.zip（または旧.json）バックアップを選択してください。メディアを含む現在のデ⁠ータが置き換わります。';
 
   @override
   String get import => '読み込む';
@@ -3234,10 +3234,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get shareChooserProgress => '進捗を共有';
 
   @override
-  String get shareChooserProgressHint => '日ごとのワ⁠ークアウト、歩数、カロリ⁠ー、体重、身体測定をファイルで';
+  String get shareChooserProgressHint => '日ごとのワ⁠ークアウト、歩数、カロリ⁠ー、体重、身体測定をテキストかファイルで';
 
   @override
-  String get exportSheetHint => 'お使いの端末内で作成されます。送信先を選ぶまで、何も外部に出ません。テキストの場合は、長すぎなければクリップボ⁠ードにもコピ⁠ーされます。';
+  String get exportSheetHint => 'お使いの端末内で作成され、操作するまで何も外部に出ません。テキストは「コピ⁠ー」でクリップボ⁠ードに入り、ほかの形式は「書き出す」で送ります。';
 
   @override
   String get exportFrom => '開始';
@@ -3263,7 +3263,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get exportAction => '書き出す';
 
   @override
-  String get exportCopy => 'テキストをコピ⁠ー';
+  String get exportCopy => 'コピ⁠ー';
 
   @override
   String get exportBusy => '準備中…';
@@ -3287,7 +3287,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get exportFailed => 'ファイルを作成できませんでした';
 
   @override
-  String get exportTextTooLong => 'テキストが長すぎてコピ⁠ーできません。「書き出す」でファイルとして送ってください。';
+  String get exportTextTooLong => 'クリップボ⁠ードには長すぎるため、.txtファイルとして送ります。';
 
   @override
   String get exportDocTitle => 'Infyter · 進捗';

@@ -3333,11 +3333,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareChooserProgressHint =>
-      'Workouts, steps, calories, weight and measurements by day, as a file';
+      'Workouts, steps, calories, weight and measurements by day, as text or a file';
 
   @override
   String get exportSheetHint =>
-      'It is built on your phone. Nothing leaves until you choose where to send it. With Text, it is also copied to the clipboard if it is not too long.';
+      'It is built on your phone and nothing leaves until you ask: with Text, Copy puts it on the clipboard; the other formats are sent with Export.';
 
   @override
   String get exportFrom => 'From';
@@ -3363,7 +3363,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportAction => 'Export';
 
   @override
-  String get exportCopy => 'Copy text';
+  String get exportCopy => 'Copy';
 
   @override
   String get exportBusy => 'Preparing…';
@@ -3392,7 +3392,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportFailed => 'The file could not be prepared';
 
   @override
-  String get exportTextTooLong => 'The text is too long to copy. Use Export to send it as a file.';
+  String get exportTextTooLong => 'It is too long for the clipboard, so it goes as a .txt file.';
 
   @override
   String get exportDocTitle => 'Infyter · Progress';

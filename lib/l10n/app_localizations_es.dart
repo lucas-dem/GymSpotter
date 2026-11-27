@@ -3337,11 +3337,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get shareChooserProgressHint =>
-      'Entrenamientos, pasos, calorías, peso y medidas por día, como archivo';
+      'Entrenamientos, pasos, calorías, peso y medidas por día, como texto o archivo';
 
   @override
   String get exportSheetHint =>
-      'Se arma en tu teléfono. No sale nada hasta que elijas dónde mandarlo. Con Texto, además se copia al portapapeles si no es muy largo.';
+      'Se arma en tu teléfono y no sale nada hasta que lo pidas: con Texto, Copiar lo deja en el portapapeles; los demás formatos se mandan con Exportar.';
 
   @override
   String get exportFrom => 'Desde';
@@ -3367,7 +3367,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportAction => 'Exportar';
 
   @override
-  String get exportCopy => 'Copiar texto';
+  String get exportCopy => 'Copiar';
 
   @override
   String get exportBusy => 'Preparando…';
@@ -3396,8 +3396,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportFailed => 'No se pudo preparar el archivo';
 
   @override
-  String get exportTextTooLong =>
-      'El texto es muy largo para copiarlo. Usa Exportar para mandarlo como archivo.';
+  String get exportTextTooLong => 'Es muy largo para el portapapeles: sale como archivo .txt.';
 
   @override
   String get exportDocTitle => 'Infyter · Progreso';

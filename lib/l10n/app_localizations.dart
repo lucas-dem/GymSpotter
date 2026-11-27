@@ -5969,13 +5969,13 @@ abstract class AppLocalizations {
   /// No description provided for @shareChooserProgressHint.
   ///
   /// In en, this message translates to:
-  /// **'Workouts, steps, calories, weight and measurements by day, as a file'**
+  /// **'Workouts, steps, calories, weight and measurements by day, as text or a file'**
   String get shareChooserProgressHint;
 
   /// No description provided for @exportSheetHint.
   ///
   /// In en, this message translates to:
-  /// **'It is built on your phone. Nothing leaves until you choose where to send it. With Text, it is also copied to the clipboard if it is not too long.'**
+  /// **'It is built on your phone and nothing leaves until you ask: with Text, Copy puts it on the clipboard; the other formats are sent with Export.'**
   String get exportSheetHint;
 
   /// No description provided for @exportFrom.
@@ -6023,7 +6023,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportCopy.
   ///
   /// In en, this message translates to:
-  /// **'Copy text'**
+  /// **'Copy'**
   String get exportCopy;
 
   /// No description provided for @exportBusy.
@@ -6065,7 +6065,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportTextTooLong.
   ///
   /// In en, this message translates to:
-  /// **'The text is too long to copy. Use Export to send it as a file.'**
+  /// **'It is too long for the clipboard, so it goes as a .txt file.'**
   String get exportTextTooLong;
 
   /// No description provided for @exportDocTitle.

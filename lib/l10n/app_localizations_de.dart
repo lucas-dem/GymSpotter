@@ -3355,11 +3355,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get shareChooserProgress => 'Fortschritt teilen';
 
   @override
-  String get shareChooserProgressHint => 'Trainings, Schritte, Kalorien, Gewicht und Maße pro Tag, als Datei';
+  String get shareChooserProgressHint =>
+      'Trainings, Schritte, Kalorien, Gewicht und Maße pro Tag, als Text oder Datei';
 
   @override
   String get exportSheetHint =>
-      'Wird auf deinem Handy erstellt. Nichts verlässt das Gerät, bis du wählst, wohin es gesendet wird. Bei Text wird es zusätzlich in die Zwischenablage kopiert, wenn es nicht zu lang ist.';
+      'Wird auf deinem Handy erstellt, und nichts verlässt es, bis du es willst: Bei Text legt Kopieren ihn in die Zwischenablage; die anderen Formate sendest du mit Exportieren.';
 
   @override
   String get exportFrom => 'Von';
@@ -3385,7 +3386,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportAction => 'Exportieren';
 
   @override
-  String get exportCopy => 'Text kopieren';
+  String get exportCopy => 'Kopieren';
 
   @override
   String get exportBusy => 'Wird vorbereitet…';
@@ -3414,8 +3415,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportFailed => 'Die Datei konnte nicht erstellt werden';
 
   @override
-  String get exportTextTooLong =>
-      'Der Text ist zu lang zum Kopieren. Nutze Exportieren, um ihn als Datei zu senden.';
+  String get exportTextTooLong => 'Zu lang für die Zwischenablage: Er wird als .txt-Datei gesendet.';
 
   @override
   String get exportDocTitle => 'Infyter · Fortschritt';

@@ -3334,11 +3334,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get shareChooserProgressHint =>
-      'Günlere göre antrenmanlar, adımlar, kalori, kilo ve ölçüler, dosya olarak';
+      'Günlere göre antrenmanlar, adımlar, kalori, kilo ve ölçüler, metin ya da dosya olarak';
 
   @override
   String get exportSheetHint =>
-      'Telefonunda hazırlanır. Nereye göndereceğini seçene kadar hiçbir şey cihazından çıkmaz. Metin seçiliyse, çok uzun değilse panoya da kopyalanır.';
+      'Telefonunda hazırlanır ve sen istemeden hiçbir şey çıkmaz: Metin\'de Kopyala onu panoya alır; diğer biçimler Dışa aktar ile gönderilir.';
 
   @override
   String get exportFrom => 'Başlangıç';
@@ -3364,7 +3364,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exportAction => 'Dışa aktar';
 
   @override
-  String get exportCopy => 'Metni kopyala';
+  String get exportCopy => 'Kopyala';
 
   @override
   String get exportBusy => 'Hazırlanıyor…';
@@ -3393,8 +3393,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exportFailed => 'Dosya hazırlanamadı';
 
   @override
-  String get exportTextTooLong =>
-      'Metin kopyalanamayacak kadar uzun. Dosya olarak göndermek için Dışa aktar\'ı kullan.';
+  String get exportTextTooLong => 'Pano için çok uzun, .txt dosyası olarak gider.';
 
   @override
   String get exportDocTitle => 'Infyter · İlerleme';

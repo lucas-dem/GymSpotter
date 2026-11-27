@@ -3194,10 +3194,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get shareChooserProgress => '分享进度';
 
   @override
-  String get shareChooserProgressHint => '按天汇总的训练、步数、卡路里、体重和围度，以文件形式';
+  String get shareChooserProgressHint => '按天汇总的训练、步数、卡路里、体重和围度，以文本或文件形式';
 
   @override
-  String get exportSheetHint => '在你的手机上生成。在你选择发送位置之前，不会有任何内容离开手机。选择“文本”时，如果内容不太长，还会复制到剪贴板。';
+  String get exportSheetHint => '在你的手机上生成，在你操作之前不会有任何内容离开手机：选择“文本”时，点“复制”会放入剪贴板；其他格式用“导出”发送。';
 
   @override
   String get exportFrom => '开始';
@@ -3223,7 +3223,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get exportAction => '导出';
 
   @override
-  String get exportCopy => '复制文本';
+  String get exportCopy => '复制';
 
   @override
   String get exportBusy => '准备中…';
@@ -3247,7 +3247,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get exportFailed => '无法生成文件';
 
   @override
-  String get exportTextTooLong => '文本太长，无法复制。请使用“导出”以文件形式发送。';
+  String get exportTextTooLong => '内容太长，无法放入剪贴板，将以 .txt 文件发送。';
 
   @override
   String get exportDocTitle => 'Infyter · 进度';
@@ -6622,10 +6622,10 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get shareChooserProgress => '分享進度';
 
   @override
-  String get shareChooserProgressHint => '依日彙整的訓練、步數、卡路里、體重和尺寸，以檔案形式';
+  String get shareChooserProgressHint => '依日彙整的訓練、步數、卡路里、體重和尺寸，以文字或檔案形式';
 
   @override
-  String get exportSheetHint => '在你的手機上產生。在你選擇傳送位置之前，不會有任何內容離開手機。選擇「文字」時，如果內容不太長，還會複製到剪貼簿。';
+  String get exportSheetHint => '在你的手機上產生，在你操作之前不會有任何內容離開手機：選擇「文字」時，點「複製」會放入剪貼簿；其他格式用「匯出」傳送。';
 
   @override
   String get exportFrom => '開始';
@@ -6651,7 +6651,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get exportAction => '匯出';
 
   @override
-  String get exportCopy => '複製文字';
+  String get exportCopy => '複製';
 
   @override
   String get exportBusy => '準備中…';
@@ -6675,7 +6675,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get exportFailed => '無法產生檔案';
 
   @override
-  String get exportTextTooLong => '文字太長，無法複製。請使用「匯出」以檔案形式傳送。';
+  String get exportTextTooLong => '內容太長，無法放入剪貼簿，將以 .txt 檔案傳送。';
 
   @override
   String get exportDocTitle => 'Infyter · 進度';

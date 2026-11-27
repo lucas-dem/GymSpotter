@@ -3337,11 +3337,12 @@ class AppLocalizationsAr extends AppLocalizations {
   String get shareChooserProgress => 'مشاركة التقدم';
 
   @override
-  String get shareChooserProgressHint => 'الحصص التدريبية والخطوات والسعرات والوزن والقياسات لكل يوم، كملف';
+  String get shareChooserProgressHint =>
+      'الحصص التدريبية والخطوات والسعرات والوزن والقياسات لكل يوم، كنص أو ملف';
 
   @override
   String get exportSheetHint =>
-      'يُجهَّز على هاتفك. لا يخرج شيء قبل أن تختار وجهة الإرسال. مع «نص» يُنسخ أيضًا إلى الحافظة إن لم يكن طويلًا جدًا.';
+      'يُجهَّز على هاتفك ولا يخرج شيء قبل أن تطلب: مع «نص» يضعه زر «نسخ» في الحافظة، وتُرسَل الصيغ الأخرى بزر «تصدير».';
 
   @override
   String get exportFrom => 'من';
@@ -3367,7 +3368,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportAction => 'تصدير';
 
   @override
-  String get exportCopy => 'نسخ النص';
+  String get exportCopy => 'نسخ';
 
   @override
   String get exportBusy => 'جارٍ التحضير…';
@@ -3398,7 +3399,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportFailed => 'تعذّر تجهيز الملف';
 
   @override
-  String get exportTextTooLong => 'النص أطول من أن يُنسخ. استخدم «تصدير» لإرساله كملف.';
+  String get exportTextTooLong => 'النص أطول من أن يوضع في الحافظة، لذا يُرسَل كملف txt.';
 
   @override
   String get exportDocTitle => 'Infyter · التقدم';

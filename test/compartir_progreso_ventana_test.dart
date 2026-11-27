@@ -11,7 +11,7 @@ import 'package:infyter/screens/progress_export_sheet.dart';
 import 'package:infyter/models/workout.dart';
 import 'package:infyter/state/fit_state.dart';
 import 'package:infyter/state/steps_range.dart';
-import 'package:infyter/widgets/ui_kit.dart' show TinySwitch;
+import 'package:infyter/widgets/ui_kit.dart' show PrimaryButton, TinySwitch;
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -190,7 +190,8 @@ void main() {
     expect(find.text(t.shortDateYear(_dia(29))), findsOneWidget);
     expect(find.text(t.shortDateYear(_dia(0))), findsOneWidget);
     expect(find.text(t.exportDayCount(2)), findsOneWidget);
-    expect(find.text('Copiar texto'), findsOneWidget);
+    expect(find.text('Copiar'), findsOneWidget);
+    expect(find.text('Exportar'), findsNothing);
     await _cerrar(tester);
   });
 
@@ -223,8 +224,10 @@ void main() {
     await _abrir(tester);
     await _abrirVentana(tester);
     expect(find.text(t.exportEmpty), findsOneWidget);
-    await tester.tap(find.text('Exportar'), warnIfMissed: false);
-    await tester.tap(find.text('Copiar texto'), warnIfMissed: false);
+    await tester.tap(find.byType(PrimaryButton), warnIfMissed: false);
+    await tester.tap(find.text('CSV'));
+    await _pasar(tester);
+    await tester.tap(find.byType(PrimaryButton), warnIfMissed: false);
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 300)));
     await _pasar(tester);
     expect(_shares, isEmpty);
@@ -233,27 +236,56 @@ void main() {
     await _cerrar(tester);
   });
 
-  testWidgets('Texto se copia al portapapeles con aviso y se manda como texto', (tester) async {
+  testWidgets('con Texto, Copiar copia al portapapeles con un aviso y no abre el menu de compartir', (tester) async {
     _datos([0]);
     await _abrir(tester);
     await _abrirVentana(tester);
-    await _exportar(tester);
+    await tester.tap(find.text('Copiar'));
+    await _esperar(tester, () => _clipboard.isNotEmpty);
+    await _pasar(tester);
     expect(_clipboard, hasLength(1));
     expect(_clipboard.single, contains('Bench press'));
-    expect(_shares.single.text, _clipboard.single);
+    expect(_shares, isEmpty);
     expect(find.text(t.exportCopiedClipboard), findsWidgets);
     expect(Directory(_progressDir).existsSync(), isFalse);
+    expect(find.text('Copiar'), findsOneWidget);
     await _cerrar(tester);
   });
 
-  testWidgets('Copiar texto solo copia', (tester) async {
+  testWidgets('nada se copia ni se comparte sin tocar el boton', (tester) async {
+    _datos([0, 3]);
+    await _abrir(tester);
+    await _abrirVentana(tester);
+    await tester.tap(find.byType(TinySwitch));
+    await _pasar(tester);
+    await tester.tap(find.text('PDF'));
+    await _pasar(tester);
+    await tester.tap(find.text(t.exportFormatText));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 600)));
+    await _pasar(tester);
+    expect(_clipboard, isEmpty);
+    expect(_shares, isEmpty);
+    expect(find.text('Copiar'), findsOneWidget);
+    await _cerrarVentana(tester);
+    expect(_clipboard, isEmpty);
+    expect(_shares, isEmpty);
+    await _cerrar(tester);
+  });
+
+  testWidgets('el boton dice Copiar con Texto y Exportar con PDF, Excel, CSV y JSON', (tester) async {
     _datos([0]);
     await _abrir(tester);
     await _abrirVentana(tester);
-    await tester.tap(find.text('Copiar texto'));
-    await _esperar(tester, () => _clipboard.isNotEmpty);
-    expect(_clipboard.single, contains('Bench press'));
-    expect(_shares, isEmpty);
+    for (final formato in ['PDF', 'Excel', 'CSV', 'JSON']) {
+      await tester.tap(find.text(formato));
+      await _pasar(tester);
+      expect(find.text('Exportar'), findsOneWidget, reason: formato);
+      expect(find.text('Copiar'), findsNothing, reason: formato);
+    }
+    await tester.tap(find.text(t.exportFormatText));
+    await _pasar(tester);
+    expect(find.text('Copiar'), findsOneWidget);
+    expect(find.text('Exportar'), findsNothing);
     await _cerrar(tester);
   });
 
@@ -347,7 +379,7 @@ void main() {
     await tester.tap(find.byType(TinySwitch));
     await _pasar(tester);
     expect(find.textContaining('Todo lo registrado'), findsNothing);
-    await tester.tap(find.text('Exportar'), warnIfMissed: false);
+    await tester.tap(find.byType(PrimaryButton), warnIfMissed: false);
     await _pasar(tester);
     expect(_shares, isEmpty);
     await _cerrar(tester);
@@ -383,17 +415,42 @@ void main() {
     });
   }
 
-  testWidgets('un texto de mas de 60 000 caracteres sale como archivo .txt', (tester) async {
+  testWidgets('un texto de mas de 60 000 caracteres: el boton dice Exportar, lo avisa y sale como archivo .txt',
+      (tester) async {
     _datos(List.generate(500, (i) => i));
     await _abrir(tester);
     await _abrirVentana(tester);
     await tester.tap(find.byType(TinySwitch));
     await _pasar(tester);
+    await _esperar(tester, () => find.text('Exportar').evaluate().isNotEmpty);
+    expect(find.text('Copiar'), findsNothing);
+    expect(find.text(t.exportTextTooLong), findsOneWidget);
+    expect(_clipboard, isEmpty);
+    expect(_shares, isEmpty);
     await _exportar(tester);
     final s = _shares.single;
     expect(s.text, isNull);
     expect(s.name, endsWith('.txt'));
     expect(s.mime, 'text/plain');
+    expect(_clipboard, isEmpty);
+    await _cerrar(tester);
+  });
+
+  testWidgets('si Copiar se toca antes de saber que el texto es muy largo, no copia ni comparte: pasa a Exportar',
+      (tester) async {
+    _datos(List.generate(500, (i) => i));
+    await _abrir(tester);
+    await _abrirVentana(tester);
+    await tester.tap(find.byType(TinySwitch));
+    await tester.pump();
+    expect(find.text('Copiar'), findsOneWidget);
+    await tester.tap(find.text('Copiar'));
+    await _esperar(tester, () => find.text('Exportar').evaluate().isNotEmpty);
+    expect(find.text(t.exportTextTooLong), findsOneWidget);
+    expect(_clipboard, isEmpty);
+    expect(_shares, isEmpty);
+    await _exportar(tester);
+    expect(_shares.single.name, endsWith('.txt'));
     expect(_clipboard, isEmpty);
     await _cerrar(tester);
   });

@@ -3249,10 +3249,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get shareChooserProgress => '진행 상황 공유';
 
   @override
-  String get shareChooserProgressHint => '날짜별 운동, 걸음 수, 칼로리, 체중, 신체 측정을 파일로';
+  String get shareChooserProgressHint => '날짜별 운동, 걸음 수, 칼로리, 체중, 신체 측정을 텍스트나 파일로';
 
   @override
-  String get exportSheetHint => '내 휴대폰에서 만들어져요. 보낼 곳을 고르기 전까지는 아무것도 밖으로 나가지 않아요. 텍스트는 너무 길지 않으면 클립보드에도 복사돼요.';
+  String get exportSheetHint =>
+      '내 휴대폰에서 만들어지고, 직접 누르기 전까지는 아무것도 밖으로 나가지 않아요. 텍스트는 복사를 누르면 클립보드에 들어가고, 다른 형식은 내보내기로 보내요.';
 
   @override
   String get exportFrom => '시작';
@@ -3278,7 +3279,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportAction => '내보내기';
 
   @override
-  String get exportCopy => '텍스트 복사';
+  String get exportCopy => '복사';
 
   @override
   String get exportBusy => '준비 중…';
@@ -3302,7 +3303,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportFailed => '파일을 만들지 못했어요';
 
   @override
-  String get exportTextTooLong => '텍스트가 너무 길어서 복사할 수 없어요. 내보내기를 눌러 파일로 보내세요.';
+  String get exportTextTooLong => '클립보드에 담기엔 너무 길어서 .txt 파일로 보내요.';
 
   @override
   String get exportDocTitle => 'Infyter · 진행 상황';

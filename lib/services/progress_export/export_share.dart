@@ -97,6 +97,3 @@ Future<ShareResult> shareExportFile(File file, ExportKind kind, String subject, 
     );
 
 Future<void> copyExportText(String text) => Clipboard.setData(ClipboardData(text: text));
-
-Future<ShareResult> shareExportText(String text, String subject, Rect? origin) =>
-    SharePlus.instance.share(ShareParams(text: text, subject: subject, sharePositionOrigin: origin));

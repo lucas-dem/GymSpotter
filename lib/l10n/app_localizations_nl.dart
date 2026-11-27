@@ -3346,11 +3346,11 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get shareChooserProgressHint =>
-      'Trainingen, stappen, calorieën, gewicht en lichaamsmaten per dag, als bestand';
+      'Trainingen, stappen, calorieën, gewicht en lichaamsmaten per dag, als tekst of bestand';
 
   @override
   String get exportSheetHint =>
-      'Het wordt op je telefoon gemaakt. Er verlaat niets je telefoon tot je kiest waarheen je het stuurt. Bij Tekst wordt het ook naar het klembord gekopieerd als het niet te lang is.';
+      'Het wordt op je telefoon gemaakt en er gaat niets weg tot je erom vraagt: bij Tekst zet Kopiëren het op het klembord; de andere formaten stuur je met Exporteren.';
 
   @override
   String get exportFrom => 'Van';
@@ -3376,7 +3376,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get exportAction => 'Exporteren';
 
   @override
-  String get exportCopy => 'Tekst kopiëren';
+  String get exportCopy => 'Kopiëren';
 
   @override
   String get exportBusy => 'Voorbereiden…';
@@ -3405,8 +3405,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get exportFailed => 'Het bestand kon niet worden gemaakt';
 
   @override
-  String get exportTextTooLong =>
-      'De tekst is te lang om te kopiëren. Gebruik Exporteren om hem als bestand te sturen.';
+  String get exportTextTooLong => 'Te lang voor het klembord: het gaat als .txt-bestand.';
 
   @override
   String get exportDocTitle => 'Infyter · Voortgang';
