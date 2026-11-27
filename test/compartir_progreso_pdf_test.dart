@@ -59,9 +59,10 @@ Map<int, String> _toUnicode(String cmap) {
 }
 
 class _Extracted {
-  _Extracted(this.pages, this.words);
+  _Extracted(this.pages, this.byPage);
   final int pages;
-  final List<String> words;
+  final List<List<String>> byPage;
+  List<String> get words => [for (final page in byPage) ...page];
 }
 
 /// Reads the words back from the PDF through each font's ToUnicode map, with no extra package.
@@ -76,8 +77,10 @@ _Extracted _extract(Uint8List b) {
     }
   }
   final pages = int.parse(RegExp(r'/Type/Pages/Kids\[[^\]]*\]/Count (\d+)').firstMatch(text)!.group(1)!);
-  final words = <String>[];
+  final byPage = <List<String>>[];
   for (final page in RegExp(r'/Type/Page/[^\n]*?/Contents (\d+) 0 R').allMatches(text)) {
+    final words = <String>[];
+    byPage.add(words);
     final content = latin1.decode(_streamOf(b, text, int.parse(page.group(1)!)));
     for (final run in RegExp(r'/(F\d+) [\d.]+ Tf[^\[]*\[([^\]]*)\]\s*TJ').allMatches(content)) {
       final map = maps[run.group(1)!]!;
@@ -91,7 +94,7 @@ _Extracted _extract(Uint8List b) {
       words.add(sb.toString());
     }
   }
-  return _Extracted(pages, words);
+  return _Extracted(pages, byPage);
 }
 
 class _Run {
@@ -286,6 +289,25 @@ void main() {
     expect(x.pages, greaterThan(2));
     expect(x.words, contains('Página'));
     expect(x.words, contains('${x.pages}'));
+  });
+
+  test('a day that fits on one page is never split between two', () async {
+    final r = _custom(language: 'es', days: 14);
+    final l = lookupAppLocalizations(localeOf('es'));
+    final f = ExportFormat('es');
+    final x = _extract(await _pdf(r, fonts));
+    expect(x.pages, greaterThan(2));
+    final weekdays = {for (final d in r.days) f.dayHeading(d.date).split(' ').first};
+    for (var p = 0; p < x.pages; p++) {
+      final words = [...x.byPage[p]];
+      for (final w in f.clean(l.exportPage(p + 1, x.pages)).split(' ')) {
+        expect(words.remove(w), isTrue, reason: 'footer of page ${p + 1}');
+      }
+      if (p > 0) expect(weekdays, contains(words.first), reason: 'page ${p + 1} starts inside a day: ${words.take(8)}');
+      final headings = words.where(weekdays.contains).length;
+      final steps = words.where((w) => w == 'Pasos:').length;
+      expect(steps, headings, reason: 'page ${p + 1} has a day without its last lines');
+    }
   });
 
   test('an exercise with 90 sets does not overflow a page', () async {

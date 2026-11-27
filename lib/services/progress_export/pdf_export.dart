@@ -89,8 +89,37 @@ Set<int> pdfUncoveredRunes(Iterable<String> texts, PdfFonts fonts) {
   };
 }
 
-const _setsPerChunk = 20;
 const _margin = 36.0;
+const _footerHeight = 16.0;
+
+/// The room a day has on an empty page, below the margins and above the footer.
+final double _pageRoom = PdfPageFormat.a4.height - 2 * _margin - _footerHeight - 1;
+
+/// Keeps a day on one page, moving it to the next one when it does not fit in what is left.
+/// Only a day taller than a whole page is split, between its lines.
+class _KeepTogether extends pw.SingleChildWidget {
+  _KeepTogether(pw.Widget child) : super(child: child);
+
+  bool _tooTall = false;
+
+  @override
+  bool get canSpan => _tooTall && super.canSpan;
+
+  @override
+  bool get hasMoreWidgets => _tooTall && super.hasMoreWidgets;
+
+  @override
+  void layout(pw.Context context, pw.BoxConstraints constraints, {bool parentUsesSize = false}) {
+    super.layout(context, constraints, parentUsesSize: parentUsesSize);
+    if (!constraints.hasBoundedHeight && box!.height > _pageRoom) _tooTall = true;
+  }
+
+  @override
+  void paint(pw.Context context) {
+    super.paint(context);
+    paintChild(context);
+  }
+}
 
 Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportFormat f, PdfFonts fonts) async {
   final regular = pw.Font.ttf(ByteData.sublistView(fonts.regular));
@@ -107,20 +136,38 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
   );
 
   final widgets = <pw.Widget>[];
-  var group = <pw.Widget>[];
-  var setsInGroup = 0;
-  var headingOpen = false;
-
-  void flush() {
-    if (group.isNotEmpty) widgets.add(pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: group));
-    group = [];
-    setsInGroup = 0;
-    headingOpen = false;
-  }
+  List<pw.Widget>? day;
+  pw.Widget? heldLine;
 
   void add(pw.Widget w) {
-    group.add(w);
-    if (headingOpen) flush();
+    final held = heldLine;
+    heldLine = null;
+    (day ?? widgets).add(
+      held == null ? w : pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: [held, w]),
+    );
+  }
+
+  // A day heading or an exercise name stays on the same page as the line after it.
+  void hold(pw.Widget w) {
+    final held = heldLine;
+    if (held != null) {
+      heldLine = null;
+      add(held);
+    }
+    heldLine = w;
+  }
+
+  void closeDay() {
+    final held = heldLine;
+    if (held != null) {
+      heldLine = null;
+      add(held);
+    }
+    final lines = day;
+    day = null;
+    if (lines != null) {
+      widgets.add(_KeepTogether(pw.Column(crossAxisAlignment: pw.CrossAxisAlignment.start, children: lines)));
+    }
   }
 
   for (final b in pdfOutlineFor(report, l, f)) {
@@ -130,8 +177,9 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
       case OutlineKind.period || OutlineKind.units:
         add(pw.Text(b.text, style: base.copyWith(color: grey)));
       case OutlineKind.dayHeading:
-        flush();
-        group.add(
+        closeDay();
+        day = [];
+        hold(
           pw.Container(
             margin: const pw.EdgeInsets.only(top: 14),
             padding: const pw.EdgeInsets.only(top: 6, bottom: 4),
@@ -139,13 +187,10 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
             child: pw.Text(b.text, style: base.copyWith(fontSize: 13, fontWeight: pw.FontWeight.bold)),
           ),
         );
-        headingOpen = true;
       case OutlineKind.session:
-        if (!headingOpen) flush();
         add(pw.Padding(padding: const pw.EdgeInsets.only(top: 2), child: pw.Text(b.text, style: base.copyWith(fontWeight: pw.FontWeight.bold))));
       case OutlineKind.exercise:
-        if (!headingOpen) flush();
-        group.add(
+        hold(
           pw.Padding(
             padding: const pw.EdgeInsets.only(top: 4),
             child: pw.RichText(
@@ -158,13 +203,9 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
             ),
           ),
         );
-        headingOpen = false;
       case OutlineKind.set:
-        if (setsInGroup >= _setsPerChunk) flush();
-        setsInGroup++;
-        group.add(pw.Padding(padding: const pw.EdgeInsets.only(left: 14), child: pw.Text(b.text, style: base)));
+        add(pw.Padding(padding: const pw.EdgeInsets.only(left: 14), child: pw.Text(b.text, style: base)));
       case OutlineKind.fact:
-        if (!headingOpen) flush();
         add(
           pw.RichText(
             text: pw.TextSpan(
@@ -176,14 +217,14 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
           ),
         );
       case OutlineKind.note:
-        if (!headingOpen) flush();
+        closeDay();
         add(pw.Padding(padding: const pw.EdgeInsets.only(top: 8), child: pw.Text(b.text, style: base.copyWith(fontStyle: pw.FontStyle.italic, fontSize: 9, color: grey))));
       case OutlineKind.footer:
-        if (!headingOpen) flush();
+        closeDay();
         add(pw.Padding(padding: const pw.EdgeInsets.only(top: 10), child: pw.Text(b.text, style: base.copyWith(color: grey))));
     }
   }
-  flush();
+  closeDay();
 
   doc.addPage(
     pw.MultiPage(
@@ -191,11 +232,14 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
       margin: const pw.EdgeInsets.all(_margin),
       textDirection: report.language == 'ar' ? pw.TextDirection.rtl : pw.TextDirection.ltr,
       build: (_) => widgets,
-      footer: (c) => pw.Align(
-        alignment: pw.Alignment.centerRight,
-        child: pw.Text(
-          f.clean(l.exportPage(c.pageNumber, c.pagesCount)),
-          style: base.copyWith(fontSize: 8.5, color: grey),
+      footer: (c) => pw.SizedBox(
+        height: _footerHeight,
+        child: pw.Align(
+          alignment: pw.Alignment.bottomRight,
+          child: pw.Text(
+            f.clean(l.exportPage(c.pageNumber, c.pagesCount)),
+            style: base.copyWith(fontSize: 8.5, color: grey),
+          ),
         ),
       ),
     ),
