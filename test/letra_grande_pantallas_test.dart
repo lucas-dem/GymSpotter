@@ -101,6 +101,7 @@ void _datos() {
   _sinPasos();
   fit.saveAndExit();
   fit.onboarded = true;
+  fit.pendingAwards.clear();
   fit.startCountdown = false;
   fit.routines.clear();
   fit.sessions
@@ -205,9 +206,10 @@ Future<void> _tocarHistoricoCompleto(WidgetTester tester) async {
 }
 
 Future<void> _tocarExportar(WidgetTester tester) async {
-  await tester.ensureVisible(find.byType(PrimaryButton));
+  final exportar = find.widgetWithText(PrimaryButton, t.exportAction);
+  await tester.ensureVisible(exportar);
   await tester.pump();
-  await tester.tap(find.byType(PrimaryButton));
+  await tester.tap(exportar);
 }
 
 void main() {
