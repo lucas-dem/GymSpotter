@@ -3326,112 +3326,112 @@ class AppLocalizationsFr extends AppLocalizations {
       'Health Connect compte les pas même quand Infyter est fermé ; à l\'ouverture, tu vois les 7 derniers jours.';
 
   @override
-  String get shareChooserTitle => 'What to share';
+  String get shareChooserTitle => 'Que partager';
 
   @override
-  String get shareChooserCard => 'A card';
+  String get shareChooserCard => 'Une carte';
 
   @override
-  String get shareChooserCardHint => 'Streak, muscles worked or before and after, as an image';
+  String get shareChooserCardHint => 'Série, muscles travaillés ou avant et après, en image';
 
   @override
-  String get shareChooserProgress => 'Share progress';
+  String get shareChooserProgress => 'Partager la progression';
 
   @override
-  String get shareChooserProgressHint =>
-      'Workouts, steps, calories, weight and measurements by day, as a file';
+  String get shareChooserProgressHint => 'Séances, pas, calories, poids et mensurations par jour, en fichier';
 
   @override
   String get exportSheetHint =>
-      'It is built on your phone. Nothing leaves until you choose where to send it.';
+      'Il est créé sur ton téléphone. Rien ne sort tant que tu n\'as pas choisi où l\'envoyer. Avec Texte, il est aussi copié dans le presse-papiers s\'il n\'est pas trop long.';
 
   @override
-  String get exportFrom => 'From';
+  String get exportFrom => 'Du';
 
   @override
-  String get exportTo => 'To';
+  String get exportTo => 'Au';
 
   @override
-  String get exportWholeHistory => 'Full history';
+  String get exportWholeHistory => 'Historique complet';
 
   @override
   String exportWholeHistoryHint(String from, String to) {
-    return 'Everything logged, from $from to $to';
+    return 'Tout ce qui est enregistré, du $from au $to';
   }
 
   @override
   String get exportFormat => 'Format';
 
   @override
-  String get exportFormatText => 'Text';
+  String get exportFormatText => 'Texte';
 
   @override
-  String get exportAction => 'Export';
+  String get exportAction => 'Exporter';
 
   @override
-  String get exportCopy => 'Copy text';
+  String get exportCopy => 'Copier le texte';
 
   @override
-  String get exportBusy => 'Preparing…';
+  String get exportBusy => 'Préparation…';
 
   @override
-  String get exportCopiedClipboard => 'Text copied to the clipboard';
+  String get exportCopiedClipboard => 'Texte copié dans le presse-papiers';
 
   @override
   String exportDayCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,
       locale: localeName,
-      other: '$n days with data',
-      one: '1 day with data',
+      other: '$n jours avec des données',
+      one: '1 jour avec des données',
     );
     return '$_temp0';
   }
 
   @override
-  String get exportEmpty => 'Nothing was logged between those dates.';
+  String get exportEmpty => 'Rien n\'a été enregistré entre ces dates.';
 
   @override
-  String get exportNothingAtAll => 'There is nothing logged to share yet.';
+  String get exportNothingAtAll => 'Il n\'y a encore rien d\'enregistré à partager.';
 
   @override
-  String get exportFailed => 'The file could not be prepared';
+  String get exportFailed => 'Impossible de préparer le fichier';
 
   @override
-  String get exportTextTooLong => 'The text is too long to copy. Use Export to send it as a file.';
+  String get exportTextTooLong =>
+      'Le texte est trop long pour être copié. Utilise Exporter pour l\'envoyer en fichier.';
 
   @override
-  String get exportFileStem => 'progress';
+  String get exportFileStem => 'progression';
 
   @override
-  String get exportDocTitle => 'Infyter · Progress';
+  String get exportDocTitle => 'Infyter · Progression';
 
   @override
   String exportPeriod(String from, String to) {
-    return 'From $from to $to';
+    return 'Du $from au $to';
   }
 
   @override
   String exportPeriodWhole(String from, String to) {
-    return 'Full history: from $from to $to';
+    return 'Historique complet : du $from au $to';
   }
 
   @override
   String exportGenerated(String date) {
-    return 'Generated on $date';
+    return 'Généré le $date';
   }
 
   @override
   String exportUnits(String units) {
-    return 'Units: $units';
+    return 'Unités : $units';
   }
 
   @override
-  String get exportSession => 'Workout';
+  String get exportSession => 'Séance';
 
   @override
   String exportSessionNumbered(int n) {
-    return 'Workout $n';
+    return 'Séance $n';
   }
 
   @override
@@ -3441,83 +3441,88 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String exportRestConfigured(String time) {
-    return 'configured rest $time';
+    return 'repos configuré $time';
   }
 
   @override
-  String get exportRestNone => 'no rest configured';
+  String get exportRestNone => 'aucun repos configuré';
 
   @override
   String exportRepsCount(int n) {
-    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n reps', one: '1 rep');
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n répétitions',
+      one: '1 répétition',
+    );
     return '$_temp0';
   }
 
   @override
-  String get exportSteps => 'Steps';
+  String get exportSteps => 'Pas';
 
   @override
   String exportStepsSince(String time) {
-    return 'since $time';
+    return 'depuis $time';
   }
 
   @override
-  String get exportKcal => 'Estimated active calories';
+  String get exportKcal => 'Calories actives estimées';
 
   @override
   String exportKcalSteps(String kcal) {
-    return 'steps ≈ $kcal';
+    return 'pas ≈ $kcal';
   }
 
   @override
   String exportKcalWorkouts(String kcal) {
-    return 'workouts ≈ $kcal';
+    return 'séances ≈ $kcal';
   }
 
   @override
-  String get exportBodyweight => 'Bodyweight';
+  String get exportBodyweight => 'Poids du corps';
 
   @override
-  String get exportMeasures => 'Measurements';
+  String get exportMeasures => 'Mensurations';
 
   @override
   String get exportNoteKcal =>
-      'Calories are active and estimated, using the latest weight logged on or before each day (or your profile weight). They are not medical data.';
+      'Les calories sont actives et estimées, avec le dernier poids enregistré le jour même ou avant (ou celui du profil). Ce ne sont pas des données médicales.';
 
   @override
   String get exportNoteRest =>
-      'Rest is what is configured today for each exercise: Infyter does not store the actual rest of each set.';
+      'Le repos est celui configuré aujourd\'hui pour chaque exercice : Infyter ne conserve pas le repos réel de chaque série.';
 
   @override
-  String get exportMadeWith => 'Made with Infyter';
+  String get exportMadeWith => 'Créé avec Infyter';
 
   @override
   String exportPage(int n, int total) {
-    return 'Page $n of $total';
+    return 'Page $n sur $total';
   }
 
   @override
   String get exportColDate => 'Date';
 
   @override
-  String get exportColExercise => 'Exercise';
+  String get exportColExercise => 'Exercice';
 
   @override
-  String get exportColSet => 'Set';
+  String get exportColSet => 'Série';
 
   @override
-  String get exportColKind => 'Set type';
+  String get exportColKind => 'Type de série';
 
   @override
-  String get exportColReps => 'Reps';
+  String get exportColReps => 'Répétitions';
 
   @override
   String exportColWeight(String unit) {
-    return 'Weight ($unit)';
+    return 'Poids ($unit)';
   }
 
   @override
-  String get exportColSetDuration => 'Duration (s)';
+  String get exportColSetDuration => 'Durée (s)';
 
   @override
   String exportColDistance(String unit) {
@@ -3525,43 +3530,43 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get exportColRest => 'Configured rest (s)';
+  String get exportColRest => 'Repos configuré (s)';
 
   @override
-  String get exportColSessionMinutes => 'Workout duration (min)';
+  String get exportColSessionMinutes => 'Durée de la séance (min)';
 
   @override
-  String get exportColSessions => 'Workouts';
+  String get exportColSessions => 'Séances';
 
   @override
-  String get exportColExercises => 'Exercises';
+  String get exportColExercises => 'Exercices';
 
   @override
-  String get exportColSets => 'Sets';
+  String get exportColSets => 'Séries';
 
   @override
-  String get exportColStepsSince => 'Steps counted since';
+  String get exportColStepsSince => 'Pas comptés depuis';
 
   @override
-  String get exportColKcal => 'Estimated active kcal';
+  String get exportColKcal => 'kcal actives estimées';
 
   @override
-  String get exportColKcalSteps => 'Estimated kcal from steps';
+  String get exportColKcalSteps => 'kcal estimées via les pas';
 
   @override
-  String get exportColKcalWorkouts => 'Estimated kcal from workouts';
+  String get exportColKcalWorkouts => 'kcal estimées via les séances';
 
   @override
   String exportColBodyweight(String unit) {
-    return 'Bodyweight ($unit)';
+    return 'Poids du corps ($unit)';
   }
 
   @override
-  String get exportSheetSummary => 'Summary';
+  String get exportSheetSummary => 'Résumé';
 
   @override
-  String get exportSheetDetail => 'Detail';
+  String get exportSheetDetail => 'Détail';
 
   @override
-  String get exportColWeekday => 'Weekday';
+  String get exportColWeekday => 'Jour de la semaine';
 }

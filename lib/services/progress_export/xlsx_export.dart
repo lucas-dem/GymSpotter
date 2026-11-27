@@ -15,8 +15,8 @@ final _decimalStyle = CellStyle(numberFormat: NumFormat.standard_0);
 final _controlChars = RegExp(r'[\x00-\x08\x0B\x0C\x0E-\x1F]');
 final _sheetNameForbidden = RegExp(r'[\[\]:*?/\\]');
 
-String _sheetName(String s) {
-  final clean = s.replaceAll(_sheetNameForbidden, '').replaceAll(_controlChars, '').trim();
+String _sheetName(ExportFormat f, String s) {
+  final clean = f.clean(s).replaceAll(_sheetNameForbidden, '').replaceAll(_controlChars, '').trim();
   final name = clean.length > 31 ? clean.substring(0, 31) : clean;
   return name.isEmpty ? 'Sheet' : name;
 }
@@ -37,10 +37,10 @@ CellValue? _double(double? v) => v == null ? null : DoubleCellValue(v);
 
 CellValue? _num(num? v) => v == null ? null : (v is int ? IntCellValue(v) : DoubleCellValue(v.toDouble()));
 
-void _writeSheet(Sheet sheet, List<String> headers, List<List<CellValue?>> rows, List<double> widths) {
+void _writeSheet(ExportFormat f, Sheet sheet, List<String> headers, List<List<CellValue?>> rows, List<double> widths) {
   for (var c = 0; c < headers.length; c++) {
     final cell = sheet.cell(CellIndex.indexByColumnRow(columnIndex: c, rowIndex: 0));
-    cell.value = _text(headers[c]);
+    cell.value = _text(f.clean(headers[c]));
     cell.cellStyle = _headerStyle;
     sheet.setColumnWidth(c, widths[c]);
   }
@@ -58,9 +58,9 @@ void _writeSheet(Sheet sheet, List<String> headers, List<List<CellValue?>> rows,
 Uint8List buildXlsx(ProgressReport report, AppLocalizations l, ExportFormat f) {
   final u = report.units;
   final book = Excel.createExcel();
-  final summaryName = _sheetName(l.exportSheetSummary);
-  var detailName = _sheetName(l.exportSheetDetail);
-  if (detailName == summaryName) detailName = _sheetName('$detailName 2');
+  final summaryName = _sheetName(f, l.exportSheetSummary);
+  var detailName = _sheetName(f, l.exportSheetDetail);
+  if (detailName == summaryName) detailName = _sheetName(f, '$detailName 2');
   book.rename(book.getDefaultSheet()!, summaryName);
   final summary = book[summaryName];
   final detail = book[detailName];
@@ -132,11 +132,12 @@ Uint8List buildXlsx(ProgressReport report, AppLocalizations l, ExportFormat f) {
     }
   }
 
-  _writeSheet(summary, summaryHeaders, summaryRows, [
+  _writeSheet(f, summary, summaryHeaders, summaryRows, [
     16, 14, 14, 16, 12, 10, 10, 14, 14, 14, 14, 14,
     for (final _ in report.measureKeys) 14,
   ]);
   _writeSheet(
+    f,
     detail,
     [
       l.exportColDate,

@@ -3228,242 +3228,234 @@ class AppLocalizationsKo extends AppLocalizations {
   String get stepsHcHint => 'Health Connect는 Infyter를 닫아 두어도 걸음 수를 셉니다. 열면 최근 7일이 표시됩니다.';
 
   @override
-  String get shareChooserTitle => 'What to share';
+  String get shareChooserTitle => '공유할 항목';
 
   @override
-  String get shareChooserCard => 'A card';
+  String get shareChooserCard => '카드';
 
   @override
-  String get shareChooserCardHint => 'Streak, muscles worked or before and after, as an image';
+  String get shareChooserCardHint => '연속 기록, 단련한 근육 또는 비포 애프터를 이미지로';
 
   @override
-  String get shareChooserProgress => 'Share progress';
+  String get shareChooserProgress => '진행 상황 공유';
 
   @override
-  String get shareChooserProgressHint =>
-      'Workouts, steps, calories, weight and measurements by day, as a file';
+  String get shareChooserProgressHint => '날짜별 운동, 걸음 수, 칼로리, 체중, 신체 측정을 파일로';
 
   @override
-  String get exportSheetHint =>
-      'It is built on your phone. Nothing leaves until you choose where to send it.';
+  String get exportSheetHint => '내 휴대폰에서 만들어져요. 보낼 곳을 고르기 전까지는 아무것도 밖으로 나가지 않아요. 텍스트는 너무 길지 않으면 클립보드에도 복사돼요.';
 
   @override
-  String get exportFrom => 'From';
+  String get exportFrom => '시작';
 
   @override
-  String get exportTo => 'To';
+  String get exportTo => '종료';
 
   @override
-  String get exportWholeHistory => 'Full history';
+  String get exportWholeHistory => '전체 기간';
 
   @override
   String exportWholeHistoryHint(String from, String to) {
-    return 'Everything logged, from $from to $to';
+    return '기록된 모든 내용, $from부터 $to까지';
   }
 
   @override
-  String get exportFormat => 'Format';
+  String get exportFormat => '형식';
 
   @override
-  String get exportFormatText => 'Text';
+  String get exportFormatText => '텍스트';
 
   @override
-  String get exportAction => 'Export';
+  String get exportAction => '내보내기';
 
   @override
-  String get exportCopy => 'Copy text';
+  String get exportCopy => '텍스트 복사';
 
   @override
-  String get exportBusy => 'Preparing…';
+  String get exportBusy => '준비 중…';
 
   @override
-  String get exportCopiedClipboard => 'Text copied to the clipboard';
+  String get exportCopiedClipboard => '텍스트를 클립보드에 복사했어요';
 
   @override
   String exportDayCount(int n) {
-    String _temp0 = intl.Intl.pluralLogic(
-      n,
-      locale: localeName,
-      other: '$n days with data',
-      one: '1 day with data',
-    );
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '데이터가 있는 날 $n일', one: '데이터가 있는 날 1일');
     return '$_temp0';
   }
 
   @override
-  String get exportEmpty => 'Nothing was logged between those dates.';
+  String get exportEmpty => '이 기간에는 기록된 내용이 없어요.';
 
   @override
-  String get exportNothingAtAll => 'There is nothing logged to share yet.';
+  String get exportNothingAtAll => '공유할 기록이 아직 없어요.';
 
   @override
-  String get exportFailed => 'The file could not be prepared';
+  String get exportFailed => '파일을 만들지 못했어요';
 
   @override
-  String get exportTextTooLong => 'The text is too long to copy. Use Export to send it as a file.';
+  String get exportTextTooLong => '텍스트가 너무 길어서 복사할 수 없어요. 내보내기를 눌러 파일로 보내세요.';
 
   @override
-  String get exportFileStem => 'progress';
+  String get exportFileStem => '진행상황';
 
   @override
-  String get exportDocTitle => 'Infyter · Progress';
+  String get exportDocTitle => 'Infyter · 진행 상황';
 
   @override
   String exportPeriod(String from, String to) {
-    return 'From $from to $to';
+    return '$from부터 $to까지';
   }
 
   @override
   String exportPeriodWhole(String from, String to) {
-    return 'Full history: from $from to $to';
+    return '전체 기간: $from부터 $to까지';
   }
 
   @override
   String exportGenerated(String date) {
-    return 'Generated on $date';
+    return '생성일: $date';
   }
 
   @override
   String exportUnits(String units) {
-    return 'Units: $units';
+    return '단위: $units';
   }
 
   @override
-  String get exportSession => 'Workout';
+  String get exportSession => '운동';
 
   @override
   String exportSessionNumbered(int n) {
-    return 'Workout $n';
+    return '운동 $n';
   }
 
   @override
   String exportMinutes(int n) {
-    return '$n min';
+    return '$n분';
   }
 
   @override
   String exportRestConfigured(String time) {
-    return 'configured rest $time';
+    return '설정된 휴식 $time';
   }
 
   @override
-  String get exportRestNone => 'no rest configured';
+  String get exportRestNone => '설정된 휴식 없음';
 
   @override
   String exportRepsCount(int n) {
-    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n reps', one: '1 rep');
+    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n회', one: '1회');
     return '$_temp0';
   }
 
   @override
-  String get exportSteps => 'Steps';
+  String get exportSteps => '걸음 수';
 
   @override
   String exportStepsSince(String time) {
-    return 'since $time';
+    return '$time부터';
   }
 
   @override
-  String get exportKcal => 'Estimated active calories';
+  String get exportKcal => '추정 활동 칼로리';
 
   @override
   String exportKcalSteps(String kcal) {
-    return 'steps ≈ $kcal';
+    return '걸음 수 ≈ $kcal';
   }
 
   @override
   String exportKcalWorkouts(String kcal) {
-    return 'workouts ≈ $kcal';
+    return '운동 ≈ $kcal';
   }
 
   @override
-  String get exportBodyweight => 'Bodyweight';
+  String get exportBodyweight => '체중';
 
   @override
-  String get exportMeasures => 'Measurements';
+  String get exportMeasures => '신체 측정';
 
   @override
   String get exportNoteKcal =>
-      'Calories are active and estimated, using the latest weight logged on or before each day (or your profile weight). They are not medical data.';
+      '칼로리는 활동 칼로리의 추정치이며, 각 날짜 또는 그 이전에 기록된 가장 최근 체중(없으면 프로필 체중)을 사용해요. 의료 데이터가 아니에요.';
 
   @override
-  String get exportNoteRest =>
-      'Rest is what is configured today for each exercise: Infyter does not store the actual rest of each set.';
+  String get exportNoteRest => '휴식은 현재 각 종목에 설정된 시간이에요. Infyter는 세트별 실제 휴식 시간을 저장하지 않아요.';
 
   @override
-  String get exportMadeWith => 'Made with Infyter';
+  String get exportMadeWith => 'Infyter로 만듦';
 
   @override
   String exportPage(int n, int total) {
-    return 'Page $n of $total';
+    return '$total쪽 중 $n쪽';
   }
 
   @override
-  String get exportColDate => 'Date';
+  String get exportColDate => '날짜';
 
   @override
-  String get exportColExercise => 'Exercise';
+  String get exportColExercise => '종목';
 
   @override
-  String get exportColSet => 'Set';
+  String get exportColSet => '세트';
 
   @override
-  String get exportColKind => 'Set type';
+  String get exportColKind => '세트 유형';
 
   @override
-  String get exportColReps => 'Reps';
+  String get exportColReps => '반복';
 
   @override
   String exportColWeight(String unit) {
-    return 'Weight ($unit)';
+    return '중량($unit)';
   }
 
   @override
-  String get exportColSetDuration => 'Duration (s)';
+  String get exportColSetDuration => '시간(초)';
 
   @override
   String exportColDistance(String unit) {
-    return 'Distance ($unit)';
+    return '거리($unit)';
   }
 
   @override
-  String get exportColRest => 'Configured rest (s)';
+  String get exportColRest => '설정된 휴식(초)';
 
   @override
-  String get exportColSessionMinutes => 'Workout duration (min)';
+  String get exportColSessionMinutes => '운동 시간(분)';
 
   @override
-  String get exportColSessions => 'Workouts';
+  String get exportColSessions => '운동 횟수';
 
   @override
-  String get exportColExercises => 'Exercises';
+  String get exportColExercises => '운동 종목';
 
   @override
-  String get exportColSets => 'Sets';
+  String get exportColSets => '세트';
 
   @override
-  String get exportColStepsSince => 'Steps counted since';
+  String get exportColStepsSince => '걸음 수 집계 시작';
 
   @override
-  String get exportColKcal => 'Estimated active kcal';
+  String get exportColKcal => '추정 활동 kcal';
 
   @override
-  String get exportColKcalSteps => 'Estimated kcal from steps';
+  String get exportColKcalSteps => '걸음 수 기반 추정 kcal';
 
   @override
-  String get exportColKcalWorkouts => 'Estimated kcal from workouts';
+  String get exportColKcalWorkouts => '운동 기반 추정 kcal';
 
   @override
   String exportColBodyweight(String unit) {
-    return 'Bodyweight ($unit)';
+    return '체중($unit)';
   }
 
   @override
-  String get exportSheetSummary => 'Summary';
+  String get exportSheetSummary => '요약';
 
   @override
-  String get exportSheetDetail => 'Detail';
+  String get exportSheetDetail => '상세';
 
   @override
-  String get exportColWeekday => 'Weekday';
+  String get exportColWeekday => '요일';
 }

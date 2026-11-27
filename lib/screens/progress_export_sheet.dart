@@ -17,17 +17,20 @@ import 'share_sheet.dart';
 
 Future<void> showShareChooser(BuildContext context) => showAppSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (sheet) {
         final gc = sheet.gc;
         return Container(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(sheet).size.height * 0.9),
           decoration: BoxDecoration(
             color: gc.bg,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(26)),
           ),
+          clipBehavior: Clip.antiAlias,
           child: SafeArea(
             top: false,
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

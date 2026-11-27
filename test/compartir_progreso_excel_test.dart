@@ -28,6 +28,20 @@ List<Object?> _row(Sheet s, int r) => [
 void main() {
   setUpAll(() => initializeDateFormatting());
 
+  test('no sheet name or header carries invisible word-joiners in any language', () {
+    for (final lang in appLanguages) {
+      final book = _roundTrip(fixtureReport(), lang);
+      for (final name in book.tables.keys) {
+        expect(name.contains('⁠'), isFalse, reason: '$lang sheet "$name"');
+        final sheet = book[name];
+        for (final cell in sheet.rows.first) {
+          final text = cell?.value is TextCellValue ? (cell!.value as TextCellValue).value.text ?? '' : '';
+          expect(text.contains('⁠'), isFalse, reason: '$lang header "$text"');
+        }
+      }
+    }
+  });
+
   test('es: two sheets with headers and every fixture row', () {
     final book = _roundTrip(fixtureReport(), 'es');
     expect(book.tables.keys.toList(), ['Resumen', 'Detalle']);

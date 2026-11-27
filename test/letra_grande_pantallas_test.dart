@@ -9,6 +9,7 @@ import 'package:infyter/app/infyter_app.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/workout.dart';
 import 'package:infyter/screens/home_screen.dart';
+import 'package:infyter/screens/progress_export_sheet.dart';
 import 'package:infyter/screens/progress_screen.dart';
 import 'package:infyter/screens/session_screen.dart';
 import 'package:infyter/services/step_source.dart';
@@ -134,6 +135,7 @@ Future<List<String>> _revisar(
   String que, {
   String idioma = 'es',
   void Function(BuildContext)? abrir,
+  Future<void> Function(WidgetTester)? luego,
 }) async {
   final errores = await conErrores(() async {
     await tester.pumpWidget(app);
@@ -142,6 +144,12 @@ Future<List<String>> _revisar(
     }
     if (abrir != null) {
       abrir(tester.element(find.byType(AppShell)));
+      for (var i = 0; i < 12; i++) {
+        await tester.pump(const Duration(milliseconds: 200));
+      }
+    }
+    if (luego != null) {
+      await luego(tester);
       for (var i = 0; i < 12; i++) {
         await tester.pump(const Duration(milliseconds: 200));
       }
@@ -165,6 +173,41 @@ Future<void> _cerrar(WidgetTester tester) async {
   fit.saveAndExit();
   await tester.pumpWidget(const SizedBox());
   await tester.pump(const Duration(seconds: 3));
+}
+
+final _hoyFijo = DateTime(2026, 3, 15);
+
+String _claveDe(DateTime d) =>
+    '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+void _datosParaCompartir({required int diasAtras}) {
+  final dia = _hoyFijo.subtract(Duration(days: diasAtras));
+  fit.sessions
+    ..clear()
+    ..add(
+      LoggedSession(dia.add(const Duration(hours: 18)), 3725, [
+        LoggedExercise('EIeI8Vf', 'Barbell Bench Press', 'chest', [LoggedSet(10, 102.5), LoggedSet(8, 105)]),
+      ]),
+    );
+  fit.steps[_claveDe(dia)] = 6412;
+  fit.route = 'progress';
+}
+
+void _sinNadaParaCompartir() {
+  fit.sessions.clear();
+  fit.route = 'progress';
+}
+
+Future<void> _tocarHistoricoCompleto(WidgetTester tester) async {
+  await tester.ensureVisible(find.byType(TinySwitch));
+  await tester.pump();
+  await tester.tap(find.byType(TinySwitch));
+}
+
+Future<void> _tocarExportar(WidgetTester tester) async {
+  await tester.ensureVisible(find.byType(PrimaryButton));
+  await tester.pump();
+  await tester.tap(find.byType(PrimaryButton));
 }
 
 void main() {
@@ -407,6 +450,72 @@ void main() {
             fit.setLanguage(idioma);
             preparar();
             final fallas = await _revisar(tester, const InfyterApp(), 'hoja $nombre', idioma: idioma, abrir: abrir);
+            await _cerrar(tester);
+            for (final f in fallas) {
+              debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');
+            }
+            expect(fallas, isEmpty);
+          });
+        }
+      }
+    }
+  }
+
+  String diaMuyAtras() => t.shortDateYear(_hoyFijo.subtract(const Duration(days: 200)));
+
+  final compartir = <String, (void Function(), void Function(BuildContext), Future<void> Function(WidgetTester)?, String Function())>{
+    'compartir-opciones': (() => fit.route = 'progress', showShareChooser, null, () => t.shareChooserProgressHint),
+    'compartir-normal': (
+      () => _datosParaCompartir(diasAtras: 2),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      null,
+      () => t.exportDayCount(1),
+    ),
+    'compartir-historico': (
+      () => _datosParaCompartir(diasAtras: 200),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      _tocarHistoricoCompleto,
+      () => t.exportWholeHistoryHint(diaMuyAtras(), diaMuyAtras()),
+    ),
+    'compartir-periodo-vacio': (
+      () => _datosParaCompartir(diasAtras: 200),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      null,
+      () => t.exportEmpty,
+    ),
+    'compartir-sin-nada': (
+      _sinNadaParaCompartir,
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      null,
+      () => t.exportNothingAtAll,
+    ),
+    'compartir-exportando': (
+      () => _datosParaCompartir(diasAtras: 2),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      _tocarExportar,
+      () => t.exportBusy,
+    ),
+  };
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final ancho in const [320.0, 360.0, 411.0]) {
+      for (final escala in _escalas) {
+        for (final MapEntry(key: nombre, value: (preparar, abrir, luego, clave)) in compartir.entries) {
+          testWidgets('the $nombre sheet fits at ${ancho.toInt()} dp with text scale $escala in $idioma', (tester) async {
+            final alto = ancho == 320 ? 711.0 : (ancho == 360 ? 780.0 : 914.0);
+            usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+            fit.setLanguage(idioma);
+            preparar();
+            final fallas = await _revisar(
+              tester,
+              const InfyterApp(),
+              'hoja $nombre',
+              idioma: idioma,
+              abrir: abrir,
+              luego: luego,
+            );
+            final texto = clave();
+            expect(find.text(texto), findsOneWidget, reason: '$nombre: no muestra "$texto"');
             await _cerrar(tester);
             for (final f in fallas) {
               debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');

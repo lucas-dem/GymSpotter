@@ -3331,242 +3331,251 @@ class AppLocalizationsUk extends AppLocalizations {
       'Health Connect рахує кроки, навіть коли Infyter закритий; після відкриття видно останні 7 днів.';
 
   @override
-  String get shareChooserTitle => 'What to share';
+  String get shareChooserTitle => 'Що надіслати';
 
   @override
-  String get shareChooserCard => 'A card';
+  String get shareChooserCard => 'Картка';
 
   @override
-  String get shareChooserCardHint => 'Streak, muscles worked or before and after, as an image';
+  String get shareChooserCardHint => 'Серія, опрацьовані м\'язи або до і після, як зображення';
 
   @override
-  String get shareChooserProgress => 'Share progress';
+  String get shareChooserProgress => 'Поділитися прогресом';
 
   @override
-  String get shareChooserProgressHint =>
-      'Workouts, steps, calories, weight and measurements by day, as a file';
+  String get shareChooserProgressHint => 'Тренування, кроки, калорії, вага та виміри за днями, як файл';
 
   @override
   String get exportSheetHint =>
-      'It is built on your phone. Nothing leaves until you choose where to send it.';
+      'Файл створюється на твоєму телефоні. Нічого не йде, доки ти не обереш, куди його надіслати. З форматом «Текст» він ще й копіюється у буфер обміну, якщо він не надто довгий.';
 
   @override
-  String get exportFrom => 'From';
+  String get exportFrom => 'Від';
 
   @override
-  String get exportTo => 'To';
+  String get exportTo => 'До';
 
   @override
-  String get exportWholeHistory => 'Full history';
+  String get exportWholeHistory => 'Вся історія';
 
   @override
   String exportWholeHistoryHint(String from, String to) {
-    return 'Everything logged, from $from to $to';
+    return 'Усе записане, від $from до $to';
   }
 
   @override
-  String get exportFormat => 'Format';
+  String get exportFormat => 'Формат';
 
   @override
-  String get exportFormatText => 'Text';
+  String get exportFormatText => 'Текст';
 
   @override
-  String get exportAction => 'Export';
+  String get exportAction => 'Експорт';
 
   @override
-  String get exportCopy => 'Copy text';
+  String get exportCopy => 'Копіювати текст';
 
   @override
-  String get exportBusy => 'Preparing…';
+  String get exportBusy => 'Підготовка…';
 
   @override
-  String get exportCopiedClipboard => 'Text copied to the clipboard';
+  String get exportCopiedClipboard => 'Текст скопійовано в буфер обміну';
 
   @override
   String exportDayCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,
       locale: localeName,
-      other: '$n days with data',
-      one: '1 day with data',
+      other: '$n дня з даними',
+      many: '$n днів з даними',
+      few: '$n дні з даними',
+      one: '$n день з даними',
     );
     return '$_temp0';
   }
 
   @override
-  String get exportEmpty => 'Nothing was logged between those dates.';
+  String get exportEmpty => 'За ці дати нічого не записано.';
 
   @override
-  String get exportNothingAtAll => 'There is nothing logged to share yet.';
+  String get exportNothingAtAll => 'Поки немає чого надсилати: нічого не записано.';
 
   @override
-  String get exportFailed => 'The file could not be prepared';
+  String get exportFailed => 'Не вдалося підготувати файл';
 
   @override
-  String get exportTextTooLong => 'The text is too long to copy. Use Export to send it as a file.';
+  String get exportTextTooLong =>
+      'Текст надто довгий, щоб його скопіювати. Натисни «Експорт», щоб надіслати його файлом.';
 
   @override
-  String get exportFileStem => 'progress';
+  String get exportFileStem => 'прогрес';
 
   @override
-  String get exportDocTitle => 'Infyter · Progress';
+  String get exportDocTitle => 'Infyter · Прогрес';
 
   @override
   String exportPeriod(String from, String to) {
-    return 'From $from to $to';
+    return 'Від $from до $to';
   }
 
   @override
   String exportPeriodWhole(String from, String to) {
-    return 'Full history: from $from to $to';
+    return 'Вся історія: від $from до $to';
   }
 
   @override
   String exportGenerated(String date) {
-    return 'Generated on $date';
+    return 'Створено $date';
   }
 
   @override
   String exportUnits(String units) {
-    return 'Units: $units';
+    return 'Одиниці: $units';
   }
 
   @override
-  String get exportSession => 'Workout';
+  String get exportSession => 'Тренування';
 
   @override
   String exportSessionNumbered(int n) {
-    return 'Workout $n';
+    return 'Тренування $n';
   }
 
   @override
   String exportMinutes(int n) {
-    return '$n min';
+    return '$n хв';
   }
 
   @override
   String exportRestConfigured(String time) {
-    return 'configured rest $time';
+    return 'заданий відпочинок $time';
   }
 
   @override
-  String get exportRestNone => 'no rest configured';
+  String get exportRestNone => 'відпочинок не задано';
 
   @override
   String exportRepsCount(int n) {
-    String _temp0 = intl.Intl.pluralLogic(n, locale: localeName, other: '$n reps', one: '1 rep');
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n повторення',
+      many: '$n повторень',
+      few: '$n повторення',
+      one: '$n повторення',
+    );
     return '$_temp0';
   }
 
   @override
-  String get exportSteps => 'Steps';
+  String get exportSteps => 'Кроки';
 
   @override
   String exportStepsSince(String time) {
-    return 'since $time';
+    return 'з $time';
   }
 
   @override
-  String get exportKcal => 'Estimated active calories';
+  String get exportKcal => 'Розрахункові активні калорії';
 
   @override
   String exportKcalSteps(String kcal) {
-    return 'steps ≈ $kcal';
+    return 'кроки ≈ $kcal';
   }
 
   @override
   String exportKcalWorkouts(String kcal) {
-    return 'workouts ≈ $kcal';
+    return 'тренування ≈ $kcal';
   }
 
   @override
-  String get exportBodyweight => 'Bodyweight';
+  String get exportBodyweight => 'Вага тіла';
 
   @override
-  String get exportMeasures => 'Measurements';
+  String get exportMeasures => 'Виміри';
 
   @override
   String get exportNoteKcal =>
-      'Calories are active and estimated, using the latest weight logged on or before each day (or your profile weight). They are not medical data.';
+      'Калорії активні та розрахункові: береться остання записана вага на цей день або раніше (або вага з профілю). Це не медичні дані.';
 
   @override
   String get exportNoteRest =>
-      'Rest is what is configured today for each exercise: Infyter does not store the actual rest of each set.';
+      'Відпочинок — той, що заданий сьогодні для кожної вправи: Infyter не зберігає фактичний відпочинок кожного підходу.';
 
   @override
-  String get exportMadeWith => 'Made with Infyter';
+  String get exportMadeWith => 'Створено в Infyter';
 
   @override
   String exportPage(int n, int total) {
-    return 'Page $n of $total';
+    return 'Сторінка $n із $total';
   }
 
   @override
-  String get exportColDate => 'Date';
+  String get exportColDate => 'Дата';
 
   @override
-  String get exportColExercise => 'Exercise';
+  String get exportColExercise => 'Вправа';
 
   @override
-  String get exportColSet => 'Set';
+  String get exportColSet => 'Підхід';
 
   @override
-  String get exportColKind => 'Set type';
+  String get exportColKind => 'Тип підходу';
 
   @override
-  String get exportColReps => 'Reps';
+  String get exportColReps => 'Повторення';
 
   @override
   String exportColWeight(String unit) {
-    return 'Weight ($unit)';
+    return 'Вага ($unit)';
   }
 
   @override
-  String get exportColSetDuration => 'Duration (s)';
+  String get exportColSetDuration => 'Тривалість (с)';
 
   @override
   String exportColDistance(String unit) {
-    return 'Distance ($unit)';
+    return 'Дистанція ($unit)';
   }
 
   @override
-  String get exportColRest => 'Configured rest (s)';
+  String get exportColRest => 'Заданий відпочинок (с)';
 
   @override
-  String get exportColSessionMinutes => 'Workout duration (min)';
+  String get exportColSessionMinutes => 'Тривалість тренування (хв)';
 
   @override
-  String get exportColSessions => 'Workouts';
+  String get exportColSessions => 'Тренування';
 
   @override
-  String get exportColExercises => 'Exercises';
+  String get exportColExercises => 'Вправи';
 
   @override
-  String get exportColSets => 'Sets';
+  String get exportColSets => 'Підходи';
 
   @override
-  String get exportColStepsSince => 'Steps counted since';
+  String get exportColStepsSince => 'Кроки враховані з';
 
   @override
-  String get exportColKcal => 'Estimated active kcal';
+  String get exportColKcal => 'Розрахункові активні ккал';
 
   @override
-  String get exportColKcalSteps => 'Estimated kcal from steps';
+  String get exportColKcalSteps => 'Розрахункові ккал від кроків';
 
   @override
-  String get exportColKcalWorkouts => 'Estimated kcal from workouts';
+  String get exportColKcalWorkouts => 'Розрахункові ккал від тренувань';
 
   @override
   String exportColBodyweight(String unit) {
-    return 'Bodyweight ($unit)';
+    return 'Вага тіла ($unit)';
   }
 
   @override
-  String get exportSheetSummary => 'Summary';
+  String get exportSheetSummary => 'Підсумок';
 
   @override
-  String get exportSheetDetail => 'Detail';
+  String get exportSheetDetail => 'Деталі';
 
   @override
-  String get exportColWeekday => 'Weekday';
+  String get exportColWeekday => 'День тижня';
 }
