@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -48,6 +49,7 @@ late List<_Share> _shares;
 late List<String> _clipboard;
 String _shareAnswer = 'com.example.app';
 bool _shareFails = false;
+Future<void> Function()? _beforeShare;
 
 void _datos(List<int> sesionesHace) {
   fit.sessions
@@ -126,10 +128,12 @@ void main() {
     _clipboard = [];
     _shareAnswer = 'com.example.app';
     _shareFails = false;
+    _beforeShare = null;
     final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
     messenger.setMockMethodCallHandler(_pathChannel, (call) async => _tmp.path);
     messenger.setMockMethodCallHandler(_shareChannel, (call) async {
       if (_shareFails) throw PlatformException(code: 'boom');
+      await _beforeShare?.call();
       final args = Map<Object?, Object?>.from(call.arguments as Map);
       final files = <String, List<int>>{
         for (final p in (args['paths'] as List?) ?? const [])
@@ -422,6 +426,43 @@ void main() {
     await _esperar(tester, () => !Directory(_progressDir).existsSync());
     await _esperar(tester, () => !File('$_sharedDir/infyter-progreso-2026-01-01_2026-01-02.csv').existsSync());
     expect(File('$_sharedDir/infyter-streak.png').existsSync(), isTrue);
+    await _cerrar(tester);
+  });
+
+  testWidgets('la limpieza al abrir la ventana no hace fallar un Exportar tocado enseguida', (tester) async {
+    _datos([0]);
+    await _abrir(tester);
+    final leftover = File('$_sharedDir/infyter-progreso-2000-01-01_2000-01-02.csv')
+      ..createSync(recursive: true)
+      ..writeAsBytesSync([1]);
+    // The cleanup started on opening is held at its first step until the export has written its file.
+    final held = Completer<void>();
+    var pathCalls = 0;
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(_pathChannel, (call) async {
+      if (pathCalls++ == 0) await held.future;
+      return _tmp.path;
+    });
+    _beforeShare = () async {
+      if (!held.isCompleted) held.complete();
+      for (var i = 0; i < 100 && leftover.existsSync(); i++) {
+        await Future<void>.delayed(const Duration(milliseconds: 20));
+      }
+    };
+    await _abrirVentana(tester);
+    await tester.tap(find.text('CSV'));
+    await tester.pump();
+    await tester.tap(find.text('Exportar'));
+    for (var i = 0; i < 40 && !held.isCompleted; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+    if (!held.isCompleted) held.complete();
+    await _esperar(tester, () => _shares.isNotEmpty || find.text(t.exportFailed).evaluate().isNotEmpty);
+    expect(find.text(t.exportFailed), findsNothing);
+    expect(_shares.single.name, endsWith('.csv'));
+    expect(_shares.single.files.values.single, isNotEmpty);
+    expect(File('$_progressDir/${_shares.single.name}').existsSync(), isTrue);
+    expect(leftover.existsSync(), isFalse);
     await _cerrar(tester);
   });
 }

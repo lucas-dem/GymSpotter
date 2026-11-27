@@ -96,6 +96,7 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
   bool _busy = false;
   String? _fileName;
   String? _notice;
+  late final Future<void> _sweep;
 
   bool get _wholeActive => _whole && _span != null;
 
@@ -111,7 +112,7 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
   @override
   void initState() {
     super.initState();
-    sweepExportLeftovers();
+    _sweep = sweepExportLeftovers();
   }
 
   @override
@@ -208,6 +209,8 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
         await shareExportText(text, result.title, _origin());
         return;
       }
+      // The cleanup started on opening must not delete the file this export is about to share.
+      await _sweep;
       await deleteExportFiles(_fileName);
       written = result.fileName;
       _fileName = written;
