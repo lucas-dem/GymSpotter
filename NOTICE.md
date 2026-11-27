@@ -22,6 +22,12 @@ The progress Excel export uses the `excel_community` 1.0.10 package (MIT License
 copyright (C) 2021 Kawaljeet Singh (justkawal) and copyright (C) 2026
 DecksPlayer, excel_community fork), which is pure Dart.
 
+The progress PDF export uses the `pdf` 3.12.0 package (Apache License 2.0,
+copyright (C) 2017 David PHAM-VAN) and its `barcode` 2.2.9 dependency (Apache
+License 2.0, copyright (C) 2020 David PHAM-VAN) and `bidi` 2.0.13 dependency
+(MIT License, copyright (C) 2020 Mahdi K. Fard). All three are pure Dart. The
+PDF is drawn with the bundled Nunito fonts only.
+
 Flutter and third-party packages retain their respective licenses. Their
 notices are available inside the application under “Información legal y
 licencias” → “Licencias de dependencias”.
