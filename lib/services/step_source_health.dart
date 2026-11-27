@@ -116,11 +116,11 @@ class HealthConnectStepSource implements StepSource, HealthConnectSteps {
     ];
   }
 
-  /// Ademas de la marca, borra el ancla que haya dejado el sensor antes de esta version.
+  /// Ademas de la marca, borra lo que haya dejado el sensor antes de esta version: el ancla y sus marcas del permiso.
   @override
   Future<void> forget() async {
     await _drop();
-    await _sensorChannel.invokeMethod<void>(StepChannel.clearAnchor);
+    await _sensorChannel.invokeMethod<void>(StepChannel.forget);
   }
 
   @override

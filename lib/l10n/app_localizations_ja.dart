@@ -1125,13 +1125,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'ワークアウト、記録、ルーティン、メモ、プロフィールに加え、Infyterが保管している復旧用コピーもすべて削除します。元に戻せません — 必要なら先にバックアップを書き出してください。';
+      'ワ⁠ークアウト、記録、ル⁠ーティン、メモ、写真、歩数、プロフィ⁠ール、設定に加え、Infyterが保管している復旧用コピ⁠ーもすべて削除し、歩数の計測をオフにします。元に戻せません — 必要なら先にバックアップを書き出してください。';
 
   @override
   String get resetConfirm => 'すべて削除';
 
   @override
   String get resetDone => 'すべてのデータを削除しました';
+
+  @override
+  String get resetFailed => '削除できませんでした。デ⁠ータは元のままです。';
 
   @override
   String get rescueTitle => 'データのコピーがあります';
@@ -1300,7 +1303,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get exportCsv => 'ワークアウトを書き出す（CSV）';
 
   @override
+  String get exportCsvSubject => 'Infyterのワークアウト';
+
+  @override
   String get exportBackup => 'バックアップを書き出す（ZIP）';
+
+  @override
+  String get exportBackupSubject => 'Infyterのバックアップ';
 
   @override
   String get importBackup => 'バックアップを読み込む';

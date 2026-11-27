@@ -1143,13 +1143,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get resetBody =>
-      '운동, 기록, 루틴, 메모, 프로필과 Infyter가 보관하는 복구용 사본까지 모두 삭제됩니다. 되돌릴 수 없으니 필요하다면 먼저 백업을 내보내세요.';
+      '운동, 기록, 루틴, 메모, 사진, 걸음 수, 프로필, 설정과 Infyter가 보관하는 복구용 사본까지 모두 삭제되고 걸음 수 측정이 꺼져요. 되돌릴 수 없으니 필요하다면 먼저 백업을 내보내세요.';
 
   @override
   String get resetConfirm => '모두 삭제';
 
   @override
   String get resetDone => '모든 데이터가 삭제되었습니다';
+
+  @override
+  String get resetFailed => '삭제하지 못했어요. 데이터는 그대로예요.';
 
   @override
   String get rescueTitle => '데이터 사본이 있습니다';
@@ -1318,7 +1321,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportCsv => '운동 내보내기(CSV)';
 
   @override
+  String get exportCsvSubject => 'Infyter 운동 기록';
+
+  @override
   String get exportBackup => '백업 내보내기(ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter 백업';
 
   @override
   String get importBackup => '백업 가져오기';

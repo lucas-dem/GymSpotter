@@ -45,6 +45,45 @@ Future<void> sweepExportLeftovers() async {
   } catch (_) {}
 }
 
+/// Deletes [file] and the copy share_plus made of it on Android.
+Future<void> deleteSharedFile(File file) async {
+  try {
+    if (await file.exists()) await file.delete();
+    final tmp = await getTemporaryDirectory();
+    final copy = File('${tmp.path}/share_plus/${file.uri.pathSegments.last}');
+    if (await copy.exists()) await copy.delete();
+  } catch (_) {}
+}
+
+final _dataExportName = RegExp(r'^infyter-(backup-\d{4}-\d{2}-\d{2}\.zip|workouts-\d{4}-\d{2}-\d{2}\.csv)$');
+
+/// Removes the backup and workouts CSV that an earlier share left in the temporary folder. Runs at app start.
+Future<void> sweepDataExportLeftovers() async {
+  try {
+    final tmp = await getTemporaryDirectory();
+    for (final dir in [Directory(tmp.path), Directory('${tmp.path}/share_plus')]) {
+      if (!await dir.exists()) continue;
+      await for (final entry in dir.list()) {
+        if (entry is File && _dataExportName.hasMatch(entry.uri.pathSegments.last)) await entry.delete();
+      }
+    }
+  } catch (_) {}
+}
+
+/// Deletes every file Infyter left in the temporary folder to share it, and the copies share_plus made of them.
+Future<void> deleteAllShareFiles() async {
+  await deleteExportFiles();
+  try {
+    final tmp = await getTemporaryDirectory();
+    for (final dir in [Directory(tmp.path), Directory('${tmp.path}/share_plus')]) {
+      if (!await dir.exists()) continue;
+      await for (final entry in dir.list()) {
+        if (entry is File && entry.uri.pathSegments.last.startsWith('infyter-')) await entry.delete();
+      }
+    }
+  } catch (_) {}
+}
+
 Future<File> writeExportFile(Directory dir, String name, Uint8List bytes) =>
     File('${dir.path}/$name').writeAsBytes(bytes, flush: true);
 
@@ -57,7 +96,7 @@ Future<ShareResult> shareExportFile(File file, ExportKind kind, String subject, 
       ),
     );
 
+Future<void> copyExportText(String text) => Clipboard.setData(ClipboardData(text: text));
+
 Future<ShareResult> shareExportText(String text, String subject, Rect? origin) =>
     SharePlus.instance.share(ShareParams(text: text, subject: subject, sharePositionOrigin: origin));
-
-Future<void> copyExportText(String text) => Clipboard.setData(ClipboardData(text: text));

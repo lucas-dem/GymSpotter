@@ -17,6 +17,7 @@ import '../services/alarm_store.dart';
 import '../services/backup_zip.dart';
 import '../services/fitnotes_backup.dart';
 import '../services/home_widget_bridge.dart';
+import '../services/progress_export/export_share.dart' show deleteSharedFile;
 import '../services/rest_alarm.dart';
 import '../services/sqlite_reader.dart';
 import '../services/step_source.dart' show readsHealthConnect;
@@ -399,7 +400,12 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
               const SizedBox(height: 18),
               _sectionLabel(gc, t.data),
               const SizedBox(height: 8),
-              _linkGroup(gc, [(PhosphorIconsRegular.fileCsv, t.exportCsv, () => _exportCsv(context))]),
+              _linkGroup(gc, [
+                (PhosphorIconsRegular.fileCsv, t.exportCsv, () => _exportCsv(context)),
+                (PhosphorIconsRegular.fileZip, t.exportBackup, () => _exportBackup(context)),
+                (PhosphorIconsRegular.downloadSimple, t.importBackup, () => _importBackup(context)),
+                (PhosphorIconsRegular.trash, t.resetData, () => _resetAll(context)),
+              ], danger: 3),
               const SizedBox(height: 18),
               _sectionLabel(gc, LegalCopy.section),
               const SizedBox(height: 8),
@@ -777,49 +783,83 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
     );
   }
 
-  Future<void> _exportCsv(BuildContext context) async {
+  bool _dataBusy = false;
+
+  /// One data action at a time: a second tap while a backup is being built or read does nothing.
+  Future<void> _oneAtATime(Future<void> Function() action) async {
+    if (_dataBusy) return;
+    _dataBusy = true;
+    try {
+      await action();
+    } finally {
+      _dataBusy = false;
+    }
+  }
+
+  Future<void> _exportCsv(BuildContext context) => _oneAtATime(() async {
     if (!fit.hasData) {
       _snack(context, t.nothingToExport);
       return;
     }
-    final dir = await getTemporaryDirectory();
     final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/infyter-workouts-$stamp.csv');
-    await file.writeAsString(fit.exportCsv());
-    if (!context.mounted) return;
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'Entrenamientos de Infyter'),
-    );
-  }
+    await _shareFile(context, 'infyter-workouts-$stamp.csv', 'text/csv', t.exportCsvSubject,
+        () async => utf8.encode(fit.exportCsv()));
+  });
 
-  // Kept for possible future restoration; intentionally absent from the UI.
-  // ignore: unused_element
-  Future<void> _resetAll(BuildContext context) async {
+  Future<void> _resetAll(BuildContext context) => _oneAtATime(() async {
     final ok = await askConfirm(
       context,
       title: t.resetTitle,
       body: t.resetBody,
       confirmLabel: t.resetConfirm,
+      danger: true,
     );
     if (!ok) return;
-    fit.resetAllData();
-    if (context.mounted) _snack(context, t.resetDone);
-  }
+    final done = await fit.deleteAllData();
+    // Settings is still mounted here: the shell moves to the welcome screen on the next frame.
+    if (context.mounted) {
+      if (done) {
+        _snack(context, t.resetDone);
+      } else {
+        _warn(context, t.resetFailed);
+      }
+    }
+    if (done) await _clearPickedFiles();
+  });
 
-  // ignore: unused_element
-  Future<void> _exportBackup(BuildContext context) async {
-    final dir = await getTemporaryDirectory();
+  Future<void> _exportBackup(BuildContext context) => _oneAtATime(() async {
     final stamp = DateTime.now().toIso8601String().split('T').first;
-    final file = File('${dir.path}/infyter-backup-$stamp.zip');
-    await file.writeAsBytes(await buildBackupZip(), flush: true);
-    if (!context.mounted) return;
-    await SharePlus.instance.share(
-      ShareParams(files: [XFile(file.path)], subject: 'Copia de seguridad de Infyter'),
-    );
+    await _shareFile(context, 'infyter-backup-$stamp.zip', 'application/zip', t.exportBackupSubject, buildBackupZip);
+  });
+
+  /// Writes [name] in the temporary folder and opens the share menu; the file goes away if the person cancels.
+  Future<void> _shareFile(
+    BuildContext context,
+    String name,
+    String mime,
+    String subject,
+    Future<List<int>> Function() bytes,
+  ) async {
+    File? file;
+    try {
+      final dir = await getTemporaryDirectory();
+      file = File('${dir.path}/$name');
+      await file.writeAsBytes(await bytes(), flush: true);
+      if (!context.mounted) {
+        await deleteSharedFile(file);
+        return;
+      }
+      final shared = await SharePlus.instance.share(
+        ShareParams(files: [XFile(file.path, mimeType: mime)], subject: subject),
+      );
+      if (shared.status == ShareResultStatus.dismissed) await deleteSharedFile(file);
+    } catch (_) {
+      if (file != null) await deleteSharedFile(file);
+      if (context.mounted) _warn(context, t.exportFailed);
+    }
   }
 
-  // ignore: unused_element
-  Future<void> _importBackup(BuildContext context) async {
+  Future<void> _importBackup(BuildContext context) => _oneAtATime(() async {
     final ok = await askConfirm(
       context,
       title: t.importBackup,
@@ -842,17 +882,24 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
       bytes = null;
     }
 
+    final success = bytes != null &&
+        (looksLikeZip(bytes)
+            ? await restoreBackupZip(bytes)
+            : await fit.importJsonSaved(utf8.decode(bytes, allowMalformed: true)));
+    await _clearPickedFiles();
     if (!context.mounted) return;
-    if (bytes == null) {
-      _snack(context, t.backupFailed);
-      return;
+    if (success) {
+      _snack(context, t.backupImported);
+    } else {
+      _warn(context, t.backupFailed);
     }
-    final success = looksLikeZip(bytes)
-        ? await restoreBackupZip(bytes)
-        : fit.importJson(utf8.decode(bytes, allowMalformed: true));
-    if (context.mounted) {
-      _snack(context, success ? t.backupImported : t.backupFailed);
-    }
+  });
+
+  /// The file picker keeps a copy of the chosen file in the app cache; a backup holds all the person's data.
+  Future<void> _clearPickedFiles() async {
+    try {
+      await FilePicker.platform.clearTemporaryFiles();
+    } catch (_) {}
   }
 
   Widget _alarmWarning(BuildContext context, GymColors gc) {
@@ -1540,6 +1587,10 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
 
   void _snack(BuildContext context, String msg) {
     showNotchToast(context, msg, icon: PhosphorIconsFill.checkCircle, accent: context.gc.sage);
+  }
+
+  void _warn(BuildContext context, String msg) {
+    showNotchToast(context, msg, icon: PhosphorIconsFill.warningCircle, accent: context.gc.warn);
   }
 }
 

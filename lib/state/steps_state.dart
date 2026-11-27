@@ -190,13 +190,11 @@ mixin StepsState on FitCore {
   void _clearSteps() {
     _stepsEpoch++;
     stepsStatus = StepsStatus.unread;
-    unawaited(stepSource.forget().catchError((Object _) {}));
     steps.clear();
     stepsFrom.clear();
     stepGoal = kDefaultStepGoal;
     stepsOn = false;
     stepsAskedAt = null;
-    unawaited(StepsCardPref.setHidden(false));
   }
 }
 

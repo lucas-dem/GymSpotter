@@ -1172,13 +1172,16 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sesiones, récords, rutinas, notas y perfil, y también las copias de rescate que guarda Infyter. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.';
+      'Sesiones, récords, rutinas, notas, fotos, pasos, perfil y ajustes, y también las copias de rescate que guarda Infyter; el conteo de pasos se apaga. No tiene vuelta atrás — exporta una copia antes si crees que la querrás.';
 
   @override
   String get resetConfirm => 'Borrar todo';
 
   @override
   String get resetDone => 'Todos los datos borrados';
+
+  @override
+  String get resetFailed => 'No se pudo borrar. Tus datos siguen como estaban.';
 
   @override
   String get rescueTitle => 'Hay una copia de tus datos';
@@ -1353,7 +1356,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get exportCsv => 'Exportar entrenos (CSV)';
 
   @override
+  String get exportCsvSubject => 'Entrenamientos de Infyter';
+
+  @override
   String get exportBackup => 'Exportar copia (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Copia de seguridad de Infyter';
 
   @override
   String get importBackup => 'Importar copia';

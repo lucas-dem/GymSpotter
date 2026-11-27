@@ -18,6 +18,15 @@ class StepsCardPref {
     } catch (_) {}
   }
 
+  /// Como recién instalada: la tarjeta vuelve a verse y la marca se borra.
+  static Future<void> reset() async {
+    hidden.value = false;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_key);
+    } catch (_) {}
+  }
+
   static Future<void> setHidden(bool value) async {
     hidden.value = value;
     try {

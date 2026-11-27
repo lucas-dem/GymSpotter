@@ -435,6 +435,13 @@ class Store {
 
   void setNote(String key, String value) => _prefs?.setString('gm_$key', value);
 
+  /// Borra las marcas de [setNote].
+  void clearNotes() {
+    for (final key in [...?_prefs?.getKeys()]) {
+      if (key.startsWith('gm_')) _prefs?.remove(key);
+    }
+  }
+
   /// Guarda el estado agregando la versión de formato. `toJson()` y los
   /// backups exportados no cambian: la versión solo vive en el almacenamiento.
   /// Devuelve false si no quedó guardado: en Android SharedPreferences escribe

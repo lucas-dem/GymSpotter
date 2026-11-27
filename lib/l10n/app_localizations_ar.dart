@@ -1165,13 +1165,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'التمارين والسجلات والروتينات والملاحظات والملف الشخصي، وكذلك نسخ الإنقاذ التي يحتفظ بها Infyter. لا يمكن التراجع عن ذلك — صدّر نسخة احتياطية أولًا إذا قد تحتاجها.';
+      'التمارين والسجلات والروتينات والملاحظات والصور والخطوات والملف الشخصي والإعدادات، وكذلك نسخ الإنقاذ التي يحتفظ بها Infyter؛ ويتوقف عدّ الخطوات. لا يمكن التراجع عن ذلك — صدّر نسخة احتياطية أولًا إذا قد تحتاجها.';
 
   @override
   String get resetConfirm => 'حذف كل شيء';
 
   @override
   String get resetDone => 'تم حذف جميع البيانات';
+
+  @override
+  String get resetFailed => 'تعذّر الحذف. بقيت بياناتك كما كانت.';
 
   @override
   String get rescueTitle => 'تتوفر نسخة من بياناتك';
@@ -1343,7 +1346,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportCsv => 'تصدير التمارين (CSV)';
 
   @override
+  String get exportCsvSubject => 'تمارين Infyter';
+
+  @override
   String get exportBackup => 'تصدير نسخة احتياطية (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'نسخة Infyter الاحتياطية';
 
   @override
   String get importBackup => 'استيراد نسخة احتياطية';

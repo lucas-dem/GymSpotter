@@ -1175,13 +1175,16 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sessões, registros, rotinas, notas e perfil, além das cópias de resgate que o Infyter guarda. Isso não pode ser desfeito — exporte um backup primeiro, caso queira mantê-lo.';
+      'Sessões, registros, rotinas, notas, fotos, passos, perfil e ajustes, além das cópias de resgate que o Infyter guarda; a contagem de passos é desligada. Isso não pode ser desfeito — exporte um backup primeiro, caso queira mantê-lo.';
 
   @override
   String get resetConfirm => 'Excluir tudo';
 
   @override
   String get resetDone => 'Todos os dados excluídos';
+
+  @override
+  String get resetFailed => 'Não foi possível excluir. Seus dados continuam como estavam.';
 
   @override
   String get rescueTitle => 'Há uma cópia dos seus dados';
@@ -1355,14 +1358,20 @@ class AppLocalizationsPt extends AppLocalizations {
   String get exportCsv => 'Exportar treinos (CSV)';
 
   @override
-  String get exportBackup => 'Exportar backup (JSON)';
+  String get exportCsvSubject => 'Treinos do Infyter';
+
+  @override
+  String get exportBackup => 'Exportar backup (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Backup do Infyter';
 
   @override
   String get importBackup => 'Importar backup';
 
   @override
   String get importHint =>
-      'Escolha um backup .json exportado do Infyter. Isso substituirá seus dados atuais.';
+      'Escolha um backup .zip (ou o .json antigo) exportado do Infyter. Isso substituirá seus dados atuais, mídia incluída.';
 
   @override
   String get import => 'Importar';

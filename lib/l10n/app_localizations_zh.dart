@@ -1119,13 +1119,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resetTitle => '确定清空所有数据？';
 
   @override
-  String get resetBody => '将清空所有训练记录、个人纪录、计划、笔记及个人资料，以及 Infyter 保存的应急副本。此操作不可逆 — 如有需要，请先导出备份。';
+  String get resetBody =>
+      '将清空所有训练记录、个人纪录、计划、笔记、照片、步数、个人资料和设置，以及 Infyter 保存的应急副本，并关闭步数统计。此操作不可逆 — 如有需要，请先导出备份。';
 
   @override
   String get resetConfirm => '清空全部数据';
 
   @override
   String get resetDone => '所有数据已清空';
+
+  @override
+  String get resetFailed => '无法清空。你的数据保持不变。';
 
   @override
   String get rescueTitle => '有一份数据副本可用';
@@ -1294,13 +1298,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get exportCsv => '导出训练记录 (CSV)';
 
   @override
-  String get exportBackup => '导出完整备份 (JSON)';
+  String get exportCsvSubject => 'Infyter 训练记录';
+
+  @override
+  String get exportBackup => '导出完整备份 (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter 备份';
 
   @override
   String get importBackup => '导入备份';
 
   @override
-  String get importHint => '选择从 Infyter 导出的 .json 备份文件。这将会覆盖你当前的数据。';
+  String get importHint => '选择从 Infyter 导出的 .zip 备份文件（或旧版 .json）。这将会覆盖你当前的数据，包括媒体文件。';
 
   @override
   String get import => '导入';
@@ -4515,13 +4525,16 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get resetTitle => '全部刪除？';
 
   @override
-  String get resetBody => '訓練、紀錄、課表、筆記與個人檔案，以及 Infyter 保存的應急副本都會刪除。此操作無法復原 — 如有需要請先匯出備份。';
+  String get resetBody => '訓練、紀錄、課表、筆記、照片、步數、個人檔案與設定，以及 Infyter 保存的應急副本都會刪除，並關閉步數計算。此操作無法復原 — 如有需要請先匯出備份。';
 
   @override
   String get resetConfirm => '全部刪除';
 
   @override
   String get resetDone => '所有資料已刪除';
+
+  @override
+  String get resetFailed => '無法刪除。你的資料維持不變。';
 
   @override
   String get rescueTitle => '有一份資料副本可用';
@@ -4690,7 +4703,13 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
   String get exportCsv => '匯出訓練（CSV）';
 
   @override
+  String get exportCsvSubject => 'Infyter 訓練紀錄';
+
+  @override
   String get exportBackup => '匯出備份（ZIP）';
+
+  @override
+  String get exportBackupSubject => 'Infyter 備份';
 
   @override
   String get importBackup => '匯入備份';

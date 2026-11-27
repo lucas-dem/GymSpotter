@@ -24,6 +24,7 @@ import '../services/beeper.dart';
 import '../services/exercise_match.dart';
 import '../services/local_store.dart';
 import '../services/media_store.dart';
+import '../services/progress_export/export_share.dart';
 import '../services/progress_reminder.dart';
 import '../services/plan_share.dart';
 import '../services/rest_alarm.dart';
@@ -631,7 +632,52 @@ class FitState extends FitCore
     notifyListeners();
   }
 
+  /// Vacía el estado, los medios, las copias de rescate y lo que guarda la fuente de pasos, sin esperar el guardado
+  /// (para pruebas). La acción de Ajustes es [deleteAllData], que además espera el guardado y borra el resto.
   void resetAllData() {
+    _wipeState();
+    persistNow();
+    _showWiped();
+    unawaited(_forgetStoredData());
+  }
+
+  /// "Borrar todos mis datos": deja la app como recién instalada, salvo el idioma. Primero guarda el estado vacío y
+  /// recién si quedó guardado borra los archivos y las marcas de pasos; si no se pudo guardar, vuelve a lo de antes sin
+  /// borrar nada y devuelve false. La pantalla se entera al final: mientras tanto sigue mostrando lo de antes.
+  Future<bool> deleteAllData() async {
+    final before = jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>;
+    _wipeState();
+    if (!await saveNow()) {
+      _loadFrom(before);
+      syncTrainReminder();
+      syncPhotoReminder();
+      _refreshWidgets();
+      unawaited(refreshSteps());
+      return false;
+    }
+    Store.instance.clearNotes();
+    await Future.wait([_forgetStoredData(), AlarmStore.clear(), deleteAllShareFiles()]);
+    _showWiped();
+    return true;
+  }
+
+  void _showWiped() {
+    resetRoute('home');
+    trainStep = 'select';
+    _refreshWidgets();
+    notifyListeners();
+    unawaited(refreshSteps());
+  }
+
+  /// Medios, copias de rescate, tarjeta de pasos oculta y lo que guarda la fuente de pasos. Cada borrado empieza antes
+  /// de volver: lo que se escriba después no se toca.
+  Future<void> _forgetStoredData() {
+    final forgotten = stepSource.forget().catchError((Object _) {});
+    Store.instance.discardRescue();
+    return Future.wait([forgotten, MediaStore.clearAll(), StepsCardPref.reset()]);
+  }
+
+  void _wipeState() {
     _saveDebounce?.cancel();
     _sessionTimer?.cancel();
     _restTimer?.cancel();
@@ -674,8 +720,19 @@ class FitState extends FitCore
     gymBranch = 'junin';
     bgPattern = 'dynamic';
     bgDim = 0.55;
-    MediaStore.clearAll();
-    Store.instance.discardRescue();
+    themePref = 'dark';
+    units = 'kg';
+    restSeconds = 90;
+    alarmSound = null;
+    alarmSoundName = null;
+    RestAlarm.instance.customSoundPath = null;
+    alarmStyle = 'quiet';
+    RestAlarm.instance.style = alarmStyle;
+    alarmAskedAt = null;
+    heatTone = 'ember';
+    keepScreenOn = true;
+    photoIntervalDays = 30;
+    bodyTimeline = false;
     _rescueOffer = null;
     _rescueSaved = null;
     _clearSteps();
@@ -699,12 +756,6 @@ class FitState extends FitCore
     _bannerBytes = null;
     _bannerCacheKey = null;
     _seedCalculatorsFromProfile();
-    resetRoute('home');
-    trainStep = 'select';
-    persistNow();
-    _refreshWidgets();
-    notifyListeners();
-    unawaited(refreshSteps());
   }
 
   // Lo que es de este teléfono y no viaja en una copia.
@@ -724,6 +775,25 @@ class FitState extends FitCore
     } catch (_) {
       return false;
     }
+    confirmRestoredSteps();
+    return true;
+  }
+
+  /// Como [importJson], pero lo importado tiene que quedar guardado: si no se pudo guardar, vuelve a lo de antes.
+  Future<bool> importJsonSaved(String raw) async {
+    final map = Store.instance.tryParse(raw);
+    if (map == null) return false;
+    final snapshot = backupSnapshot();
+    try {
+      applyBackup(map, endRescue: false);
+    } catch (_) {
+      return false;
+    }
+    if (!await saveNow()) {
+      restoreSnapshot(snapshot);
+      return false;
+    }
+    endRescueNotice();
     confirmRestoredSteps();
     return true;
   }

@@ -1173,13 +1173,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Sessions, records, routines, notes and profile, plus the rescue copies Infyter keeps. This cannot be undone — export a backup first if you might want it.';
+      'Sessions, records, routines, notes, photos, steps, profile and settings, plus the rescue copies Infyter keeps; step counting is turned off. This cannot be undone — export a backup first if you might want it.';
 
   @override
   String get resetConfirm => 'Delete everything';
 
   @override
   String get resetDone => 'All data deleted';
+
+  @override
+  String get resetFailed => 'Couldn\'t delete. Your data is still as it was.';
 
   @override
   String get rescueTitle => 'A copy of your data is available';
@@ -1353,7 +1356,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportCsv => 'Export workouts (CSV)';
 
   @override
+  String get exportCsvSubject => 'Infyter workouts';
+
+  @override
   String get exportBackup => 'Export backup (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter backup';
 
   @override
   String get importBackup => 'Import backup';

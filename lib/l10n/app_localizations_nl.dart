@@ -1175,13 +1175,16 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Trainingen, records, routines, notities en profiel, plus de noodkopieën die Infyter bewaart. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.';
+      'Trainingen, records, routines, notities, foto\'s, stappen, profiel en instellingen, plus de noodkopieën die Infyter bewaart; het stappen tellen gaat uit. Dit kan niet ongedaan worden gemaakt — exporteer eerst een back-up als je ze wilt bewaren.';
 
   @override
   String get resetConfirm => 'Alles verwijderen';
 
   @override
   String get resetDone => 'Alle gegevens zijn verwijderd';
+
+  @override
+  String get resetFailed => 'Verwijderen is niet gelukt. Je gegevens zijn ongewijzigd.';
 
   @override
   String get rescueTitle => 'Er is een kopie van je gegevens';
@@ -1356,7 +1359,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get exportCsv => 'Trainingen exporteren (CSV)';
 
   @override
+  String get exportCsvSubject => 'Infyter-trainingen';
+
+  @override
   String get exportBackup => 'Back-up exporteren (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter-back-up';
 
   @override
   String get importBackup => 'Back-up importeren';

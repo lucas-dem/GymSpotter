@@ -1179,13 +1179,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Trainings, Rekorde, Trainingspläne, Notizen und Profil sowie die Rettungskopien, die Infyter aufbewahrt. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.';
+      'Trainings, Rekorde, Trainingspläne, Notizen, Fotos, Schritte, Profil und Einstellungen sowie die Rettungskopien, die Infyter aufbewahrt; das Schrittezählen wird ausgeschaltet. Dies kann nicht rückgängig gemacht werden — exportiere vorher ein Backup, falls du es noch brauchen könntest.';
 
   @override
   String get resetConfirm => 'Alles löschen';
 
   @override
   String get resetDone => 'Alle Daten gelöscht';
+
+  @override
+  String get resetFailed => 'Löschen fehlgeschlagen. Deine Daten sind unverändert.';
 
   @override
   String get rescueTitle => 'Eine Kopie deiner Daten ist verfügbar';
@@ -1360,7 +1363,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get exportCsv => 'Trainings exportieren (CSV)';
 
   @override
+  String get exportCsvSubject => 'Infyter-Trainings';
+
+  @override
   String get exportBackup => 'Backup exportieren (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter-Backup';
 
   @override
   String get importBackup => 'Backup importieren';

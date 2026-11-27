@@ -1174,13 +1174,16 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Antrenmanlar, rekorlar, programlar, notlar ve profil ile Infyter\'in sakladığı kurtarma kopyaları. Bu işlem geri alınamaz — gerekebilir diye önce yedek dışa aktar.';
+      'Antrenmanlar, rekorlar, programlar, notlar, fotoğraflar, adımlar, profil ve ayarlar ile Infyter\'in sakladığı kurtarma kopyaları; adım sayma kapanır. Bu işlem geri alınamaz — gerekebilir diye önce yedek dışa aktar.';
 
   @override
   String get resetConfirm => 'Her şeyi sil';
 
   @override
   String get resetDone => 'Tüm veriler silindi';
+
+  @override
+  String get resetFailed => 'Silinemedi. Verilerin olduğu gibi duruyor.';
 
   @override
   String get rescueTitle => 'Verilerinin bir kopyası var';
@@ -1354,7 +1357,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exportCsv => 'Antrenmanları dışa aktar (CSV)';
 
   @override
+  String get exportCsvSubject => 'Infyter antrenmanları';
+
+  @override
   String get exportBackup => 'Yedeği dışa aktar (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Infyter yedeği';
 
   @override
   String get importBackup => 'Yedeği içe aktar';

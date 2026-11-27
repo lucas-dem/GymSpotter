@@ -91,6 +91,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     sweepExportLeftovers();
+    sweepDataExportLeftovers();
     fit.refreshAlarmPermission();
     fit.addListener(_queueCelebration);
     fit.addListener(_offerIncoming);

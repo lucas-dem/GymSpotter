@@ -198,12 +198,12 @@ void main() {
       },
     );
 
-    test('borrar todo marca arranque nuevo y borra el ancla vieja del sensor', () async {
+    test('borrar todo marca arranque nuevo y borra el ancla y las marcas viejas del sensor', () async {
       final hc = source();
       await hc.readDays();
       await hc.forget();
       expect(await storedStart(), -1);
-      expect(sensorCalls.map((c) => c.method), [StepChannel.clearAnchor]);
+      expect(sensorCalls.map((c) => c.method), [StepChannel.forget]);
     });
 
     test('un permiso negado despues de contar marca arranque nuevo; antes de contar nunca, no', () async {
@@ -426,7 +426,7 @@ void main() {
       expect(fit.steps, isEmpty);
       expect(fit.stepsOn, isFalse);
       expect(await storedStart(), -1);
-      expect(sensorCalls.map((c) => c.method), [StepChannel.clearAnchor]);
+      expect(sensorCalls.map((c) => c.method), [StepChannel.forget]);
 
       now = now.add(const Duration(hours: 1));
       dayAnswers.add(week([null, null, null, null, null, 9000, 1500]));

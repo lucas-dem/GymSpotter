@@ -1177,13 +1177,16 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Séances, records, programmes, notes et profil, ainsi que les copies de secours que garde Infyter. Cette action est irréversible — exporte d’abord une sauvegarde si tu veux pouvoir les récupérer.';
+      'Séances, records, programmes, notes, photos, pas, profil et réglages, ainsi que les copies de secours que garde Infyter ; le comptage des pas est désactivé. Cette action est irréversible — exporte d’abord une sauvegarde si tu veux pouvoir les récupérer.';
 
   @override
   String get resetConfirm => 'Tout supprimer';
 
   @override
   String get resetDone => 'Toutes les données ont été supprimées';
+
+  @override
+  String get resetFailed => 'Impossible de supprimer. Tes données sont restées telles quelles.';
 
   @override
   String get rescueTitle => 'Une copie de tes données est disponible';
@@ -1358,7 +1361,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get exportCsv => 'Exporter les séances (CSV)';
 
   @override
+  String get exportCsvSubject => 'Séances Infyter';
+
+  @override
   String get exportBackup => 'Exporter une sauvegarde (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Sauvegarde Infyter';
 
   @override
   String get importBackup => 'Importer une sauvegarde';

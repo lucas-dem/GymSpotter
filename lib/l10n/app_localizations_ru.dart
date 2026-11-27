@@ -1217,13 +1217,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get resetBody =>
-      'Тренировки, рекорды, программы, заметки и профиль, а также аварийные копии, которые хранит Infyter. Это необратимо — сначала выгрузи резервную копию, если она может понадобиться.';
+      'Тренировки, рекорды, программы, заметки, фото, шаги, профиль и настройки, а также аварийные копии, которые хранит Infyter; подсчёт шагов выключится. Это необратимо — сначала выгрузи резервную копию, если она может понадобиться.';
 
   @override
   String get resetConfirm => 'Удалить всё';
 
   @override
   String get resetDone => 'Все данные удалены';
+
+  @override
+  String get resetFailed => 'Не удалось удалить. Твои данные остались как были.';
 
   @override
   String get rescueTitle => 'Есть копия твоих данных';
@@ -1398,7 +1401,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get exportCsv => 'Выгрузить тренировки (CSV)';
 
   @override
+  String get exportCsvSubject => 'Тренировки Infyter';
+
+  @override
   String get exportBackup => 'Выгрузить резервную копию (ZIP)';
+
+  @override
+  String get exportBackupSubject => 'Резервная копия Infyter';
 
   @override
   String get importBackup => 'Загрузить резервную копию';

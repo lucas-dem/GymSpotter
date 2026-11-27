@@ -2087,7 +2087,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetBody.
   ///
   /// In en, this message translates to:
-  /// **'Sessions, records, routines, notes and profile, plus the rescue copies Infyter keeps. This cannot be undone — export a backup first if you might want it.'**
+  /// **'Sessions, records, routines, notes, photos, steps, profile and settings, plus the rescue copies Infyter keeps; step counting is turned off. This cannot be undone — export a backup first if you might want it.'**
   String get resetBody;
 
   /// No description provided for @resetConfirm.
@@ -2101,6 +2101,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All data deleted'**
   String get resetDone;
+
+  /// No description provided for @resetFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t delete. Your data is still as it was.'**
+  String get resetFailed;
 
   /// No description provided for @rescueTitle.
   ///
@@ -2426,11 +2432,23 @@ abstract class AppLocalizations {
   /// **'Export workouts (CSV)'**
   String get exportCsv;
 
+  /// No description provided for @exportCsvSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter workouts'**
+  String get exportCsvSubject;
+
   /// No description provided for @exportBackup.
   ///
   /// In en, this message translates to:
   /// **'Export backup (ZIP)'**
   String get exportBackup;
+
+  /// No description provided for @exportBackupSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter backup'**
+  String get exportBackupSubject;
 
   /// No description provided for @importBackup.
   ///
