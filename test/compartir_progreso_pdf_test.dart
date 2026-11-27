@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:infyter/l10n/catalog_zh.dart';
 import 'package:infyter/l10n/l10n.dart';
 import 'package:infyter/models/progress_report.dart';
 import 'package:infyter/models/workout.dart';
@@ -19,6 +20,8 @@ PdfFonts _fonts() => PdfFonts(
       bold: File(kPdfFontAssets.bold).readAsBytesSync(),
       italic: File(kPdfFontAssets.italic).readAsBytesSync(),
     );
+
+Future<PdfFonts> _fontsFor(String lang) => readPdfFonts(lang, (path) async => File(path).readAsBytesSync());
 
 Future<Uint8List> _pdf(ProgressReport r, PdfFonts fonts) =>
     buildPdf(r, lookupAppLocalizations(localeOf(r.language)), ExportFormat(r.locale), fonts);
@@ -90,6 +93,82 @@ _Extracted _extract(Uint8List b) {
   }
   return _Extracted(pages, words);
 }
+
+class _Run {
+  _Run(this.x, this.y, this.text);
+  final double x;
+  final double y;
+  final String text;
+}
+
+/// Every text run of the first page with its position on the page, following q/Q and cm.
+List<_Run> _runs(Uint8List b) {
+  final text = _latin(b);
+  final maps = <String, Map<int, String>>{};
+  for (final obj in text.split('endobj')) {
+    final name = RegExp(r'/Name/(F\d+)').firstMatch(obj)?.group(1);
+    final ref = RegExp(r'/ToUnicode (\d+) 0 R').firstMatch(obj)?.group(1);
+    if (name != null && ref != null) {
+      maps[name] = _toUnicode(latin1.decode(_streamOf(b, text, int.parse(ref))));
+    }
+  }
+  final page = RegExp(r'/Type/Page/[^\n]*?/Contents (\d+) 0 R').firstMatch(text)!;
+  final content = latin1.decode(_streamOf(b, text, int.parse(page.group(1)!)));
+  final runs = <_Run>[];
+  final stack = <List<double>>[];
+  var origin = [0.0, 0.0];
+  final ops = RegExp(
+    r'(?<![\w.])q(?!\w)|(?<![\w.])Q(?!\w)|1 0 0 1 (\S+) (\S+) cm|BT /(F\d+) [\d.]+ Tf[^\[]*?(\S+) (\S+) Td \[([^\]]*)\]\s*TJ',
+  );
+  for (final m in ops.allMatches(content)) {
+    final op = m.group(0)!;
+    if (op == 'q') {
+      stack.add([...origin]);
+    } else if (op == 'Q') {
+      origin = stack.removeLast();
+    } else if (m.group(1) != null) {
+      origin = [origin[0] + double.parse(m.group(1)!), origin[1] + double.parse(m.group(2)!)];
+    } else {
+      final map = maps[m.group(3)!]!;
+      final sb = StringBuffer();
+      for (final h in RegExp(r'<([0-9a-fA-F]+)>').allMatches(m.group(6)!)) {
+        final hex = h.group(1)!;
+        for (var i = 0; i < hex.length; i += 4) {
+          sb.write(map[int.parse(hex.substring(i, i + 4), radix: 16)] ?? '�');
+        }
+      }
+      runs.add(_Run(origin[0] + double.parse(m.group(4)!), origin[1] + double.parse(m.group(5)!), sb.toString()));
+    }
+  }
+  return runs;
+}
+
+/// The names of the fonts the PDF embeds.
+Set<String> _baseFonts(Uint8List b) =>
+    {for (final m in RegExp(r'/BaseFont/([^/\]>\s]+)').allMatches(_latin(b))) m.group(1)!};
+
+/// Every string of the app in [lang] (the PDF uses a part of them), plus a whole year of dates.
+List<String> _appTexts(String lang, ExportFormat f) {
+  final arb = jsonDecode(File('lib/l10n/app_$lang.arb').readAsStringSync()) as Map<String, dynamic>;
+  return [
+    for (final e in arb.entries)
+      if (!e.key.startsWith('@') && e.value is String) f.clean(e.value as String),
+    for (var d = 0; d < 366; d++) ...[
+      f.dayHeading(DateTime(2028, 1, 1 + d)),
+      f.shortDate(DateTime(2028, 1, 1 + d)),
+    ],
+    f.number(1234567.5),
+  ];
+}
+
+/// Exercise names a person could save in each of the five scripts Nunito lacks.
+const _ownNames = {
+  'ar': ['تمرين', 'ضغط الصدر بالدمبل', 'سحب أمامي بالكابل', 'قرفصاء خلفية بالبار', 'تمرين البطن ٣'],
+  'ja': ['ダンベルベンチプレス', 'バーベルスクワット（ハイバー）', '懸垂・逆手', 'ケーブルフライ'],
+  'ko': ['덤벨 벤치 프레스', '바벨 스쿼트', '턱걸이', '케이블 플라이 (하단)'],
+  'zh': ['哑铃平板卧推', '杠铃深蹲', '引体向上', '绳索夹胸'],
+  'zh_Hant': ['啞鈴平板臥推', '槓鈴深蹲', '引體向上', '纜繩夾胸', '腿部伸展機'],
+};
 
 List<String> _outlineWords(ProgressReport r, String lang) {
   final l = lookupAppLocalizations(localeOf(lang));
@@ -246,25 +325,70 @@ void main() {
     expect(pdfUncoveredRunes(['🏋日本語'], fonts), isNotEmpty);
   });
 
-  test('all 16 languages build a PDF; coverage of the bundled Nunito is reported', () async {
-    final missing = <String, String>{};
+  test('all 16 languages build a PDF in which every character of the report has a glyph', () async {
     for (final lang in _languages) {
       final r = fixtureReport(language: lang);
       final l = lookupAppLocalizations(localeOf(lang));
       final f = ExportFormat(r.locale);
+      final langFonts = await _fontsFor(lang);
       final texts = [
         for (final b in pdfOutlineFor(r, l, f)) ...[b.text, ?b.detail],
         f.clean(l.exportPage(1, 1)),
       ];
-      final b = await _pdf(r, fonts);
+      final b = await _pdf(r, langFonts);
       expect(_latin(b), startsWith('%PDF-'), reason: lang);
-      final runes = pdfUncoveredRunes(texts, fonts);
-      if (runes.isNotEmpty) missing[lang] = String.fromCharCodes(runes);
+      expect(pdfUncoveredRunes(texts, langFonts), isEmpty, reason: lang);
+      expect(_extract(b).words.join(), isNot(contains('�')), reason: lang);
     }
-    // ignore: avoid_print
-    print('Languages with glyphs missing from Nunito: ${missing.map((k, v) => MapEntry(k, v.length))}');
+  });
+
+  test('the 11 Latin and Cyrillic languages keep Nunito and only Nunito', () async {
     for (final lang in _fullCoverage) {
-      expect(missing.containsKey(lang), isFalse, reason: '$lang: ${missing[lang]}');
+      final a = pdfFontAssetsFor(lang);
+      expect([a.regular, a.bold, a.italic], [kPdfFontAssets.regular, kPdfFontAssets.bold, kPdfFontAssets.italic]);
+      expect(a.fallback, isEmpty, reason: lang);
+      final b = await _pdf(fixtureReport(language: lang), await _fontsFor(lang));
+      expect(_baseFonts(b), everyElement(startsWith('Nunito')), reason: lang);
     }
+  });
+
+  for (final lang in ['ar', 'ja', 'ko', 'zh', 'zh_Hant']) {
+    test('$lang: the app texts and exercise names in its script have every glyph', () async {
+      final langFonts = await _fontsFor(lang);
+      final f = ExportFormat(lang == 'zh_Hant' ? 'zh_TW' : lang);
+      final names = [..._ownNames[lang]!, if (lang == 'zh') ...kExerciseNameZh.values];
+      expect(pdfUncoveredRunes([..._appTexts(lang, f), ...names], langFonts), isEmpty);
+      expect(pdfUncoveredRunes(_appTexts(lang, f), fonts), isNotEmpty, reason: 'Nunito alone lacks $lang');
+
+      for (final name in _ownNames[lang]!) {
+        final r = _custom(language: lang, exerciseName: (id, fb) => id == 'bench_press' ? name : fb);
+        final joined = _extract(await _pdf(r, langFonts)).words.join();
+        expect(joined, isNot(contains('�')), reason: name);
+        if (lang != 'ar') expect(joined, contains(name.replaceAll(' ', '')), reason: name);
+      }
+      final b = await _pdf(_custom(language: lang), langFonts);
+      expect(_baseFonts(b), lang == 'ar' ? everyElement(startsWith('InfyterPdfArabic-')) : contains('Nunito-Regular'));
+    });
+  }
+
+  test('Arabic letters join and lines run right to left; Latin words keep their order', () async {
+    final r = _custom(language: 'ar', exerciseName: (id, fb) => id == 'bench_press' ? 'تمرين' : fb);
+    final runs = _runs(await _pdf(r, await _fontsFor('ar')));
+    // تمرين in its joined forms (initial, medial, final, initial, final), drawn right to left.
+    final name = runs.firstWhere(
+      (x) => x.text == 'ﻦﻳﺮﻤﺗ',
+      orElse: () => fail('no joined, reversed word in ${runs.map((x) => x.text)}'),
+    );
+    expect(runs.where((x) => x.text.contains('ت')), isEmpty, reason: 'a teh left unjoined');
+    final rest = runs.firstWhere((x) => (x.y - name.y).abs() < 0.01 && x.text == '1:30');
+    expect(name.x, greaterThan(rest.x), reason: 'the name comes first, so it goes on the right');
+    expect(name.x, greaterThan(595 / 2));
+    final texts = runs.map((x) => x.text).toList();
+    expect(texts, containsAll(['Front', 'plank', 'kg', 'Infyter']));
+    expect(texts, isNot(contains('gk')));
+
+    final es = _runs(await _pdf(_custom(language: 'es'), fonts));
+    final esName = es.firstWhere((x) => x.text == 'Press');
+    expect(esName.x, lessThan(es.firstWhere((x) => (x.y - esName.y).abs() < 0.01 && x.text == '1:30').x));
   });
 }

@@ -160,7 +160,7 @@ class _ProgressExportSheetState extends State<_ProgressExportSheet> {
   }
 
   Future<ExportResult> _build(ExportKind kind, ProgressReport report) async {
-    final fonts = kind == ExportKind.pdf ? await loadPdfFonts() : null;
+    final fonts = kind == ExportKind.pdf ? await loadPdfFonts(report.language) : null;
     return compute(runExportJob, ExportJob(report: report, kind: kind, fonts: fonts));
   }
 

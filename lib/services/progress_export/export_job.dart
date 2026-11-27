@@ -50,16 +50,10 @@ String _isoDay(DateTime d) =>
 String exportFileName(ProgressReport report, ExportKind kind, String stem) =>
     'infyter-$stem-${_isoDay(report.from)}_${_isoDay(report.to)}.${kind.extension}';
 
-Future<PdfFonts> loadPdfFonts() async {
-  final regular = await rootBundle.load(kPdfFontAssets.regular);
-  final bold = await rootBundle.load(kPdfFontAssets.bold);
-  final italic = await rootBundle.load(kPdfFontAssets.italic);
-  return PdfFonts(
-    regular: regular.buffer.asUint8List(regular.offsetInBytes, regular.lengthInBytes),
-    bold: bold.buffer.asUint8List(bold.offsetInBytes, bold.lengthInBytes),
-    italic: italic.buffer.asUint8List(italic.offsetInBytes, italic.lengthInBytes),
-  );
-}
+Future<PdfFonts> loadPdfFonts(String language) => readPdfFonts(language, (path) async {
+      final data = await rootBundle.load(path);
+      return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    });
 
 /// Builds the chosen format from a plain-data job, so it can run in an isolate.
 Future<ExportResult> runExportJob(ExportJob job) async {

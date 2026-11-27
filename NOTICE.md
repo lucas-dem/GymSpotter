@@ -26,7 +26,18 @@ The progress PDF export uses the `pdf` 3.12.0 package (Apache License 2.0,
 copyright (C) 2017 David PHAM-VAN) and its `barcode` 2.2.9 dependency (Apache
 License 2.0, copyright (C) 2020 David PHAM-VAN) and `bidi` 2.0.13 dependency
 (MIT License, copyright (C) 2020 Mahdi K. Fard). All three are pure Dart. The
-PDF is drawn with the bundled Nunito fonts only.
+PDF is drawn with the bundled Nunito fonts; only the progress PDF, and only in
+the languages that need them, also embeds these fonts, whose licenses are in
+`assets/fonts/`:
+
+- Infyter PDF Arabic (Arabic): Nunito and Noto Sans Arabic (copyright 2015-2021
+  Google LLC) merged into one file, under the SIL Open Font License 1.1
+  (`InfyterPdfArabic-OFL.txt`).
+- Droid Sans Fallback (Japanese, Simplified and Traditional Chinese), digitized
+  data copyright Google Corporation 2006, under the Apache License 2.0
+  (`DroidSansFallbackFull-LICENSE.txt`).
+- Nanum Gothic (Korean), copyright 2011 NHN Corporation, under the SIL Open
+  Font License 1.1 (`NanumGothic-OFL.txt`).
 
 Flutter and third-party packages retain their respective licenses. Their
 notices are available inside the application under “Información legal y

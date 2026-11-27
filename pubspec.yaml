@@ -65,6 +65,14 @@ flutter:
     - PRIVACY.md
     - MODIFICATIONS.md
     - assets/fonts/Nunito-OFL.txt
+    # Only the progress PDF uses these, by language; the app's text stays in Nunito.
+    - assets/fonts/InfyterPdfArabic-Regular.ttf
+    - assets/fonts/InfyterPdfArabic-Bold.ttf
+    - assets/fonts/InfyterPdfArabic-OFL.txt
+    - assets/fonts/DroidSansFallbackFull.ttf
+    - assets/fonts/DroidSansFallbackFull-LICENSE.txt
+    - assets/fonts/NanumGothic-Regular.ttf
+    - assets/fonts/NanumGothic-OFL.txt
     - assets/img/
     - assets/art/
     - assets/audio/

@@ -161,3 +161,25 @@ other illustrations.
 
 Nunito, by the Nunito Project Authors, under the SIL Open Font License
 (`assets/fonts/Nunito-OFL.txt`).
+
+The progress PDF embeds three more fonts, chosen by language; the app's own
+text never uses them.
+
+- Arabic: `InfyterPdfArabic-Regular.ttf` and `InfyterPdfArabic-Bold.ttf`, under
+  the SIL Open Font License 1.1 (`assets/fonts/InfyterPdfArabic-OFL.txt`). Each
+  is Nunito (Regular or Bold) merged with Noto Sans Arabic 2.009 (Regular or
+  Bold; Monotype Design Team, Nadine Chahine and Nizar Qandah; copyright Google
+  LLC), with nothing else changed, so that one font holds both scripts: the PDF
+  library joins Arabic letters and orders a line right to left only within one
+  font. Built with fontTools 4.63:
+  `fontTools.merge.Merger().merge(["Nunito-<W>.ttf", "NotoSansArabic-<W>.ttf"])`,
+  then name IDs 0-4 and 6 set to the merged copyright, "Infyter PDF Arabic",
+  `<W>` and `InfyterPdfArabic-<W>`.
+- Japanese, Simplified and Traditional Chinese:
+  `DroidSansFallbackFull.ttf` from the Android Open Source Project (Ascender
+  Corporation; digitized data copyright Google Corporation 2006), unmodified,
+  under the Apache License 2.0
+  (`assets/fonts/DroidSansFallbackFull-LICENSE.txt`).
+- Korean: `NanumGothic-Regular.ttf` 3.020 (NHN Corporation, now NAVER; designed
+  by Sandoll Communications), unmodified, under the SIL Open Font License 1.1
+  (`assets/fonts/NanumGothic-OFL.txt`).

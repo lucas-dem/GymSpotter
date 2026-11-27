@@ -13,16 +13,66 @@ const kPdfFontAssets = (
   bold: 'assets/fonts/Nunito-Bold.ttf',
   italic: 'assets/fonts/Nunito-Italic.ttf',
 );
+const kPdfArabicAssets = (
+  regular: 'assets/fonts/InfyterPdfArabic-Regular.ttf',
+  bold: 'assets/fonts/InfyterPdfArabic-Bold.ttf',
+);
+const kPdfCjkAsset = 'assets/fonts/DroidSansFallbackFull.ttf';
+const kPdfHangulAsset = 'assets/fonts/NanumGothic-Regular.ttf';
+
+typedef PdfFontAssets = ({String regular, String bold, String italic, List<String> fallback});
+
+/// The font files the PDF of [language] draws with. The library joins Arabic letters and orders a
+/// line right to left only inside a run of one font, so Arabic uses Nunito and Noto Sans Arabic
+/// merged into one file; the CJK and Hangul fonts only fill in what Nunito lacks.
+PdfFontAssets pdfFontAssetsFor(String language) => switch (language) {
+      'ar' => (
+          regular: kPdfArabicAssets.regular,
+          bold: kPdfArabicAssets.bold,
+          italic: kPdfArabicAssets.regular,
+          fallback: const [],
+        ),
+      'ja' || 'zh' || 'zh_Hant' => (
+          regular: kPdfFontAssets.regular,
+          bold: kPdfFontAssets.bold,
+          italic: kPdfFontAssets.italic,
+          fallback: [kPdfCjkAsset],
+        ),
+      'ko' => (
+          regular: kPdfFontAssets.regular,
+          bold: kPdfFontAssets.bold,
+          italic: kPdfFontAssets.italic,
+          fallback: [kPdfHangulAsset],
+        ),
+      _ => (
+          regular: kPdfFontAssets.regular,
+          bold: kPdfFontAssets.bold,
+          italic: kPdfFontAssets.italic,
+          fallback: const [],
+        ),
+    };
 
 /// The raw bytes of the PDF fonts, so the export can run in an isolate without rootBundle.
 class PdfFonts {
-  const PdfFonts({required this.regular, required this.bold, required this.italic});
+  const PdfFonts({required this.regular, required this.bold, required this.italic, this.fallback = const []});
 
   final Uint8List regular;
   final Uint8List bold;
   final Uint8List italic;
+  final List<Uint8List> fallback;
 
-  List<Uint8List> get all => [regular, bold, italic];
+  List<Uint8List> get all => [regular, bold, italic, ...fallback];
+}
+
+/// Reads the fonts of [language] through [read], which gets an asset path.
+Future<PdfFonts> readPdfFonts(String language, Future<Uint8List> Function(String path) read) async {
+  final a = pdfFontAssetsFor(language);
+  return PdfFonts(
+    regular: await read(a.regular),
+    bold: await read(a.bold),
+    italic: await read(a.italic),
+    fallback: [for (final path in a.fallback) await read(path)],
+  );
 }
 
 /// The blocks the PDF draws: the same list the text export writes.
@@ -46,13 +96,14 @@ Future<Uint8List> buildPdf(ProgressReport report, AppLocalizations l, ExportForm
   final regular = pw.Font.ttf(ByteData.sublistView(fonts.regular));
   final bold = pw.Font.ttf(ByteData.sublistView(fonts.bold));
   final italic = pw.Font.ttf(ByteData.sublistView(fonts.italic));
+  final fallback = [for (final bytes in fonts.fallback) pw.Font.ttf(ByteData.sublistView(bytes))];
   const grey = PdfColor.fromInt(0xFF6B6F76);
   final base = pw.TextStyle(fontSize: 10.5, lineSpacing: 2);
 
   final doc = pw.Document(
     title: f.clean(l.exportDocTitle),
     producer: 'Infyter',
-    theme: pw.ThemeData.withFont(base: regular, bold: bold, italic: italic, boldItalic: bold),
+    theme: pw.ThemeData.withFont(base: regular, bold: bold, italic: italic, boldItalic: bold, fontFallback: fallback),
   );
 
   final widgets = <pw.Widget>[];
