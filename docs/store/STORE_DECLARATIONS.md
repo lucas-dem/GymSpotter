@@ -31,8 +31,10 @@ Connect. Re-check it against the final signed binaries before submission.
   when the app opens, and again when it returns after at least an hour, to
   compare versions. It sends no user data; Apple receives the device's IP
   address as with any request. Nothing reaches the developer or a third party.
-- Workout history, body measurements, notes and attached media remain on the
-  device. They leave it only when the user explicitly exports or shares them.
+- Workout history, body measurements, steps, notes and attached media remain
+  on the device. They leave it only when the user explicitly exports or shares
+  them (backup, workouts CSV, or "Share progress" as text, PDF, Excel, CSV or
+  JSON).
 - QR recognition runs locally on the device; QR plan payloads are not sent to
   a server.
 - Data deletion: the app has a delete-all-data action; uninstalling also
@@ -63,7 +65,9 @@ guidance for the Play In-App Updates library when filling the form.
   nothing is sent anywhere. No Google Play services and no foreground service.
 - Health Connect steps (Android 14+, `android.permission.health.READ_STEPS`):
   reads daily steps from Health Connect, only after the user enables step
-  counting. Read only; nothing is written to Health Connect or sent anywhere.
+  counting, to show them with estimated active calories and to include them in
+  a progress summary the user chooses to share. Read only; nothing is written
+  to Health Connect, and the app sends nothing by itself.
 - Notifications: rest-timer and training reminders.
 - Schedule exact alarms (Android): optional precision for short rest timers;
   the app falls back to an inexact notification if access is unavailable.
@@ -81,7 +85,7 @@ The step feature does not add `INTERNET`. The app does not request `INTERNET`, `
 - Play Console, App content: mark the health apps declaration "Activity and
   fitness / activity tracking". Complete the Health Connect declaration:
   Steps, read only, foreground, to show daily steps and estimated active
-  calories.
+  calories and to include them in progress exports the user starts.
 - App Store review note: "Step count is read with Core Motion only after the
   user enables it; it stays on the device; calories are labelled as
   estimates."

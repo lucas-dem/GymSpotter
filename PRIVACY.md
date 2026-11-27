@@ -1,6 +1,6 @@
 # Política de privacidad de Infyter
 
-Última actualización: 20 de noviembre de 2026.
+Última actualización: 27 de noviembre de 2026.
 
 Infyter funciona localmente y no requiere una cuenta. La aplicación no
 incluye publicidad, analítica ni rastreadores propios, y no envía
@@ -22,8 +22,12 @@ antes de seguir; los datos guardados en el dispositivo no se modifican.
 
 Los datos se guardan en el dispositivo. Cuando la persona usuaria utiliza una
 función del sistema para compartir o exportar, el destino elegido recibe el
-contenido seleccionado. Al abrir el enlace del código fuente, ese enlace se
-entrega al navegador predeterminado.
+contenido seleccionado. "Compartir progreso" arma en el teléfono un texto o
+un archivo (PDF, Excel, CSV o JSON) con los entrenamientos, pasos, calorías
+estimadas, peso y medidas del período elegido; solo sale del dispositivo cuando
+la persona usuaria elige dónde mandarlo, y el archivo temporal se borra
+después. Al abrir el enlace del código fuente, ese enlace se entrega al
+navegador predeterminado.
 
 La aplicación puede solicitar acceso a fotos, cámara, archivos,
 notificaciones o actividad física (pasos) únicamente para las funciones que
@@ -39,8 +43,8 @@ guarda en el dispositivo junto con tu meta diaria. Infyter solo pide leer los
 pasos de Health Connect: no escribe ahí ni lee otros datos. Con esa cantidad y
 el último peso que registraste (o el de tu perfil) estima las calorías
 activas; es una estimación y no un dato médico. Infyter no envía tus pasos a
-ningún servidor ni al desarrollador; solo viajan en una copia que exportes o
-en las copias de seguridad y transferencias del propio teléfono (por ejemplo,
+ningún servidor ni al desarrollador; solo viajan en una copia o un resumen de
+progreso que exportes o compartas, o en las copias de seguridad y transferencias del propio teléfono (por ejemplo,
 las de iCloud o de la computadora en iPhone, o al pasar tus datos a un
 teléfono nuevo). Podés apagar el conteo en Ajustes o quitar el permiso en los
 ajustes del sistema o en Health Connect; "Borrar todos mis datos" borra
