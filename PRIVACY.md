@@ -25,8 +25,10 @@ función del sistema para compartir o exportar, el destino elegido recibe el
 contenido seleccionado. "Compartir progreso" arma en el teléfono un texto o
 un archivo (PDF, Excel, CSV o JSON) con los entrenamientos, pasos, calorías
 estimadas, peso y medidas del período elegido; solo sale del dispositivo cuando
-la persona usuaria elige dónde mandarlo, y el archivo temporal se borra
-después. Al abrir el enlace del código fuente, ese enlace se entrega al
+la persona usuaria elige dónde mandarlo o lo copia al portapapeles con el
+botón Copiar (si el sistema sincroniza el portapapeles con otros dispositivos,
+también llega a ellos); el archivo temporal se borra al cancelar, en la
+exportación siguiente o al volver a abrir la app. Al abrir el enlace del código fuente, ese enlace se entrega al
 navegador predeterminado.
 
 La aplicación puede solicitar acceso a fotos, cámara, archivos,
@@ -51,7 +53,8 @@ ajustes del sistema o en Health Connect; "Borrar todos mis datos" borra
 también los pasos guardados.
 
 Desinstalar la aplicación o usar la función correspondiente del sistema puede
-eliminar los datos locales. Infyter no puede recuperar información que no
+eliminar los datos locales, que también se borran con "Borrar todos mis datos"
+en Ajustes. Infyter no puede recuperar información que no
 haya sido exportada previamente.
 
 Esta política deberá actualizarse antes de publicar una versión que incorpore
