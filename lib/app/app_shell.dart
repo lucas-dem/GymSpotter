@@ -24,6 +24,7 @@ import '../screens/routine_edit_screen.dart';
 import '../screens/routines_screen.dart';
 import '../screens/session_screen.dart';
 import '../screens/start_sheet.dart';
+import '../services/progress_export/export_share.dart';
 import '../screens/awards_screen.dart';
 import '../screens/moments_screen.dart';
 import '../screens/profile_screen.dart';
@@ -89,6 +90,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    sweepExportLeftovers();
     fit.refreshAlarmPermission();
     fit.addListener(_queueCelebration);
     fit.addListener(_offerIncoming);

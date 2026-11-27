@@ -465,4 +465,18 @@ void main() {
     expect(leftover.existsSync(), isFalse);
     await _cerrar(tester);
   });
+
+  testWidgets('al iniciar la app se borran los sobrantes, aunque no se abra la ventana', (tester) async {
+    File('$_progressDir/infyter-progreso-2026-01-01_2026-01-02.pdf')
+      ..createSync(recursive: true)
+      ..writeAsBytesSync([1]);
+    File('$_sharedDir/infyter-progreso-2026-01-01_2026-01-02.pdf').writeAsBytesSync([1]);
+    _datos([0]);
+    await _abrir(tester);
+    await _esperar(tester, () => !Directory(_progressDir).existsSync());
+    await _esperar(tester, () => !File('$_sharedDir/infyter-progreso-2026-01-01_2026-01-02.pdf').existsSync());
+    expect(File('$_sharedDir/infyter-streak.png').existsSync(), isTrue);
+    expect(find.text('Formato'), findsNothing);
+    await _cerrar(tester);
+  });
 }

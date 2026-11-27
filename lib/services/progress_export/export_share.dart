@@ -31,7 +31,8 @@ Future<void> deleteExportFiles([String? fileName]) async {
   } catch (_) {}
 }
 
-/// Removes what an earlier export left behind, for example after the app was killed.
+/// Removes what an earlier export left behind, for example after the app was killed. Runs at app start
+/// and when the sheet opens.
 Future<void> sweepExportLeftovers() async {
   await deleteExportFiles();
   try {
