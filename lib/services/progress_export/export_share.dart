@@ -70,7 +70,8 @@ Future<void> sweepDataExportLeftovers() async {
   } catch (_) {}
 }
 
-/// Deletes every file Infyter left in the temporary folder to share it, and the copies share_plus made of them.
+/// Deletes every file Infyter left in the temporary folder to share it, the copies share_plus made of them and the
+/// copies image_picker keeps of the photos and videos the person chose.
 Future<void> deleteAllShareFiles() async {
   await deleteExportFiles();
   try {
@@ -78,7 +79,13 @@ Future<void> deleteAllShareFiles() async {
     for (final dir in [Directory(tmp.path), Directory('${tmp.path}/share_plus')]) {
       if (!await dir.exists()) continue;
       await for (final entry in dir.list()) {
-        if (entry is File && entry.uri.pathSegments.last.startsWith('infyter-')) await entry.delete();
+        final name = entry.uri.pathSegments.lastWhere((s) => s.isNotEmpty, orElse: () => '');
+        final ours = entry is File && name.startsWith('infyter-');
+        final picked = dir.path == tmp.path && (name.startsWith('image_picker') || name.startsWith('scaled_'));
+        if (!ours && !picked) continue;
+        try {
+          await entry.delete(recursive: true);
+        } catch (_) {}
       }
     }
   } catch (_) {}

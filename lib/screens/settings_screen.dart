@@ -783,9 +783,10 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
     );
   }
 
-  bool _dataBusy = false;
+  // Static: leaving Settings during a long restore and coming back builds a new screen.
+  static bool _dataBusy = false;
 
-  /// One data action at a time: a second tap while a backup is being built or read does nothing.
+  /// One data action at a time: a tap while a backup is being built, read or deleted does nothing.
   Future<void> _oneAtATime(Future<void> Function() action) async {
     if (_dataBusy) return;
     _dataBusy = true;

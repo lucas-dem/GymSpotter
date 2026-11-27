@@ -646,9 +646,14 @@ class FitState extends FitCore
   /// borrar nada y devuelve false. La pantalla se entera al final: mientras tanto sigue mostrando lo de antes.
   Future<bool> deleteAllData() async {
     final before = jsonDecode(jsonEncode(toJson())) as Map<String, dynamic>;
+    final rescue = (offer: _rescueOffer, saved: _rescueSaved);
     _wipeState();
     if (!await saveNow()) {
       _loadFrom(before);
+      _rescueOffer = rescue.offer;
+      _rescueSaved = rescue.saved;
+      // A failed write can leave the empty state in the preferences cache; the next write of any key would store it.
+      persistNow();
       syncTrainReminder();
       syncPhotoReminder();
       _refreshWidgets();

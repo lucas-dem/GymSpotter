@@ -1,6 +1,7 @@
 // Ajustes → DATOS de punta a punta (1.4.0): Exportar copia, Importar copia y Borrar todos mis datos, tocados desde la
 // pantalla. El menú de compartir, el selector de archivos y las carpetas del sistema son falsos; los archivos son reales,
 // en carpetas temporales.
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -50,6 +51,7 @@ class _DiscoLleno extends InMemorySharedPreferencesStore {
 /// Devuelve los bytes de [archivo] como si la persona lo hubiera elegido; null = canceló.
 class _Selector extends FilePicker {
   ({String name, List<int> bytes})? archivo;
+  Completer<void>? compuerta;
   int pedidos = 0;
   int limpiezas = 0;
 
@@ -69,6 +71,7 @@ class _Selector extends FilePicker {
     bool readSequential = false,
   }) async {
     pedidos++;
+    await compuerta?.future;
     final a = archivo;
     if (a == null) return null;
     return FilePickerResult([PlatformFile(name: a.name, size: a.bytes.length, bytes: Uint8List.fromList(a.bytes))]);
@@ -399,6 +402,29 @@ void main() {
     await _cerrar(tester);
   });
 
+  testWidgets('mientras una importacion sigue, salir y volver a Ajustes no deja empezar otra accion de datos',
+      (tester) async {
+    await _estadoActual(tester);
+    _selector.compuerta = Completer<void>();
+    await _abrirAjustes(tester);
+    await _importar(tester, 'copia.json', utf8.encode(jsonEncode(_copiaB())));
+    expect(_selector.pedidos, 1);
+    fit.goHome();
+    await _pasar(tester);
+    fit.pushRoute('preferences');
+    await _pasar(tester, 12);
+    await _tocar(tester, t.resetData);
+    expect(find.text(t.resetTitle), findsNothing);
+    _selector.compuerta!.complete();
+    await _esperar(tester, () => _sesionesEnMemoria().contains('Press de la copia'));
+    await _pasar(tester, 30);
+    await _tocar(tester, t.resetData);
+    expect(find.text(t.resetTitle), findsOneWidget);
+    await tester.tap(find.text(titleCase(t.cancel)));
+    await _pasar(tester);
+    await _cerrar(tester);
+  });
+
   group('Borrar todos mis datos', () {
     /// Todo lo que el teléfono guarda de la persona, fuera y dentro del estado.
     Future<Map<String, File>> llenar(WidgetTester tester) async {
@@ -433,6 +459,9 @@ void main() {
         'compartido': archivo('share_plus/infyter-progreso-2026-11-01_2026-11-27.pdf'),
         'copiaCompartida': archivo('share_plus/infyter-backup-2026-11-01.zip'),
         'ajeno': archivo('otra-app.tmp'),
+        'fotoElegida': archivo('image_picker_5F1C.jpg'),
+        'fotoAndroid': archivo('image_picker/scaled_1234.jpg'),
+        'fotoReducida': archivo('scaled_image_picker99.jpg'),
       };
     }
 
@@ -471,7 +500,9 @@ void main() {
       expect(StepsCardPref.hidden.value, isFalse);
       final prefs = (await tester.runAsync(SharedPreferences.getInstance))!;
       expect(prefs.containsKey('infyter_steps_card_hidden_v1'), isFalse);
-      for (final nombre in ['copia', 'csv', 'tarjeta', 'progreso', 'compartido', 'copiaCompartida']) {
+      for (final nombre in [
+        'copia', 'csv', 'tarjeta', 'progreso', 'compartido', 'copiaCompartida', 'fotoElegida', 'fotoAndroid', 'fotoReducida',
+      ]) {
         expect(archivos[nombre]!.existsSync(), isFalse, reason: nombre);
       }
       expect(archivos['ajeno']!.existsSync(), isTrue);
@@ -511,6 +542,8 @@ void main() {
       expect(fit.units, 'lb');
       expect(fit.onboarded, isTrue);
       expect(await tester.runAsync<String?>(_blobEnDisco), antes);
+      final cache = (await tester.runAsync(SharedPreferences.getInstance))!;
+      expect(cache.getString('gymmane_v1'), contains('Press de hoy'));
       expect(_media.listSync(), hasLength(1));
       expect(_alarmas.listSync(), hasLength(1));
       expect(Store.instance.rescueCopies, isNotEmpty);
