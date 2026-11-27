@@ -1263,64 +1263,82 @@ class _PrCardState extends State<_PrCard> {
   Widget _row(BuildContext context, GymColors gc, ({String id, String name, double topWeight, double oneRm}) pr, int rank, bool border) {
     final medal = rank < 3 ? [gc.brass, gc.textSecondary, gc.accent][rank] : null;
     final escala = MediaQuery.textScalerOf(context).scale(10) / 10;
-    final stacked = escala > 1.5 || (escala >= 1.5 && MediaQuery.sizeOf(context).width < 360);
-    final top = Text(fit.weightLabel(pr.topWeight), style: AppTheme.d(19, weight: FontWeight.w800, color: gc.text));
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 11),
-      decoration: BoxDecoration(
-        border: border ? Border(bottom: BorderSide(color: gc.border.withValues(alpha: 0.6))) : null,
-      ),
-      child: Row(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              _PrThumb(id: pr.id),
-              if (medal != null)
-                Positioned(
-                  right: -4,
-                  top: -4,
-                  child: Container(
-                    width: 18,
-                    height: 18,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: medal,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: gc.bgRaised, width: 2),
-                    ),
-                    child: MediaQuery.withClampedTextScaling(
-                      maxScaleFactor: 1.3,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text('${rank + 1}',
-                            style: AppTheme.f(9, weight: FontWeight.w800, color: gc.bgRaised, height: 1)),
+    final topStyle = AppTheme.d(19, weight: FontWeight.w800, color: gc.text);
+    final top = Text(fit.weightLabel(pr.topWeight), style: topStyle);
+    final label = t.oneRmEst(fit.weightLabel(pr.oneRm));
+    final labelStyle = AppTheme.s(11.5, weight: FontWeight.w500, color: gc.textTertiary);
+    return LayoutBuilder(builder: (context, box) {
+      // Beside the name the best weight leaves too little room once a word of the 1RM label no longer fits.
+      final room = box.maxWidth - 44 - 13 - 12 - _textWidth(context, fit.weightLabel(pr.topWeight), topStyle);
+      final longest = label.split(' ').map((word) => _textWidth(context, word, labelStyle)).fold(0.0, math.max);
+      final stacked = escala > 1.5 || (escala >= 1.5 && MediaQuery.sizeOf(context).width < 360) || room < longest;
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 11),
+        decoration: BoxDecoration(
+          border: border ? Border(bottom: BorderSide(color: gc.border.withValues(alpha: 0.6))) : null,
+        ),
+        child: Row(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                _PrThumb(id: pr.id),
+                if (medal != null)
+                  Positioned(
+                    right: -4,
+                    top: -4,
+                    child: Container(
+                      width: 18,
+                      height: 18,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: medal,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: gc.bgRaised, width: 2),
+                      ),
+                      child: MediaQuery.withClampedTextScaling(
+                        maxScaleFactor: 1.3,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text('${rank + 1}',
+                              style: AppTheme.f(9, weight: FontWeight.w800, color: gc.bgRaised, height: 1)),
+                        ),
                       ),
                     ),
                   ),
-                ),
-            ],
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(t.catalogName(pr.id, pr.name),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTheme.s(14, weight: FontWeight.w600, color: gc.text, height: 1.25)),
-                const SizedBox(height: 3),
-                Text(t.oneRmEst(fit.weightLabel(pr.oneRm)),
-                    style: AppTheme.s(11.5, weight: FontWeight.w500, color: gc.textTertiary)),
-                if (stacked) ...[const SizedBox(height: 3), top],
               ],
             ),
-          ),
-          if (!stacked) ...[const SizedBox(width: 12), top],
-        ],
-      ),
-    );
+            const SizedBox(width: 13),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(t.catalogName(pr.id, pr.name),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTheme.s(14, weight: FontWeight.w600, color: gc.text, height: 1.25)),
+                  const SizedBox(height: 3),
+                  Text(label, style: labelStyle),
+                  if (stacked) ...[const SizedBox(height: 3), top],
+                ],
+              ),
+            ),
+            if (!stacked) ...[const SizedBox(width: 12), top],
+          ],
+        ),
+      );
+    });
+  }
+
+  static double _textWidth(BuildContext context, String text, TextStyle style) {
+    final painter = TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+    )..layout();
+    final width = painter.width;
+    painter.dispose();
+    return width;
   }
 }
 

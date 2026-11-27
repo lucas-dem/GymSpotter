@@ -807,7 +807,8 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
         () async => utf8.encode(fit.exportCsv()));
   });
 
-  Future<void> _resetAll(BuildContext context) => _oneAtATime(() async {
+  Future<void> _resetAll(BuildContext context) async {
+    if (_dataBusy) return;
     final ok = await askConfirm(
       context,
       title: t.resetTitle,
@@ -816,17 +817,19 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
       danger: true,
     );
     if (!ok) return;
-    final done = await fit.deleteAllData();
-    // Settings is still mounted here: the shell moves to the welcome screen on the next frame.
-    if (context.mounted) {
-      if (done) {
-        _snack(context, t.resetDone);
-      } else {
-        _warn(context, t.resetFailed);
+    await _oneAtATime(() async {
+      final done = await fit.deleteAllData();
+      // Settings is still mounted here: the shell moves to the welcome screen on the next frame.
+      if (context.mounted) {
+        if (done) {
+          _snack(context, t.resetDone);
+        } else {
+          _warn(context, t.resetFailed);
+        }
       }
-    }
-    if (done) await _clearPickedFiles();
-  });
+      if (done) await _clearPickedFiles();
+    });
+  }
 
   Future<void> _exportBackup(BuildContext context) => _oneAtATime(() async {
     final stamp = DateTime.now().toIso8601String().split('T').first;
@@ -860,7 +863,8 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
     }
   }
 
-  Future<void> _importBackup(BuildContext context) => _oneAtATime(() async {
+  Future<void> _importBackup(BuildContext context) async {
+    if (_dataBusy) return;
     final ok = await askConfirm(
       context,
       title: t.importBackup,
@@ -868,33 +872,34 @@ class _SettingsScreenState extends State<SettingsScreen> with WidgetsBindingObse
       confirmLabel: t.chooseFile,
     );
     if (!ok) return;
+    await _oneAtATime(() async {
+      Uint8List? bytes;
+      try {
+        final result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['zip', 'json'],
+          withData: true,
+        );
+        if (result == null) return;
+        final picked = result.files.single;
+        bytes = picked.bytes ?? (picked.path == null ? null : await File(picked.path!).readAsBytes());
+      } catch (_) {
+        bytes = null;
+      }
 
-    Uint8List? bytes;
-    try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['zip', 'json'],
-        withData: true,
-      );
-      if (result == null) return;
-      final picked = result.files.single;
-      bytes = picked.bytes ?? (picked.path == null ? null : await File(picked.path!).readAsBytes());
-    } catch (_) {
-      bytes = null;
-    }
-
-    final success = bytes != null &&
-        (looksLikeZip(bytes)
-            ? await restoreBackupZip(bytes)
-            : await fit.importJsonSaved(utf8.decode(bytes, allowMalformed: true)));
-    await _clearPickedFiles();
-    if (!context.mounted) return;
-    if (success) {
-      _snack(context, t.backupImported);
-    } else {
-      _warn(context, t.backupFailed);
-    }
-  });
+      final success = bytes != null &&
+          (looksLikeZip(bytes)
+              ? await restoreBackupZip(bytes)
+              : await fit.importJsonSaved(utf8.decode(bytes, allowMalformed: true)));
+      await _clearPickedFiles();
+      if (!context.mounted) return;
+      if (success) {
+        _snack(context, t.backupImported);
+      } else {
+        _warn(context, t.backupFailed);
+      }
+    });
+  }
 
   /// The file picker keeps a copy of the chosen file in the app cache; a backup holds all the person's data.
   Future<void> _clearPickedFiles() async {
