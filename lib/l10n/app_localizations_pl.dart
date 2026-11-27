@@ -3411,9 +3411,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Tekst jest za długi, by go skopiować. Użyj Eksportuj, aby wysłać go jako plik.';
 
   @override
-  String get exportFileStem => 'postepy';
-
-  @override
   String get exportDocTitle => 'Infyter · Postępy';
 
   @override

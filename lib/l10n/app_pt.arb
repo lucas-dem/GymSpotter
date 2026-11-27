@@ -1013,7 +1013,6 @@
   "exportNothingAtAll": "Ainda não há nada registrado para compartilhar.",
   "exportFailed": "Não foi possível preparar o arquivo",
   "exportTextTooLong": "O texto é muito longo para copiar. Use Exportar para enviá-lo como arquivo.",
-  "exportFileStem": "progresso",
   "exportDocTitle": "Infyter · Progresso",
   "exportPeriod": "De {from} a {to}",
   "exportPeriodWhole": "Histórico completo: de {from} a {to}",

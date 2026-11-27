@@ -1042,7 +1042,6 @@
   "exportNothingAtAll": "Пока нечего отправлять: ничего не записано.",
   "exportFailed": "Не удалось подготовить файл",
   "exportTextTooLong": "Текст слишком длинный, чтобы его скопировать. Нажми «Выгрузить», чтобы отправить его файлом.",
-  "exportFileStem": "прогресс",
   "exportDocTitle": "Infyter · Прогресс",
   "exportPeriod": "С {from} по {to}",
   "exportPeriodWhole": "Вся история: с {from} по {to}",

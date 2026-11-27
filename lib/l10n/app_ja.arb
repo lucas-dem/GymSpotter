@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "共有できる記録がまだありません。",
   "exportFailed": "ファイルを作成できませんでした",
   "exportTextTooLong": "テキストが長すぎてコピ⁠ーできません。「書き出す」でファイルとして送ってください。",
-  "exportFileStem": "進捗",
   "exportDocTitle": "Infyter · 進捗",
   "exportPeriod": "{from}〜{to}",
   "exportPeriodWhole": "全期間：{from}〜{to}",

@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "공유할 기록이 아직 없어요.",
   "exportFailed": "파일을 만들지 못했어요",
   "exportTextTooLong": "텍스트가 너무 길어서 복사할 수 없어요. 내보내기를 눌러 파일로 보내세요.",
-  "exportFileStem": "진행상황",
   "exportDocTitle": "Infyter · 진행 상황",
   "exportPeriod": "{from}부터 {to}까지",
   "exportPeriodWhole": "전체 기간: {from}부터 {to}까지",

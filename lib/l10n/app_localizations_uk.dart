@@ -3408,9 +3408,6 @@ class AppLocalizationsUk extends AppLocalizations {
       'Текст надто довгий, щоб його скопіювати. Натисни «Експорт», щоб надіслати його файлом.';
 
   @override
-  String get exportFileStem => 'прогрес';
-
-  @override
   String get exportDocTitle => 'Infyter · Прогрес';
 
   @override

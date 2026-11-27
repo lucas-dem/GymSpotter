@@ -3240,9 +3240,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get exportTextTooLong => '文本太长，无法复制。请使用“导出”以文件形式发送。';
 
   @override
-  String get exportFileStem => '进度';
-
-  @override
   String get exportDocTitle => 'Infyter · 进度';
 
   @override
@@ -6660,9 +6657,6 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get exportTextTooLong => '文字太長，無法複製。請使用「匯出」以檔案形式傳送。';
-
-  @override
-  String get exportFileStem => '進度';
 
   @override
   String get exportDocTitle => 'Infyter · 進度';

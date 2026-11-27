@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "Paylaşılacak kayıtlı bir şey henüz yok.",
   "exportFailed": "Dosya hazırlanamadı",
   "exportTextTooLong": "Metin kopyalanamayacak kadar uzun. Dosya olarak göndermek için Dışa aktar'ı kullan.",
-  "exportFileStem": "ilerleme",
   "exportDocTitle": "Infyter · İlerleme",
   "exportPeriod": "{from} – {to} arası",
   "exportPeriodWhole": "Tüm geçmiş: {from} – {to} arası",

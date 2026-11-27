@@ -3388,9 +3388,6 @@ class AppLocalizationsTr extends AppLocalizations {
       'Metin kopyalanamayacak kadar uzun. Dosya olarak göndermek için Dışa aktar\'ı kullan.';
 
   @override
-  String get exportFileStem => 'ilerleme';
-
-  @override
   String get exportDocTitle => 'Infyter · İlerleme';
 
   @override

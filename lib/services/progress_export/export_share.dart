@@ -16,7 +16,7 @@ Future<Directory> freshExportDir() async {
   return dir.create(recursive: true);
 }
 
-final _sharedCopyName = RegExp(r'^infyter-.+_\d{4}-\d{2}-\d{2}\.(txt|pdf|xlsx|csv|json)$');
+final _sharedCopyName = RegExp(r'^infyter-progreso-\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2}\.(txt|pdf|xlsx|csv|json)$');
 
 /// Deletes the export folder and the copy share_plus makes of [fileName] on Android.
 Future<void> deleteExportFiles([String? fileName]) async {

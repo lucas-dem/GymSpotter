@@ -1164,7 +1164,6 @@
   "exportNothingAtAll": "There is nothing logged to share yet.",
   "exportFailed": "The file could not be prepared",
   "exportTextTooLong": "The text is too long to copy. Use Export to send it as a file.",
-  "exportFileStem": "progress",
   "exportDocTitle": "Infyter · Progress",
   "exportPeriod": "From {from} to {to}",
   "@exportPeriod": {"placeholders": {"from": {"type": "String"}, "to": {"type": "String"}}},

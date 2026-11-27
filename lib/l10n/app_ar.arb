@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "لا يوجد بعد ما سُجّل للمشاركة.",
   "exportFailed": "تعذّر تجهيز الملف",
   "exportTextTooLong": "النص أطول من أن يُنسخ. استخدم «تصدير» لإرساله كملف.",
-  "exportFileStem": "التقدم",
   "exportDocTitle": "Infyter · التقدم",
   "exportPeriod": "من {from} إلى {to}",
   "exportPeriodWhole": "السجل الكامل: من {from} إلى {to}",

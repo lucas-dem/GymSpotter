@@ -3402,9 +3402,6 @@ class AppLocalizationsIt extends AppLocalizations {
       'Il testo è troppo lungo per essere copiato. Usa Esporta per inviarlo come file.';
 
   @override
-  String get exportFileStem => 'progressi';
-
-  @override
   String get exportDocTitle => 'Infyter · Progressi';
 
   @override

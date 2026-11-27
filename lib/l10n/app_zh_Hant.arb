@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "還沒有可分享的記錄。",
   "exportFailed": "無法產生檔案",
   "exportTextTooLong": "文字太長，無法複製。請使用「匯出」以檔案形式傳送。",
-  "exportFileStem": "進度",
   "exportDocTitle": "Infyter · 進度",
   "exportPeriod": "從 {from} 到 {to}",
   "exportPeriodWhole": "全部歷史：從 {from} 到 {to}",

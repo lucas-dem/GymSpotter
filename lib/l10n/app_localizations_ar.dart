@@ -3392,9 +3392,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exportTextTooLong => 'النص أطول من أن يُنسخ. استخدم «تصدير» لإرساله كملف.';
 
   @override
-  String get exportFileStem => 'التقدم';
-
-  @override
   String get exportDocTitle => 'Infyter · التقدم';
 
   @override

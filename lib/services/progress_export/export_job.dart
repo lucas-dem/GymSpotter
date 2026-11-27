@@ -47,8 +47,9 @@ class ExportResult {
 String _isoDay(DateTime d) =>
     '${d.year.toString().padLeft(4, '0')}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
-String exportFileName(ProgressReport report, ExportKind kind, String stem) =>
-    'infyter-$stem-${_isoDay(report.from)}_${_isoDay(report.to)}.${kind.extension}';
+/// The same Latin name in every language: some apps break names with other scripts.
+String exportFileName(ProgressReport report, ExportKind kind) =>
+    'infyter-progreso-${_isoDay(report.from)}_${_isoDay(report.to)}.${kind.extension}';
 
 Future<PdfFonts> loadPdfFonts(String language) => readPdfFonts(language, (path) async {
       final data = await rootBundle.load(path);
@@ -78,7 +79,7 @@ Future<ExportResult> runExportJob(ExportJob job) async {
   }
   return ExportResult(
     bytes: bytes,
-    fileName: exportFileName(report, job.kind, l.exportFileStem),
+    fileName: exportFileName(report, job.kind),
     title: l.exportDocTitle,
     text: text,
   );

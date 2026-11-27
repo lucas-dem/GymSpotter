@@ -1121,7 +1121,6 @@
   "exportNothingAtAll": "Es ist noch nichts zum Teilen erfasst.",
   "exportFailed": "Die Datei konnte nicht erstellt werden",
   "exportTextTooLong": "Der Text ist zu lang zum Kopieren. Nutze Exportieren, um ihn als Datei zu senden.",
-  "exportFileStem": "fortschritt",
   "exportDocTitle": "Infyter · Fortschritt",
   "exportPeriod": "Vom {from} bis {to}",
   "exportPeriodWhole": "Gesamter Verlauf: vom {from} bis {to}",

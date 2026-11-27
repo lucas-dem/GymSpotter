@@ -6050,12 +6050,6 @@ abstract class AppLocalizations {
   /// **'The text is too long to copy. Use Export to send it as a file.'**
   String get exportTextTooLong;
 
-  /// No description provided for @exportFileStem.
-  ///
-  /// In en, this message translates to:
-  /// **'progress'**
-  String get exportFileStem;
-
   /// No description provided for @exportDocTitle.
   ///
   /// In en, this message translates to:

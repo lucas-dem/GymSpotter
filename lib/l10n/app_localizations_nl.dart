@@ -3400,9 +3400,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'De tekst is te lang om te kopiëren. Gebruik Exporteren om hem als bestand te sturen.';
 
   @override
-  String get exportFileStem => 'voortgang';
-
-  @override
   String get exportDocTitle => 'Infyter · Voortgang';
 
   @override

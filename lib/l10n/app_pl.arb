@@ -1253,7 +1253,6 @@
   "exportNothingAtAll": "Nie ma jeszcze nic zapisanego do udostępnienia.",
   "exportFailed": "Nie udało się przygotować pliku",
   "exportTextTooLong": "Tekst jest za długi, by go skopiować. Użyj Eksportuj, aby wysłać go jako plik.",
-  "exportFileStem": "postepy",
   "exportDocTitle": "Infyter · Postępy",
   "exportPeriod": "Od {from} do {to}",
   "exportPeriodWhole": "Cała historia: od {from} do {to}",

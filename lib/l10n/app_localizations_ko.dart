@@ -3296,9 +3296,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get exportTextTooLong => '텍스트가 너무 길어서 복사할 수 없어요. 내보내기를 눌러 파일로 보내세요.';
 
   @override
-  String get exportFileStem => '진행상황';
-
-  @override
   String get exportDocTitle => 'Infyter · 진행 상황';
 
   @override

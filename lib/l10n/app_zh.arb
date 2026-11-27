@@ -1013,7 +1013,6 @@
   "exportNothingAtAll": "还没有可分享的记录。",
   "exportFailed": "无法生成文件",
   "exportTextTooLong": "文本太长，无法复制。请使用“导出”以文件形式发送。",
-  "exportFileStem": "进度",
   "exportDocTitle": "Infyter · 进度",
   "exportPeriod": "从 {from} 到 {to}",
   "exportPeriodWhole": "全部历史：从 {from} 到 {to}",
