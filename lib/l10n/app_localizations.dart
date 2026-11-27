@@ -5957,7 +5957,7 @@ abstract class AppLocalizations {
   /// No description provided for @exportSheetHint.
   ///
   /// In en, this message translates to:
-  /// **'It is built on your phone. Nothing leaves until you choose where to send it.'**
+  /// **'It is built on your phone. Nothing leaves until you choose where to send it. With Text, it is also copied to the clipboard if it is not too long.'**
   String get exportSheetHint;
 
   /// No description provided for @exportFrom.
@@ -6013,6 +6013,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preparing…'**
   String get exportBusy;
+
+  /// No description provided for @exportCopiedClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Text copied to the clipboard'**
+  String get exportCopiedClipboard;
 
   /// No description provided for @exportDayCount.
   ///

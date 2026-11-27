@@ -3331,7 +3331,8 @@ class AppLocalizationsEs extends AppLocalizations {
       'Entrenamientos, pasos, calorías, peso y medidas por día, como archivo';
 
   @override
-  String get exportSheetHint => 'Se arma en tu teléfono. No sale nada hasta que elijas dónde mandarlo.';
+  String get exportSheetHint =>
+      'Se arma en tu teléfono. No sale nada hasta que elijas dónde mandarlo. Con Texto, además se copia al portapapeles si no es muy largo.';
 
   @override
   String get exportFrom => 'Desde';
@@ -3361,6 +3362,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportBusy => 'Preparando…';
+
+  @override
+  String get exportCopiedClipboard => 'Texto copiado al portapapeles';
 
   @override
   String exportDayCount(int n) {

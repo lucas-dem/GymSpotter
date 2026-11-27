@@ -1036,6 +1036,7 @@
   "exportAction": "Export",
   "exportCopy": "Copy text",
   "exportBusy": "Preparing…",
+  "exportCopiedClipboard": "Text copied to the clipboard",
   "exportDayCount": "{n, plural, =1{1 day with data} other{{n} days with data}}",
   "exportEmpty": "Nothing was logged between those dates.",
   "exportNothingAtAll": "There is nothing logged to share yet.",

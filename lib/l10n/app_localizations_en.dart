@@ -3328,7 +3328,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportSheetHint =>
-      'It is built on your phone. Nothing leaves until you choose where to send it.';
+      'It is built on your phone. Nothing leaves until you choose where to send it. With Text, it is also copied to the clipboard if it is not too long.';
 
   @override
   String get exportFrom => 'From';
@@ -3358,6 +3358,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get exportBusy => 'Preparing…';
+
+  @override
+  String get exportCopiedClipboard => 'Text copied to the clipboard';
 
   @override
   String exportDayCount(int n) {

@@ -3361,6 +3361,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get exportBusy => 'Preparing…';
 
   @override
+  String get exportCopiedClipboard => 'Text copied to the clipboard';
+
+  @override
   String exportDayCount(int n) {
     String _temp0 = intl.Intl.pluralLogic(
       n,

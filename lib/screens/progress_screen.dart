@@ -27,7 +27,7 @@ import '../widgets/ruler_picker.dart';
 import '../widgets/steps_card.dart' show showStepsFrom;
 import '../widgets/steps_progress.dart';
 import '../widgets/ui_kit.dart';
-import 'share_sheet.dart';
+import 'progress_export_sheet.dart';
 import 'start_sheet.dart';
 
 class ProgressScreen extends StatelessWidget {
@@ -61,7 +61,7 @@ class ProgressScreen extends StatelessWidget {
                   button: true,
                   label: t.share,
                   child: GestureDetector(
-                    onTap: () => showShareSheet(context),
+                    onTap: () => showShareChooser(context),
                     child: Container(
                       width: 38,
                       height: 38,
