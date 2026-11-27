@@ -529,6 +529,43 @@ void main() {
     }
   }
 
+  Future<void> esperarCelebracion(WidgetTester tester) async {
+    for (var i = 0; i < 25; i++) {
+      await tester.pump(const Duration(milliseconds: 200));
+    }
+  }
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final ancho in const [320.0, 360.0, 411.0]) {
+      for (final escala in _escalas) {
+        testWidgets('the celebracion award notice fits at ${ancho.toInt()} dp with text scale $escala in $idioma', (
+          tester,
+        ) async {
+          final alto = ancho == 320 ? 711.0 : (ancho == 360 ? 780.0 : 914.0);
+          usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+          fit.setLanguage(idioma);
+          fit.pendingAwards.add(AwardId.firstWorkout);
+          fit.route = 'home';
+          final fallas = await _revisar(
+            tester,
+            const InfyterApp(),
+            'celebracion',
+            idioma: idioma,
+            luego: esperarCelebracion,
+          );
+          final titulo = t.awardUnlocked.toUpperCase();
+          expect(find.text(titulo), findsWidgets, reason: 'celebracion: no muestra "$titulo"');
+          expect(find.text(t.awardNice), findsOneWidget, reason: 'celebracion: no muestra su botón');
+          await _cerrar(tester);
+          for (final f in fallas) {
+            debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');
+          }
+          expect(fallas, isEmpty);
+        });
+      }
+    }
+  }
+
   for (final idioma in _idiomas.split(',')) {
     for (final (ancho, alto) in _pantallas) {
       for (final escala in _escalas) {
