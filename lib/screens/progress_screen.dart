@@ -1100,14 +1100,16 @@ class _StrengthCard extends StatelessWidget {
       const SizedBox(height: 12),
       TrendChart(values: [for (final v in series) fit.toDisplayWeight(v)], height: 96, scale: fmt),
       const SizedBox(height: 8),
-      Row(
+      // With large text the three no longer fit on one line: the last date moves to the next one.
+      Wrap(
+        alignment: WrapAlignment.spaceBetween,
+        spacing: 8,
+        runSpacing: 2,
         children: [
           Text(t.shortDate(recent.first.date),
               style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary)),
-          const Spacer(),
           Text(t.sessionCount(series.length),
               style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary)),
-          const Spacer(),
           Text(t.shortDate(recent.last.date),
               style: AppTheme.s(11, weight: FontWeight.w600, color: gc.textTertiary)),
         ],

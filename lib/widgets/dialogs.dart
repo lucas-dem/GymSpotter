@@ -50,9 +50,12 @@ Future<bool> askConfirm(
     builder: (dctx) => appDialog(
       gc,
       title: Text(title, style: AppTheme.f(19, weight: FontWeight.w800, color: gc.text)),
-      content: Text(body,
-          style: AppTheme.f(13.5,
-              weight: FontWeight.w500, color: gc.textSecondary, height: 1.45)),
+      // A long body with large text scrolls instead of being cut off.
+      content: SingleChildScrollView(
+        child: Text(body,
+            style: AppTheme.f(13.5,
+                weight: FontWeight.w500, color: gc.textSecondary, height: 1.45)),
+      ),
       actions: [
         dialogAction(cancelLabel ?? t.cancel, gc.textSecondary, () => Navigator.of(dctx).pop(false),
             strong: false),

@@ -2,6 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:phosphoricons_flutter/phosphoricons_flutter.dart';
 import 'package:infyter/app/app_shell.dart';
@@ -205,11 +206,55 @@ Future<void> _tocarHistoricoCompleto(WidgetTester tester) async {
   await tester.tap(find.byType(TinySwitch));
 }
 
-Future<void> _tocarExportar(WidgetTester tester) async {
-  final exportar = find.widgetWithText(PrimaryButton, t.exportAction);
-  await tester.ensureVisible(exportar);
+Future<void> _tocarBoton(WidgetTester tester, String rotulo) async {
+  final boton = find.widgetWithText(PrimaryButton, rotulo);
+  await tester.ensureVisible(boton);
   await tester.pump();
-  await tester.tap(exportar);
+  await tester.tap(boton);
+}
+
+Future<void> _tocarExportar(WidgetTester tester) => _tocarBoton(tester, t.exportCopy);
+
+/// Deja correr lo que se arma en segundo plano (la medida del texto, la copia) hasta que aparece [texto].
+Future<void> _esperarTexto(WidgetTester tester, String texto) async {
+  for (var i = 0; i < 300 && find.text(texto).evaluate().isEmpty; i++) {
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 30)));
+    await tester.pump(const Duration(milliseconds: 50));
+  }
+}
+
+/// Un año y medio de entrenamientos: el Texto del histórico completo no entra en el portapapeles.
+void _muchosDatosParaCompartir() {
+  fit.sessions
+    ..clear()
+    ..addAll([
+      for (var i = 0; i < 500; i++)
+        LoggedSession(_hoyFijo.subtract(Duration(days: i)).add(const Duration(hours: 18)), 3725, [
+          LoggedExercise('EIeI8Vf', 'Barbell Bench Press', 'chest', [
+            for (var s = 0; s < 6; s++) LoggedSet(10 - s, 100 + s * 2.5),
+          ]),
+        ]),
+    ]);
+  fit.route = 'progress';
+}
+
+Future<void> _textoMuyLargo(WidgetTester tester) async {
+  await _tocarHistoricoCompleto(tester);
+  await _esperarTexto(tester, t.exportTextTooLong);
+}
+
+Future<void> _elegirPdf(WidgetTester tester) async {
+  await tester.ensureVisible(find.text('PDF'));
+  await tester.pump();
+  await tester.tap(find.text('PDF'));
+}
+
+Future<void> _copiar(WidgetTester tester) async {
+  final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+  messenger.setMockMethodCallHandler(SystemChannels.platform, (call) async => null);
+  await _tocarBoton(tester, t.exportCopy);
+  await _esperarTexto(tester, t.exportCopiedClipboard);
+  messenger.setMockMethodCallHandler(SystemChannels.platform, null);
 }
 
 void main() {
@@ -497,6 +542,24 @@ void main() {
       _tocarExportar,
       () => t.exportBusy,
     ),
+    'compartir-pdf': (
+      () => _datosParaCompartir(diasAtras: 2),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      _elegirPdf,
+      () => t.exportAction,
+    ),
+    'compartir-copiado': (
+      () => _datosParaCompartir(diasAtras: 2),
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      _copiar,
+      () => t.exportCopy,
+    ),
+    'compartir-texto-largo': (
+      _muchosDatosParaCompartir,
+      (c) => showProgressExportSheet(c, today: _hoyFijo),
+      _textoMuyLargo,
+      () => t.exportTextTooLong,
+    ),
   };
 
   for (final idioma in _idiomas.split(',')) {
@@ -516,6 +579,41 @@ void main() {
               abrir: abrir,
               luego: luego,
             );
+            final texto = clave();
+            expect(find.text(texto), findsOneWidget, reason: '$nombre: no muestra "$texto"');
+            await _cerrar(tester);
+            for (final f in fallas) {
+              debugPrint('FALLA $idioma ${ancho.toInt()}dp x$escala $f');
+            }
+            expect(fallas, isEmpty);
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> Function(WidgetTester) tocarFila(String Function() fila) => (tester) async {
+    final f = find.text(fila());
+    await tester.ensureVisible(f);
+    await tester.pump();
+    await tester.tap(f);
+  };
+
+  final ajustesDatos = <String, (Future<void> Function(WidgetTester), String Function())>{
+    'importar-copia': (tocarFila(() => t.importBackup), () => t.importHint),
+    'borrar-todo': (tocarFila(() => t.resetData), () => t.resetBody),
+  };
+
+  for (final idioma in _idiomas.split(',')) {
+    for (final ancho in const [320.0, 360.0, 411.0]) {
+      for (final escala in _escalas) {
+        for (final MapEntry(key: nombre, value: (luego, clave)) in ajustesDatos.entries) {
+          testWidgets('the $nombre dialog fits at ${ancho.toInt()} dp with text scale $escala in $idioma', (tester) async {
+            final alto = ancho == 320 ? 711.0 : (ancho == 360 ? 780.0 : 914.0);
+            usarPantalla(tester, ancho: ancho, alto: alto, escala: escala);
+            fit.setLanguage(idioma);
+            fit.route = 'preferences';
+            final fallas = await _revisar(tester, const InfyterApp(), 'dialogo $nombre', idioma: idioma, luego: luego);
             final texto = clave();
             expect(find.text(texto), findsOneWidget, reason: '$nombre: no muestra "$texto"');
             await _cerrar(tester);
