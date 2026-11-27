@@ -5923,6 +5923,384 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Health Connect counts steps even when Infyter is closed; opening it shows the last 7 days.'**
   String get stepsHcHint;
+
+  /// No description provided for @shareChooserTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What to share'**
+  String get shareChooserTitle;
+
+  /// No description provided for @shareChooserCard.
+  ///
+  /// In en, this message translates to:
+  /// **'A card'**
+  String get shareChooserCard;
+
+  /// No description provided for @shareChooserCardHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak, muscles worked or before and after, as an image'**
+  String get shareChooserCardHint;
+
+  /// No description provided for @shareChooserProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Share progress'**
+  String get shareChooserProgress;
+
+  /// No description provided for @shareChooserProgressHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts, steps, calories, weight and measurements by day, as a file'**
+  String get shareChooserProgressHint;
+
+  /// No description provided for @exportSheetHint.
+  ///
+  /// In en, this message translates to:
+  /// **'It is built on your phone. Nothing leaves until you choose where to send it.'**
+  String get exportSheetHint;
+
+  /// No description provided for @exportFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get exportFrom;
+
+  /// No description provided for @exportTo.
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get exportTo;
+
+  /// No description provided for @exportWholeHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Full history'**
+  String get exportWholeHistory;
+
+  /// No description provided for @exportWholeHistoryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything logged, from {from} to {to}'**
+  String exportWholeHistoryHint(String from, String to);
+
+  /// No description provided for @exportFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Format'**
+  String get exportFormat;
+
+  /// No description provided for @exportFormatText.
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get exportFormatText;
+
+  /// No description provided for @exportAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get exportAction;
+
+  /// No description provided for @exportCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy text'**
+  String get exportCopy;
+
+  /// No description provided for @exportBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing…'**
+  String get exportBusy;
+
+  /// No description provided for @exportDayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 day with data} other{{n} days with data}}'**
+  String exportDayCount(int n);
+
+  /// No description provided for @exportEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was logged between those dates.'**
+  String get exportEmpty;
+
+  /// No description provided for @exportNothingAtAll.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing logged to share yet.'**
+  String get exportNothingAtAll;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The file could not be prepared'**
+  String get exportFailed;
+
+  /// No description provided for @exportTextTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'The text is too long to copy. Use Export to send it as a file.'**
+  String get exportTextTooLong;
+
+  /// No description provided for @exportFileStem.
+  ///
+  /// In en, this message translates to:
+  /// **'progress'**
+  String get exportFileStem;
+
+  /// No description provided for @exportDocTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Infyter · Progress'**
+  String get exportDocTitle;
+
+  /// No description provided for @exportPeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'From {from} to {to}'**
+  String exportPeriod(String from, String to);
+
+  /// No description provided for @exportPeriodWhole.
+  ///
+  /// In en, this message translates to:
+  /// **'Full history: from {from} to {to}'**
+  String exportPeriodWhole(String from, String to);
+
+  /// No description provided for @exportGenerated.
+  ///
+  /// In en, this message translates to:
+  /// **'Generated on {date}'**
+  String exportGenerated(String date);
+
+  /// No description provided for @exportUnits.
+  ///
+  /// In en, this message translates to:
+  /// **'Units: {units}'**
+  String exportUnits(String units);
+
+  /// No description provided for @exportSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout'**
+  String get exportSession;
+
+  /// No description provided for @exportSessionNumbered.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout {n}'**
+  String exportSessionNumbered(int n);
+
+  /// No description provided for @exportMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} min'**
+  String exportMinutes(int n);
+
+  /// No description provided for @exportRestConfigured.
+  ///
+  /// In en, this message translates to:
+  /// **'configured rest {time}'**
+  String exportRestConfigured(String time);
+
+  /// No description provided for @exportRestNone.
+  ///
+  /// In en, this message translates to:
+  /// **'no rest configured'**
+  String get exportRestNone;
+
+  /// No description provided for @exportRepsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{n, plural, =1{1 rep} other{{n} reps}}'**
+  String exportRepsCount(int n);
+
+  /// No description provided for @exportSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get exportSteps;
+
+  /// No description provided for @exportStepsSince.
+  ///
+  /// In en, this message translates to:
+  /// **'since {time}'**
+  String exportStepsSince(String time);
+
+  /// No description provided for @exportKcal.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated active calories'**
+  String get exportKcal;
+
+  /// No description provided for @exportKcalSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'steps ≈ {kcal}'**
+  String exportKcalSteps(String kcal);
+
+  /// No description provided for @exportKcalWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'workouts ≈ {kcal}'**
+  String exportKcalWorkouts(String kcal);
+
+  /// No description provided for @exportBodyweight.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyweight'**
+  String get exportBodyweight;
+
+  /// No description provided for @exportMeasures.
+  ///
+  /// In en, this message translates to:
+  /// **'Measurements'**
+  String get exportMeasures;
+
+  /// No description provided for @exportNoteKcal.
+  ///
+  /// In en, this message translates to:
+  /// **'Calories are active and estimated, using the latest weight logged on or before each day (or your profile weight). They are not medical data.'**
+  String get exportNoteKcal;
+
+  /// No description provided for @exportNoteRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest is what is configured today for each exercise: Infyter does not store the actual rest of each set.'**
+  String get exportNoteRest;
+
+  /// No description provided for @exportMadeWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with Infyter'**
+  String get exportMadeWith;
+
+  /// No description provided for @exportPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {n} of {total}'**
+  String exportPage(int n, int total);
+
+  /// No description provided for @exportColDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get exportColDate;
+
+  /// No description provided for @exportColExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get exportColExercise;
+
+  /// No description provided for @exportColSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set'**
+  String get exportColSet;
+
+  /// No description provided for @exportColKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Set type'**
+  String get exportColKind;
+
+  /// No description provided for @exportColReps.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get exportColReps;
+
+  /// No description provided for @exportColWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight ({unit})'**
+  String exportColWeight(String unit);
+
+  /// No description provided for @exportColSetDuration.
+  ///
+  /// In en, this message translates to:
+  /// **'Duration (s)'**
+  String get exportColSetDuration;
+
+  /// No description provided for @exportColDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Distance ({unit})'**
+  String exportColDistance(String unit);
+
+  /// No description provided for @exportColRest.
+  ///
+  /// In en, this message translates to:
+  /// **'Configured rest (s)'**
+  String get exportColRest;
+
+  /// No description provided for @exportColSessionMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Workout duration (min)'**
+  String get exportColSessionMinutes;
+
+  /// No description provided for @exportColSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts'**
+  String get exportColSessions;
+
+  /// No description provided for @exportColExercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercises'**
+  String get exportColExercises;
+
+  /// No description provided for @exportColSets.
+  ///
+  /// In en, this message translates to:
+  /// **'Sets'**
+  String get exportColSets;
+
+  /// No description provided for @exportColStepsSince.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps counted since'**
+  String get exportColStepsSince;
+
+  /// No description provided for @exportColKcal.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated active kcal'**
+  String get exportColKcal;
+
+  /// No description provided for @exportColKcalSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated kcal from steps'**
+  String get exportColKcalSteps;
+
+  /// No description provided for @exportColKcalWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated kcal from workouts'**
+  String get exportColKcalWorkouts;
+
+  /// No description provided for @exportColBodyweight.
+  ///
+  /// In en, this message translates to:
+  /// **'Bodyweight ({unit})'**
+  String exportColBodyweight(String unit);
+
+  /// No description provided for @exportSheetSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get exportSheetSummary;
+
+  /// No description provided for @exportSheetDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Detail'**
+  String get exportSheetDetail;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
