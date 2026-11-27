@@ -1142,5 +1142,6 @@
   "exportColKcalWorkouts": "Estimated kcal from workouts",
   "exportColBodyweight": "Bodyweight ({unit})",
   "exportSheetSummary": "Summary",
-  "exportSheetDetail": "Detail"
+  "exportSheetDetail": "Detail",
+  "exportColWeekday": "Weekday"
 }

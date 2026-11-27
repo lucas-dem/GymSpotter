@@ -3544,4 +3544,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get exportSheetDetail => 'Detail';
+
+  @override
+  String get exportColWeekday => 'Weekday';
 }

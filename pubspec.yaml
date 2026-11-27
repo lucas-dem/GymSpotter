@@ -31,6 +31,8 @@ dependencies:
   video_player: ^2.9.2
   archive: ^4.0.9
   app_settings: ^7.0.0 # 8.x is Swift Package Manager only; see flutter.config
+  excel_community: 1.0.10 # MIT, pure Dart; 1.1+ needs xml 7 and 2.x needs Dart 3.12
+  image: ">=4.10.2 <4.11.0" # 4.11 calls archive APIs newer than archive 4.0.x
 
 dev_dependencies:
   flutter_test:

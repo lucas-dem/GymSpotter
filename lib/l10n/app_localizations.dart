@@ -6301,6 +6301,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Detail'**
   String get exportSheetDetail;
+
+  /// No description provided for @exportColWeekday.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekday'**
+  String get exportColWeekday;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

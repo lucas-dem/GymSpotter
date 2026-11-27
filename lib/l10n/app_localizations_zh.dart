@@ -3404,6 +3404,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get exportSheetDetail => 'Detail';
+
+  @override
+  String get exportColWeekday => 'Weekday';
 }
 
 /// The translations for Chinese, using the Han script (`zh_Hant`).
@@ -6829,4 +6832,7 @@ class AppLocalizationsZhHant extends AppLocalizationsZh {
 
   @override
   String get exportSheetDetail => 'Detail';
+
+  @override
+  String get exportColWeekday => 'Weekday';
 }

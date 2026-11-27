@@ -3556,4 +3556,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get exportSheetDetail => 'Detail';
+
+  @override
+  String get exportColWeekday => 'Weekday';
 }

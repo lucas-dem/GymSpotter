@@ -3552,4 +3552,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get exportSheetDetail => 'Detalle';
+
+  @override
+  String get exportColWeekday => 'Día de la semana';
 }

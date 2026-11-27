@@ -18,6 +18,10 @@ The Nunito fonts are copyright the Nunito Project Authors and are distributed
 under the SIL Open Font License 1.1. The license is included at
 `assets/fonts/Nunito-OFL.txt`.
 
+The progress Excel export uses the `excel_community` 1.0.10 package (MIT License,
+copyright (C) 2021 Kawaljeet Singh (justkawal) and copyright (C) 2026
+DecksPlayer, excel_community fork), which is pure Dart.
+
 Flutter and third-party packages retain their respective licenses. Their
 notices are available inside the application under “Información legal y
 licencias” → “Licencias de dependencias”.
