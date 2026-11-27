@@ -61,8 +61,10 @@ guidance for the Play In-App Updates library when filling the form.
 - Microphone (iOS): audio in a video the user chooses to record.
 - Physical activity (Android `ACTIVITY_RECOGNITION`, iOS Motion & Fitness /
   `NSMotionUsageDescription`): daily step count and estimated active calories,
-  only after the user enables step counting. Read and stored on the device;
-  nothing is sent anywhere. No Google Play services and no foreground service.
+  only after the user enables step counting, and to include the steps in a
+  progress summary the user chooses to share. Read and stored on the device;
+  the app sends nothing by itself. No Google Play services and no foreground
+  service.
 - Health Connect steps (Android 14+, `android.permission.health.READ_STEPS`):
   reads daily steps from Health Connect, only after the user enables step
   counting, to show them with estimated active calories and to include them in
@@ -87,8 +89,9 @@ The step feature does not add `INTERNET`. The app does not request `INTERNET`, `
   Steps, read only, foreground, to show daily steps and estimated active
   calories and to include them in progress exports the user starts.
 - App Store review note: "Step count is read with Core Motion only after the
-  user enables it; it stays on the device; calories are labelled as
-  estimates."
+  user enables it; it stays on the device and is also included in the progress
+  summaries the user chooses to share; the app sends nothing by itself;
+  calories are labelled as estimates."
 - Infyter is a workout log, not a medical device, diagnosis tool or treatment.
 - It contains no social feed, chat, gambling, ads or user-generated public
   content.
